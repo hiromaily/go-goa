@@ -7,7 +7,8 @@ update:
 	go get -u github.com/golang/dep/...
 
 dep:
-	dep init
+	#dep init
+	dep ensure -update
 
 fmt:
 	go fmt `go list ./... | grep -v '/vendor/'`
@@ -16,7 +17,7 @@ vet:
 	go vet `go list ./... | grep -v '/vendor/'`
 
 fix:
-    go fix `go list ./... | grep -v '/vendor/'`
+	go fix `go list ./... | grep -v '/vendor/'`
 
 lint:
 	golint ./... | grep -v '^vendor\/' || true
@@ -26,7 +27,7 @@ lint:
 chk:
 	go fmt `go list ./... | grep -v '/vendor/'`
 	go vet `go list ./... | grep -v '/vendor/'`
-    go fix `go list ./... | grep -v '/vendor/'`
+	go fix `go list ./... | grep -v '/vendor/'`
 	golint ./... | grep -v '^vendor\/' || true
 	misspell `find . -name "*.go" | grep -v '/vendor/'`
 	ineffassign .
