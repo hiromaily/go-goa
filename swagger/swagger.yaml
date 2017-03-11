@@ -1,8 +1,7 @@
 consumes:
-- application/json
+- application/x-www-form-urlencoded
 - application/xml
-- application/gob
-- application/x-gob
+- application/json
 definitions:
   Company:
     description: A company information (default view)
@@ -233,6 +232,27 @@ info:
   title: hiromaily API
   version: ""
 paths:
+  /{filepath}:
+    get:
+      operationId: public#/*filepath
+      parameters:
+      - description: Relative file path
+        in: path
+        name: filepath
+        required: true
+        type: string
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+        "404":
+          description: File not found
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: Download public/
   /api/_ah/health:
     get:
       description: Perform health check.
@@ -482,9 +502,9 @@ paths:
       summary: UpdateUser hy_user
       tags:
       - hy_user
-  /js/{filepath}:
+  /swagger-ui/{filepath}:
     get:
-      operationId: js#/js/*filepath
+      operationId: public#/swagger-ui/*filepath
       parameters:
       - description: Relative file path
         in: path
@@ -502,29 +522,7 @@ paths:
             $ref: '#/definitions/error'
       schemes:
       - http
-      summary: Download public/js
-  /swagger.json:
-    get:
-      operationId: swagger#/swagger.json
-      responses:
-        "200":
-          description: File downloaded
-          schema:
-            type: file
-      schemes:
-      - http
-      summary: Download public/swagger/swagger.json
-  /ui:
-    get:
-      operationId: public#/ui
-      responses:
-        "200":
-          description: File downloaded
-          schema:
-            type: file
-      schemes:
-      - http
-      summary: Download public/html/index.html
+      summary: Download swagger-ui/dist/
 produces:
 - application/json
 - application/xml

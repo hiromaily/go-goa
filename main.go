@@ -27,15 +27,9 @@ func main() {
 	// Mount "hy_user" controller
 	c3 := NewHyUserController(service)
 	app.MountHyUserController(service, c3)
-	// Mount "js" controller
-	c4 := NewJsController(service)
-	app.MountJsController(service, c4)
 	// Mount "public" controller
-	c5 := NewPublicController(service)
-	app.MountPublicController(service, c5)
-	// Mount "swagger" controller
-	c6 := NewSwaggerController(service)
-	app.MountSwaggerController(service, c6)
+	c4 := NewPublicController(service)
+	app.MountPublicController(service, c4)
 
 	// Start service
 	if err := service.ListenAndServe(":8080"); err != nil {

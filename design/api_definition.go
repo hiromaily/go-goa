@@ -31,6 +31,12 @@ var _ = API("api", func() {
 	Scheme("http")
 	BasePath("/api")
 
+	Consumes("application/x-www-form-urlencoded", func() {
+		Package("github.com/goadesign/goa/encoding/form")
+	})
+	Consumes("application/xml") // ★
+	Consumes("application/json")
+
 	//Consumes("application/json")
 	//Produces("application/json")
 

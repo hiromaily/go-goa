@@ -200,19 +200,27 @@ var _ = Resource("public", func() {
 	Origin("*", func() {
 		Methods("GET", "OPTIONS")
 	})
-	Files("/ui", "public/html/index.html")
+	Files("/*filepath", "public/")
+	Files("/swagger-ui/*filepath", "swagger-ui/dist/")
 })
 
-var _ = Resource("js", func() {
-	Origin("*", func() {
-		Methods("GET", "OPTIONS")
-	})
-	Files("/js/*filepath", "public/js")
-})
+//var _ = Resource("public", func() {
+//	Origin("*", func() {
+//		Methods("GET", "OPTIONS")
+//	})
+//	Files("/", "public/index.html")
+//})
 
-var _ = Resource("swagger", func() {
-	Origin("*", func() {
-		Methods("GET", "OPTIONS")
-	})
-	Files("/swagger.json", "public/swagger/swagger.json")
-})
+//var _ = Resource("js", func() {
+//	Origin("*", func() {
+//		Methods("GET", "OPTIONS")
+//	})
+//	Files("/js/*filepath", "public/js")
+//})
+
+//var _ = Resource("swagger", func() {
+//	Origin("*", func() {
+//		Methods("GET", "OPTIONS")
+//	})
+//	Files("/swagger.json", "public/swagger/swagger.json")
+//})
