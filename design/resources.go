@@ -4,13 +4,14 @@ import (
 	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
 )
+
 var resourcePrefix string = "hy_"
 
 //Resources group related API endpoints
 // This is request object
 // Payload is sending data to server
 
-var _ = Resource(resourcePrefix + "user", func() {
+var _ = Resource(resourcePrefix+"user", func() {
 
 	DefaultMedia(User) //Response Media Type
 	BasePath("/user")
@@ -31,9 +32,11 @@ var _ = Resource(resourcePrefix + "user", func() {
 			}))
 			//	Headers(func() {                // Headers list the response HTTP headers
 			//		Header("X-Request-Id")  // Header syntax is identical to Attribute's
+			//      Required("X-Request-Id")
 			//	})
 		})
 
+		//HTTP Request Header
 		//Headers(func() {                  // Headers describe relevant action headers
 		//    Header("Authorization", String)
 		//    Header("X-Account", Integer)
@@ -102,7 +105,7 @@ var _ = Resource(resourcePrefix + "user", func() {
 	})
 })
 
-var _ = Resource(resourcePrefix + "company", func() {
+var _ = Resource(resourcePrefix+"company", func() {
 
 	DefaultMedia(Company)
 	BasePath("/company")
