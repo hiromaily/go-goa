@@ -1,0 +1,10 @@
+#local, heroku, docker, staging, production
+environment = "local"
+
+[mysql]
+encrypted = false
+host = "localhost"
+port = 13306
+dbname = "hiromaily"
+user = "hiromaily"
+pass = "12345678"

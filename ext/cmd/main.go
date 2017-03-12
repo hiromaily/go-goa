@@ -3,14 +3,41 @@
 package main
 
 import (
+	"flag"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
-	"github.com/hiromaily/go-goa/goa/app"
+	"github.com/hiromaily/go-goa/ext/api"
+	conf "github.com/hiromaily/go-goa/ext/configs"
+	"github.com/hiromaily/go-goa/ext/context"
 	g "github.com/hiromaily/go-goa/goa"
-
+	"github.com/hiromaily/go-goa/goa/app"
 )
 
+var (
+	tomlPath = flag.String("f", "", "Toml file path")
+	portNum  = flag.Int("P", 0, "Port of server")
+)
+
+func init() {
+	//command-line
+	flag.Parse()
+}
+
 func main() {
+	//config
+	cnf := conf.New(*tomlPath)
+
+	// Create service
+	ctx := context.SetupContext(cnf)
+	service := api.NewApi(ctx)
+
+	// Start service
+	if err := service.ListenAndServe(":8080"); err != nil {
+		service.LogError("startup", "err", err)
+	}
+}
+
+func taihi() {
 	// Create service
 	service := goa.New("api")
 

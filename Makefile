@@ -11,6 +11,7 @@ update:
 	go get -u github.com/goadesign/goa/...
 	go get -u github.com/golang/dep/...
 	go get -u github.com/rakyll/hey
+	go get -u github.com/davecheney/httpstat
 
 dep:
 	#cd ext/cmd/;dep init
@@ -144,3 +145,6 @@ httpieall:
 
 bench:
 	hey -n 20000 -c 50 -m GET http://localhost:8080/api/user
+
+httpstat:
+	httpstat http://localhost:8080/api/user
