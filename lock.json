@@ -1,6 +1,14 @@
 {
-    "memo": "4d1e31b6ef31753ca94248293bc5cc8a16a7982a22e5d066c8df8217656bc68b",
+    "memo": "adc7da97baa1f21ed1c44656d6939a62f84d0464711ff2e922c9bccaf5993da4",
     "projects": [
+        {
+            "name": "github.com/ajg/form",
+            "version": "v1.5",
+            "revision": "cc2954064ec9ea8d93917f0f87456e11d7b881ad",
+            "packages": [
+                "."
+            ]
+        },
         {
             "name": "github.com/armon/go-metrics",
             "branch": "master",
@@ -36,6 +44,7 @@
                 "design",
                 "design/apidsl",
                 "dslengine",
+                "encoding/form",
                 "goatest",
                 "middleware",
                 "uuid"

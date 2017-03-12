@@ -2,9 +2,10 @@
 MONGO_PORT=27017
 
 init:
-	mkdir public
-	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/swagger ./public/swagger
+	mkdir -p public goa ext/cmd
 	touch public/index.html
+	#goagen	goagen bootstrap
+	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
 
 update:
 	go get -u github.com/goadesign/goa/...
@@ -38,28 +39,47 @@ chk:
 
 gen:
 	#goagen won’t be re-generated (by default) if already present
-	goagen bootstrap -d github.com/hiromaily/go-goa/design
+	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
 
-genn:
-	rm -f hy_*.go {public,swagger,health}.go
-	goagen bootstrap -d github.com/hiromaily/go-goa/design
+gen2:
+	rm -f goa/*.go
+	#rm -f goa/hy_*.go goa/{public,swagger,health}.go
+	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
 
 genfull:
-	rm -rf app/ client/ swagger/ tool/
-	rm -f hy_*.go {main,public,swagger,health}.go
-	goagen bootstrap -d github.com/hiromaily/go-goa/design
+	rm -f goa/*.go
+	#rm -f hy_*.go {main,public,swagger,health}.go
+	rm -rf goa/app/ goa/client/ goa/swagger/ goa/tool/
+	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
+
+aftergen:
+	rm -f goa/main.go
+	sed -e "1s/main/goa/" ./goa/health.go >> ./resources/tmp/tmp.go
+	mv -f ./resources/tmp/tmp.go ./goa/health.go
+	sed -e "1s/main/goa/" ./goa/public.go >> ./resources/tmp/tmp.go
+	mv -f ./resources/tmp/tmp.go ./goa/public.go
+	sed -e "1s/main/goa/" ./goa/hy_user.go >> ./resources/tmp/tmp.go
+	mv -f ./resources/tmp/tmp.go ./goa/hy_user.go
+	sed -e "1s/main/goa/" ./goa/hy_company.go >> ./resources/tmp/tmp.go
+	mv -f ./resources/tmp/tmp.go ./goa/hy_company.go
+
+genctl:
+	goagen controller -d github.com/hiromaily/go-goa/goa/design -o goa/
 
 run:
-	go run *.go
+	#go run goa/*.go
+	go run ext/cmd/*.go
 
 bld:
-	go build -i -v -o ${GOPATH}/bin/go-goa .
+	#go build -i -v -o ${GOPATH}/bin/go-goa ./goa/
+	go build -i -v -o ${GOPATH}/bin/go-goa ./ext/cmd/
 
 bldlinux:
-	GOOS=linux GOARCH=amd64 go build -v -o ${GOPATH}/bin/linux_amd64/$1 .
+	#GOOS=linux GOARCH=amd64 go build -v -o ${GOPATH}/bin/linux_amd64/$1 ./goa/
+	GOOS=linux GOARCH=amd64 go build -v -o ${GOPATH}/bin/linux_amd64/$1 ./ext/cmd/
 
 clibld:
-	go build -i -v -o ${GOPATH}/bin/go-goa-cli ./tool/api-cli/*.go
+	go build -i -v -o ${GOPATH}/bin/go-goa-cli ./goa/tool/api-cli/*.go
 
 exec:
 	go-goa
@@ -78,6 +98,7 @@ curlall:
 	# Static files
 	curl -i localhost:8080/
 	curl -i localhost:8080/swagger/swagger.json
+	curl -i localhost:8080/swagger-ui/
 
 	# Health check
 	curl -i localhost:8080/api/_ah/health
@@ -102,22 +123,23 @@ curlall:
 	curl -i -X DELETE http://localhost:8080/api/company/1
 
 httpieall:
-    # httpie
+	# httpie
 	# Static files
 	http localhost:8080/
 	http localhost:8080/swagger/swagger.json
+	http localhost:8080/swagger-ui/
 	http localhost:8080/api/_ah/health
 
-    # User
+	# User
 	http localhost:8080/api/user
 	http localhost:8080/api/user/1
-    http POST http://localhost:8080/api/user name=Harry email=test@oo.bb
-    http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb
-    http DELETE http://localhost:8080/api/user/1
+	http POST http://localhost:8080/api/user name=Harry email=test@oo.bb
+	http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb
+	http DELETE http://localhost:8080/api/user/1
 
-    # Company
+	# Company
 	http localhost:8080/api/company
 	http localhost:8080/api/company/1
-    http POST http://localhost:8080/api/company name=Google country=America address=California
-    http PUT http://localhost:8080/api/company/1 name=Google country=America address=California
-    http DELETE http://localhost:8080/api/comany/1
+	http POST http://localhost:8080/api/company name=Google country=America address=California
+	http PUT http://localhost:8080/api/company/1 name=Google country=America address=California
+	http DELETE http://localhost:8080/api/company/1
