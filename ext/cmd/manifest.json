@@ -1,0 +1,10 @@
+{
+    "dependencies": {
+        "github.com/goadesign/goa": {
+            "branch": "master"
+        },
+        "github.com/hiromaily/go-goa": {
+            "branch": "master"
+        }
+    }
+}

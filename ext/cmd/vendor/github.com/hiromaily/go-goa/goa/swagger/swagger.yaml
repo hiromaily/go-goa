@@ -1,0 +1,542 @@
+consumes:
+- application/x-www-form-urlencoded
+- application/xml
+- application/json
+definitions:
+  Company:
+    description: A company information (default view)
+    example:
+      address: Culpa voluptatem ullam.
+      country: Sit dolor neque nulla.
+      href: /company/1
+      id: 1
+      name: Nisi dolorum.
+    properties:
+      address:
+        example: Culpa voluptatem ullam.
+        type: string
+      country:
+        example: Sit dolor neque nulla.
+        type: string
+      href:
+        description: API href of company
+        example: /company/1
+        type: string
+      id:
+        description: ID of company
+        example: 1
+        format: int64
+        type: integer
+      name:
+        example: Nisi dolorum.
+        type: string
+    required:
+    - id
+    - href
+    - name
+    - country
+    - address
+    title: 'Mediatype identifier: application/vnd.company+json; view=default'
+    type: object
+  CompanyCollection:
+    description: CompanyCollection is the media type for an array of Company (default
+      view)
+    example:
+    - address: Culpa voluptatem ullam.
+      country: Sit dolor neque nulla.
+      href: /company/1
+      id: 1
+      name: Nisi dolorum.
+    items:
+      $ref: '#/definitions/Company'
+    title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
+    type: array
+  CompanyPayload:
+    example:
+      address: Tokyo
+      country: Tokyo, Japan
+      name: Sony
+    properties:
+      address:
+        description: Address of company
+        example: Tokyo
+        type: string
+      country:
+        description: Country of HQ
+        example: Tokyo, Japan
+        type: string
+      name:
+        description: Name of company
+        example: Sony
+        type: string
+    title: CompanyPayload
+    type: object
+  CreateCompanyHyCompanyPayload:
+    example:
+      address: Tokyo
+      country: Tokyo, Japan
+      name: Sony
+    properties:
+      address:
+        description: Address of company
+        example: Tokyo
+        type: string
+      country:
+        description: Country of HQ
+        example: Tokyo, Japan
+        type: string
+      name:
+        description: Name of company
+        example: Sony
+        type: string
+    required:
+    - name
+    - country
+    - address
+    title: CreateCompanyHyCompanyPayload
+    type: object
+  CreateUserHyUserPayload:
+    example:
+      email: hy@gmail.com
+      name: Hiroki
+    properties:
+      email:
+        description: E-mail of user
+        example: hy@gmail.com
+        format: email
+        type: string
+      name:
+        description: Name of user
+        example: Hiroki
+        type: string
+    required:
+    - name
+    - email
+    title: CreateUserHyUserPayload
+    type: object
+  User:
+    description: A user information (default view)
+    example:
+      email: Cum aut blanditiis accusantium molestiae et.
+      href: /user/1
+      id: 1
+      name: Tempora et.
+    properties:
+      email:
+        example: Cum aut blanditiis accusantium molestiae et.
+        type: string
+      href:
+        description: API href of user
+        example: /user/1
+        type: string
+      id:
+        description: ID of user
+        example: 1
+        format: int64
+        type: integer
+      name:
+        example: Tempora et.
+        type: string
+    required:
+    - id
+    - href
+    - name
+    - email
+    title: 'Mediatype identifier: application/vnd.user+json; view=default'
+    type: object
+  UserCollection:
+    description: UserCollection is the media type for an array of User (default view)
+    example:
+    - email: Cum aut blanditiis accusantium molestiae et.
+      href: /user/1
+      id: 1
+      name: Tempora et.
+    - email: Cum aut blanditiis accusantium molestiae et.
+      href: /user/1
+      id: 1
+      name: Tempora et.
+    - email: Cum aut blanditiis accusantium molestiae et.
+      href: /user/1
+      id: 1
+      name: Tempora et.
+    items:
+      $ref: '#/definitions/User'
+    title: 'Mediatype identifier: application/vnd.user+json; type=collection; view=default'
+    type: array
+  UserPayload:
+    example:
+      email: hy@gmail.com
+      name: Hiroki
+    properties:
+      email:
+        description: E-mail of user
+        example: hy@gmail.com
+        format: email
+        type: string
+      name:
+        description: Name of user
+        example: Hiroki
+        type: string
+    title: UserPayload
+    type: object
+  error:
+    description: Error response media type (default view)
+    example:
+      code: invalid_value
+      detail: Value of ID must be an integer
+      id: 3F1FKVRR
+      meta:
+        timestamp: 1.458609e+09
+      status: "400"
+    properties:
+      code:
+        description: an application-specific error code, expressed as a string value.
+        example: invalid_value
+        type: string
+      detail:
+        description: a human-readable explanation specific to this occurrence of the
+          problem.
+        example: Value of ID must be an integer
+        type: string
+      id:
+        description: a unique identifier for this particular occurrence of the problem.
+        example: 3F1FKVRR
+        type: string
+      meta:
+        additionalProperties: true
+        description: a meta object containing non-standard meta-information about
+          the error.
+        example:
+          timestamp: 1.458609e+09
+        type: object
+      status:
+        description: the HTTP status code applicable to this problem, expressed as
+          a string value.
+        example: "400"
+        type: string
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+externalDocs:
+  description: goa guide
+  url: http://goa.design/getting-started.html
+host: localhost:8080
+info:
+  contact:
+    email: hiromaily@gmail.com
+    name: hiromaily
+    url: https://hiromaily.github.io/
+  description: hiromaily API with goa
+  license:
+    name: MIT
+    url: https://github.com/goadesign/goa/blob/master/LICENSE
+  title: hiromaily API
+  version: ""
+paths:
+  /{filepath}:
+    get:
+      operationId: public#/*filepath
+      parameters:
+      - description: Relative file path
+        in: path
+        name: filepath
+        required: true
+        type: string
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+        "404":
+          description: File not found
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: Download public/
+  /api/_ah/health:
+    get:
+      description: Perform health check.
+      operationId: health#health
+      responses:
+        "200":
+          description: OK
+      schemes:
+      - http
+      summary: health health
+      tags:
+      - health
+  /api/company:
+    get:
+      description: List all companies
+      operationId: hy_company#CompanyList
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/CompanyCollection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: CompanyList hy_company
+      tags:
+      - hy_company
+    post:
+      description: Record new company
+      operationId: hy_company#CreateCompany
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreateCompanyHyCompanyPayload'
+      responses:
+        "201":
+          description: Resource created
+          headers:
+            Location:
+              description: href to created resource
+              pattern: ^/user/[0-9]+/company/[0-9]+$
+              type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: CreateCompany hy_company
+      tags:
+      - hy_company
+  /api/company/{companyID}:
+    delete:
+      operationId: hy_company#DeleteCompany
+      parameters:
+      - in: path
+        name: companyID
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: DeleteCompany hy_company
+      tags:
+      - hy_company
+    get:
+      description: Retrieve company with given id
+      operationId: hy_company#GetCompany
+      parameters:
+      - in: path
+        name: companyID
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: GetCompany hy_company
+      tags:
+      - hy_company
+    put:
+      operationId: hy_company#UpdateCompany
+      parameters:
+      - in: path
+        name: companyID
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CompanyPayload'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: UpdateCompany hy_company
+      tags:
+      - hy_company
+  /api/user:
+    get:
+      description: Retrieve all users.
+      operationId: hy_user#UserList
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/UserCollection'
+      schemes:
+      - http
+      summary: UserList hy_user
+      tags:
+      - hy_user
+    post:
+      description: Create new user
+      operationId: hy_user#CreateUser
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreateUserHyUserPayload'
+      responses:
+        "201":
+          description: Resource created
+          headers:
+            Location:
+              description: href to created resource
+              pattern: /user/[0-9]+
+              type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: CreateUser hy_user
+      tags:
+      - hy_user
+  /api/user/{userID}:
+    delete:
+      operationId: hy_user#DeleteUser
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: DeleteUser hy_user
+      tags:
+      - hy_user
+    get:
+      description: Retrieve user with given id.
+      operationId: hy_user#GetUser
+      parameters:
+      - description: User ID
+        in: path
+        minimum: 1
+        name: userID
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: GetUser hy_user
+      tags:
+      - hy_user
+    put:
+      description: Change user properties
+      operationId: hy_user#UpdateUser
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UserPayload'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      summary: UpdateUser hy_user
+      tags:
+      - hy_user
+  /swagger-ui/{filepath}:
+    get:
+      operationId: public#/swagger-ui/*filepath
+      parameters:
+      - description: Relative file path
+        in: path
+        name: filepath
+        required: true
+        type: string
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+        "404":
+          description: File not found
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: Download resources/swagger-ui/dist/
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  NoContent:
+    description: No Content
+  NotFound:
+    description: Not Found
+  OK:
+    description: OK
+    schema:
+      $ref: '#/definitions/Company'
+schemes:
+- http
+swagger: "2.0"

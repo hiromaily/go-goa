@@ -10,11 +10,10 @@ init:
 update:
 	go get -u github.com/goadesign/goa/...
 	go get -u github.com/golang/dep/...
-	go get -u github.com/rakyll/hey
 
 dep:
-	#cd ext/cmd/;dep init
-	cd ext/cmd/;dep ensure -update
+	#dep init
+	dep ensure -update
 
 fmt:
 	go fmt `go list ./... | grep -v '/vendor/'`
@@ -141,6 +140,3 @@ httpieall:
 	http POST http://localhost:8080/api/company name=Google country=America address=California
 	http PUT http://localhost:8080/api/company/1 name=Google country=America address=California
 	http DELETE http://localhost:8080/api/company/1
-
-bench:
-	hey -n 20000 -c 50 -m GET http://localhost:8080/api/user

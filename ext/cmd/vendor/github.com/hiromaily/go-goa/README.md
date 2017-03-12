@@ -46,26 +46,6 @@ First, please check Makefile.
 * ctrl=HyCompany action=UpdateCompany route=PUT /api/company/:companyID
 * ctrl=HyCompany action=DeleteCompany route=DELETE /api/company/:companyID
 
-## Performance
-To eveluate performance, [hey](https://github.com/rakyll/hey) has been used.
-Execute `Make bench`
-
-```
-# March 12 2017
-hey -n 20000 -c 50 -m GET http://localhost:8080/api/user
-
-Summary:
-  Total:	4.1092 secs
-  Slowest:	0.0939 secs
-  Fastest:	0.0002 secs
-  Average:	0.0101 secs
-  Requests/sec:	4867.1221
-  Total data:	60000 bytes
-  Size/request:	3 bytes
-
-Status code distribution:
-  [200]	20000 responses
-```
 
 ## Licence
 [MIT](https://github.com/hiromaily/go-goa/blob/master/LICENSE)
