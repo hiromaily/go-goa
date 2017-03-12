@@ -41,14 +41,9 @@ gen:
 	#goagen won’t be re-generated (by default) if already present
 	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
 
-gen2:
+gencln:
 	rm -f goa/*.go
 	#rm -f goa/hy_*.go goa/{public,swagger,health}.go
-	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
-
-genfull:
-	rm -f goa/*.go
-	#rm -f hy_*.go {main,public,swagger,health}.go
 	rm -rf goa/app/ goa/client/ goa/swagger/ goa/tool/
 	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
 
@@ -62,6 +57,8 @@ aftergen:
 	mv -f ./resources/tmp/tmp.go ./goa/hy_user.go
 	sed -e "1s/main/goa/" ./goa/hy_company.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/hy_company.go
+
+genfull: gencln aftergen
 
 genctl:
 	goagen controller -d github.com/hiromaily/go-goa/goa/design -o goa/
