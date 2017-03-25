@@ -2,25 +2,23 @@ package context
 
 import (
 	conf "github.com/hiromaily/go-goa/ext/configs"
-	"github.com/hiromaily/golibs/db/mysql"
+	"github.com/hiromaily/golibs/db/gorm"
 )
 
-type GoaApi struct {
+type Ctx struct {
 	Conf *conf.Config
-	Db   *mysql.MS
+	Db   *gorm.GR
 }
 
-func (api *GoaApi) initDB() {
+func (c *Ctx) initDB() {
 	dbInfo := conf.GetConf().MySQL
-	mysql.New(dbInfo.Host, dbInfo.DbName, dbInfo.User, dbInfo.Pass, dbInfo.Port)
-	mysql.GetDB().SetMaxIdleConns(50)
-
-	api.Db = mysql.GetDB()
+	gorm.New(dbInfo.Host, dbInfo.DbName, dbInfo.User, dbInfo.Pass, dbInfo.Port)
+	c.Db = gorm.GetDB()
 }
 
-func SetupContext(c *conf.Config) *GoaApi {
-	context := &GoaApi{Conf: c}
-	context.initDB()
+func SetupContext(c *conf.Config) *Ctx {
+	ctx := &Ctx{Conf: c}
+	ctx.initDB()
 
-	return context
+	return ctx
 }

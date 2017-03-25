@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/BurntSushi/toml"
-	enc "github.com/hiromaily/golibs/cipher/encryption"
 	u "github.com/hiromaily/golibs/utils"
 	"io/ioutil"
 	"os"
@@ -134,9 +133,4 @@ func GetConf() *Config {
 	}
 
 	return conf
-}
-
-// SetTOMLPath is to set toml file path
-func SetTOMLPath(path string) {
-	tomlFileName = path
 }

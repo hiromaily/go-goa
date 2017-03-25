@@ -1,16 +1,21 @@
-//go:generate goagen bootstrap -d github.com/hiromaily/go-goa/goa/design
-
 package main
 
 import (
+	"context"
 	"flag"
+	"fmt"
+	log "github.com/Sirupsen/logrus"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
-	"github.com/hiromaily/go-goa/ext/api"
 	conf "github.com/hiromaily/go-goa/ext/configs"
-	"github.com/hiromaily/go-goa/ext/context"
+	c "github.com/hiromaily/go-goa/ext/context"
+	ctl "github.com/hiromaily/go-goa/ext/controllers"
+	m "github.com/hiromaily/go-goa/ext/models"
 	g "github.com/hiromaily/go-goa/goa"
 	"github.com/hiromaily/go-goa/goa/app"
+	"io/ioutil"
+	"os"
+	"strings"
 )
 
 var (
@@ -21,6 +26,13 @@ var (
 func init() {
 	//command-line
 	flag.Parse()
+
+	//log settings
+	initLog()
+
+	//version
+	getVersion()
+
 }
 
 func main() {
@@ -28,8 +40,8 @@ func main() {
 	cnf := conf.New(*tomlPath)
 
 	// Create service
-	ctx := context.SetupContext(cnf)
-	service := api.NewApi(ctx)
+	ctx := c.SetupContext(cnf)
+	service := newApi(ctx)
 
 	// Start service
 	if err := service.ListenAndServe(":8080"); err != nil {
@@ -37,8 +49,30 @@ func main() {
 	}
 }
 
-func taihi() {
-	// Create service
+// log settings
+func initLog() {
+	// warn, error, fatal, panic
+	log.SetLevel(log.InfoLevel)
+	//log.Out = os.Stdout
+}
+
+// version
+func getVersion() {
+	//get current directory
+	wd, _ := os.Getwd()
+	if strings.HasSuffix(wd, "test") {
+		wd = ".."
+	}
+	dat, err := ioutil.ReadFile(wd + "/VERSION")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Print(dat)
+	//Config.Version = string(dat)
+}
+
+// Create service object for Goa
+func newApi(ctx *c.Ctx) *goa.Service {
 	service := goa.New("api")
 
 	// Mount middleware
@@ -47,21 +81,27 @@ func taihi() {
 	service.Use(middleware.ErrorHandler(service, true))
 	service.Use(middleware.Recover())
 
-	// Mount "health" controller
-	c := g.NewHealthController(service)
-	app.MountHealthController(service, c)
-	// Mount "hy_company" controller
-	c2 := g.NewHyCompanyController(service)
-	app.MountHyCompanyController(service, c2)
-	// Mount "hy_user" controller
-	c3 := g.NewHyUserController(service)
-	app.MountHyUserController(service, c3)
-	// Mount "public" controller
-	c4 := g.NewPublicController(service)
-	app.MountPublicController(service, c4)
+	// Extend service.Context with model objects
+	userModel := &m.User{Db: ctx.Db}
+	service.Context = context.WithValue(service.Context, "user", userModel)
 
-	// Start service
-	if err := service.ListenAndServe(":8080"); err != nil {
-		service.LogError("startup", "err", err)
-	}
+	// Mount controller
+	app.MountHealthController(service, g.NewHealthController(service))
+	app.MountPublicController(service, g.NewPublicController(service))
+
+	// Mount controller with extended
+	//app.MountHyCompanyController(service, g.NewHyCompanyController(service))
+	//app.MountHyUserController(service, g.NewHyUserController(service))
+
+	//HyUser
+	hyUserController := ctl.NewHyUserController(service, ctx)
+	service.Context = context.WithValue(service.Context, "HyUserController", hyUserController)
+	app.MountHyUserController(service, hyUserController)
+
+	//HyCompany
+	hyCompanyController := ctl.NewHyUserController(service, ctx)
+	service.Context = context.WithValue(service.Context, "HyCompanyController", hyCompanyController)
+	app.MountHyUserController(service, hyCompanyController)
+
+	return service
 }
