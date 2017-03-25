@@ -1,22 +1,40 @@
 # Note: tabs by space can't not used for Makefile!
 MONGO_PORT=27017
 
+###############################################################################
+# Initialization
+###############################################################################
 init:
 	mkdir -p public goa ext/cmd
 	touch public/index.html
 	#goagen	goagen bootstrap
 	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
 
+
+###############################################################################
+# PKG Dependencies
+###############################################################################
 update:
 	go get -u github.com/goadesign/goa/...
 	go get -u github.com/golang/dep/...
 	go get -u github.com/rakyll/hey
 	go get -u github.com/davecheney/httpstat
+	go get -u github.com/client9/misspell/cmd/misspell
+	go get -u github.com/gordonklaus/ineffassign
+
+depinit:
+	cd ext/cmd/;dep init
 
 dep:
-	#cd ext/cmd/;dep init
 	cd ext/cmd/;dep ensure -update
 
+depcln:
+	cd ext/cmd/;rm -rf vendor lock.json manifest.json
+
+
+###############################################################################
+# Golang formatter and detection
+###############################################################################
 fmt:
 	go fmt `go list ./... | grep -v '/vendor/'`
 
@@ -39,6 +57,10 @@ chk:
 	misspell `find . -name "*.go" | grep -v '/vendor/'`
 	ineffassign .
 
+
+###############################################################################
+# Goa generation
+###############################################################################
 gen:
 	#goagen won’t be re-generated (by default) if already present
 	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
@@ -65,6 +87,10 @@ genfull: gencln aftergen
 genctl:
 	goagen controller -d github.com/hiromaily/go-goa/goa/design -o goa/
 
+
+###############################################################################
+# Build
+###############################################################################
 run:
 	#go run goa/*.go
 	go run ext/cmd/*.go
@@ -80,6 +106,10 @@ bldlinux:
 clibld:
 	go build -i -v -o ${GOPATH}/bin/go-goa-cli ./goa/tool/api-cli/*.go
 
+
+###############################################################################
+# Execution
+###############################################################################
 exec:
 	go-goa
 
@@ -92,6 +122,10 @@ clnok:
 cli:
 	go-goa-cli company-list hy-company
 
+
+###############################################################################
+# Curl
+###############################################################################
 curlall:
 	# curl
 	# Static files
@@ -143,8 +177,16 @@ httpieall:
 	http PUT http://localhost:8080/api/company/1 name=Google country=America address=California
 	http DELETE http://localhost:8080/api/company/1
 
+
+###############################################################################
+# Bench
+###############################################################################
 bench:
 	hey -n 20000 -c 50 -m GET http://localhost:8080/api/user
 
+
+###############################################################################
+# HTTP Stat
+###############################################################################
 httpstat:
 	httpstat http://localhost:8080/api/user
