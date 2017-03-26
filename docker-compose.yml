@@ -1,20 +1,24 @@
-version: '3.2'
+version: '3.0'
 services:
   mysql:
     image: mysql:5.7
     volumes:
       - "./docker/mysql/data:/var/lib/mysql"
+      - "./docker/mysql/conf.d:/etc/mysql/conf.d"
+      - "./docker/mysql/init.d:/docker-entrypoint-initdb.d"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: hiromaily
       MYSQL_USER: hiromaily
       MYSQL_PASSWORD: 12345678
     ports:
-      - 3307:3306
+      -  ${MYSQL_PORT:-3307}:3306
   redis:
     image: redis
     command: --appendonly yes
     volumes:
       - "./docker/redis/data:/data"
+    ports:
+      - ${MYSQL_PORT:-6380}:6379
   nats:
     image: nats
