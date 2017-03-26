@@ -4,7 +4,7 @@ environment = "local"
 [mysql]
 encrypted = false
 host = "localhost"
-port = 13306
+port = 3307
 dbname = "hiromaily"
 user = "hiromaily"
 pass = "12345678"

@@ -4,15 +4,17 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	log "github.com/Sirupsen/logrus"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
+	"github.com/goadesign/goa/middleware/security/jwt"
 	conf "github.com/hiromaily/go-goa/ext/configs"
 	c "github.com/hiromaily/go-goa/ext/context"
 	ctl "github.com/hiromaily/go-goa/ext/controllers"
+	md "github.com/hiromaily/go-goa/ext/middlewares"
 	m "github.com/hiromaily/go-goa/ext/models"
 	g "github.com/hiromaily/go-goa/goa"
 	"github.com/hiromaily/go-goa/goa/app"
+	lg "github.com/hiromaily/golibs/log"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -31,7 +33,7 @@ func init() {
 	initLog()
 
 	//version
-	getVersion()
+	//getVersion()
 
 }
 
@@ -51,9 +53,8 @@ func main() {
 
 // log settings
 func initLog() {
-	// warn, error, fatal, panic
-	log.SetLevel(log.InfoLevel)
-	//log.Out = os.Stdout
+	lg.InitializeLog(lg.DebugStatus, lg.LogOff, 99,
+		"[go-goa]", "/var/log/go/go-goa.log")
 }
 
 // version
@@ -65,7 +66,7 @@ func getVersion() {
 	}
 	dat, err := ioutil.ReadFile(wd + "/VERSION")
 	if err != nil {
-		log.Fatal(err)
+		lg.Fatal(err)
 	}
 	fmt.Print(dat)
 	//Config.Version = string(dat)
@@ -81,6 +82,14 @@ func newApi(ctx *c.Ctx) *goa.Service {
 	service.Use(middleware.ErrorHandler(service, true))
 	service.Use(middleware.Recover())
 
+	//
+	validationHandler, _ := goa.NewMiddleware(md.AuthMiddlewareHandler)
+
+	// Mount security middlewares
+	key := []byte("keys")
+	keyResolver := jwt.NewSimpleResolver([]jwt.Key{key})
+	app.UseJWTMiddleware(service, jwt.New(keyResolver, validationHandler, app.NewJWTSecurity()))
+
 	// Extend service.Context with model objects
 	userModel := &m.User{Db: ctx.Db}
 	service.Context = context.WithValue(service.Context, "user", userModel)
@@ -93,15 +102,20 @@ func newApi(ctx *c.Ctx) *goa.Service {
 	//app.MountHyCompanyController(service, g.NewHyCompanyController(service))
 	//app.MountHyUserController(service, g.NewHyUserController(service))
 
+	//Auth
+	authController := ctl.NewAuthController(service, ctx)
+	service.Context = context.WithValue(service.Context, "AuthController", authController)
+	app.MountAuthController(service, authController)
+
 	//HyUser
 	hyUserController := ctl.NewHyUserController(service, ctx)
 	service.Context = context.WithValue(service.Context, "HyUserController", hyUserController)
 	app.MountHyUserController(service, hyUserController)
 
 	//HyCompany
-	hyCompanyController := ctl.NewHyUserController(service, ctx)
+	hyCompanyController := ctl.NewHyCompanyController(service, ctx)
 	service.Context = context.WithValue(service.Context, "HyCompanyController", hyCompanyController)
-	app.MountHyUserController(service, hyCompanyController)
+	app.MountHyCompanyController(service, hyCompanyController)
 
 	return service
 }

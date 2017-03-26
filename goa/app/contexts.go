@@ -17,6 +17,84 @@ import (
 	"strconv"
 )
 
+// LoginAuthContext provides the auth Login action context.
+type LoginAuthContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Payload *LoginAuthPayload
+}
+
+// NewLoginAuthContext parses the incoming request URL and body, performs validations and creates the
+// context used by the auth controller Login action.
+func NewLoginAuthContext(ctx context.Context, r *http.Request, service *goa.Service) (*LoginAuthContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := LoginAuthContext{Context: ctx, ResponseData: resp, RequestData: req}
+	return &rctx, err
+}
+
+// loginAuthPayload is the auth Login action payload.
+type loginAuthPayload struct {
+	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *loginAuthPayload) Validate() (err error) {
+	if payload.Username == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "username"))
+	}
+	if payload.Password == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))
+	}
+	return
+}
+
+// Publicize creates LoginAuthPayload from loginAuthPayload
+func (payload *loginAuthPayload) Publicize() *LoginAuthPayload {
+	var pub LoginAuthPayload
+	if payload.Password != nil {
+		pub.Password = *payload.Password
+	}
+	if payload.Username != nil {
+		pub.Username = *payload.Username
+	}
+	return &pub
+}
+
+// LoginAuthPayload is the auth Login action payload.
+type LoginAuthPayload struct {
+	Password string `form:"password" json:"password" xml:"password"`
+	Username string `form:"username" json:"username" xml:"username"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *LoginAuthPayload) Validate() (err error) {
+	if payload.Username == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "username"))
+	}
+	if payload.Password == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))
+	}
+	return
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *LoginAuthContext) OK(r *Authorized) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorized+json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// Unauthorized sends a HTTP response with status code 401.
+func (ctx *LoginAuthContext) Unauthorized() error {
+	ctx.ResponseData.WriteHeader(401)
+	return nil
+}
+
 // HealthHealthContext provides the health health action context.
 type HealthHealthContext struct {
 	context.Context

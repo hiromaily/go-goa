@@ -18,3 +18,9 @@ func (m *User) Count() (cnt int) {
 	//m.Db.DB
 	return 0
 }
+
+func (m *User) Login(username, password string) error {
+	//m.Ctx.Db
+	//m.Db.DB
+	return nil
+}

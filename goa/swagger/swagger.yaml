@@ -3,6 +3,19 @@ consumes:
 - application/xml
 - application/json
 definitions:
+  Authorized:
+    description: An authorized response (default view)
+    example:
+      token: token.string
+    properties:
+      token:
+        description: JWT token
+        example: token.string
+        type: string
+    required:
+    - token
+    title: 'Mediatype identifier: application/vnd.authorized+json; view=default'
+    type: object
   Company:
     description: A company information (default view)
     example:
@@ -113,6 +126,22 @@ definitions:
     - name
     - email
     title: CreateUserHyUserPayload
+    type: object
+  LoginAuthPayload:
+    example:
+      password: Incidunt quia quo alias aut quo aut.
+      username: Vel nesciunt omnis.
+    properties:
+      password:
+        example: Incidunt quia quo alias aut quo aut.
+        type: string
+      username:
+        example: Vel nesciunt omnis.
+        type: string
+    required:
+    - username
+    - password
+    title: LoginAuthPayload
     type: object
   User:
     description: A user information (default view)
@@ -257,6 +286,8 @@ paths:
     get:
       description: Perform health check.
       operationId: health#health
+      produces:
+      - text/plain
       responses:
         "200":
           description: OK
@@ -265,10 +296,41 @@ paths:
       summary: health health
       tags:
       - health
+  /api/auth/login:
+    post:
+      description: user login
+      operationId: auth#Login
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/LoginAuthPayload'
+      produces:
+      - application/vnd.authorized+json
+      responses:
+        "200":
+          description: OK
+          headers:
+            Authorization:
+              description: Generated JWT
+              type: string
+          schema:
+            $ref: '#/definitions/Authorized'
+        "401":
+          description: Unauthorized
+      schemes:
+      - http
+      summary: Login auth
+      tags:
+      - auth
   /api/company:
     get:
       description: List all companies
       operationId: hy_company#CompanyList
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.company+json; type=collection
       responses:
         "200":
           description: OK
@@ -294,6 +356,8 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/CreateCompanyHyCompanyPayload'
+      produces:
+      - application/vnd.goa.error
       responses:
         "201":
           description: Resource created
@@ -321,6 +385,8 @@ paths:
         name: companyID
         required: true
         type: integer
+      produces:
+      - application/vnd.goa.error
       responses:
         "204":
           description: No Content
@@ -343,6 +409,9 @@ paths:
         name: companyID
         required: true
         type: integer
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.company+json
       responses:
         "200":
           description: OK
@@ -371,6 +440,8 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/CompanyPayload'
+      produces:
+      - application/vnd.goa.error
       responses:
         "204":
           description: No Content
@@ -389,6 +460,8 @@ paths:
     get:
       description: Retrieve all users.
       operationId: hy_user#UserList
+      produces:
+      - application/vnd.user+json; type=collection
       responses:
         "200":
           description: OK
@@ -408,6 +481,8 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/CreateUserHyUserPayload'
+      produces:
+      - application/vnd.goa.error
       responses:
         "201":
           description: Resource created
@@ -434,6 +509,8 @@ paths:
         name: userID
         required: true
         type: integer
+      produces:
+      - application/vnd.goa.error
       responses:
         "204":
           description: No Content
@@ -458,6 +535,9 @@ paths:
         name: userID
         required: true
         type: integer
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.user+json
       responses:
         "200":
           description: OK
@@ -488,6 +568,8 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/UserPayload'
+      produces:
+      - application/vnd.goa.error
       responses:
         "204":
           description: No Content
@@ -537,6 +619,18 @@ responses:
     description: OK
     schema:
       $ref: '#/definitions/Company'
+  Unauthorized:
+    description: Unauthorized
 schemes:
 - http
+securityDefinitions:
+  jwt:
+    description: |2-
+
+
+      **Security Scopes**:
+        * `api:access`: API access
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

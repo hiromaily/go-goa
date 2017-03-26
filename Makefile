@@ -12,6 +12,13 @@ init:
 
 
 ###############################################################################
+# Docker
+###############################################################################
+dc:
+	docker-compose up
+
+
+###############################################################################
 # PKG Dependencies
 ###############################################################################
 update:
@@ -21,6 +28,12 @@ update:
 	go get -u github.com/davecheney/httpstat
 	go get -u github.com/client9/misspell/cmd/misspell
 	go get -u github.com/gordonklaus/ineffassign
+
+	go get -u github.com/alecthomas/gometalinter
+	#gometalinter --install
+
+	# this doesn't work
+	#go get -u ./ext/cmd/
 
 depinit:
 	cd ext/cmd/;dep init
@@ -72,7 +85,10 @@ gencln:
 	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
 
 aftergen:
+    # rewrite package name
 	rm -f goa/main.go
+	sed -e "1s/main/goa/" ./goa/auth.go >> ./resources/tmp/tmp.go
+	mv -f ./resources/tmp/tmp.go ./goa/auth.go
 	sed -e "1s/main/goa/" ./goa/health.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/health.go
 	sed -e "1s/main/goa/" ./goa/public.go >> ./resources/tmp/tmp.go
@@ -126,7 +142,7 @@ cli:
 ###############################################################################
 # Curl
 ###############################################################################
-curlall:
+curla:
 	# curl
 	# Static files
 	curl -i localhost:8080/
@@ -135,6 +151,9 @@ curlall:
 
 	# Health check
 	curl -i localhost:8080/api/_ah/health
+
+	# Login
+	curl -i -H "Content-Type: application/x-www-form-urlencoded" -d "username=hiro&password=xxxxxxxx" -X POST http://localhost:8080/api/auth/login
 
 	# User
 	curl -i localhost:8080/api/user
@@ -155,13 +174,16 @@ curlall:
 	curl -i -H "Content-Type: application/x-www-form-urlencoded" -d "name=Google&country=America&address=California" -X PUT http://localhost:8080/api/company/1
 	curl -i -X DELETE http://localhost:8080/api/company/1
 
-httpieall:
-	# httpie
+httpa:
+	# httpie #brew install httpie
 	# Static files
 	http localhost:8080/
 	http localhost:8080/swagger/swagger.json
 	http localhost:8080/swagger-ui/
 	http localhost:8080/api/_ah/health
+
+	# Login
+	http POST http://localhost:8080/api/auth/login username=hiro password=xxxxxxxx
 
 	# User
 	http localhost:8080/api/user

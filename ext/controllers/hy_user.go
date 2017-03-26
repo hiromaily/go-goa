@@ -21,6 +21,29 @@ func NewHyUserController(service *goa.Service, ctx *c.Ctx) *HyUserController {
 	}
 }
 
+// UserList runs the UserList action.
+func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
+	// HyUserController_UserList: start_implement
+
+	// Put your logic here
+	// TODO:How to
+
+	// HyUserController_UserList: end_implement
+	res := app.UserCollection{}
+	return ctx.OK(res)
+}
+
+// GetUser runs the GetUser action.
+func (c *HyUserController) GetUser(ctx *app.GetUserHyUserContext) error {
+	// HyUserController_GetUser: start_implement
+
+	// Put your logic here
+
+	// HyUserController_GetUser: end_implement
+	res := &app.User{}
+	return ctx.OK(res)
+}
+
 // CreateUser runs the CreateUser action.
 func (c *HyUserController) CreateUser(ctx *app.CreateUserHyUserContext) error {
 	// HyUserController_CreateUser: start_implement
@@ -41,17 +64,6 @@ func (c *HyUserController) DeleteUser(ctx *app.DeleteUserHyUserContext) error {
 	return nil
 }
 
-// GetUser runs the GetUser action.
-func (c *HyUserController) GetUser(ctx *app.GetUserHyUserContext) error {
-	// HyUserController_GetUser: start_implement
-
-	// Put your logic here
-
-	// HyUserController_GetUser: end_implement
-	res := &app.User{}
-	return ctx.OK(res)
-}
-
 // UpdateUser runs the UpdateUser action.
 func (c *HyUserController) UpdateUser(ctx *app.UpdateUserHyUserContext) error {
 	// HyUserController_UpdateUser: start_implement
@@ -60,15 +72,4 @@ func (c *HyUserController) UpdateUser(ctx *app.UpdateUserHyUserContext) error {
 
 	// HyUserController_UpdateUser: end_implement
 	return nil
-}
-
-// UserList runs the UserList action.
-func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
-	// HyUserController_UserList: start_implement
-
-	// Put your logic here
-
-	// HyUserController_UserList: end_implement
-	res := app.UserCollection{}
-	return ctx.OK(res)
 }

@@ -14,6 +14,22 @@ import (
 	"github.com/goadesign/goa"
 )
 
+// An authorized response (default view)
+//
+// Identifier: application/vnd.authorized+json; view=default
+type Authorized struct {
+	// JWT token
+	Token string `form:"token" json:"token" xml:"token"`
+}
+
+// Validate validates the Authorized media type instance.
+func (mt *Authorized) Validate() (err error) {
+	if mt.Token == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "token"))
+	}
+	return
+}
+
 // A company information (default view)
 //
 // Identifier: application/vnd.company+json; view=default

@@ -15,6 +15,29 @@ import (
 	"net/http"
 )
 
+// An authorized response (default view)
+//
+// Identifier: application/vnd.authorized+json; view=default
+type Authorized struct {
+	// JWT token
+	Token string `form:"token" json:"token" xml:"token"`
+}
+
+// Validate validates the Authorized media type instance.
+func (mt *Authorized) Validate() (err error) {
+	if mt.Token == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "token"))
+	}
+	return
+}
+
+// DecodeAuthorized decodes the Authorized instance encoded in resp body.
+func (c *Client) DecodeAuthorized(resp *http.Response) (*Authorized, error) {
+	var decoded Authorized
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
 // A company information (default view)
 //
 // Identifier: application/vnd.company+json; view=default

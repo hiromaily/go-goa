@@ -33,6 +33,82 @@ func initService(service *goa.Service) {
 	service.Decoder.Register(form.NewDecoder, "*/*")
 }
 
+// AuthController is the controller interface for the Auth actions.
+type AuthController interface {
+	goa.Muxer
+	Login(*LoginAuthContext) error
+}
+
+// MountAuthController "mounts" a Auth resource controller on the given service.
+func MountAuthController(service *goa.Service, ctrl AuthController) {
+	initService(service)
+	var h goa.Handler
+	service.Mux.Handle("OPTIONS", "/api/auth/login", ctrl.MuxHandler("preflight", handleAuthOrigin(cors.HandlePreflight()), nil))
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewLoginAuthContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*LoginAuthPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.Login(rctx)
+	}
+	h = handleAuthOrigin(h)
+	service.Mux.Handle("POST", "/api/auth/login", ctrl.MuxHandler("Login", h, unmarshalLoginAuthPayload))
+	service.LogInfo("mount", "ctrl", "Auth", "action", "Login", "route", "POST /api/auth/login")
+}
+
+// handleAuthOrigin applies the CORS response headers corresponding to the origin.
+func handleAuthOrigin(h goa.Handler) goa.Handler {
+
+	return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		origin := req.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			return h(ctx, rw, req)
+		}
+		if cors.MatchOrigin(origin, "http://swagger.goa.design") {
+			ctx = goa.WithLogContext(ctx, "origin", origin)
+			rw.Header().Set("Access-Control-Allow-Origin", origin)
+			rw.Header().Set("Vary", "Origin")
+			rw.Header().Set("Access-Control-Max-Age", "600")
+			rw.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := req.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				rw.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+			}
+			return h(ctx, rw, req)
+		}
+
+		return h(ctx, rw, req)
+	}
+}
+
+// unmarshalLoginAuthPayload unmarshals the request body into the context request data Payload field.
+func unmarshalLoginAuthPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &loginAuthPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
 // HealthController is the controller interface for the Health actions.
 type HealthController interface {
 	goa.Muxer

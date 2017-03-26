@@ -28,6 +28,13 @@ import (
 )
 
 type (
+	// LoginAuthCommand is the command line data structure for the Login action of auth
+	LoginAuthCommand struct {
+		Payload     string
+		ContentType string
+		PrettyPrint bool
+	}
+
 	// HealthHealthCommand is the command line data structure for the health action of health
 	HealthHealthCommand struct {
 		PrettyPrint bool
@@ -240,10 +247,32 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
+		Use:   "login",
+		Short: `user login`,
+	}
+	tmp9 := new(LoginAuthCommand)
+	sub = &cobra.Command{
+		Use:   `auth ["/api/auth/login"]`,
+		Short: `This resource uses JWT to secure its endpoints`,
+		Long: `This resource uses JWT to secure its endpoints
+
+Payload example:
+
+{
+   "password": "Incidunt quia quo alias aut quo aut.",
+   "username": "Vel nesciunt omnis."
+}`,
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
+	}
+	tmp9.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp9.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
 		Use:   "update-company",
 		Short: ``,
 	}
-	tmp9 := new(UpdateCompanyHyCompanyCommand)
+	tmp10 := new(UpdateCompanyHyCompanyCommand)
 	sub = &cobra.Command{
 		Use:   `hy-company ["/api/company/COMPANYID"]`,
 		Short: ``,
@@ -256,17 +285,17 @@ Payload example:
    "country": "Tokyo, Japan",
    "name": "Sony"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp10.Run(c, args) },
 	}
-	tmp9.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp9.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp10.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp10.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-user",
 		Short: `Change user properties`,
 	}
-	tmp10 := new(UpdateUserHyUserCommand)
+	tmp11 := new(UpdateUserHyUserCommand)
 	sub = &cobra.Command{
 		Use:   `hy-user ["/api/user/USERID"]`,
 		Short: ``,
@@ -278,24 +307,24 @@ Payload example:
    "email": "hy@gmail.com",
    "name": "Hiroki"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp10.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },
 	}
-	tmp10.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp10.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp11.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp11.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "user-list",
 		Short: `Retrieve all users.`,
 	}
-	tmp11 := new(UserListHyUserCommand)
+	tmp12 := new(UserListHyUserCommand)
 	sub = &cobra.Command{
 		Use:   `hy-user ["/api/user"]`,
 		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp12.Run(c, args) },
 	}
-	tmp11.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp11.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp12.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp12.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 
@@ -510,6 +539,39 @@ found:
 	}
 
 	return nil
+}
+
+// Run makes the HTTP request corresponding to the LoginAuthCommand command.
+func (cmd *LoginAuthCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = "/api/auth/login"
+	}
+	var payload client.LoginAuthPayload
+	if cmd.Payload != "" {
+		err := json.Unmarshal([]byte(cmd.Payload), &payload)
+		if err != nil {
+			return fmt.Errorf("failed to deserialize payload: %s", err)
+		}
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.LoginAuth(ctx, path, &payload, cmd.ContentType)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *LoginAuthCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
+	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 }
 
 // Run makes the HTTP request corresponding to the HealthHealthCommand command.

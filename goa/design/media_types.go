@@ -8,6 +8,21 @@ import (
 //Response data
 //it contains the media type data structures used by resource actions to build the responses
 
+// Authorized is the authority resource media type.
+var Authorized = MediaType("application/vnd.authorized+json", func() {
+	Description("An authorized response")
+	Attributes(func() {
+		Attribute("token", String, "JWT token", func() {
+			Example("token.string")
+		})
+		Required("token")
+	})
+
+	View("default", func() {
+		Attribute("token")
+	})
+})
+
 // User is the user resource media type.
 var User = MediaType("application/vnd.user+json", func() {
 	Description("A user information")
