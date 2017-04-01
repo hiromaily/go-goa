@@ -85,7 +85,7 @@ gencln:
 	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
 
 aftergen:
-    # rewrite package name
+	# rewrite package name
 	rm -f goa/main.go
 	sed -e "1s/main/goa/" ./goa/auth.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/auth.go
@@ -140,9 +140,43 @@ cli:
 
 
 ###############################################################################
+# httpie
+###############################################################################
+http:
+	# httpie #brew install httpie
+	# jq     #brew install jq
+
+	# Static files
+	http localhost:8080/
+	http localhost:8080/swagger/swagger.json
+	http localhost:8080/swagger-ui/
+	http localhost:8080/api/_ah/health
+
+	# Login
+	#http POST http://localhost:8080/api/auth/login username=hiro password=xxxxxxxx
+	http --body POST http://localhost:8080/api/auth/login username=hiro password=xxxxxxxx
+
+	$(eval TOKEN := $(shell http --body POST http://localhost:8080/api/auth/login username=hiro password=xxxxxxxx | jq '.token' | sed 's/"//g'))
+
+	# User
+	http localhost:8080/api/user 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
+	http POST http://localhost:8080/api/user name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
+	http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
+	http DELETE http://localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
+
+	# Company
+	http localhost:8080/api/company 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/api/company/1 'Authorization: Bearer $(TOKEN)'
+	http POST http://localhost:8080/api/company name=Google country=America address=California 'Authorization: Bearer $(TOKEN)'
+	http PUT http://localhost:8080/api/company/1 name=Google country=America address=California 'Authorization: Bearer $(TOKEN)'
+	http DELETE http://localhost:8080/api/company/1 'Authorization: Bearer $(TOKEN)'
+
+
+###############################################################################
 # Curl
 ###############################################################################
-curla:
+curl:
 	# curl
 	# Static files
 	curl -i localhost:8080/
@@ -173,31 +207,6 @@ curla:
 	curl -i -H "Content-Type: application/x-www-form-urlencoded" -d "name=Google&country=America&address=California" -X POST http://localhost:8080/api/company
 	curl -i -H "Content-Type: application/x-www-form-urlencoded" -d "name=Google&country=America&address=California" -X PUT http://localhost:8080/api/company/1
 	curl -i -X DELETE http://localhost:8080/api/company/1
-
-httpa:
-	# httpie #brew install httpie
-	# Static files
-	http localhost:8080/
-	http localhost:8080/swagger/swagger.json
-	http localhost:8080/swagger-ui/
-	http localhost:8080/api/_ah/health
-
-	# Login
-	http POST http://localhost:8080/api/auth/login username=hiro password=xxxxxxxx
-
-	# User
-	http localhost:8080/api/user
-	http localhost:8080/api/user/1
-	http POST http://localhost:8080/api/user name=Harry email=test@oo.bb
-	http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb
-	http DELETE http://localhost:8080/api/user/1
-
-	# Company
-	http localhost:8080/api/company
-	http localhost:8080/api/company/1
-	http POST http://localhost:8080/api/company name=Google country=America address=California
-	http PUT http://localhost:8080/api/company/1 name=Google country=America address=California
-	http DELETE http://localhost:8080/api/company/1
 
 
 ###############################################################################

@@ -86,7 +86,7 @@ func newApi(ctx *c.Ctx) *goa.Service {
 	validationHandler, _ := goa.NewMiddleware(md.AuthMiddlewareHandler)
 
 	// Mount security middlewares
-	key := []byte("keys")
+	key := []byte(ctx.Conf.Jwt.Key)
 	keyResolver := jwt.NewSimpleResolver([]jwt.Key{key})
 	app.UseJWTMiddleware(service, jwt.New(keyResolver, validationHandler, app.NewJWTSecurity()))
 

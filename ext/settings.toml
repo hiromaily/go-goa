@@ -1,6 +1,9 @@
 #local, heroku, docker, staging, production
 environment = "local"
 
+[jwt]
+key = "keys"
+
 [mysql]
 encrypted = false
 host = "localhost"

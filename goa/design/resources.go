@@ -16,6 +16,10 @@ var _ = Resource(resourcePrefix+"user", func() {
 	DefaultMedia(User) //Response Media Type
 	BasePath("/user")
 
+	Security(JWT, func() { // Use JWT to auth requests to this endpoint
+		Scope("api:access") // Enforce presence of "api" scope in JWT claims.
+	})
+
 	//Actions define a single API endpoint
 	// This name should be unique
 	Action("UserList", func() {
@@ -110,6 +114,10 @@ var _ = Resource(resourcePrefix+"company", func() {
 	DefaultMedia(Company)
 	BasePath("/company")
 
+	Security(JWT, func() { // Use JWT to auth requests to this endpoint
+		Scope("api:access") // Enforce presence of "api" scope in JWT claims.
+	})
+
 	// Parent sets the resource parent
 	//Parent("user")  //TODO: how does it work??
 
@@ -118,6 +126,7 @@ var _ = Resource(resourcePrefix+"company", func() {
 			GET(""),
 		)
 		Description("List all companies")
+		//NoSecurity()
 		Response(OK, func() {
 			Media(CollectionOf(Company, func() {
 				View("default")

@@ -12,8 +12,8 @@ func GenerateToken(c *c.Ctx) (string, error) {
 	token := jwtgo.New(jwtgo.SigningMethodHS512)
 	expires := time.Now().Add(time.Duration(60) * time.Minute).Unix()
 	token.Claims = jwtgo.MapClaims{
-		"iss":    "Hugo API",            // who creates the token and signs it
-		"aud":    "Backoffice",          // to whom the token is intended to be sent
+		"iss":    "Go-Goa API",          // who creates the token and signs it
+		"aud":    "audience(s)",         // to whom the token is intended to be sent
 		"exp":    expires,               // time when the token will expire (10 minutes from now)
 		"jti":    uuid.NewV4().String(), // a unique identifier for the token
 		"iat":    time.Now().Unix(),     // when the token was issued/created (now)
@@ -23,7 +23,7 @@ func GenerateToken(c *c.Ctx) (string, error) {
 		//"user":   user,
 	}
 	//TODO: key
-	signedToken, err := token.SignedString([]byte("keys"))
+	signedToken, err := token.SignedString([]byte(c.Conf.Jwt.Key))
 	if err != nil {
 		return "", fmt.Errorf("failed to sign token: %s", err) // internal error
 	}

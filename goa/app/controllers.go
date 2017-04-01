@@ -193,9 +193,10 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 		}
 		return ctrl.CompanyList(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyCompanyOrigin(h)
 	service.Mux.Handle("GET", "/api/company", ctrl.MuxHandler("CompanyList", h, nil))
-	service.LogInfo("mount", "ctrl", "HyCompany", "action", "CompanyList", "route", "GET /api/company")
+	service.LogInfo("mount", "ctrl", "HyCompany", "action", "CompanyList", "route", "GET /api/company", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -215,9 +216,10 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 		}
 		return ctrl.CreateCompany(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyCompanyOrigin(h)
 	service.Mux.Handle("POST", "/api/company", ctrl.MuxHandler("CreateCompany", h, unmarshalCreateCompanyHyCompanyPayload))
-	service.LogInfo("mount", "ctrl", "HyCompany", "action", "CreateCompany", "route", "POST /api/company")
+	service.LogInfo("mount", "ctrl", "HyCompany", "action", "CreateCompany", "route", "POST /api/company", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -231,9 +233,10 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 		}
 		return ctrl.DeleteCompany(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyCompanyOrigin(h)
 	service.Mux.Handle("DELETE", "/api/company/:companyID", ctrl.MuxHandler("DeleteCompany", h, nil))
-	service.LogInfo("mount", "ctrl", "HyCompany", "action", "DeleteCompany", "route", "DELETE /api/company/:companyID")
+	service.LogInfo("mount", "ctrl", "HyCompany", "action", "DeleteCompany", "route", "DELETE /api/company/:companyID", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -247,9 +250,10 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 		}
 		return ctrl.GetCompany(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyCompanyOrigin(h)
 	service.Mux.Handle("GET", "/api/company/:companyID", ctrl.MuxHandler("GetCompany", h, nil))
-	service.LogInfo("mount", "ctrl", "HyCompany", "action", "GetCompany", "route", "GET /api/company/:companyID")
+	service.LogInfo("mount", "ctrl", "HyCompany", "action", "GetCompany", "route", "GET /api/company/:companyID", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -269,9 +273,10 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 		}
 		return ctrl.UpdateCompany(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyCompanyOrigin(h)
 	service.Mux.Handle("PUT", "/api/company/:companyID", ctrl.MuxHandler("UpdateCompany", h, unmarshalUpdateCompanyHyCompanyPayload))
-	service.LogInfo("mount", "ctrl", "HyCompany", "action", "UpdateCompany", "route", "PUT /api/company/:companyID")
+	service.LogInfo("mount", "ctrl", "HyCompany", "action", "UpdateCompany", "route", "PUT /api/company/:companyID", "security", "jwt")
 }
 
 // handleHyCompanyOrigin applies the CORS response headers corresponding to the origin.
@@ -360,9 +365,10 @@ func MountHyUserController(service *goa.Service, ctrl HyUserController) {
 		}
 		return ctrl.CreateUser(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyUserOrigin(h)
 	service.Mux.Handle("POST", "/api/user", ctrl.MuxHandler("CreateUser", h, unmarshalCreateUserHyUserPayload))
-	service.LogInfo("mount", "ctrl", "HyUser", "action", "CreateUser", "route", "POST /api/user")
+	service.LogInfo("mount", "ctrl", "HyUser", "action", "CreateUser", "route", "POST /api/user", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -376,9 +382,10 @@ func MountHyUserController(service *goa.Service, ctrl HyUserController) {
 		}
 		return ctrl.DeleteUser(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyUserOrigin(h)
 	service.Mux.Handle("DELETE", "/api/user/:userID", ctrl.MuxHandler("DeleteUser", h, nil))
-	service.LogInfo("mount", "ctrl", "HyUser", "action", "DeleteUser", "route", "DELETE /api/user/:userID")
+	service.LogInfo("mount", "ctrl", "HyUser", "action", "DeleteUser", "route", "DELETE /api/user/:userID", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -392,9 +399,10 @@ func MountHyUserController(service *goa.Service, ctrl HyUserController) {
 		}
 		return ctrl.GetUser(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyUserOrigin(h)
 	service.Mux.Handle("GET", "/api/user/:userID", ctrl.MuxHandler("GetUser", h, nil))
-	service.LogInfo("mount", "ctrl", "HyUser", "action", "GetUser", "route", "GET /api/user/:userID")
+	service.LogInfo("mount", "ctrl", "HyUser", "action", "GetUser", "route", "GET /api/user/:userID", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -414,9 +422,10 @@ func MountHyUserController(service *goa.Service, ctrl HyUserController) {
 		}
 		return ctrl.UpdateUser(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyUserOrigin(h)
 	service.Mux.Handle("PUT", "/api/user/:userID", ctrl.MuxHandler("UpdateUser", h, unmarshalUpdateUserHyUserPayload))
-	service.LogInfo("mount", "ctrl", "HyUser", "action", "UpdateUser", "route", "PUT /api/user/:userID")
+	service.LogInfo("mount", "ctrl", "HyUser", "action", "UpdateUser", "route", "PUT /api/user/:userID", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -430,9 +439,10 @@ func MountHyUserController(service *goa.Service, ctrl HyUserController) {
 		}
 		return ctrl.UserList(rctx)
 	}
+	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyUserOrigin(h)
 	service.Mux.Handle("GET", "/api/user", ctrl.MuxHandler("UserList", h, nil))
-	service.LogInfo("mount", "ctrl", "HyUser", "action", "UserList", "route", "GET /api/user")
+	service.LogInfo("mount", "ctrl", "HyUser", "action", "UserList", "route", "GET /api/user", "security", "jwt")
 }
 
 // handleHyUserOrigin applies the CORS response headers corresponding to the origin.

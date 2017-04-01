@@ -65,6 +65,9 @@ func (c *Client) NewCreateUserHyUserRequest(ctx context.Context, path string, pa
 	if contentType != "*/*" {
 		header.Set("Content-Type", contentType)
 	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
 	return req, nil
 }
 
@@ -95,6 +98,9 @@ func (c *Client) NewDeleteUserHyUserRequest(ctx context.Context, path string) (*
 	if err != nil {
 		return nil, err
 	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
 	return req, nil
 }
 
@@ -124,6 +130,9 @@ func (c *Client) NewGetUserHyUserRequest(ctx context.Context, path string) (*htt
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
 	}
 	return req, nil
 }
@@ -167,6 +176,9 @@ func (c *Client) NewUpdateUserHyUserRequest(ctx context.Context, path string, pa
 	if contentType != "*/*" {
 		header.Set("Content-Type", contentType)
 	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
 	return req, nil
 }
 
@@ -195,6 +207,9 @@ func (c *Client) NewUserListHyUserRequest(ctx context.Context, path string) (*ht
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
 	}
 	return req, nil
 }

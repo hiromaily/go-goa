@@ -45,6 +45,9 @@ func (c *Client) NewCompanyListHyCompanyRequest(ctx context.Context, path string
 	if err != nil {
 		return nil, err
 	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
 	return req, nil
 }
 
@@ -96,6 +99,9 @@ func (c *Client) NewCreateCompanyHyCompanyRequest(ctx context.Context, path stri
 	if contentType != "*/*" {
 		header.Set("Content-Type", contentType)
 	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
 	return req, nil
 }
 
@@ -126,6 +132,9 @@ func (c *Client) NewDeleteCompanyHyCompanyRequest(ctx context.Context, path stri
 	if err != nil {
 		return nil, err
 	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
+	}
 	return req, nil
 }
 
@@ -155,6 +164,9 @@ func (c *Client) NewGetCompanyHyCompanyRequest(ctx context.Context, path string)
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
 	}
 	return req, nil
 }
@@ -197,6 +209,9 @@ func (c *Client) NewUpdateCompanyHyCompanyRequest(ctx context.Context, path stri
 	header := req.Header
 	if contentType != "*/*" {
 		header.Set("Content-Type", contentType)
+	}
+	if c.JWTSigner != nil {
+		c.JWTSigner.Sign(req)
 	}
 	return req, nil
 }

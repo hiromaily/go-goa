@@ -18,7 +18,13 @@ var (
 // Config is of root
 type Config struct {
 	Environment string
+	Jwt         *JwtConfig
 	MySQL       *MySQLConfig
+}
+
+// JwtConfig is for JWT configuration
+type JwtConfig struct {
+	Key string `toml:"key"`
 }
 
 // MySQLConfig is for MySQL Server
@@ -33,6 +39,7 @@ type MySQLConfig struct {
 
 var checkTOMLKeys = [][]string{
 	{"environment"},
+	{"jwt", "key"},
 	{"mysql", "encrypted"},
 	{"mysql", "host"},
 	{"mysql", "port"},

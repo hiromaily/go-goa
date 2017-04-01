@@ -326,7 +326,11 @@ paths:
       - auth
   /api/company:
     get:
-      description: List all companies
+      description: |-
+        List all companies
+
+        Required security scopes:
+          * `api:access`
       operationId: hy_company#CompanyList
       produces:
       - application/vnd.goa.error
@@ -344,11 +348,18 @@ paths:
           description: Not Found
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: CompanyList hy_company
       tags:
       - hy_company
     post:
-      description: Record new company
+      description: |-
+        Record new company
+
+        Required security scopes:
+          * `api:access`
       operationId: hy_company#CreateCompany
       parameters:
       - in: body
@@ -374,11 +385,17 @@ paths:
           description: Not Found
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: CreateCompany hy_company
       tags:
       - hy_company
   /api/company/{companyID}:
     delete:
+      description: |-
+        Required security scopes:
+          * `api:access`
       operationId: hy_company#DeleteCompany
       parameters:
       - in: path
@@ -398,11 +415,18 @@ paths:
           description: Not Found
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: DeleteCompany hy_company
       tags:
       - hy_company
     get:
-      description: Retrieve company with given id
+      description: |-
+        Retrieve company with given id
+
+        Required security scopes:
+          * `api:access`
       operationId: hy_company#GetCompany
       parameters:
       - in: path
@@ -425,10 +449,16 @@ paths:
           description: Not Found
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: GetCompany hy_company
       tags:
       - hy_company
     put:
+      description: |-
+        Required security scopes:
+          * `api:access`
       operationId: hy_company#UpdateCompany
       parameters:
       - in: path
@@ -453,12 +483,19 @@ paths:
           description: Not Found
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: UpdateCompany hy_company
       tags:
       - hy_company
   /api/user:
     get:
-      description: Retrieve all users.
+      description: |-
+        Retrieve all users.
+
+        Required security scopes:
+          * `api:access`
       operationId: hy_user#UserList
       produces:
       - application/vnd.user+json; type=collection
@@ -469,11 +506,18 @@ paths:
             $ref: '#/definitions/UserCollection'
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: UserList hy_user
       tags:
       - hy_user
     post:
-      description: Create new user
+      description: |-
+        Create new user
+
+        Required security scopes:
+          * `api:access`
       operationId: hy_user#CreateUser
       parameters:
       - in: body
@@ -497,11 +541,17 @@ paths:
             $ref: '#/definitions/error'
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: CreateUser hy_user
       tags:
       - hy_user
   /api/user/{userID}:
     delete:
+      description: |-
+        Required security scopes:
+          * `api:access`
       operationId: hy_user#DeleteUser
       parameters:
       - description: User ID
@@ -522,11 +572,18 @@ paths:
           description: Not Found
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: DeleteUser hy_user
       tags:
       - hy_user
     get:
-      description: Retrieve user with given id.
+      description: |-
+        Retrieve user with given id.
+
+        Required security scopes:
+          * `api:access`
       operationId: hy_user#GetUser
       parameters:
       - description: User ID
@@ -551,11 +608,18 @@ paths:
           description: Not Found
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: GetUser hy_user
       tags:
       - hy_user
     put:
-      description: Change user properties
+      description: |-
+        Change user properties
+
+        Required security scopes:
+          * `api:access`
       operationId: hy_user#UpdateUser
       parameters:
       - description: User ID
@@ -581,6 +645,9 @@ paths:
           description: Not Found
       schemes:
       - http
+      security:
+      - jwt:
+        - api:access
       summary: UpdateUser hy_user
       tags:
       - hy_user
