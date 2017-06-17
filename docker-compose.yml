@@ -13,6 +13,7 @@ services:
       MYSQL_PASSWORD: 12345678
     ports:
       -  ${MYSQL_PORT:-3307}:3306
+
   redis:
     image: redis
     command: --appendonly yes
@@ -20,5 +21,27 @@ services:
       - "./docker/redis/data:/data"
     ports:
       - ${MYSQL_PORT:-6380}:6379
-  nats:
-    image: nats
+
+  #nats:
+  #  image: nats
+
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: 'goa:${IMAGE_TAG:-1.0}'
+    links:
+      - mysql:mysql-server
+      #- redis:redis-server
+      #- nats:nats-server
+    depends_on:
+      - mysql
+      #- redis
+      #- nats
+    environment:
+      CGO_ENABLED: 0
+      GOOS: linux
+    ports:
+      - "${API_PORT:-8080}:8080"
+    #entrypoint: /go/bin/api
+    command: goa -f /go/src/github.com/hiromaily/go-goa/ext/tomls/docker.toml

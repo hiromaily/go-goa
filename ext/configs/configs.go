@@ -49,7 +49,7 @@ var checkTOMLKeys = [][]string{
 }
 
 func init() {
-	tomlFileName = os.Getenv("GOPATH") + "/src/github.com/hiromaily/go-goa/ext/settings.toml"
+	tomlFileName = os.Getenv("GOPATH") + "/src/github.com/hiromaily/go-goa/ext/tomls/settings.toml"
 }
 
 //check validation of config
