@@ -4,19 +4,18 @@ MONGO_PORT=27017
 ###############################################################################
 # Initialization
 ###############################################################################
-init:
+init_local:
 	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
     git submodule add https://github.com/swagger-api/swagger-ui.git resources/swagger-ui
+    #after this, `make genfull`
 
 ###############################################################################
 # Docker
 ###############################################################################
-dc:
+docker_start:
+	docker-compose build
 	docker-compose up
 
-#fresh
-#cmd := exec.Command("go", "build", "-o", buildPath(), root())
-#p := filepath.Join(tmpPath(), buildName())
 
 ###############################################################################
 # PKG Dependencies
@@ -33,7 +32,7 @@ update:
 	#gometalinter --install
 
 	# this doesn't work
-	#go get -u ./ext/cmd/
+	#go get -d -v ./ext/cmd/
 
 # dep is dependencies tools
 depinit:
@@ -73,7 +72,7 @@ chk:
 
 
 ###############################################################################
-# Goa generation
+# Goa generation (It's better to exexute `make genfull` regularly
 ###############################################################################
 gen:
 	#goagen won’t be re-generated (by default) if already present
@@ -106,7 +105,7 @@ genctl:
 
 
 ###############################################################################
-# Build
+# Build for local
 ###############################################################################
 run:
 	#go run goa/*.go
@@ -125,7 +124,7 @@ clibld:
 
 
 ###############################################################################
-# Execution
+# Execution for local
 ###############################################################################
 exec:
 	go-goa
