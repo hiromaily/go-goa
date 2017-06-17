@@ -28,7 +28,7 @@ update:
 	go get -u github.com/davecheney/httpstat
 	go get -u github.com/client9/misspell/cmd/misspell
 	go get -u github.com/gordonklaus/ineffassign
-    go get -u github.com/pilu/fresh
+	go get -u github.com/pilu/fresh
 	go get -u github.com/alecthomas/gometalinter
 	#gometalinter --install
 
