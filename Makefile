@@ -14,6 +14,9 @@ init:
 dc:
 	docker-compose up
 
+#fresh
+#cmd := exec.Command("go", "build", "-o", buildPath(), root())
+#p := filepath.Join(tmpPath(), buildName())
 
 ###############################################################################
 # PKG Dependencies

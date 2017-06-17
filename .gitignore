@@ -1,7 +1,8 @@
 .idea/*
 resources/tmp/*
-resources/swagger-ui/*
-!resources/swagger-ui/dist/*
+#resources/swagger-ui/*
+#!resources/swagger-ui/dist/*
 docker/mysql/data/*
 docker/redis/data/*
 !.gitkeep
+public/swagger

@@ -14,13 +14,13 @@ services:
     ports:
       -  ${MYSQL_PORT:-3307}:3306
 
-  redis:
-    image: redis
-    command: --appendonly yes
-    volumes:
-      - "./docker/redis/data:/data"
-    ports:
-      - ${MYSQL_PORT:-6380}:6379
+  #redis:
+  #  image: redis
+  #  command: --appendonly yes
+  #  volumes:
+  #    - "./docker/redis/data:/data"
+  #  ports:
+  #    - ${REDIS_PORT:-6380}:6379
 
   #nats:
   #  image: nats
@@ -29,7 +29,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: 'goa:${IMAGE_TAG:-1.0}'
+    image: 'go-goa:${IMAGE_TAG:-1.0}'
     links:
       - mysql:mysql-server
       #- redis:redis-server
@@ -43,5 +43,5 @@ services:
       GOOS: linux
     ports:
       - "${API_PORT:-8080}:8080"
-    #entrypoint: /go/bin/api
-    command: goa -f /go/src/github.com/hiromaily/go-goa/ext/tomls/docker.toml
+    #entrypoint: /go/bin/go-goa
+    command: go-goa -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml
