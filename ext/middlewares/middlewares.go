@@ -6,10 +6,11 @@ import (
 	"fmt"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware/security/jwt"
-	"golang.org/x/net/context"
+	"context"
 	"net/http"
 )
 
+//Handler func(context.Context, http.ResponseWriter, *http.Request) error
 func AuthMiddlewareHandler(nextHandler goa.Handler) goa.Handler {
 	return func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 		token := jwt.ContextJWT(ctx)
