@@ -5,11 +5,8 @@ MONGO_PORT=27017
 # Initialization
 ###############################################################################
 init:
-	mkdir -p public goa ext/cmd
-	touch public/index.html
-	#goagen	goagen bootstrap
 	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
-
+    git submodule add https://github.com/swagger-api/swagger-ui.git resources/swagger-ui
 
 ###############################################################################
 # Docker
