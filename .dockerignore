@@ -1,0 +1,10 @@
+*
+
+!docker/
+!ext/
+!goa/
+!public/
+!resources/swagger-ui/dist/
+!Makefile
+!Dockerfile
+!.git/
