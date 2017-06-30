@@ -4,19 +4,13 @@ services:
   webserver:
     ports:
       - "${API_PORT:-8080}:8080"
-    volumes:
+    #volumes:
     #  - ./ext:/go/src/github.com/hiromaily/go-goa/ext
     #  - ./goa:/go/src/github.com/hiromaily/go-goa/goa
     #  - ./public:/go/src/github.com/hiromaily/go-goa/public
     #  - ./resources:/go/src/github.com/hiromaily/go-goa/resources
-      - /var/run/docker.sock:/var/run/docker.sock
     stdin_open: true
     tty: true
-    #privileged: true
     restart: always
-    #healthcheck:
-    #  test: ["CMD", "bash", "-c", "/go/src/github.com/hiromaily/go-goa/healthcheck.sh"]
-    #  interval: 10s
-    #  timeout: 5s
-    #  retries: 3
     command: fresh -c /go/src/github.com/hiromaily/go-goa/runner.conf
+    #command: fresh
