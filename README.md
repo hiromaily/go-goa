@@ -1,4 +1,10 @@
 # go-goa
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/hiromaily/go-goa)](https://goreportcard.com/report/github.com/hiromaily/go-goa)
+[![codebeat badge](https://codebeat.co/badges/f2ee2ed0-5588-46f9-a47e-d50633a06739)](https://codebeat.co/projects/github-com-hiromaily-go-goa-master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f207ca57e48e456389341fc41bb06951)](https://www.codacy.com/app/hiromaily2/go-goa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiromaily/go-goa&amp;utm_campaign=Badge_Grade)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/hiromaily/go-goa/master/LICENSE)
+
 go-goa is sameple for how to use goa framework
 
 ## About goa framework
