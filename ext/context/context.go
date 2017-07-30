@@ -5,6 +5,7 @@ import (
 	"github.com/hiromaily/golibs/db/gorm"
 )
 
+// Ctx is context object
 type Ctx struct {
 	Conf *conf.Config
 	Db   *gorm.GR
@@ -16,6 +17,7 @@ func (c *Ctx) initDB() {
 	c.Db = gorm.GetDB()
 }
 
+// SetupContext is to setup context
 func SetupContext(c *conf.Config) *Ctx {
 	ctx := &Ctx{Conf: c}
 	ctx.initDB()

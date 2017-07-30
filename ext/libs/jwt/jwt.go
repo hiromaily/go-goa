@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// GenerateToken is to generate token
 func GenerateToken(c *c.Ctx) (string, error) {
 	token := jwtgo.New(jwtgo.SigningMethodHS512)
 	expires := time.Now().Add(time.Duration(60) * time.Minute).Unix()

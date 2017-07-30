@@ -43,7 +43,7 @@ func main() {
 
 	// Create service
 	ctx := c.SetupContext(cnf)
-	service := newApi(ctx)
+	service := newAPI(ctx)
 
 	// Start service
 	if err := service.ListenAndServe(":8080"); err != nil {
@@ -73,7 +73,7 @@ func getVersion() {
 }
 
 // Create service object for Goa
-func newApi(ctx *c.Ctx) *goa.Service {
+func newAPI(ctx *c.Ctx) *goa.Service {
 	service := goa.New("api")
 
 	// Mount middleware

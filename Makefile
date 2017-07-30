@@ -58,9 +58,8 @@ fix:
 	go fix `go list ./... | grep -v '/vendor/'`
 
 lint:
-	golint ./... | grep -v '^vendor\/' || true
-	misspell `find . -name "*.go" | grep -v '/vendor/'`
-	ineffassign .
+	golint ./... | grep -v '^goa\/' || true
+	#golint ./... | grep -v '^vendor\/' || true
 
 chk:
 	go fmt `go list ./... | grep -v '/vendor/'`

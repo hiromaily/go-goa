@@ -3,14 +3,14 @@ package middlewares
 import (
 	jwtgo "github.com/dgrijalva/jwt-go"
 	//"context"
+	"context"
 	"fmt"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware/security/jwt"
-	"context"
 	"net/http"
 )
 
-//Handler func(context.Context, http.ResponseWriter, *http.Request) error
+// AuthMiddlewareHandler is to check jwt
 func AuthMiddlewareHandler(nextHandler goa.Handler) goa.Handler {
 	return func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
 		token := jwt.ContextJWT(ctx)
