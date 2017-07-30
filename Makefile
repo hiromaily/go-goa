@@ -26,8 +26,8 @@ dcins:
 	docker exec -it gogoa_webserver_1 bash
 
 dctest:
-	docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
-	#docker exec -it gogoa_webserver_1 /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
+	docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go
+	#docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
 
 dcpush:
 	docker push hirokiy/go-goa:1.0
@@ -180,7 +180,8 @@ clnok:
 # test
 ###############################################################################
 gotest:
-	go test -v ext/cmd/*.go -f ${TOMLPATH}
+	go test -v ext/cmd/*.go
+	#go test -v ext/cmd/*.go -f ${TOMLPATH}
 
 
 ###############################################################################

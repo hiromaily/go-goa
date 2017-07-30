@@ -34,7 +34,6 @@ func init() {
 
 	//version
 	//getVersion()
-
 }
 
 func main() {
