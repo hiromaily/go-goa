@@ -17,9 +17,9 @@ before_install:
 script:
   - go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml
 
-#after_success:
-#  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-#  - docker push hirokiy/go-goa:1.0;
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+  - docker push hirokiy/go-goa:1.0;
 
 branches:
   only:

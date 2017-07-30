@@ -126,7 +126,7 @@ updgoa:
 	go get -u github.com/goadesign/goa/...
 
 # this command should be executed regularly
-updall: updgoa gencln aftergen
+updall: updgoa gencln aftergen godep
 
 
 ###############################################################################
@@ -154,14 +154,22 @@ clibld:
 exec:
 	go-goa
 
+
+###############################################################################
+# CLI
+###############################################################################
+cli:
+	go-goa-cli company-list hy-company
+
+
+###############################################################################
+# maintenance
+###############################################################################
 cln:
 	go clean -n
 
 clnok:
 	go clean
-
-cli:
-	go-goa-cli company-list hy-company
 
 
 ###############################################################################
