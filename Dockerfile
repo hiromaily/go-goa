@@ -35,11 +35,12 @@ WORKDIR /go/src/github.com/hiromaily/go-goa
 #COPY ./Makefile ./
 #COPY ./runner.conf ./
 
+# Swagger
+RUN ln -s /go/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
+
 # Docker use Godeps because these are for TravisCI
-RUN	rm -rf Godeps ./vendor
-RUN go get -d -v -u ./ext/cmd/
-#RUN go get -d -v ./ext/cmd/
-#RUN go get -d -v
+#RUN	rm -rf Godeps ./vendor
+#RUN go get -d -v -u ./ext/cmd/
 
 RUN ln -s /go/src/github.com/hiromaily/go-goa/goa/swagger /go/src/github.com/hiromaily/go-goa/public/swagger
 

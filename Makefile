@@ -59,10 +59,10 @@ dep:
 depcln:
 	cd ext/cmd/;rm -rf vendor lock.json manifest.json
 
-godep:
-	rm -rf Godeps
-	rm -rf ./vendor
-	godep save ./...
+#godep:
+#	rm -rf Godeps
+#	rm -rf ./vendor
+#	godep save ./...
 
 
 ###############################################################################
@@ -126,8 +126,11 @@ genctl:
 updgoa:
 	go get -u github.com/goadesign/goa/...
 
+link_swagger:
+    ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
+
 # this command should be executed regularly
-updall: updgoa gencln aftergen godep
+updall: updgoa gencln aftergen link_swagger
 
 
 ###############################################################################
