@@ -2,6 +2,7 @@
 
 PROJECT_ROOT=${GOPATH}/src/github.com/hiromaily/go-goa
 TOMLPATH=${PROJECT_ROOT}/resources/tomls/settings.toml
+TOMLPATH2=${PROJECT_ROOT}/resources/tomls/docker.toml
 
 ###############################################################################
 # Initialization
@@ -23,6 +24,9 @@ docker_build:
 
 in_server:
 	docker exec -it gogoa_webserver_1 bash
+
+docker_test:
+	docker exec -it gogoa_webserver_1 /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
 
 docker_push:
 	docker push hirokiy/go-goa:1.0
