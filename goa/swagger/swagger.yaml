@@ -60,6 +60,16 @@ definitions:
       href: /company/1
       id: 1
       name: Nisi dolorum.
+    - address: Culpa voluptatem ullam.
+      country: Sit dolor neque nulla.
+      href: /company/1
+      id: 1
+      name: Nisi dolorum.
+    - address: Culpa voluptatem ullam.
+      country: Sit dolor neque nulla.
+      href: /company/1
+      id: 1
+      name: Nisi dolorum.
     items:
       $ref: '#/definitions/Company'
     title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
@@ -176,10 +186,6 @@ definitions:
   UserCollection:
     description: UserCollection is the media type for an array of User (default view)
     example:
-    - email: Cum aut blanditiis accusantium molestiae et.
-      href: /user/1
-      id: 1
-      name: Tempora et.
     - email: Cum aut blanditiis accusantium molestiae et.
       href: /user/1
       id: 1

@@ -91,7 +91,7 @@ func CreateUserHyUserBadRequest(t goatest.TInterface, ctx context.Context, servi
 		var _ok bool
 		mt, _ok = resp.(error)
 		if !_ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
 		}
 	}
 
@@ -224,7 +224,7 @@ func DeleteUserHyUserBadRequest(t goatest.TInterface, ctx context.Context, servi
 		var ok bool
 		mt, ok = resp.(error)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
 		}
 	}
 
@@ -403,7 +403,7 @@ func GetUserHyUserBadRequest(t goatest.TInterface, ctx context.Context, service 
 		var ok bool
 		mt, ok = resp.(error)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
 		}
 	}
 
@@ -525,7 +525,7 @@ func GetUserHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Ser
 		var ok bool
 		mt, ok = resp.(*app.User)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.User", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.User", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -594,7 +594,7 @@ func GetUserHyUserOKLink(t goatest.TInterface, ctx context.Context, service *goa
 		var ok bool
 		mt, ok = resp.(*app.UserLink)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.UserLink", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserLink", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -663,7 +663,7 @@ func GetUserHyUserOKTiny(t goatest.TInterface, ctx context.Context, service *goa
 		var ok bool
 		mt, ok = resp.(*app.UserTiny)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.UserTiny", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserTiny", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -743,7 +743,7 @@ func UpdateUserHyUserBadRequest(t goatest.TInterface, ctx context.Context, servi
 		var _ok bool
 		mt, _ok = resp.(error)
 		if !_ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
 		}
 	}
 
@@ -945,7 +945,7 @@ func UserListHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Se
 		var ok bool
 		mt, ok = resp.(app.UserCollection)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.UserCollection", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -1013,7 +1013,7 @@ func UserListHyUserOKTiny(t goatest.TInterface, ctx context.Context, service *go
 		var ok bool
 		mt, ok = resp.(app.UserTinyCollection)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.UserTinyCollection", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserTinyCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {

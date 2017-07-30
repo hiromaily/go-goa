@@ -92,7 +92,7 @@ func LoginAuthOK(t goatest.TInterface, ctx context.Context, service *goa.Service
 		var _ok bool
 		mt, _ok = resp.(*app.Authorized)
 		if !_ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.Authorized", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.Authorized", resp, resp)
 		}
 		__err = mt.Validate()
 		if __err != nil {

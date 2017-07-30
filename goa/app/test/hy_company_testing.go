@@ -80,7 +80,7 @@ func CompanyListHyCompanyBadRequest(t goatest.TInterface, ctx context.Context, s
 		var ok bool
 		mt, ok = resp.(error)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
 		}
 	}
 
@@ -200,7 +200,7 @@ func CompanyListHyCompanyOK(t goatest.TInterface, ctx context.Context, service *
 		var ok bool
 		mt, ok = resp.(app.CompanyCollection)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.CompanyCollection", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -268,7 +268,7 @@ func CompanyListHyCompanyOKTiny(t goatest.TInterface, ctx context.Context, servi
 		var ok bool
 		mt, ok = resp.(app.CompanyTinyCollection)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.CompanyTinyCollection", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyTinyCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -347,7 +347,7 @@ func CreateCompanyHyCompanyBadRequest(t goatest.TInterface, ctx context.Context,
 		var _ok bool
 		mt, _ok = resp.(error)
 		if !_ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
 		}
 	}
 
@@ -548,7 +548,7 @@ func DeleteCompanyHyCompanyBadRequest(t goatest.TInterface, ctx context.Context,
 		var ok bool
 		mt, ok = resp.(error)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
 		}
 	}
 
@@ -727,7 +727,7 @@ func GetCompanyHyCompanyBadRequest(t goatest.TInterface, ctx context.Context, se
 		var ok bool
 		mt, ok = resp.(error)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
 		}
 	}
 
@@ -849,7 +849,7 @@ func GetCompanyHyCompanyOK(t goatest.TInterface, ctx context.Context, service *g
 		var ok bool
 		mt, ok = resp.(*app.Company)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.Company", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.Company", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -918,7 +918,7 @@ func GetCompanyHyCompanyOKLink(t goatest.TInterface, ctx context.Context, servic
 		var ok bool
 		mt, ok = resp.(*app.CompanyLink)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.CompanyLink", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyLink", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -987,7 +987,7 @@ func GetCompanyHyCompanyOKTiny(t goatest.TInterface, ctx context.Context, servic
 		var ok bool
 		mt, ok = resp.(*app.CompanyTiny)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of app.CompanyTiny", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyTiny", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -1057,7 +1057,7 @@ func UpdateCompanyHyCompanyBadRequest(t goatest.TInterface, ctx context.Context,
 		var ok bool
 		mt, ok = resp.(error)
 		if !ok {
-			t.Fatalf("invalid response media: got %+v, expected instance of error", resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
 		}
 	}
 

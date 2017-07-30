@@ -6,8 +6,8 @@ MONGO_PORT=27017
 ###############################################################################
 init_local:
 	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
-    git submodule add https://github.com/swagger-api/swagger-ui.git resources/swagger-ui
-    #after this, `make genfull`
+	git submodule add https://github.com/swagger-api/swagger-ui.git resources/swagger-ui
+	#after this, `make genfull`
 
 ###############################################################################
 # Docker
@@ -104,20 +104,25 @@ genctl:
 	goagen controller -d github.com/hiromaily/go-goa/goa/design -o goa/
 
 
+updgoa:
+	go get -u github.com/goadesign/goa/...
+
+updall: updgoa gencln aftergen
+
 ###############################################################################
 # Build for local
 ###############################################################################
 run:
-	#go run goa/*.go
 	go run ext/cmd/*.go
+	#go run goa/*.go
 
 bld:
-	#go build -i -v -o ${GOPATH}/bin/go-goa ./goa/
 	go build -i -v -o ${GOPATH}/bin/go-goa ./ext/cmd/
+	#go build -i -v -o ${GOPATH}/bin/go-goa ./goa/
 
 bldlinux:
-	#GOOS=linux GOARCH=amd64 go build -v -o ${GOPATH}/bin/linux_amd64/$1 ./goa/
 	GOOS=linux GOARCH=amd64 go build -v -o ${GOPATH}/bin/linux_amd64/$1 ./ext/cmd/
+	#GOOS=linux GOARCH=amd64 go build -v -o ${GOPATH}/bin/linux_amd64/$1 ./goa/
 
 clibld:
 	go build -i -v -o ${GOPATH}/bin/go-goa-cli ./goa/tool/api-cli/*.go
