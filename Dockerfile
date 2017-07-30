@@ -13,15 +13,14 @@ RUN go get -u github.com/goadesign/goa/... && \
 go get -u github.com/hiromaily/fresh
 
 RUN go get -u github.com/hiromaily/go-goa/...
-#RUN go get -d -v ./ext/cmd/
-#RUN go get -d -v
+
 
 #submodule for swaggger-ui
 WORKDIR /go/src/github.com/hiromaily/go-goa/resources/swagger-ui
 RUN git submodule init && git submodule update
 
 
-RUN mkdir -p /go/src/github.com/hiromaily/go-goa/tmp/log
+RUN mkdir -p /go/src/github.com/hiromaily/go-goa/tmp/log && mkdir -p /var/log/go
 #RUN mkdir -p /go/src/github.com/hiromaily/go-goa/ext && \
 # mkdir -p /go/src/github.com/hiromaily/go-goa/goa && \
 # mkdir -p /go/src/github.com/hiromaily/go-goa/public && \
@@ -36,7 +35,12 @@ WORKDIR /go/src/github.com/hiromaily/go-goa
 #COPY ./Makefile ./
 #COPY ./runner.conf ./
 
-#
+# Docker use Godeps because these are for TravisCI
+RUN	rm -rf Godeps ./vendor
+RUN go get -d -v -u ./ext/cmd/
+#RUN go get -d -v ./ext/cmd/
+#RUN go get -d -v
+
 RUN ln -s /go/src/github.com/hiromaily/go-goa/goa/swagger /go/src/github.com/hiromaily/go-goa/public/swagger
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/go-goa ./ext/cmd/main.go

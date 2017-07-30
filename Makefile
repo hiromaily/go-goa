@@ -15,20 +15,20 @@ init_local:
 ###############################################################################
 # Docker
 ###############################################################################
-docker_start:
+dcup:
 	docker-compose build
 	docker-compose up
 
-docker_build:
+dcbld:
 	docker-compose build --no-cache
 
-in_server:
+dcins:
 	docker exec -it gogoa_webserver_1 bash
 
-docker_test:
+dctest:
 	docker exec -it gogoa_webserver_1 /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
 
-docker_push:
+dcpush:
 	docker push hirokiy/go-goa:1.0
 
 ###############################################################################
@@ -57,6 +57,11 @@ dep:
 
 depcln:
 	cd ext/cmd/;rm -rf vendor lock.json manifest.json
+
+godep:
+	rm -rf Godeps
+	rm -rf ./vendor
+	godep save ./...
 
 
 ###############################################################################

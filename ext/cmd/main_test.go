@@ -1,8 +1,7 @@
 package main
 
 import (
-	//lg "github.com/hiromaily/golibs/log"
-	tu "github.com/hiromaily/golibs/testutil"
+	lg "github.com/hiromaily/golibs/log"
 	"os"
 	"testing"
 )
@@ -12,7 +11,7 @@ import (
 //-----------------------------------------------------------------------------
 // Initialize
 func init() {
-	tu.InitializeTest("[GoGoa]")
+	lg.InitializeLog(lg.DebugStatus, lg.LogOff, 99, "[GoGOA]", "/var/log/go/test.log")
 }
 
 func setup() {
