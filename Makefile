@@ -1,5 +1,7 @@
 # Note: tabs by space can't not used for Makefile!
-MONGO_PORT=27017
+
+PROJECT_ROOT=${GOPATH}/src/github.com/hiromaily/go-goa
+TOMLPATH=${PROJECT_ROOT}/resources/tomls/settings.toml
 
 ###############################################################################
 # Initialization
@@ -16,6 +18,14 @@ docker_start:
 	docker-compose build
 	docker-compose up
 
+docker_build:
+	docker-compose build --no-cache
+
+in_server:
+	docker exec -it gogoa_webserver_1 bash
+
+docker_push:
+	docker push hirokiy/go-goa:1.0
 
 ###############################################################################
 # PKG Dependencies
@@ -106,7 +116,9 @@ genctl:
 updgoa:
 	go get -u github.com/goadesign/goa/...
 
+# this command should be executed regularly
 updall: updgoa gencln aftergen
+
 
 ###############################################################################
 # Build for local
@@ -142,6 +154,12 @@ clnok:
 cli:
 	go-goa-cli company-list hy-company
 
+
+###############################################################################
+# test
+###############################################################################
+gotest:
+	go test -v ext/cmd/*.go -f ${TOMLPATH}
 
 ###############################################################################
 # httpie

@@ -4,11 +4,12 @@ services:
   webserver:
     ports:
       - "${API_PORT:-8080}:8080"
-    #volumes:
-    #  - ./ext:/go/src/github.com/hiromaily/go-goa/ext
-    #  - ./goa:/go/src/github.com/hiromaily/go-goa/goa
-    #  - ./public:/go/src/github.com/hiromaily/go-goa/public
-    #  - ./resources:/go/src/github.com/hiromaily/go-goa/resources
+    volumes:
+      - ./ext:/go/src/github.com/hiromaily/go-goa/ext
+      - ./goa:/go/src/github.com/hiromaily/go-goa/goa
+      - ./public:/go/src/github.com/hiromaily/go-goa/public
+      - ./resources:/go/src/github.com/hiromaily/go-goa/resources
+      - ./runner.conf:/go/src/github.com/hiromaily/go-goa/runner.conf
     stdin_open: true
     tty: true
     restart: always
