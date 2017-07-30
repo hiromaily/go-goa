@@ -678,6 +678,17 @@ paths:
       schemes:
       - http
       summary: Download resources/swagger-ui/dist/
+  /swagger.json:
+    get:
+      operationId: public#/swagger.json
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+      schemes:
+      - http
+      summary: Download goa/swagger/swagger.json
 produces:
 - application/json
 - application/xml

@@ -126,18 +126,18 @@ genctl:
 updgoa:
 	go get -u github.com/goadesign/goa/...
 
-link_swagger:
-    ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
+#link_swagger:
+#	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
 
 # this command should be executed regularly
-updall: updgoa gencln aftergen link_swagger
+updall: updgoa gencln aftergen
 
 
 ###############################################################################
 # Build for local
 ###############################################################################
 run:
-	go run ext/cmd/*.go
+	go run ext/cmd/main.go
 	#go run goa/*.go
 
 bld:

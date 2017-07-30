@@ -211,6 +211,7 @@ var _ = Resource("public", func() {
 	})
 	Files("/*filepath", "public/")
 	Files("/swagger-ui/*filepath", "resources/swagger-ui/dist/")
+	Files("/swagger.json", "goa/swagger/swagger.json")
 })
 
 //var _ = Resource("public", func() {

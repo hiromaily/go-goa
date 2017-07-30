@@ -511,8 +511,14 @@ type PublicController interface {
 func MountPublicController(service *goa.Service, ctrl PublicController) {
 	initService(service)
 	var h goa.Handler
+	service.Mux.Handle("OPTIONS", "/swagger.json", ctrl.MuxHandler("preflight", handlePublicOrigin(cors.HandlePreflight()), nil))
 	service.Mux.Handle("OPTIONS", "/*filepath", ctrl.MuxHandler("preflight", handlePublicOrigin(cors.HandlePreflight()), nil))
 	service.Mux.Handle("OPTIONS", "/swagger-ui/*filepath", ctrl.MuxHandler("preflight", handlePublicOrigin(cors.HandlePreflight()), nil))
+
+	h = ctrl.FileHandler("/swagger.json", "goa/swagger/swagger.json")
+	h = handlePublicOrigin(h)
+	service.Mux.Handle("GET", "/swagger.json", ctrl.MuxHandler("serve", h, nil))
+	service.LogInfo("mount", "ctrl", "Public", "files", "goa/swagger/swagger.json", "route", "GET /swagger.json")
 
 	h = ctrl.FileHandler("/*filepath", "public/")
 	h = handlePublicOrigin(h)

@@ -509,6 +509,13 @@ func (cmd *DownloadCommand) Run(c *client.Client, args []string) error {
 	if rpath[0] != '/' {
 		rpath = "/" + rpath
 	}
+	if rpath == "/swagger.json" {
+		fnf = c.DownloadSwaggerJSON
+		if outfile == "" {
+			outfile = "swagger.json"
+		}
+		goto found
+	}
 	if strings.HasPrefix(rpath, "/") {
 		fnd = c.Download
 		rpath = rpath[1:]
