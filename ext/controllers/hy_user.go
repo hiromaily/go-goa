@@ -2,6 +2,7 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/goadesign/goa"
 	c "github.com/hiromaily/go-goa/ext/context"
 	"github.com/hiromaily/go-goa/goa/app"
@@ -10,32 +11,34 @@ import (
 // HyUserController implements something.
 type HyUserController struct {
 	*goa.Controller
-	ctx *c.Ctx
+	ctx *c.Ctx //Added
 }
 
 // NewHyUserController creates a HyUser controller.
 func NewHyUserController(service *goa.Service, ctx *c.Ctx) *HyUserController {
 	return &HyUserController{
 		Controller: service.NewController("HyUserController"),
-		ctx:        ctx,
+		ctx:        ctx, //Added
 	}
 }
 
 // UserList runs the UserList action.
 func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 	// HyUserController_UserList: start_implement
+	fmt.Println("[hy_user][UserList]", ctx)
 
 	// Put your logic here
 	// TODO:How to
 
 	// HyUserController_UserList: end_implement
-	res := app.UserCollection{}
+	res := &app.User{}
 	return ctx.OK(res)
 }
 
 // GetUser runs the GetUser action.
 func (c *HyUserController) GetUser(ctx *app.GetUserHyUserContext) error {
 	// HyUserController_GetUser: start_implement
+	fmt.Println("[hy_user][GetUser]", ctx)
 
 	// Put your logic here
 
@@ -51,7 +54,8 @@ func (c *HyUserController) CreateUser(ctx *app.CreateUserHyUserContext) error {
 	// Put your logic here
 
 	// HyUserController_CreateUser: end_implement
-	return nil
+	res := &app.UserID{}
+	return ctx.OKId(res)
 }
 
 // DeleteUser runs the DeleteUser action.
@@ -61,15 +65,18 @@ func (c *HyUserController) DeleteUser(ctx *app.DeleteUserHyUserContext) error {
 	// Put your logic here
 
 	// HyUserController_DeleteUser: end_implement
-	return nil
+	res := &app.UserID{}
+	return ctx.OKId(res)
 }
 
 // UpdateUser runs the UpdateUser action.
 func (c *HyUserController) UpdateUser(ctx *app.UpdateUserHyUserContext) error {
 	// HyUserController_UpdateUser: start_implement
+	fmt.Println("[hy_user][UpdateUser]", ctx)
 
 	// Put your logic here
 
 	// HyUserController_UpdateUser: end_implement
-	return nil
+	res := &app.UserID{}
+	return ctx.OKId(res)
 }

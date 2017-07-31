@@ -5,6 +5,8 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
+// Additional file for health check
+//
 var _ = Resource("health", func() {
 
 	BasePath("/_ah")

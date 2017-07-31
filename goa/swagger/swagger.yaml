@@ -23,7 +23,7 @@ definitions:
       country: Sit dolor neque nulla.
       href: /company/1
       id: 1
-      name: Nisi dolorum.
+      name: Sunt cum aut blanditiis accusantium.
     properties:
       address:
         example: Culpa voluptatem ullam.
@@ -41,7 +41,7 @@ definitions:
         format: int64
         type: integer
       name:
-        example: Nisi dolorum.
+        example: Sunt cum aut blanditiis accusantium.
         type: string
     required:
     - id
@@ -51,66 +51,49 @@ definitions:
     - address
     title: 'Mediatype identifier: application/vnd.company+json; view=default'
     type: object
-  CompanyCollection:
-    description: CompanyCollection is the media type for an array of Company (default
-      view)
-    example:
-    - address: Culpa voluptatem ullam.
-      country: Sit dolor neque nulla.
-      href: /company/1
-      id: 1
-      name: Nisi dolorum.
-    - address: Culpa voluptatem ullam.
-      country: Sit dolor neque nulla.
-      href: /company/1
-      id: 1
-      name: Nisi dolorum.
-    - address: Culpa voluptatem ullam.
-      country: Sit dolor neque nulla.
-      href: /company/1
-      id: 1
-      name: Nisi dolorum.
-    items:
-      $ref: '#/definitions/Company'
-    title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
-    type: array
   CompanyPayload:
     example:
       address: Tokyo
-      country: Tokyo, Japan
+      country: Japan
       name: Sony
     properties:
       address:
         description: Address of company
         example: Tokyo
+        minLength: 40
         type: string
       country:
         description: Country of HQ
-        example: Tokyo, Japan
+        example: Japan
+        minLength: 40
         type: string
       name:
         description: Name of company
         example: Sony
+        minLength: 40
         type: string
     title: CompanyPayload
     type: object
   CreateCompanyHyCompanyPayload:
     example:
       address: Tokyo
-      country: Tokyo, Japan
+      country: Japan
       name: Sony
     properties:
       address:
         description: Address of company
         example: Tokyo
+        minLength: 40
         type: string
       country:
         description: Country of HQ
-        example: Tokyo, Japan
+        example: Japan
+        minLength: 40
         type: string
       name:
         description: Name of company
         example: Sony
+        minLength: 40
         type: string
     required:
     - name
@@ -121,32 +104,47 @@ definitions:
   CreateUserHyUserPayload:
     example:
       email: hy@gmail.com
-      name: Hiroki
+      first_name: Hiroki
+      last_name: Yasui
+      password: xxxxx
     properties:
       email:
         description: E-mail of user
         example: hy@gmail.com
         format: email
         type: string
-      name:
-        description: Name of user
+      first_name:
+        description: First name
         example: Hiroki
+        minLength: 10
+        type: string
+      last_name:
+        description: Last name
+        example: Yasui
+        minLength: 10
+        type: string
+      password:
+        description: Password
+        example: xxxxx
+        minLength: 20
         type: string
     required:
-    - name
+    - first_name
+    - last_name
     - email
+    - password
     title: CreateUserHyUserPayload
     type: object
   LoginAuthPayload:
     example:
-      email: Incidunt quia quo alias aut quo aut.
-      password: Vel nesciunt omnis.
+      email: Suscipit quis exercitationem ut ipsum quis saepe.
+      password: Cum repellat tempora eum.
     properties:
       email:
-        example: Incidunt quia quo alias aut quo aut.
+        example: Suscipit quis exercitationem ut ipsum quis saepe.
         type: string
       password:
-        example: Vel nesciunt omnis.
+        example: Cum repellat tempora eum.
         type: string
     required:
     - email
@@ -156,61 +154,57 @@ definitions:
   User:
     description: A user information (default view)
     example:
-      email: Cum aut blanditiis accusantium molestiae et.
-      href: /user/1
-      id: 1
-      name: Tempora et.
+      email: Quia quo alias aut quo.
+      first_name: Eveniet vel nesciunt omnis est ducimus est.
+      last_name: Et veritatis non nostrum.
+      user_id: 1
     properties:
       email:
-        example: Cum aut blanditiis accusantium molestiae et.
+        example: Quia quo alias aut quo.
         type: string
-      href:
-        description: API href of user
-        example: /user/1
+      first_name:
+        example: Eveniet vel nesciunt omnis est ducimus est.
         type: string
-      id:
-        description: ID of user
+      last_name:
+        example: Et veritatis non nostrum.
+        type: string
+      user_id:
+        description: User ID
         example: 1
-        format: int64
+        minimum: 1
         type: integer
-      name:
-        example: Tempora et.
-        type: string
     required:
-    - id
-    - href
-    - name
+    - first_name
+    - last_name
     - email
     title: 'Mediatype identifier: application/vnd.user+json; view=default'
     type: object
-  UserCollection:
-    description: UserCollection is the media type for an array of User (default view)
-    example:
-    - email: Cum aut blanditiis accusantium molestiae et.
-      href: /user/1
-      id: 1
-      name: Tempora et.
-    - email: Cum aut blanditiis accusantium molestiae et.
-      href: /user/1
-      id: 1
-      name: Tempora et.
-    items:
-      $ref: '#/definitions/User'
-    title: 'Mediatype identifier: application/vnd.user+json; type=collection; view=default'
-    type: array
   UserPayload:
     example:
       email: hy@gmail.com
-      name: Hiroki
+      first_name: Hiroki
+      last_name: Yasui
+      password: xxxxx
     properties:
       email:
         description: E-mail of user
         example: hy@gmail.com
         format: email
         type: string
-      name:
-        description: Name of user
+      first_name:
+        description: First name
         example: Hiroki
+        minLength: 10
+        type: string
+      last_name:
+        description: Last name
+        example: Yasui
+        minLength: 10
+        type: string
+      password:
+        description: Password
+        example: xxxxx
+        minLength: 20
         type: string
     title: UserPayload
     type: object
@@ -340,12 +334,12 @@ paths:
       operationId: hy_company#CompanyList
       produces:
       - application/vnd.goa.error
-      - application/vnd.company+json; type=collection
+      - application/vnd.company+json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/CompanyCollection'
+            $ref: '#/definitions/Company'
         "400":
           description: Bad Request
           schema:
@@ -377,12 +371,7 @@ paths:
       - application/vnd.goa.error
       responses:
         "201":
-          description: Resource created
-          headers:
-            Location:
-              description: href to created resource
-              pattern: ^/user/[0-9]+/company/[0-9]+$
-              type: string
+          description: Created
         "400":
           description: Bad Request
           schema:
@@ -504,12 +493,19 @@ paths:
           * `api:access`
       operationId: hy_user#UserList
       produces:
-      - application/vnd.user+json; type=collection
+      - application/vnd.goa.error
+      - application/vnd.user+json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/UserCollection'
+            $ref: '#/definitions/User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
       schemes:
       - http
       security:
@@ -533,14 +529,14 @@ paths:
           $ref: '#/definitions/CreateUserHyUserPayload'
       produces:
       - application/vnd.goa.error
+      - application/vnd.user+json
       responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
         "201":
-          description: Resource created
-          headers:
-            Location:
-              description: href to created resource
-              pattern: /user/[0-9]+
-              type: string
+          description: Created
         "400":
           description: Bad Request
           schema:
@@ -567,9 +563,12 @@ paths:
         type: integer
       produces:
       - application/vnd.goa.error
+      - application/vnd.user+json
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
         "400":
           description: Bad Request
           schema:
@@ -640,9 +639,12 @@ paths:
           $ref: '#/definitions/UserPayload'
       produces:
       - application/vnd.goa.error
+      - application/vnd.user+json
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
         "400":
           description: Bad Request
           schema:
@@ -695,6 +697,8 @@ produces:
 - application/gob
 - application/x-gob
 responses:
+  Created:
+    description: Created
   NoContent:
     description: No Content
   NotFound:

@@ -167,6 +167,166 @@ func CreateUserHyUserCreated(t goatest.TInterface, ctx context.Context, service 
 	return rw
 }
 
+// CreateUserHyUserOK runs the method CreateUser of the given controller with the given parameters and payload.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func CreateUserHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, payload *app.CreateUserHyUserPayload) (http.ResponseWriter, *app.User) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Validate payload
+	err := payload.Validate()
+	if err != nil {
+		e, ok := err.(goa.ServiceError)
+		if !ok {
+			panic(err) // bug
+		}
+		t.Errorf("unexpected payload validation error: %+v", e)
+		return nil, nil
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/user"),
+	}
+	req, _err := http.NewRequest("POST", u.String(), nil)
+	if _err != nil {
+		panic("invalid test " + _err.Error()) // bug
+	}
+	prms := url.Values{}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
+	createUserCtx, __err := app.NewCreateUserHyUserContext(goaCtx, req, service)
+	if __err != nil {
+		panic("invalid test data " + __err.Error()) // bug
+	}
+	createUserCtx.Payload = payload
+
+	// Perform action
+	__err = ctrl.CreateUser(createUserCtx)
+
+	// Validate response
+	if __err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.User
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(*app.User)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.User", resp, resp)
+		}
+		__err = mt.Validate()
+		if __err != nil {
+			t.Errorf("invalid response media type: %s", __err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// CreateUserHyUserOKID runs the method CreateUser of the given controller with the given parameters and payload.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func CreateUserHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, payload *app.CreateUserHyUserPayload) (http.ResponseWriter, *app.UserID) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Validate payload
+	err := payload.Validate()
+	if err != nil {
+		e, ok := err.(goa.ServiceError)
+		if !ok {
+			panic(err) // bug
+		}
+		t.Errorf("unexpected payload validation error: %+v", e)
+		return nil, nil
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/user"),
+	}
+	req, _err := http.NewRequest("POST", u.String(), nil)
+	if _err != nil {
+		panic("invalid test " + _err.Error()) // bug
+	}
+	prms := url.Values{}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
+	createUserCtx, __err := app.NewCreateUserHyUserContext(goaCtx, req, service)
+	if __err != nil {
+		panic("invalid test data " + __err.Error()) // bug
+	}
+	createUserCtx.Payload = payload
+
+	// Perform action
+	__err = ctrl.CreateUser(createUserCtx)
+
+	// Validate response
+	if __err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.UserID
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(*app.UserID)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserID", resp, resp)
+		}
+		__err = mt.Validate()
+		if __err != nil {
+			t.Errorf("invalid response media type: %s", __err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
 // DeleteUserHyUserBadRequest runs the method DeleteUser of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
@@ -232,63 +392,6 @@ func DeleteUserHyUserBadRequest(t goatest.TInterface, ctx context.Context, servi
 	return rw, mt
 }
 
-// DeleteUserHyUserNoContent runs the method DeleteUser of the given controller with the given parameters.
-// It returns the response writer so it's possible to inspect the response headers.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func DeleteUserHyUserNoContent(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int) http.ResponseWriter {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	u := &url.URL{
-		Path: fmt.Sprintf("/api/user/%v", userID),
-	}
-	req, err := http.NewRequest("DELETE", u.String(), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	prms := url.Values{}
-	prms["userID"] = []string{fmt.Sprintf("%v", userID)}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
-	deleteUserCtx, _err := app.NewDeleteUserHyUserContext(goaCtx, req, service)
-	if _err != nil {
-		panic("invalid test data " + _err.Error()) // bug
-	}
-
-	// Perform action
-	_err = ctrl.DeleteUser(deleteUserCtx)
-
-	// Validate response
-	if _err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
-	}
-	if rw.Code != 204 {
-		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
-	}
-
-	// Return results
-	return rw
-}
-
 // DeleteUserHyUserNotFound runs the method DeleteUser of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
@@ -344,6 +447,144 @@ func DeleteUserHyUserNotFound(t goatest.TInterface, ctx context.Context, service
 
 	// Return results
 	return rw
+}
+
+// DeleteUserHyUserOK runs the method DeleteUser of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func DeleteUserHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int) (http.ResponseWriter, *app.User) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/user/%v", userID),
+	}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["userID"] = []string{fmt.Sprintf("%v", userID)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
+	deleteUserCtx, _err := app.NewDeleteUserHyUserContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
+	}
+
+	// Perform action
+	_err = ctrl.DeleteUser(deleteUserCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.User
+	if resp != nil {
+		var ok bool
+		mt, ok = resp.(*app.User)
+		if !ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.User", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// DeleteUserHyUserOKID runs the method DeleteUser of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func DeleteUserHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int) (http.ResponseWriter, *app.UserID) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/user/%v", userID),
+	}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["userID"] = []string{fmt.Sprintf("%v", userID)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
+	deleteUserCtx, _err := app.NewDeleteUserHyUserContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
+	}
+
+	// Perform action
+	_err = ctrl.DeleteUser(deleteUserCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.UserID
+	if resp != nil {
+		var ok bool
+		mt, ok = resp.(*app.UserID)
+		if !ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserID", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
+
+	// Return results
+	return rw, mt
 }
 
 // GetUserHyUserBadRequest runs the method GetUser of the given controller with the given parameters.
@@ -537,11 +778,11 @@ func GetUserHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Ser
 	return rw, mt
 }
 
-// GetUserHyUserOKLink runs the method GetUser of the given controller with the given parameters.
+// GetUserHyUserOKID runs the method GetUser of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func GetUserHyUserOKLink(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int) (http.ResponseWriter, *app.UserLink) {
+func GetUserHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int) (http.ResponseWriter, *app.UserID) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -589,81 +830,12 @@ func GetUserHyUserOKLink(t goatest.TInterface, ctx context.Context, service *goa
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.UserLink
+	var mt *app.UserID
 	if resp != nil {
 		var ok bool
-		mt, ok = resp.(*app.UserLink)
+		mt, ok = resp.(*app.UserID)
 		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserLink", resp, resp)
-		}
-		_err = mt.Validate()
-		if _err != nil {
-			t.Errorf("invalid response media type: %s", _err)
-		}
-	}
-
-	// Return results
-	return rw, mt
-}
-
-// GetUserHyUserOKTiny runs the method GetUser of the given controller with the given parameters.
-// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func GetUserHyUserOKTiny(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int) (http.ResponseWriter, *app.UserTiny) {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	u := &url.URL{
-		Path: fmt.Sprintf("/api/user/%v", userID),
-	}
-	req, err := http.NewRequest("GET", u.String(), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	prms := url.Values{}
-	prms["userID"] = []string{fmt.Sprintf("%v", userID)}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
-	getUserCtx, _err := app.NewGetUserHyUserContext(goaCtx, req, service)
-	if _err != nil {
-		panic("invalid test data " + _err.Error()) // bug
-	}
-
-	// Perform action
-	_err = ctrl.GetUser(getUserCtx)
-
-	// Validate response
-	if _err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
-	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-	var mt *app.UserTiny
-	if resp != nil {
-		var ok bool
-		mt, ok = resp.(*app.UserTiny)
-		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserTiny", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserID", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -751,75 +923,6 @@ func UpdateUserHyUserBadRequest(t goatest.TInterface, ctx context.Context, servi
 	return rw, mt
 }
 
-// UpdateUserHyUserNoContent runs the method UpdateUser of the given controller with the given parameters and payload.
-// It returns the response writer so it's possible to inspect the response headers.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func UpdateUserHyUserNoContent(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UserPayload) http.ResponseWriter {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Validate payload
-	err := payload.Validate()
-	if err != nil {
-		e, ok := err.(goa.ServiceError)
-		if !ok {
-			panic(err) // bug
-		}
-		t.Errorf("unexpected payload validation error: %+v", e)
-		return nil
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	u := &url.URL{
-		Path: fmt.Sprintf("/api/user/%v", userID),
-	}
-	req, _err := http.NewRequest("PUT", u.String(), nil)
-	if _err != nil {
-		panic("invalid test " + _err.Error()) // bug
-	}
-	prms := url.Values{}
-	prms["userID"] = []string{fmt.Sprintf("%v", userID)}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
-	updateUserCtx, __err := app.NewUpdateUserHyUserContext(goaCtx, req, service)
-	if __err != nil {
-		panic("invalid test data " + __err.Error()) // bug
-	}
-	updateUserCtx.Payload = payload
-
-	// Perform action
-	__err = ctrl.UpdateUser(updateUserCtx)
-
-	// Validate response
-	if __err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
-	}
-	if rw.Code != 204 {
-		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
-	}
-
-	// Return results
-	return rw
-}
-
 // UpdateUserHyUserNotFound runs the method UpdateUser of the given controller with the given parameters and payload.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
@@ -889,11 +992,293 @@ func UpdateUserHyUserNotFound(t goatest.TInterface, ctx context.Context, service
 	return rw
 }
 
+// UpdateUserHyUserOK runs the method UpdateUser of the given controller with the given parameters and payload.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func UpdateUserHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UserPayload) (http.ResponseWriter, *app.User) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Validate payload
+	err := payload.Validate()
+	if err != nil {
+		e, ok := err.(goa.ServiceError)
+		if !ok {
+			panic(err) // bug
+		}
+		t.Errorf("unexpected payload validation error: %+v", e)
+		return nil, nil
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/user/%v", userID),
+	}
+	req, _err := http.NewRequest("PUT", u.String(), nil)
+	if _err != nil {
+		panic("invalid test " + _err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["userID"] = []string{fmt.Sprintf("%v", userID)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
+	updateUserCtx, __err := app.NewUpdateUserHyUserContext(goaCtx, req, service)
+	if __err != nil {
+		panic("invalid test data " + __err.Error()) // bug
+	}
+	updateUserCtx.Payload = payload
+
+	// Perform action
+	__err = ctrl.UpdateUser(updateUserCtx)
+
+	// Validate response
+	if __err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.User
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(*app.User)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.User", resp, resp)
+		}
+		__err = mt.Validate()
+		if __err != nil {
+			t.Errorf("invalid response media type: %s", __err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// UpdateUserHyUserOKID runs the method UpdateUser of the given controller with the given parameters and payload.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func UpdateUserHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UserPayload) (http.ResponseWriter, *app.UserID) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Validate payload
+	err := payload.Validate()
+	if err != nil {
+		e, ok := err.(goa.ServiceError)
+		if !ok {
+			panic(err) // bug
+		}
+		t.Errorf("unexpected payload validation error: %+v", e)
+		return nil, nil
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/user/%v", userID),
+	}
+	req, _err := http.NewRequest("PUT", u.String(), nil)
+	if _err != nil {
+		panic("invalid test " + _err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["userID"] = []string{fmt.Sprintf("%v", userID)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
+	updateUserCtx, __err := app.NewUpdateUserHyUserContext(goaCtx, req, service)
+	if __err != nil {
+		panic("invalid test data " + __err.Error()) // bug
+	}
+	updateUserCtx.Payload = payload
+
+	// Perform action
+	__err = ctrl.UpdateUser(updateUserCtx)
+
+	// Validate response
+	if __err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.UserID
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(*app.UserID)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserID", resp, resp)
+		}
+		__err = mt.Validate()
+		if __err != nil {
+			t.Errorf("invalid response media type: %s", __err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// UserListHyUserBadRequest runs the method UserList of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func UserListHyUserBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) (http.ResponseWriter, error) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/user"),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
+	userListCtx, _err := app.NewUserListHyUserContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
+	}
+
+	// Perform action
+	_err = ctrl.UserList(userListCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 400 {
+		t.Errorf("invalid response status code: got %+v, expected 400", rw.Code)
+	}
+	var mt error
+	if resp != nil {
+		var ok bool
+		mt, ok = resp.(error)
+		if !ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of error", resp, resp)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// UserListHyUserNotFound runs the method UserList of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func UserListHyUserNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) http.ResponseWriter {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/user"),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyUserTest"), rw, req, prms)
+	userListCtx, _err := app.NewUserListHyUserContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
+	}
+
+	// Perform action
+	_err = ctrl.UserList(userListCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 404 {
+		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
+	}
+
+	// Return results
+	return rw
+}
+
 // UserListHyUserOK runs the method UserList of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UserListHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) (http.ResponseWriter, app.UserCollection) {
+func UserListHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) (http.ResponseWriter, *app.User) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -940,12 +1325,12 @@ func UserListHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Se
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt app.UserCollection
+	var mt *app.User
 	if resp != nil {
 		var ok bool
-		mt, ok = resp.(app.UserCollection)
+		mt, ok = resp.(*app.User)
 		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserCollection", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.User", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -957,11 +1342,11 @@ func UserListHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Se
 	return rw, mt
 }
 
-// UserListHyUserOKTiny runs the method UserList of the given controller with the given parameters.
+// UserListHyUserOKID runs the method UserList of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UserListHyUserOKTiny(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) (http.ResponseWriter, app.UserTinyCollection) {
+func UserListHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) (http.ResponseWriter, *app.UserID) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1008,12 +1393,12 @@ func UserListHyUserOKTiny(t goatest.TInterface, ctx context.Context, service *go
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt app.UserTinyCollection
+	var mt *app.UserID
 	if resp != nil {
 		var ok bool
-		mt, ok = resp.(app.UserTinyCollection)
+		mt, ok = resp.(*app.UserID)
 		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserTinyCollection", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserID", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {

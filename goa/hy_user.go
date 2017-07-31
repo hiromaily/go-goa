@@ -22,7 +22,8 @@ func (c *HyUserController) CreateUser(ctx *app.CreateUserHyUserContext) error {
 	// Put your logic here
 
 	// HyUserController_CreateUser: end_implement
-	return nil
+	res := &app.User{}
+	return ctx.OK(res)
 }
 
 // DeleteUser runs the DeleteUser action.
@@ -32,7 +33,8 @@ func (c *HyUserController) DeleteUser(ctx *app.DeleteUserHyUserContext) error {
 	// Put your logic here
 
 	// HyUserController_DeleteUser: end_implement
-	return nil
+	res := &app.User{}
+	return ctx.OK(res)
 }
 
 // GetUser runs the GetUser action.
@@ -53,7 +55,8 @@ func (c *HyUserController) UpdateUser(ctx *app.UpdateUserHyUserContext) error {
 	// Put your logic here
 
 	// HyUserController_UpdateUser: end_implement
-	return nil
+	res := &app.User{}
+	return ctx.OK(res)
 }
 
 // UserList runs the UserList action.
@@ -63,6 +66,6 @@ func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 	// Put your logic here
 
 	// HyUserController_UserList: end_implement
-	res := app.UserCollection{}
+	res := &app.User{}
 	return ctx.OK(res)
 }

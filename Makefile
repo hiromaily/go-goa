@@ -198,10 +198,10 @@ http:
 	http localhost:8080/api/_ah/health
 
 	# Login
-	#http POST http://localhost:8080/api/auth/login username=hiro password=xxxxxxxx
-	http --body POST http://localhost:8080/api/auth/login username=hiro password=xxxxxxxx
+	#http POST http://localhost:8080/api/auth/login email=aaaa@test.jp password=password
+	http --body POST http://localhost:8080/api/auth/login email=aaaa@test.jp password=password
 
-	$(eval TOKEN := $(shell http --body POST http://localhost:8080/api/auth/login username=hiro password=xxxxxxxx | jq '.token' | sed 's/"//g'))
+	$(eval TOKEN := $(shell http --body POST http://localhost:8080/api/auth/login email=aaaa@test.jp password=password | jq '.token' | sed 's/"//g'))
 
 	# User
 	http localhost:8080/api/user 'Authorization: Bearer $(TOKEN)'

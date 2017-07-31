@@ -103,138 +103,49 @@ func (mt *CompanyTiny) Validate() (err error) {
 	return
 }
 
-// CompanyCollection is the media type for an array of Company (default view)
-//
-// Identifier: application/vnd.company+json; type=collection; view=default
-type CompanyCollection []*Company
-
-// Validate validates the CompanyCollection media type instance.
-func (mt CompanyCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// CompanyCollection is the media type for an array of Company (tiny view)
-//
-// Identifier: application/vnd.company+json; type=collection; view=tiny
-type CompanyTinyCollection []*CompanyTiny
-
-// Validate validates the CompanyTinyCollection media type instance.
-func (mt CompanyTinyCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
 // A user information (default view)
 //
 // Identifier: application/vnd.user+json; view=default
 type User struct {
-	Email string `form:"email" json:"email" xml:"email"`
-	// API href of user
-	Href string `form:"href" json:"href" xml:"href"`
-	// ID of user
-	ID   int    `form:"id" json:"id" xml:"id"`
-	Name string `form:"name" json:"name" xml:"name"`
+	Email     string `form:"email" json:"email" xml:"email"`
+	FirstName string `form:"first_name" json:"first_name" xml:"first_name"`
+	LastName  string `form:"last_name" json:"last_name" xml:"last_name"`
+	// User ID
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
 // Validate validates the User media type instance.
 func (mt *User) Validate() (err error) {
-
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	if mt.FirstName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "first_name"))
 	}
-	if mt.Name == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
+	if mt.LastName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "last_name"))
 	}
 	if mt.Email == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "email"))
 	}
-	return
-}
-
-// A user information (link view)
-//
-// Identifier: application/vnd.user+json; view=link
-type UserLink struct {
-	// API href of user
-	Href string `form:"href" json:"href" xml:"href"`
-	// ID of user
-	ID int `form:"id" json:"id" xml:"id"`
-}
-
-// Validate validates the UserLink media type instance.
-func (mt *UserLink) Validate() (err error) {
-
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
-	}
-	return
-}
-
-// A user information (tiny view)
-//
-// Identifier: application/vnd.user+json; view=tiny
-type UserTiny struct {
-	// API href of user
-	Href string `form:"href" json:"href" xml:"href"`
-	// ID of user
-	ID   int    `form:"id" json:"id" xml:"id"`
-	Name string `form:"name" json:"name" xml:"name"`
-}
-
-// Validate validates the UserTiny media type instance.
-func (mt *UserTiny) Validate() (err error) {
-
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
-	}
-	if mt.Name == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
-	}
-	return
-}
-
-// UserCollection is the media type for an array of User (default view)
-//
-// Identifier: application/vnd.user+json; type=collection; view=default
-type UserCollection []*User
-
-// Validate validates the UserCollection media type instance.
-func (mt UserCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
+	if mt.UserID != nil {
+		if *mt.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.user_id`, *mt.UserID, 1, true))
 		}
 	}
 	return
 }
 
-// UserCollection is the media type for an array of User (tiny view)
+// A user information (id view)
 //
-// Identifier: application/vnd.user+json; type=collection; view=tiny
-type UserTinyCollection []*UserTiny
+// Identifier: application/vnd.user+json; view=id
+type UserID struct {
+	// User ID
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+}
 
-// Validate validates the UserTinyCollection media type instance.
-func (mt UserTinyCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
+// Validate validates the UserID media type instance.
+func (mt *UserID) Validate() (err error) {
+	if mt.UserID != nil {
+		if *mt.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.user_id`, *mt.UserID, 1, true))
 		}
 	}
 	return

@@ -11,6 +11,9 @@ var resourcePrefix string = "hy_"
 // This is request object
 // Payload is sending data to server
 
+//-----------------------------------------------------------------------------
+// User
+//-----------------------------------------------------------------------------
 var _ = Resource(resourcePrefix+"user", func() {
 
 	DefaultMedia(User) //Response Media Type
@@ -26,19 +29,29 @@ var _ = Resource(resourcePrefix+"user", func() {
 		Routing(
 			GET(""),
 		)
+		//NoSecurity()
+
 		Description("Retrieve all users.")
+
+		// No Payload
+
 		//Responses define the shape and status code
-		//Response(OK, CollectionOf(User))
-		Response(OK, func() {
-			Media(CollectionOf(User, func() {
-				View("default")
-				View("tiny")
-			}))
-			//	Headers(func() {                // Headers list the response HTTP headers
-			//		Header("X-Request-Id")  // Header syntax is identical to Attribute's
-			//      Required("X-Request-Id")
-			//	})
-		})
+		Response(OK, User) // = Response(OK)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+
+		//Response(OK, func() {
+		//	Media(CollectionOf(User, func() {
+		//		View("default")
+		//		View("tiny")
+		//	}))
+		//
+		//	// Headers list the response HTTP headers
+		//	Headers(func() {
+		//		Header("X-Request-Id")
+		//	  Required("X-Request-Id")
+		//	})
+		//})
 
 		//HTTP Request Header
 		//Headers(func() {                  // Headers describe relevant action headers
@@ -53,6 +66,8 @@ var _ = Resource(resourcePrefix+"user", func() {
 			GET("/:userID"),
 		)
 		Description("Retrieve user with given id.")
+
+		// Params is for get parameter
 		Params(func() {
 			Param("userID", Integer, "User ID", func() {
 				Minimum(1)
@@ -69,15 +84,20 @@ var _ = Resource(resourcePrefix+"user", func() {
 			POST(""),
 		)
 		Description("Create new user")
+
+		//Payload is for POST data
 		//Payload(func() {
 		//	Member("name")
 		//	Required("name")
 		//})
+
 		Payload(UserPayload, func() {
-			Required("name", "email")
+			Required("first_name", "last_name", "email", "password")
 		})
 
-		Response(Created, "/user/[0-9]+") //[??]
+		//Response(Created, "/user/[0-9]+") //[??]
+		Response(OK)
+		Response(Created) //[??]
 		Response(BadRequest, ErrorMedia)
 	})
 
@@ -91,7 +111,8 @@ var _ = Resource(resourcePrefix+"user", func() {
 		})
 		Payload(UserPayload)
 
-		Response(NoContent)
+		Response(OK)
+		//Response(NoContent)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
@@ -103,12 +124,17 @@ var _ = Resource(resourcePrefix+"user", func() {
 		Params(func() {
 			Param("userID", Integer, "User ID")
 		})
-		Response(NoContent)
+
+		Response(OK)
+		//Response(NoContent)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
 })
 
+//-----------------------------------------------------------------------------
+// Company
+//-----------------------------------------------------------------------------
 var _ = Resource(resourcePrefix+"company", func() {
 
 	DefaultMedia(Company)
@@ -127,14 +153,16 @@ var _ = Resource(resourcePrefix+"company", func() {
 		)
 		Description("List all companies")
 		//NoSecurity()
-		Response(OK, func() {
-			Media(CollectionOf(Company, func() {
-				View("default")
-				View("tiny")
-			}))
-		})
+
+		Response(OK)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
+		//Response(OK, func() {
+		//	Media(CollectionOf(Company, func() {
+		//		View("default")
+		//		View("tiny")
+		//	}))
+		//})
 	})
 
 	Action("GetCompany", func() {
@@ -172,7 +200,11 @@ var _ = Resource(resourcePrefix+"company", func() {
 		Payload(CompanyPayload, func() {
 			Required("name", "country", "address")
 		})
-		Response(Created, "^/user/[0-9]+/company/[0-9]+$")
+
+		//no response template named "Created" in resource "hy_company" action "CreateCompany"
+		//=>it should be defined in api_definition.go
+		//Response(Created, "^/user/[0-9]+/company/[0-9]+$")
+		Response(Created)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
@@ -205,6 +237,9 @@ var _ = Resource(resourcePrefix+"company", func() {
 	})
 })
 
+//-----------------------------------------------------------------------------
+// Public
+//-----------------------------------------------------------------------------
 var _ = Resource("public", func() {
 	Origin("*", func() {
 		Methods("GET", "OPTIONS")

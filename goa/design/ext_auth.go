@@ -5,6 +5,7 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
+// Additional file for auth when login
 // JWT defines a security scheme using JWT.  The scheme uses the "Authorization" header to lookup
 // the token.  It also defines then scope "api".
 var JWT = JWTSecurity("jwt", func() {

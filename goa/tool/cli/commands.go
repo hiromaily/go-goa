@@ -145,7 +145,7 @@ Payload example:
 
 {
    "address": "Tokyo",
-   "country": "Tokyo, Japan",
+   "country": "Japan",
    "name": "Sony"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
@@ -168,7 +168,9 @@ Payload example:
 
 {
    "email": "hy@gmail.com",
-   "name": "Hiroki"
+   "first_name": "Hiroki",
+   "last_name": "Yasui",
+   "password": "xxxxx"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
 	}
@@ -259,8 +261,8 @@ Payload example:
 Payload example:
 
 {
-   "email": "Incidunt quia quo alias aut quo aut.",
-   "password": "Vel nesciunt omnis."
+   "email": "Suscipit quis exercitationem ut ipsum quis saepe.",
+   "password": "Cum repellat tempora eum."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
 	}
@@ -282,7 +284,7 @@ Payload example:
 
 {
    "address": "Tokyo",
-   "country": "Tokyo, Japan",
+   "country": "Japan",
    "name": "Sony"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp10.Run(c, args) },
@@ -305,7 +307,9 @@ Payload example:
 
 {
    "email": "hy@gmail.com",
-   "name": "Hiroki"
+   "first_name": "Hiroki",
+   "last_name": "Yasui",
+   "password": "xxxxx"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },
 	}

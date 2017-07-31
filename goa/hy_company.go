@@ -22,7 +22,7 @@ func (c *HyCompanyController) CompanyList(ctx *app.CompanyListHyCompanyContext) 
 	// Put your logic here
 
 	// HyCompanyController_CompanyList: end_implement
-	res := app.CompanyCollection{}
+	res := &app.Company{}
 	return ctx.OK(res)
 }
 

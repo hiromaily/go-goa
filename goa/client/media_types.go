@@ -132,54 +132,6 @@ func (c *Client) DecodeCompanyTiny(resp *http.Response) (*CompanyTiny, error) {
 	return &decoded, err
 }
 
-// CompanyCollection is the media type for an array of Company (default view)
-//
-// Identifier: application/vnd.company+json; type=collection; view=default
-type CompanyCollection []*Company
-
-// Validate validates the CompanyCollection media type instance.
-func (mt CompanyCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// CompanyCollection is the media type for an array of Company (tiny view)
-//
-// Identifier: application/vnd.company+json; type=collection; view=tiny
-type CompanyTinyCollection []*CompanyTiny
-
-// Validate validates the CompanyTinyCollection media type instance.
-func (mt CompanyTinyCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// DecodeCompanyCollection decodes the CompanyCollection instance encoded in resp body.
-func (c *Client) DecodeCompanyCollection(resp *http.Response) (CompanyCollection, error) {
-	var decoded CompanyCollection
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return decoded, err
-}
-
-// DecodeCompanyTinyCollection decodes the CompanyTinyCollection instance encoded in resp body.
-func (c *Client) DecodeCompanyTinyCollection(resp *http.Response) (CompanyTinyCollection, error) {
-	var decoded CompanyTinyCollection
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return decoded, err
-}
-
 // DecodeErrorResponse decodes the ErrorResponse instance encoded in resp body.
 func (c *Client) DecodeErrorResponse(resp *http.Response) (*goa.ErrorResponse, error) {
 	var decoded goa.ErrorResponse
@@ -191,67 +143,46 @@ func (c *Client) DecodeErrorResponse(resp *http.Response) (*goa.ErrorResponse, e
 //
 // Identifier: application/vnd.user+json; view=default
 type User struct {
-	Email string `form:"email" json:"email" xml:"email"`
-	// API href of user
-	Href string `form:"href" json:"href" xml:"href"`
-	// ID of user
-	ID   int    `form:"id" json:"id" xml:"id"`
-	Name string `form:"name" json:"name" xml:"name"`
+	Email     string `form:"email" json:"email" xml:"email"`
+	FirstName string `form:"first_name" json:"first_name" xml:"first_name"`
+	LastName  string `form:"last_name" json:"last_name" xml:"last_name"`
+	// User ID
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
 // Validate validates the User media type instance.
 func (mt *User) Validate() (err error) {
-
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	if mt.FirstName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "first_name"))
 	}
-	if mt.Name == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
+	if mt.LastName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "last_name"))
 	}
 	if mt.Email == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "email"))
 	}
-	return
-}
-
-// A user information (link view)
-//
-// Identifier: application/vnd.user+json; view=link
-type UserLink struct {
-	// API href of user
-	Href string `form:"href" json:"href" xml:"href"`
-	// ID of user
-	ID int `form:"id" json:"id" xml:"id"`
-}
-
-// Validate validates the UserLink media type instance.
-func (mt *UserLink) Validate() (err error) {
-
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	if mt.UserID != nil {
+		if *mt.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.user_id`, *mt.UserID, 1, true))
+		}
 	}
 	return
 }
 
-// A user information (tiny view)
+// A user information (id view)
 //
-// Identifier: application/vnd.user+json; view=tiny
-type UserTiny struct {
-	// API href of user
-	Href string `form:"href" json:"href" xml:"href"`
-	// ID of user
-	ID   int    `form:"id" json:"id" xml:"id"`
-	Name string `form:"name" json:"name" xml:"name"`
+// Identifier: application/vnd.user+json; view=id
+type UserID struct {
+	// User ID
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
-// Validate validates the UserTiny media type instance.
-func (mt *UserTiny) Validate() (err error) {
-
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
-	}
-	if mt.Name == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
+// Validate validates the UserID media type instance.
+func (mt *UserID) Validate() (err error) {
+	if mt.UserID != nil {
+		if *mt.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.user_id`, *mt.UserID, 1, true))
+		}
 	}
 	return
 }
@@ -263,66 +194,11 @@ func (c *Client) DecodeUser(resp *http.Response) (*User, error) {
 	return &decoded, err
 }
 
-// DecodeUserLink decodes the UserLink instance encoded in resp body.
-func (c *Client) DecodeUserLink(resp *http.Response) (*UserLink, error) {
-	var decoded UserLink
+// DecodeUserID decodes the UserID instance encoded in resp body.
+func (c *Client) DecodeUserID(resp *http.Response) (*UserID, error) {
+	var decoded UserID
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
-}
-
-// DecodeUserTiny decodes the UserTiny instance encoded in resp body.
-func (c *Client) DecodeUserTiny(resp *http.Response) (*UserTiny, error) {
-	var decoded UserTiny
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return &decoded, err
-}
-
-// UserCollection is the media type for an array of User (default view)
-//
-// Identifier: application/vnd.user+json; type=collection; view=default
-type UserCollection []*User
-
-// Validate validates the UserCollection media type instance.
-func (mt UserCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// UserCollection is the media type for an array of User (tiny view)
-//
-// Identifier: application/vnd.user+json; type=collection; view=tiny
-type UserTinyCollection []*UserTiny
-
-// Validate validates the UserTinyCollection media type instance.
-func (mt UserTinyCollection) Validate() (err error) {
-	for _, e := range mt {
-		if e != nil {
-			if err2 := e.Validate(); err2 != nil {
-				err = goa.MergeErrors(err, err2)
-			}
-		}
-	}
-	return
-}
-
-// DecodeUserCollection decodes the UserCollection instance encoded in resp body.
-func (c *Client) DecodeUserCollection(resp *http.Response) (UserCollection, error) {
-	var decoded UserCollection
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return decoded, err
-}
-
-// DecodeUserTinyCollection decodes the UserTinyCollection instance encoded in resp body.
-func (c *Client) DecodeUserTinyCollection(resp *http.Response) (UserTinyCollection, error) {
-	var decoded UserTinyCollection
-	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
-	return decoded, err
 }
 
 // A user who belongs to which companies (default view)
