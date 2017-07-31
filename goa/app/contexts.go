@@ -39,14 +39,14 @@ func NewLoginAuthContext(ctx context.Context, r *http.Request, service *goa.Serv
 
 // loginAuthPayload is the auth Login action payload.
 type loginAuthPayload struct {
+	Email    *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
 	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
-	Username *string `form:"username,omitempty" json:"username,omitempty" xml:"username,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
 func (payload *loginAuthPayload) Validate() (err error) {
-	if payload.Username == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "username"))
+	if payload.Email == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "email"))
 	}
 	if payload.Password == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))
@@ -57,25 +57,25 @@ func (payload *loginAuthPayload) Validate() (err error) {
 // Publicize creates LoginAuthPayload from loginAuthPayload
 func (payload *loginAuthPayload) Publicize() *LoginAuthPayload {
 	var pub LoginAuthPayload
+	if payload.Email != nil {
+		pub.Email = *payload.Email
+	}
 	if payload.Password != nil {
 		pub.Password = *payload.Password
-	}
-	if payload.Username != nil {
-		pub.Username = *payload.Username
 	}
 	return &pub
 }
 
 // LoginAuthPayload is the auth Login action payload.
 type LoginAuthPayload struct {
+	Email    string `form:"email" json:"email" xml:"email"`
 	Password string `form:"password" json:"password" xml:"password"`
-	Username string `form:"username" json:"username" xml:"username"`
 }
 
 // Validate runs the validation rules defined in the design.
 func (payload *LoginAuthPayload) Validate() (err error) {
-	if payload.Username == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "username"))
+	if payload.Email == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "email"))
 	}
 	if payload.Password == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))

@@ -27,9 +27,9 @@ var _ = Resource("auth", func() {
 		NoSecurity() // Override the need for auth
 		Routing(POST("login"))
 		Payload(func() {
-			Member("username")
+			Member("email")
 			Member("password")
-			Required("username", "password")
+			Required("email", "password")
 		})
 		Response(OK, func() {
 			Headers(func() {

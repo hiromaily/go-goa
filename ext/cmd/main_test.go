@@ -2,13 +2,14 @@ package main_test
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	//"net/http/httptest"
-	"bytes"
 	"errors"
 	"net/url"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -18,7 +19,9 @@ import (
 const SERVER_HOST = "http://localhost:8080"
 
 var (
-	errRedirect = errors.New("redirect")
+	errRedirect  = errors.New("redirect")
+	contentType  = map[string]string{"Content-Type": "application/x-www-form-urlencoded"}
+	loginHeaders = []map[string]string{contentType}
 )
 
 type GetTest struct {
@@ -37,7 +40,20 @@ var getTests = []GetTest{
 	{"/api/_ah/health", http.StatusOK, "GET", nil, "", nil},
 }
 
-//http --body POST http://localhost:8080/api/auth/login username=hiro password=xxxxxxxx
+type LoginAPITest struct {
+	GetTest
+	email    string
+	password string
+}
+
+var loginAPITests = []LoginAPITest{
+	{GetTest{"/api/auth/login", http.StatusUnauthorized, "POST", loginHeaders, "", nil}, "", ""},
+	{GetTest{"/api/auth/login", http.StatusUnauthorized, "POST", loginHeaders, "", nil}, "hiro", ""},
+	{GetTest{"/api/auth/login", http.StatusUnauthorized, "POST", loginHeaders, "", nil}, "wrong", "something"},
+	{GetTest{"/api/auth/login", http.StatusNotFound, "GET", loginHeaders, "", nil}, "aaaa@test.jp", "password"},
+	{GetTest{"/api/auth/login", http.StatusBadRequest, "POST", nil, "", nil}, "aaaa@test.jp", "password"},
+	{GetTest{"/api/auth/login", http.StatusOK, "POST", loginHeaders, "", nil}, "aaaa@test.jp", "password"},
+}
 
 //-----------------------------------------------------------------------------
 // Test Framework
@@ -113,15 +129,13 @@ func checkError(t *testing.T, err error, code int, header http.Header, tt GetTes
 	}
 }
 
-func sendRequest(url, method string, data []byte, headers []map[string]string) ([]byte, int, http.Header, error) {
+func sendRequest(url, method string, bd io.Reader, headers []map[string]string) ([]byte, int, http.Header, error) {
 
 	//1. prepare NewRequest data
 	req, err := http.NewRequest(
-		//"POST",
 		method,
 		url,
-		//bytes.NewBuffer(jsonStr),
-		bytes.NewReader(data),
+		bd,
 	)
 	if err != nil {
 		return nil, 0, nil, err
@@ -129,13 +143,11 @@ func sendRequest(url, method string, data []byte, headers []map[string]string) (
 
 	//2. set http header
 	//req.Header.Set("Content-Type", "application/json; charset=utf-8")
-	//req.Header.Set("Cookie", fmt.Sprintf("%s=%s", cookieKey, cookie))
 	if headers != nil {
 		setHTTPHeaders(req, headers)
 	}
 
 	//3. send
-	//client := &http.Client{}
 	client := &http.Client{
 		Timeout: time.Duration(3) * time.Second,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
@@ -158,22 +170,32 @@ func sendRequest(url, method string, data []byte, headers []map[string]string) (
 //-----------------------------------------------------------------------------
 // Test
 //-----------------------------------------------------------------------------
-func TestSomething(t *testing.T) {
-	//if err != nil {
-	//	t.Errorf("TestMain error: %s", err)
-	//}
-}
-
 func TestGetRequestOnTable(t *testing.T) {
 	//TODO: this test is run on docker with webserver, so httptest is not used.
-	//request
-
 	for i, tt := range getTests {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
 
 		//send request
+		//body := bytes.NewReader(data)
 		_, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, nil, tt.headers)
 		checkError(t, err, code, header, tt)
+	}
+}
+
+func TestLoginOnTable(t *testing.T) {
+	//loginAPITests
+	//http --body POST http://localhost:8080/api/auth/login email=hiro password=xxxxxxxx
+	for i, tt := range loginAPITests {
+		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
+
+		//body
+		values := url.Values{}
+		values.Set("email", tt.email)
+		values.Set("password", tt.password)
+
+		//send request
+		_, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, strings.NewReader(values.Encode()), tt.headers)
+		checkError(t, err, code, header, tt.GetTest)
 	}
 }
 

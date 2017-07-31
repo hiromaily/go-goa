@@ -139,17 +139,17 @@ definitions:
     type: object
   LoginAuthPayload:
     example:
-      password: Incidunt quia quo alias aut quo aut.
-      username: Vel nesciunt omnis.
+      email: Incidunt quia quo alias aut quo aut.
+      password: Vel nesciunt omnis.
     properties:
-      password:
+      email:
         example: Incidunt quia quo alias aut quo aut.
         type: string
-      username:
+      password:
         example: Vel nesciunt omnis.
         type: string
     required:
-    - username
+    - email
     - password
     title: LoginAuthPayload
     type: object

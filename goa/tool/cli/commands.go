@@ -259,8 +259,8 @@ Payload example:
 Payload example:
 
 {
-   "password": "Incidunt quia quo alias aut quo aut.",
-   "username": "Vel nesciunt omnis."
+   "email": "Incidunt quia quo alias aut quo aut.",
+   "password": "Vel nesciunt omnis."
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
 	}

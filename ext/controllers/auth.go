@@ -30,7 +30,7 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 
 	// Login
 	svc := &m.User{Db: c.ctx.Db}
-	err := svc.Login(ctx.Payload.Username, ctx.Payload.Password)
+	err := svc.Login(ctx.Payload.Email, ctx.Payload.Password)
 	if err != nil {
 		return ctx.Unauthorized()
 	}
