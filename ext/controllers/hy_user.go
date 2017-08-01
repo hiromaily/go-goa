@@ -70,11 +70,15 @@ func (c *HyUserController) GetUser(ctx *app.GetUserHyUserContext) error {
 // CreateUser runs the CreateUser action.
 func (c *HyUserController) CreateUser(ctx *app.CreateUserHyUserContext) error {
 	// HyUserController_CreateUser: start_implement
+	fmt.Println("[hy_user][GetUser]")
 
-	// Put your logic here
+	svc := &m.User{Db: c.ctx.Db}
+	userID, err := svc.InsertUser(ctx.Payload) //*CreateUserHyUserPayload
+	if err != nil {
+		return err
+	}
 
-	// HyUserController_CreateUser: end_implement
-	res := &app.UserID{}
+	res := &app.UserID{ID: &userID}
 	return ctx.OKId(res)
 }
 

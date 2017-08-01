@@ -5,7 +5,7 @@ import (
 	"github.com/hiromaily/go-goa/goa/app"
 	hs "github.com/hiromaily/golibs/cipher/hash"
 	"github.com/hiromaily/golibs/db/gorm"
-	lg "github.com/hiromaily/golibs/log"
+	//lg "github.com/hiromaily/golibs/log"
 	//c "github.com/hiromaily/go-goa/ext/context"
 	//"github.com/jinzhu/gorm"
 	//"golang.org/x/crypto/bcrypt"
@@ -23,6 +23,13 @@ type LoginUser struct {
 	userName string
 }
 
+type InsertUser struct {
+	Id       int    `gorm:"column:id"`
+	UserName string `gorm:"column:user_name"`
+	Email    string `gorm:"column:email"`
+	Password string `gorm:"column:password"`
+}
+
 // Count is to count
 func (m *User) Count() (cnt int) {
 	//m.Ctx.Db
@@ -30,19 +37,18 @@ func (m *User) Count() (cnt int) {
 	return 0
 }
 
-// TODO:Login is for login
+// Login is for login
 func (m *User) Login(email, password string) error {
 	var users []LoginUser
 	m.Db.DB.Raw("SELECT id, user_name FROM t_users WHERE delete_flg=? AND email=? AND password=?", "0", email, hs.GetMD5Plus(password, "")).Scan(&users)
 
-	lg.Debugf("len(users): %v", len(users))
 	if len(users) == 0 {
 		return errors.New("invalid input.")
 	} else if len(users) > 1 {
 		return errors.New("data in database would be broken.")
 	}
 
-	lg.Debugf("users[0].userName: %v", users[0].userName)
+	//lg.Debugf("users[0].userName: %v", users[0].userName)
 	return nil
 }
 
@@ -58,4 +64,16 @@ func (m *User) GetUser(userID int, user *app.User) {
 		*user = *users[0]
 	}
 	return
+}
+
+func (m *User) InsertUser(user *app.CreateUserHyUserPayload) (int, error) {
+	//m.Db.DB.Exec("INSERT INTO t_users (user_name, email, password) VALUES (?, ?, ?)", user.UserName, user.Email, user.Password)
+	insUser := InsertUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
+	m.Db.DB.Table("t_users").Save(&insUser)
+	if m.Db.DB.Error != nil {
+		return 0, m.Db.DB.Error
+	}
+
+	//lg.Debugf("Id: %d", insUser.Id)
+	return insUser.Id, nil
 }

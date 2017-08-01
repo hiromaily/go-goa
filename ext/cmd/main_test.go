@@ -30,6 +30,7 @@ type loginAuthPayload struct {
 	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
 }
 
+//TODO:change
 type createUserHyUserPayload struct {
 	// E-mail of user
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
@@ -48,6 +49,7 @@ var (
 	loginHeaders      = []map[string]string{contentTypeJson}
 	loginWrongHeaders = []map[string]string{contentTypeForm}
 	userHeaders       = []map[string]string{jwtAuth}
+	userJsonHeaders   = []map[string]string{jwtAuth, contentTypeJson}
 )
 
 type TableTest struct {
@@ -82,11 +84,29 @@ var loginAPITests = []LoginAPITest{
 	{TableTest{"/api/auth/login", http.StatusOK, "POST", loginHeaders, "", nil}, "aaaa1@test.jp", "password"},
 }
 
-var userAPITests = []TableTest{
-	{"/api/user", http.StatusOK, "GET", userHeaders, "", nil},
-	{"/api/user/999999", http.StatusNotFound, "GET", userHeaders, "", nil},
-	{"/api/user/1", http.StatusOK, "GET", userHeaders, "", nil},
-	//{"/api/user", http.StatusOK, "POST", userHeaders, "", nil},
+type UserAPITest struct {
+	TableTest
+	email    string
+	password string
+	userName string
+}
+
+var userAPITests = []UserAPITest{
+	{TableTest{"/api/user", http.StatusOK, "GET", userHeaders, "", nil}, "", "", ""},
+	{TableTest{"/api/user/999999", http.StatusNotFound, "GET", userHeaders, "", nil}, "", "", ""},
+	{TableTest{"/api/user/1", http.StatusOK, "GET", userHeaders, "", nil}, "", "", ""},
+	{TableTest{"/api/user", http.StatusBadRequest, "POST", userJsonHeaders, "", nil}, "", "", ""},
+	//TODO:this test return 200 though http header doesn't include [Content-Type: application/json]
+	{TableTest{"/api/user", http.StatusOK, "POST", userHeaders, "", nil},
+		"fromtest01@test.com",
+		"testtest01",
+		"testuser01",
+	},
+	{TableTest{"/api/user", http.StatusOK, "POST", userJsonHeaders, "", nil},
+		"fromtest02@test.com",
+		"testtest02",
+		"testuser02",
+	},
 	//{"/api/user/%s", http.StatusOK, "GET", userHeaders, "", nil},
 	//{"/api/user/%s", http.StatusOK, "PUT", userHeaders, "", nil},
 	//{"/api/user/%s", http.StatusOK, "GET", userHeaders, "", nil},
@@ -272,7 +292,6 @@ func TestGetRequestOnTable(t *testing.T) {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
 
 		//send request
-		//body := bytes.NewReader(data)
 		_, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, nil, tt.headers)
 		checkError(t, err, code, header, tt, i+1)
 	}
@@ -280,13 +299,12 @@ func TestGetRequestOnTable(t *testing.T) {
 
 func TestLoginOnTable(t *testing.T) {
 	//loginAPITests
+	var ioReader io.Reader
 	for i, tt := range loginAPITests {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
 
 		//body
-		var ioReader io.Reader
-		//contentTypeForm   = map[string]string{"Content-Type": "application/x-www-form-urlencoded"}
-		//contentTypeJson   = map[string]string{"Content-Type": "application/json"}
+		//ioReader = nil
 		if searchHTTPHeaders("Content-Type", tt.headers) == "application/json" {
 			//json
 			//this pattern can't work somehow
@@ -335,12 +353,25 @@ func TestUserAPIOnTable(t *testing.T) {
 	//http DELETE http://localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
 
 	//userAPITests
+	var ioReader io.Reader
 	for i, tt := range userAPITests {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
 		//send request
-		//fmt.Println(tt.headers)
-		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, nil, tt.headers)
-		checkError(t, err, code, header, tt, i+1)
+		ioReader = nil
+		if tt.method == "POST" {
+			//json
+			userData := createUserHyUserPayload{}
+			userData.Email = &tt.email
+			userData.Password = &tt.password
+			userData.UserName = &tt.userName
+			jsonByte, err := convertJson(&userData)
+			if err != nil {
+				t.Fatalf("[%s] json data for request is invalid.", tt.url)
+			}
+			ioReader = bytes.NewReader(jsonByte)
+		}
+		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, ioReader, tt.headers)
+		checkError(t, err, code, header, tt.TableTest, i+1)
 
 		fmt.Println("[Debug] body:", string(body))
 	}
