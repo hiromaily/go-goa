@@ -36,8 +36,9 @@ var _ = Resource(resourcePrefix+"user", func() {
 		// No Payload
 
 		//Responses define the shape and status code
-		Response(OK, User) // = Response(OK)
-		Response(NotFound)
+		//Response(OK, User) // = Response(OK)
+		Response(OK, CollectionOf(User)) //multiple response
+		Response(NoContent)
 		Response(BadRequest, ErrorMedia)
 
 		//Response(OK, func() {
@@ -92,12 +93,12 @@ var _ = Resource(resourcePrefix+"user", func() {
 		//})
 
 		Payload(UserPayload, func() {
-			Required("first_name", "last_name", "email", "password")
+			Required("user_name", "email", "password")
 		})
 
 		//Response(Created, "/user/[0-9]+") //[??]
 		Response(OK)
-		Response(Created) //[??]
+		Response(Created)
 		Response(BadRequest, ErrorMedia)
 	})
 

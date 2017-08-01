@@ -7,15 +7,29 @@ import (
 
 //TODO: CommonResponse defines common data of response
 var CommonResponse = Type("CommonResponse", func() {
-	Attribute("create_datetime", String, "Date of creation", func() {
+	Attribute("created_at", String, "Date of creation", func() {
 		Format("date-time")
 		Example("2017-03-10T15:00:00Z")
 	})
-	Attribute("update_datetime", String, "Date of update", func() {
+	Attribute("updated_at", String, "Date of update", func() {
 		Format("date-time")
 		Example("2017-03-10T15:00:00Z")
 	})
 })
+
+var fieldEmail = func() {
+	Description("E-mail of user")
+	Format("email")
+	Example("hy@gmail.com")
+}
+
+var fieldPassword = func() {
+	Description("Password")
+	MinLength(8)
+	MinLength(20)
+	Example("xxxxxxxx")
+}
+
 
 // BottlePayload defines the data structure used in the create bottle request body.
 // It is also the base type for the bottle media type used to render bottles.

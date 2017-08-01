@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/goadesign/goa"
 	c "github.com/hiromaily/go-goa/ext/context"
+	m "github.com/hiromaily/go-goa/ext/models"
 	"github.com/hiromaily/go-goa/goa/app"
 )
 
@@ -27,11 +28,25 @@ func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 	// HyUserController_UserList: start_implement
 	fmt.Println("[hy_user][UserList]", ctx)
 
-	// Put your logic here
-	// TODO:How to
+	// Get UserList
 
-	// HyUserController_UserList: end_implement
-	res := &app.User{}
+	//type User struct {
+	//	Email     string `form:"email" json:"email" xml:"email"`
+	//	FirstName string `form:"first_name" json:"first_name" xml:"first_name"`
+	//	LastName  string `form:"last_name" json:"last_name" xml:"last_name"`
+	//	// User ID
+	//	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	//}
+	var users []*app.User
+
+	svc := &m.User{Db: c.ctx.Db}
+	svc.UserList(&users)
+
+	//if len(users) == 0{
+	//}
+
+	//type UserCollection []*User
+	res := app.UserCollection(users)
 	return ctx.OK(res)
 }
 

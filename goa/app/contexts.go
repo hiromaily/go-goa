@@ -40,7 +40,9 @@ func NewLoginAuthContext(ctx context.Context, r *http.Request, service *goa.Serv
 
 // loginAuthPayload is the auth Login action payload.
 type loginAuthPayload struct {
-	Email    *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// E-mail of user
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// Password
 	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
 }
 
@@ -51,6 +53,16 @@ func (payload *loginAuthPayload) Validate() (err error) {
 	}
 	if payload.Password == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))
+	}
+	if payload.Email != nil {
+		if err2 := goa.ValidateFormat(goa.FormatEmail, *payload.Email); err2 != nil {
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`raw.email`, *payload.Email, goa.FormatEmail, err2))
+		}
+	}
+	if payload.Password != nil {
+		if utf8.RuneCountInString(*payload.Password) < 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 20, true))
+		}
 	}
 	return
 }
@@ -69,7 +81,9 @@ func (payload *loginAuthPayload) Publicize() *LoginAuthPayload {
 
 // LoginAuthPayload is the auth Login action payload.
 type LoginAuthPayload struct {
-	Email    string `form:"email" json:"email" xml:"email"`
+	// E-mail of user
+	Email string `form:"email" json:"email" xml:"email"`
+	// Password
 	Password string `form:"password" json:"password" xml:"password"`
 }
 
@@ -80,6 +94,12 @@ func (payload *LoginAuthPayload) Validate() (err error) {
 	}
 	if payload.Password == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))
+	}
+	if err2 := goa.ValidateFormat(goa.FormatEmail, payload.Email); err2 != nil {
+		err = goa.MergeErrors(err, goa.InvalidFormatError(`raw.email`, payload.Email, goa.FormatEmail, err2))
+	}
+	if utf8.RuneCountInString(payload.Password) < 20 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 20, true))
 	}
 	return
 }
@@ -144,19 +164,19 @@ func NewCompanyListHyCompanyContext(ctx context.Context, r *http.Request, servic
 
 // OK sends a HTTP response with status code 200.
 func (ctx *CompanyListHyCompanyContext) OK(r *Company) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKLink sends a HTTP response with status code 200.
 func (ctx *CompanyListHyCompanyContext) OKLink(r *CompanyLink) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKTiny sends a HTTP response with status code 200.
 func (ctx *CompanyListHyCompanyContext) OKTiny(r *CompanyTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
@@ -375,19 +395,19 @@ func NewGetCompanyHyCompanyContext(ctx context.Context, r *http.Request, service
 
 // OK sends a HTTP response with status code 200.
 func (ctx *GetCompanyHyCompanyContext) OK(r *Company) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKLink sends a HTTP response with status code 200.
 func (ctx *GetCompanyHyCompanyContext) OKLink(r *CompanyLink) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKTiny sends a HTTP response with status code 200.
 func (ctx *GetCompanyHyCompanyContext) OKTiny(r *CompanyTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
@@ -475,21 +495,16 @@ func NewCreateUserHyUserContext(ctx context.Context, r *http.Request, service *g
 type createUserHyUserPayload struct {
 	// E-mail of user
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
-	// First name
-	FirstName *string `form:"first_name,omitempty" json:"first_name,omitempty" xml:"first_name,omitempty"`
-	// Last name
-	LastName *string `form:"last_name,omitempty" json:"last_name,omitempty" xml:"last_name,omitempty"`
 	// Password
 	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	// First name
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
 func (payload *createUserHyUserPayload) Validate() (err error) {
-	if payload.FirstName == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "first_name"))
-	}
-	if payload.LastName == nil {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "last_name"))
+	if payload.UserName == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "user_name"))
 	}
 	if payload.Email == nil {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "email"))
@@ -502,19 +517,14 @@ func (payload *createUserHyUserPayload) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidFormatError(`raw.email`, *payload.Email, goa.FormatEmail, err2))
 		}
 	}
-	if payload.FirstName != nil {
-		if utf8.RuneCountInString(*payload.FirstName) < 10 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.first_name`, *payload.FirstName, utf8.RuneCountInString(*payload.FirstName), 10, true))
-		}
-	}
-	if payload.LastName != nil {
-		if utf8.RuneCountInString(*payload.LastName) < 10 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.last_name`, *payload.LastName, utf8.RuneCountInString(*payload.LastName), 10, true))
-		}
-	}
 	if payload.Password != nil {
 		if utf8.RuneCountInString(*payload.Password) < 20 {
 			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 20, true))
+		}
+	}
+	if payload.UserName != nil {
+		if utf8.RuneCountInString(*payload.UserName) < 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, *payload.UserName, utf8.RuneCountInString(*payload.UserName), 20, true))
 		}
 	}
 	return
@@ -526,14 +536,11 @@ func (payload *createUserHyUserPayload) Publicize() *CreateUserHyUserPayload {
 	if payload.Email != nil {
 		pub.Email = *payload.Email
 	}
-	if payload.FirstName != nil {
-		pub.FirstName = *payload.FirstName
-	}
-	if payload.LastName != nil {
-		pub.LastName = *payload.LastName
-	}
 	if payload.Password != nil {
 		pub.Password = *payload.Password
+	}
+	if payload.UserName != nil {
+		pub.UserName = *payload.UserName
 	}
 	return &pub
 }
@@ -542,21 +549,16 @@ func (payload *createUserHyUserPayload) Publicize() *CreateUserHyUserPayload {
 type CreateUserHyUserPayload struct {
 	// E-mail of user
 	Email string `form:"email" json:"email" xml:"email"`
-	// First name
-	FirstName string `form:"first_name" json:"first_name" xml:"first_name"`
-	// Last name
-	LastName string `form:"last_name" json:"last_name" xml:"last_name"`
 	// Password
 	Password string `form:"password" json:"password" xml:"password"`
+	// First name
+	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
 }
 
 // Validate runs the validation rules defined in the design.
 func (payload *CreateUserHyUserPayload) Validate() (err error) {
-	if payload.FirstName == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "first_name"))
-	}
-	if payload.LastName == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "last_name"))
+	if payload.UserName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "user_name"))
 	}
 	if payload.Email == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "email"))
@@ -567,27 +569,24 @@ func (payload *CreateUserHyUserPayload) Validate() (err error) {
 	if err2 := goa.ValidateFormat(goa.FormatEmail, payload.Email); err2 != nil {
 		err = goa.MergeErrors(err, goa.InvalidFormatError(`raw.email`, payload.Email, goa.FormatEmail, err2))
 	}
-	if utf8.RuneCountInString(payload.FirstName) < 10 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.first_name`, payload.FirstName, utf8.RuneCountInString(payload.FirstName), 10, true))
-	}
-	if utf8.RuneCountInString(payload.LastName) < 10 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.last_name`, payload.LastName, utf8.RuneCountInString(payload.LastName), 10, true))
-	}
 	if utf8.RuneCountInString(payload.Password) < 20 {
 		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 20, true))
+	}
+	if utf8.RuneCountInString(payload.UserName) < 20 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, payload.UserName, utf8.RuneCountInString(payload.UserName), 20, true))
 	}
 	return
 }
 
 // OK sends a HTTP response with status code 200.
 func (ctx *CreateUserHyUserContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKId sends a HTTP response with status code 200.
 func (ctx *CreateUserHyUserContext) OKId(r *UserID) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
@@ -634,13 +633,13 @@ func NewDeleteUserHyUserContext(ctx context.Context, r *http.Request, service *g
 
 // OK sends a HTTP response with status code 200.
 func (ctx *DeleteUserHyUserContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKId sends a HTTP response with status code 200.
 func (ctx *DeleteUserHyUserContext) OKId(r *UserID) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
@@ -690,13 +689,13 @@ func NewGetUserHyUserContext(ctx context.Context, r *http.Request, service *goa.
 
 // OK sends a HTTP response with status code 200.
 func (ctx *GetUserHyUserContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKId sends a HTTP response with status code 200.
 func (ctx *GetUserHyUserContext) OKId(r *UserID) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
@@ -744,13 +743,13 @@ func NewUpdateUserHyUserContext(ctx context.Context, r *http.Request, service *g
 
 // OK sends a HTTP response with status code 200.
 func (ctx *UpdateUserHyUserContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKId sends a HTTP response with status code 200.
 func (ctx *UpdateUserHyUserContext) OKId(r *UserID) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
@@ -786,25 +785,31 @@ func NewUserListHyUserContext(ctx context.Context, r *http.Request, service *goa
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *UserListHyUserContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+func (ctx *UserListHyUserContext) OK(r UserCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json; type=collection")
+	if r == nil {
+		r = UserCollection{}
+	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
 // OKId sends a HTTP response with status code 200.
-func (ctx *UserListHyUserContext) OKId(r *UserID) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
+func (ctx *UserListHyUserContext) OKId(r UserIDCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json; type=collection")
+	if r == nil {
+		r = UserIDCollection{}
+	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// NoContent sends a HTTP response with status code 204.
+func (ctx *UserListHyUserContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
 }
 
 // BadRequest sends a HTTP response with status code 400.
 func (ctx *UserListHyUserContext) BadRequest(r error) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
-}
-
-// NotFound sends a HTTP response with status code 404.
-func (ctx *UserListHyUserContext) NotFound() error {
-	ctx.ResponseData.WriteHeader(404)
-	return nil
 }

@@ -18,21 +18,21 @@ import (
 // commonResponse user type.
 type commonResponse struct {
 	// Date of creation
-	CreateDatetime *string `form:"create_datetime,omitempty" json:"create_datetime,omitempty" xml:"create_datetime,omitempty"`
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
 	// Date of update
-	UpdateDatetime *string `form:"update_datetime,omitempty" json:"update_datetime,omitempty" xml:"update_datetime,omitempty"`
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
 // Validate validates the commonResponse type instance.
 func (ut *commonResponse) Validate() (err error) {
-	if ut.CreateDatetime != nil {
-		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.CreateDatetime); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.create_datetime`, *ut.CreateDatetime, goa.FormatDateTime, err2))
+	if ut.CreatedAt != nil {
+		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.CreatedAt); err2 != nil {
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.created_at`, *ut.CreatedAt, goa.FormatDateTime, err2))
 		}
 	}
-	if ut.UpdateDatetime != nil {
-		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.UpdateDatetime); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.update_datetime`, *ut.UpdateDatetime, goa.FormatDateTime, err2))
+	if ut.UpdatedAt != nil {
+		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.UpdatedAt); err2 != nil {
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.updated_at`, *ut.UpdatedAt, goa.FormatDateTime, err2))
 		}
 	}
 	return
@@ -41,11 +41,11 @@ func (ut *commonResponse) Validate() (err error) {
 // Publicize creates CommonResponse from commonResponse
 func (ut *commonResponse) Publicize() *CommonResponse {
 	var pub CommonResponse
-	if ut.CreateDatetime != nil {
-		pub.CreateDatetime = ut.CreateDatetime
+	if ut.CreatedAt != nil {
+		pub.CreatedAt = ut.CreatedAt
 	}
-	if ut.UpdateDatetime != nil {
-		pub.UpdateDatetime = ut.UpdateDatetime
+	if ut.UpdatedAt != nil {
+		pub.UpdatedAt = ut.UpdatedAt
 	}
 	return &pub
 }
@@ -53,21 +53,21 @@ func (ut *commonResponse) Publicize() *CommonResponse {
 // CommonResponse user type.
 type CommonResponse struct {
 	// Date of creation
-	CreateDatetime *string `form:"create_datetime,omitempty" json:"create_datetime,omitempty" xml:"create_datetime,omitempty"`
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
 	// Date of update
-	UpdateDatetime *string `form:"update_datetime,omitempty" json:"update_datetime,omitempty" xml:"update_datetime,omitempty"`
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
 // Validate validates the CommonResponse type instance.
 func (ut *CommonResponse) Validate() (err error) {
-	if ut.CreateDatetime != nil {
-		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.CreateDatetime); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.create_datetime`, *ut.CreateDatetime, goa.FormatDateTime, err2))
+	if ut.CreatedAt != nil {
+		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.CreatedAt); err2 != nil {
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.created_at`, *ut.CreatedAt, goa.FormatDateTime, err2))
 		}
 	}
-	if ut.UpdateDatetime != nil {
-		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.UpdateDatetime); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.update_datetime`, *ut.UpdateDatetime, goa.FormatDateTime, err2))
+	if ut.UpdatedAt != nil {
+		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.UpdatedAt); err2 != nil {
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.updated_at`, *ut.UpdatedAt, goa.FormatDateTime, err2))
 		}
 	}
 	return
@@ -148,16 +148,72 @@ func (ut *CompanyPayload) Validate() (err error) {
 	return
 }
 
+// loginPayload user type.
+type loginPayload struct {
+	// E-mail of user
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// Password
+	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+}
+
+// Validate validates the loginPayload type instance.
+func (ut *loginPayload) Validate() (err error) {
+	if ut.Email != nil {
+		if err2 := goa.ValidateFormat(goa.FormatEmail, *ut.Email); err2 != nil {
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.email`, *ut.Email, goa.FormatEmail, err2))
+		}
+	}
+	if ut.Password != nil {
+		if utf8.RuneCountInString(*ut.Password) < 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, true))
+		}
+	}
+	return
+}
+
+// Publicize creates LoginPayload from loginPayload
+func (ut *loginPayload) Publicize() *LoginPayload {
+	var pub LoginPayload
+	if ut.Email != nil {
+		pub.Email = ut.Email
+	}
+	if ut.Password != nil {
+		pub.Password = ut.Password
+	}
+	return &pub
+}
+
+// LoginPayload user type.
+type LoginPayload struct {
+	// E-mail of user
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// Password
+	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+}
+
+// Validate validates the LoginPayload type instance.
+func (ut *LoginPayload) Validate() (err error) {
+	if ut.Email != nil {
+		if err2 := goa.ValidateFormat(goa.FormatEmail, *ut.Email); err2 != nil {
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.email`, *ut.Email, goa.FormatEmail, err2))
+		}
+	}
+	if ut.Password != nil {
+		if utf8.RuneCountInString(*ut.Password) < 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, true))
+		}
+	}
+	return
+}
+
 // userPayload user type.
 type userPayload struct {
 	// E-mail of user
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
-	// First name
-	FirstName *string `form:"first_name,omitempty" json:"first_name,omitempty" xml:"first_name,omitempty"`
-	// Last name
-	LastName *string `form:"last_name,omitempty" json:"last_name,omitempty" xml:"last_name,omitempty"`
 	// Password
 	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	// First name
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // Validate validates the userPayload type instance.
@@ -167,19 +223,14 @@ func (ut *userPayload) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.email`, *ut.Email, goa.FormatEmail, err2))
 		}
 	}
-	if ut.FirstName != nil {
-		if utf8.RuneCountInString(*ut.FirstName) < 10 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.first_name`, *ut.FirstName, utf8.RuneCountInString(*ut.FirstName), 10, true))
-		}
-	}
-	if ut.LastName != nil {
-		if utf8.RuneCountInString(*ut.LastName) < 10 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.last_name`, *ut.LastName, utf8.RuneCountInString(*ut.LastName), 10, true))
-		}
-	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) < 20 {
 			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, true))
+		}
+	}
+	if ut.UserName != nil {
+		if utf8.RuneCountInString(*ut.UserName) < 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 20, true))
 		}
 	}
 	return
@@ -191,14 +242,11 @@ func (ut *userPayload) Publicize() *UserPayload {
 	if ut.Email != nil {
 		pub.Email = ut.Email
 	}
-	if ut.FirstName != nil {
-		pub.FirstName = ut.FirstName
-	}
-	if ut.LastName != nil {
-		pub.LastName = ut.LastName
-	}
 	if ut.Password != nil {
 		pub.Password = ut.Password
+	}
+	if ut.UserName != nil {
+		pub.UserName = ut.UserName
 	}
 	return &pub
 }
@@ -207,12 +255,10 @@ func (ut *userPayload) Publicize() *UserPayload {
 type UserPayload struct {
 	// E-mail of user
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
-	// First name
-	FirstName *string `form:"first_name,omitempty" json:"first_name,omitempty" xml:"first_name,omitempty"`
-	// Last name
-	LastName *string `form:"last_name,omitempty" json:"last_name,omitempty" xml:"last_name,omitempty"`
 	// Password
 	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	// First name
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // Validate validates the UserPayload type instance.
@@ -222,19 +268,14 @@ func (ut *UserPayload) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.email`, *ut.Email, goa.FormatEmail, err2))
 		}
 	}
-	if ut.FirstName != nil {
-		if utf8.RuneCountInString(*ut.FirstName) < 10 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.first_name`, *ut.FirstName, utf8.RuneCountInString(*ut.FirstName), 10, true))
-		}
-	}
-	if ut.LastName != nil {
-		if utf8.RuneCountInString(*ut.LastName) < 10 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.last_name`, *ut.LastName, utf8.RuneCountInString(*ut.LastName), 10, true))
-		}
-	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) < 20 {
 			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, true))
+		}
+	}
+	if ut.UserName != nil {
+		if utf8.RuneCountInString(*ut.UserName) < 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 20, true))
 		}
 	}
 	return

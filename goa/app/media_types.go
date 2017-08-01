@@ -107,27 +107,23 @@ func (mt *CompanyTiny) Validate() (err error) {
 //
 // Identifier: application/vnd.user+json; view=default
 type User struct {
-	Email     string `form:"email" json:"email" xml:"email"`
-	FirstName string `form:"first_name" json:"first_name" xml:"first_name"`
-	LastName  string `form:"last_name" json:"last_name" xml:"last_name"`
+	Email string `form:"email" json:"email" xml:"email"`
 	// User ID
-	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	ID       *int   `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
 }
 
 // Validate validates the User media type instance.
 func (mt *User) Validate() (err error) {
-	if mt.FirstName == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "first_name"))
-	}
-	if mt.LastName == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "last_name"))
+	if mt.UserName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "user_name"))
 	}
 	if mt.Email == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "email"))
 	}
-	if mt.UserID != nil {
-		if *mt.UserID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.user_id`, *mt.UserID, 1, true))
+	if mt.ID != nil {
+		if *mt.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, *mt.ID, 1, true))
 		}
 	}
 	return
@@ -138,14 +134,48 @@ func (mt *User) Validate() (err error) {
 // Identifier: application/vnd.user+json; view=id
 type UserID struct {
 	// User ID
-	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 }
 
 // Validate validates the UserID media type instance.
 func (mt *UserID) Validate() (err error) {
-	if mt.UserID != nil {
-		if *mt.UserID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.user_id`, *mt.UserID, 1, true))
+	if mt.ID != nil {
+		if *mt.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, *mt.ID, 1, true))
+		}
+	}
+	return
+}
+
+// UserCollection is the media type for an array of User (default view)
+//
+// Identifier: application/vnd.user+json; type=collection; view=default
+type UserCollection []*User
+
+// Validate validates the UserCollection media type instance.
+func (mt UserCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
+// UserCollection is the media type for an array of User (id view)
+//
+// Identifier: application/vnd.user+json; type=collection; view=id
+type UserIDCollection []*UserID
+
+// Validate validates the UserIDCollection media type instance.
+func (mt UserIDCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
 		}
 	}
 	return

@@ -66,6 +66,6 @@ func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 	// Put your logic here
 
 	// HyUserController_UserList: end_implement
-	res := &app.User{}
+	res := app.UserCollection{}
 	return ctx.OK(res)
 }

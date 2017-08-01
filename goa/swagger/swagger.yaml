@@ -23,7 +23,7 @@ definitions:
       country: Sit dolor neque nulla.
       href: /company/1
       id: 1
-      name: Sunt cum aut blanditiis accusantium.
+      name: Nisi dolorum.
     properties:
       address:
         example: Culpa voluptatem ullam.
@@ -41,7 +41,7 @@ definitions:
         format: int64
         type: integer
       name:
-        example: Sunt cum aut blanditiis accusantium.
+        example: Nisi dolorum.
         type: string
     required:
     - id
@@ -104,8 +104,33 @@ definitions:
   CreateUserHyUserPayload:
     example:
       email: hy@gmail.com
-      first_name: Hiroki
-      last_name: Yasui
+      password: xxxxx
+      user_name: Hiroki
+    properties:
+      email:
+        description: E-mail of user
+        example: hy@gmail.com
+        format: email
+        type: string
+      password:
+        description: Password
+        example: xxxxx
+        minLength: 20
+        type: string
+      user_name:
+        description: First name
+        example: Hiroki
+        minLength: 20
+        type: string
+    required:
+    - user_name
+    - email
+    - password
+    title: CreateUserHyUserPayload
+    type: object
+  LoginAuthPayload:
+    example:
+      email: hy@gmail.com
       password: xxxxx
     properties:
       email:
@@ -113,38 +138,10 @@ definitions:
         example: hy@gmail.com
         format: email
         type: string
-      first_name:
-        description: First name
-        example: Hiroki
-        minLength: 10
-        type: string
-      last_name:
-        description: Last name
-        example: Yasui
-        minLength: 10
-        type: string
       password:
         description: Password
         example: xxxxx
         minLength: 20
-        type: string
-    required:
-    - first_name
-    - last_name
-    - email
-    - password
-    title: CreateUserHyUserPayload
-    type: object
-  LoginAuthPayload:
-    example:
-      email: Suscipit quis exercitationem ut ipsum quis saepe.
-      password: Cum repellat tempora eum.
-    properties:
-      email:
-        example: Suscipit quis exercitationem ut ipsum quis saepe.
-        type: string
-      password:
-        example: Cum repellat tempora eum.
         type: string
     required:
     - email
@@ -154,56 +151,61 @@ definitions:
   User:
     description: A user information (default view)
     example:
-      email: Quia quo alias aut quo.
-      first_name: Eveniet vel nesciunt omnis est ducimus est.
-      last_name: Et veritatis non nostrum.
-      user_id: 1
+      email: Sunt cum aut blanditiis accusantium.
+      id: 1
+      user_name: Quia quo alias aut quo.
     properties:
       email:
-        example: Quia quo alias aut quo.
+        example: Sunt cum aut blanditiis accusantium.
         type: string
-      first_name:
-        example: Eveniet vel nesciunt omnis est ducimus est.
-        type: string
-      last_name:
-        example: Et veritatis non nostrum.
-        type: string
-      user_id:
+      id:
         description: User ID
         example: 1
         minimum: 1
         type: integer
+      user_name:
+        example: Quia quo alias aut quo.
+        type: string
     required:
-    - first_name
-    - last_name
+    - user_name
     - email
     title: 'Mediatype identifier: application/vnd.user+json; view=default'
     type: object
+  UserCollection:
+    description: UserCollection is the media type for an array of User (default view)
+    example:
+    - email: Sunt cum aut blanditiis accusantium.
+      id: 1
+      user_name: Quia quo alias aut quo.
+    - email: Sunt cum aut blanditiis accusantium.
+      id: 1
+      user_name: Quia quo alias aut quo.
+    - email: Sunt cum aut blanditiis accusantium.
+      id: 1
+      user_name: Quia quo alias aut quo.
+    items:
+      $ref: '#/definitions/User'
+    title: 'Mediatype identifier: application/vnd.user+json; type=collection; view=default'
+    type: array
   UserPayload:
     example:
       email: hy@gmail.com
-      first_name: Hiroki
-      last_name: Yasui
       password: xxxxx
+      user_name: Hiroki
     properties:
       email:
         description: E-mail of user
         example: hy@gmail.com
         format: email
         type: string
-      first_name:
-        description: First name
-        example: Hiroki
-        minLength: 10
-        type: string
-      last_name:
-        description: Last name
-        example: Yasui
-        minLength: 10
-        type: string
       password:
         description: Password
         example: xxxxx
+        minLength: 20
+        type: string
+      user_name:
+        description: First name
+        example: Hiroki
         minLength: 20
         type: string
     title: UserPayload
@@ -494,18 +496,18 @@ paths:
       operationId: hy_user#UserList
       produces:
       - application/vnd.goa.error
-      - application/vnd.user+json
+      - application/vnd.user+json; type=collection
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/UserCollection'
+        "204":
+          description: No Content
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
-        "404":
-          description: Not Found
       schemes:
       - http
       security:

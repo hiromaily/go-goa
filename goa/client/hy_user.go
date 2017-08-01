@@ -23,12 +23,10 @@ import (
 type CreateUserHyUserPayload struct {
 	// E-mail of user
 	Email string `form:"email" json:"email" xml:"email"`
-	// First name
-	FirstName string `form:"first_name" json:"first_name" xml:"first_name"`
-	// Last name
-	LastName string `form:"last_name" json:"last_name" xml:"last_name"`
 	// Password
 	Password string `form:"password" json:"password" xml:"password"`
+	// First name
+	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
 }
 
 // CreateUserHyUserPath computes a request path to the CreateUser action of hy_user.

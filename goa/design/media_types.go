@@ -39,52 +39,49 @@ var User = MediaType("application/vnd.user+json", func() {
 	// Response Description
 	Description("A user information")
 
+	ContentType("application/json")
+
 	// Reference can be used in: MediaType, Type
 	// Though set Reference, Attribute is required
 	Reference(UserPayload)
 	Reference(CommonResponse)
 
-	//`user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'User ID',
-	//`first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'First Name',
-	//`last_name` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Last Name',
+	//`id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'User ID',
+	//`user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'User Name',
 	//`email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'E-Mail Address',
 	//`password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Password',
-	//`oauth2_flg` char(1) COLLATE utf8_unicode_ci DEFAULT '0' COMMENT 'oauth_flg flg',
 	//`delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT '0' COMMENT 'delete flg',
-	//`create_datetime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'created date',
-	//`update_datetime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'updated date',
+	//`created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'created date',
+	//`updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'updated date',
 
 	Attributes(func() {
-		Attribute("user_id", Integer, "User ID", func() {
+		Attribute("id", Integer, "User ID", func() {
 			Minimum(1)
 			Example(1)
 		})
-		Attribute("first_name")
-		Attribute("last_name")
+		Attribute("user_name")
 		Attribute("email")
 		Attribute("password")
-		Attribute("oauth2_flg")
-		Attribute("create_datetime")
-		Attribute("update_datetime")
+		Attribute("created_at")
+		Attribute("updated_at")
 
 		//when field is zero or empty, data is not return unless it's not set in Required
-		Required("first_name", "last_name", "email", "password")
+		Required("user_name", "email", "password")
 	})
 
 	//View defines a rendering of the media type
 	//Media types may have multiple views　(it can change response pattern)
 	//View default is for UserList, GetUser,
 	View("default", func() {
-		Attribute("user_id")
-		Attribute("first_name")
-		Attribute("last_name")
+		Attribute("id")
+		Attribute("user_name")
 		Attribute("email")
 	})
 
 	//View id is for UserList, GetUser,
 	View("id", func() {
-		Description("tiny is the view used to id list")
-		Attribute("user_id")
+		Description("id is the view used to id list")
+		Attribute("id")
 	})
 })
 
@@ -94,6 +91,8 @@ var User = MediaType("application/vnd.user+json", func() {
 //TODO: unimplemented
 var Company = MediaType("application/vnd.company+json", func() {
 	Description("A company information")
+
+	ContentType("application/json")
 
 	Reference(CompanyPayload)
 	Reference(CommonResponse)

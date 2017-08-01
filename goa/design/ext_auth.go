@@ -13,6 +13,12 @@ var JWT = JWTSecurity("jwt", func() {
 	Scope("api:access", "API access") // Define "api:access" scope
 })
 
+var LoginPayload = Type("LoginPayload", func() {
+	Attribute("email", String, "E-mail of user", fieldEmail)
+	Attribute("password", String, "Password", fieldPassword)
+})
+
+
 // TODO:This code may be better to move to resources.go
 // Resource jwt uses the JWTSecurity security scheme.
 var _ = Resource("auth", func() {
@@ -27,11 +33,17 @@ var _ = Resource("auth", func() {
 		Description("user login")
 		NoSecurity() // Override the need for auth
 		Routing(POST("login"))
-		Payload(func() {
-			Member("email")
-			Member("password")
+
+		Payload(LoginPayload, func() {
 			Required("email", "password")
 		})
+
+		//Payload(func() {
+		//	Member("email")
+		//	Member("password")
+		//	Required("email", "password")
+		//})
+
 		Response(OK, func() {
 			Headers(func() {
 				Header("Authorization", String, "Generated JWT")
@@ -39,5 +51,6 @@ var _ = Resource("auth", func() {
 			Media(Authorized)
 		})
 		Response(Unauthorized)
+		//Response(BadRequest)
 	})
 })

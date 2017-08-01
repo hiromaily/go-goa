@@ -1218,11 +1218,11 @@ func UserListHyUserBadRequest(t goatest.TInterface, ctx context.Context, service
 	return rw, mt
 }
 
-// UserListHyUserNotFound runs the method UserList of the given controller with the given parameters.
+// UserListHyUserNoContent runs the method UserList of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UserListHyUserNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) http.ResponseWriter {
+func UserListHyUserNoContent(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1266,8 +1266,8 @@ func UserListHyUserNotFound(t goatest.TInterface, ctx context.Context, service *
 	if _err != nil {
 		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
 	}
-	if rw.Code != 404 {
-		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
+	if rw.Code != 204 {
+		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
 	}
 
 	// Return results
@@ -1278,7 +1278,7 @@ func UserListHyUserNotFound(t goatest.TInterface, ctx context.Context, service *
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UserListHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) (http.ResponseWriter, *app.User) {
+func UserListHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) (http.ResponseWriter, app.UserCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1325,12 +1325,12 @@ func UserListHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Se
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.User
+	var mt app.UserCollection
 	if resp != nil {
 		var ok bool
-		mt, ok = resp.(*app.User)
+		mt, ok = resp.(app.UserCollection)
 		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.User", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -1346,7 +1346,7 @@ func UserListHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Se
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UserListHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) (http.ResponseWriter, *app.UserID) {
+func UserListHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController) (http.ResponseWriter, app.UserIDCollection) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1393,12 +1393,12 @@ func UserListHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	var mt *app.UserID
+	var mt app.UserIDCollection
 	if resp != nil {
 		var ok bool
-		mt, ok = resp.(*app.UserID)
+		mt, ok = resp.(app.UserIDCollection)
 		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserID", resp, resp)
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.UserIDCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
