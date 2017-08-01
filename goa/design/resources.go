@@ -110,7 +110,10 @@ var _ = Resource(resourcePrefix+"user", func() {
 		Params(func() {
 			Param("userID", Integer, "User ID")
 		})
-		Payload(UserPayload)
+		//Payload(UserPayload)
+		Payload(UserPayload, func() {
+			Required("user_name", "email", "password")
+		})
 
 		Response(OK)
 		//Response(NoContent)

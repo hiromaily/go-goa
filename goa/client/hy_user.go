@@ -141,6 +141,16 @@ func (c *Client) NewGetUserHyUserRequest(ctx context.Context, path string) (*htt
 	return req, nil
 }
 
+// UpdateUserHyUserPayload is the hy_user UpdateUser action payload.
+type UpdateUserHyUserPayload struct {
+	// E-mail of user
+	Email string `form:"email" json:"email" xml:"email"`
+	// Password
+	Password string `form:"password" json:"password" xml:"password"`
+	// First name
+	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
+}
+
 // UpdateUserHyUserPath computes a request path to the UpdateUser action of hy_user.
 func UpdateUserHyUserPath(userID int) string {
 	param0 := strconv.Itoa(userID)
@@ -149,7 +159,7 @@ func UpdateUserHyUserPath(userID int) string {
 }
 
 // Change user properties
-func (c *Client) UpdateUserHyUser(ctx context.Context, path string, payload *UserPayload, contentType string) (*http.Response, error) {
+func (c *Client) UpdateUserHyUser(ctx context.Context, path string, payload *UpdateUserHyUserPayload, contentType string) (*http.Response, error) {
 	req, err := c.NewUpdateUserHyUserRequest(ctx, path, payload, contentType)
 	if err != nil {
 		return nil, err
@@ -158,7 +168,7 @@ func (c *Client) UpdateUserHyUser(ctx context.Context, path string, payload *Use
 }
 
 // NewUpdateUserHyUserRequest create the request corresponding to the UpdateUser action endpoint of the hy_user resource.
-func (c *Client) NewUpdateUserHyUserRequest(ctx context.Context, path string, payload *UserPayload, contentType string) (*http.Request, error) {
+func (c *Client) NewUpdateUserHyUserRequest(ctx context.Context, path string, payload *UpdateUserHyUserPayload, contentType string) (*http.Request, error) {
 	var body bytes.Buffer
 	if contentType == "" {
 		contentType = "*/*" // Use default encoder

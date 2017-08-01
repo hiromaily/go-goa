@@ -851,7 +851,7 @@ func GetUserHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.S
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateUserHyUserBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UserPayload) (http.ResponseWriter, error) {
+func UpdateUserHyUserBadRequest(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UpdateUserHyUserPayload) (http.ResponseWriter, error) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -927,7 +927,7 @@ func UpdateUserHyUserBadRequest(t goatest.TInterface, ctx context.Context, servi
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateUserHyUserNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UserPayload) http.ResponseWriter {
+func UpdateUserHyUserNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UpdateUserHyUserPayload) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -996,7 +996,7 @@ func UpdateUserHyUserNotFound(t goatest.TInterface, ctx context.Context, service
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateUserHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UserPayload) (http.ResponseWriter, *app.User) {
+func UpdateUserHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UpdateUserHyUserPayload) (http.ResponseWriter, *app.User) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1077,7 +1077,7 @@ func UpdateUserHyUserOK(t goatest.TInterface, ctx context.Context, service *goa.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func UpdateUserHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UserPayload) (http.ResponseWriter, *app.UserID) {
+func UpdateUserHyUserOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyUserController, userID int, payload *app.UpdateUserHyUserPayload) (http.ResponseWriter, *app.UserID) {
 	// Setup service
 	var (
 		logBuf bytes.Buffer

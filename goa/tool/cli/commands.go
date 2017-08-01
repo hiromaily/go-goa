@@ -844,7 +844,7 @@ func (cmd *UpdateUserHyUserCommand) Run(c *client.Client, args []string) error {
 	} else {
 		path = fmt.Sprintf("/api/user/%v", cmd.UserID)
 	}
-	var payload client.UserPayload
+	var payload client.UpdateUserHyUserPayload
 	if cmd.Payload != "" {
 		err := json.Unmarshal([]byte(cmd.Payload), &payload)
 		if err != nil {

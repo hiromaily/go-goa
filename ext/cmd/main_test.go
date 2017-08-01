@@ -102,16 +102,20 @@ var userAPITests = []UserAPITest{
 		"testtest01",
 		"testuser01",
 	},
-	{TableTest{"/api/user", http.StatusOK, "POST", userJsonHeaders, "", nil},
+	{TableTest{"/api/user", http.StatusOK, "POST", userJsonHeaders, "saveID", nil},
 		"fromtest02@test.com",
 		"testtest02",
 		"testuser02",
 	},
-	//{"/api/user/%s", http.StatusOK, "GET", userHeaders, "", nil},
-	//{"/api/user/%s", http.StatusOK, "PUT", userHeaders, "", nil},
-	//{"/api/user/%s", http.StatusOK, "GET", userHeaders, "", nil},
-	//{"/api/user/%s", http.StatusOK, "DELETE", userHeaders, "", nil},
-	//{"/api/user/%s", http.StatusOK, "GET", userHeaders, "", nil},
+	{TableTest{"/api/user/%d", http.StatusOK, "GET", userHeaders, "setID", nil}, "", "", ""},
+	{TableTest{"/api/user/%d", http.StatusOK, "PUT", userJsonHeaders, "setID", nil},
+		"updatedUser03@test.com",
+		"testtest03",
+		"testuser03",
+	},
+	//{TableTest{"/api/user/%d", http.StatusOK, "GET", userHeaders, "", nil}, "", "", ""},
+	{TableTest{"/api/user/%d", http.StatusOK, "DELETE", userHeaders, "setID", nil}, "", "", ""},
+	{TableTest{"/api/user/%d", http.StatusNotFound, "GET", userHeaders, "", nil}, "", "", ""},
 }
 
 //-----------------------------------------------------------------------------
@@ -242,6 +246,19 @@ func getJWT(body []byte) (string, error) {
 	return jwt.Token, nil
 }
 
+func getID(body []byte) (int, error) {
+	type ResID struct {
+		ID int `json:"id"`
+	}
+	var resid ResID
+
+	err := json.Unmarshal(body, &resid)
+	if err != nil {
+		return 0, err
+	}
+	return resid.ID, nil
+}
+
 func sendRequest(url, method string, bd io.Reader, headers []map[string]string) ([]byte, int, http.Header, error) {
 
 	//1. prepare NewRequest data
@@ -346,19 +363,15 @@ func TestLoginOnTable(t *testing.T) {
 func TestUserAPIOnTable(t *testing.T) {
 	//skipLog(t)
 
-	//http localhost:8080/api/user 'Authorization: Bearer $(TOKEN)'
-	//http localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
-	//http POST http://localhost:8080/api/user name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
-	//http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
-	//http DELETE http://localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
-
 	//userAPITests
 	var ioReader io.Reader
+	var saveID int
+
 	for i, tt := range userAPITests {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
 		//send request
 		ioReader = nil
-		if tt.method == "POST" {
+		if tt.method == "POST" || tt.method == "PUT" {
 			//json
 			userData := createUserHyUserPayload{}
 			userData.Email = &tt.email
@@ -372,6 +385,17 @@ func TestUserAPIOnTable(t *testing.T) {
 		}
 		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, ioReader, tt.headers)
 		checkError(t, err, code, header, tt.TableTest, i+1)
+
+		if tt.nextPage == "saveID" {
+			saveID, err = getID(body)
+			if err != nil {
+				t.Fatalf("[%s] ID could not be retrieved from body.", tt.url)
+				return
+			}
+			userAPITests[i+1].url = fmt.Sprintf(userAPITests[i+1].url, saveID)
+		} else if tt.nextPage == "setID" {
+			userAPITests[i+1].url = fmt.Sprintf(userAPITests[i+1].url, saveID)
+		}
 
 		fmt.Println("[Debug] body:", string(body))
 	}

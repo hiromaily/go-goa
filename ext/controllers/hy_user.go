@@ -25,7 +25,6 @@ func NewHyUserController(service *goa.Service, ctx *c.Ctx) *HyUserController {
 
 // UserList runs the UserList action.
 func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
-	// HyUserController_UserList: start_implement
 	fmt.Println("[hy_user][UserList]")
 
 	//type User struct {
@@ -50,7 +49,6 @@ func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 
 // GetUser runs the GetUser action.
 func (c *HyUserController) GetUser(ctx *app.GetUserHyUserContext) error {
-	// HyUserController_GetUser: start_implement
 	fmt.Println("[hy_user][GetUser]")
 
 	user := &app.User{}
@@ -69,7 +67,6 @@ func (c *HyUserController) GetUser(ctx *app.GetUserHyUserContext) error {
 
 // CreateUser runs the CreateUser action.
 func (c *HyUserController) CreateUser(ctx *app.CreateUserHyUserContext) error {
-	// HyUserController_CreateUser: start_implement
 	fmt.Println("[hy_user][GetUser]")
 
 	svc := &m.User{Db: c.ctx.Db}
@@ -82,25 +79,30 @@ func (c *HyUserController) CreateUser(ctx *app.CreateUserHyUserContext) error {
 	return ctx.OKId(res)
 }
 
-// DeleteUser runs the DeleteUser action.
-func (c *HyUserController) DeleteUser(ctx *app.DeleteUserHyUserContext) error {
-	// HyUserController_DeleteUser: start_implement
+// UpdateUser runs the UpdateUser action.
+func (c *HyUserController) UpdateUser(ctx *app.UpdateUserHyUserContext) error {
+	fmt.Println("[hy_user][UpdateUser]")
 
-	// Put your logic here
+	svc := &m.User{Db: c.ctx.Db}
+	err := svc.UpdateUser(ctx.UserID, ctx.Payload)
+	if err != nil {
+		return err
+	}
 
-	// HyUserController_DeleteUser: end_implement
-	res := &app.UserID{}
+	res := &app.UserID{ID: &ctx.UserID}
 	return ctx.OKId(res)
 }
 
-// UpdateUser runs the UpdateUser action.
-func (c *HyUserController) UpdateUser(ctx *app.UpdateUserHyUserContext) error {
-	// HyUserController_UpdateUser: start_implement
-	fmt.Println("[hy_user][UpdateUser]", ctx)
+// DeleteUser runs the DeleteUser action.
+func (c *HyUserController) DeleteUser(ctx *app.DeleteUserHyUserContext) error {
+	fmt.Println("[hy_user][DeleteUser]")
 
-	// Put your logic here
+	svc := &m.User{Db: c.ctx.Db}
+	err := svc.DeleteUser(ctx.UserID)
+	if err != nil {
+		return err
+	}
 
-	// HyUserController_UpdateUser: end_implement
-	res := &app.UserID{}
+	res := &app.UserID{ID: &ctx.UserID}
 	return ctx.OKId(res)
 }

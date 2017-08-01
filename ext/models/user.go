@@ -23,7 +23,7 @@ type LoginUser struct {
 	userName string
 }
 
-type InsertUser struct {
+type ParamUser struct {
 	Id       int    `gorm:"column:id"`
 	UserName string `gorm:"column:user_name"`
 	Email    string `gorm:"column:email"`
@@ -68,7 +68,7 @@ func (m *User) GetUser(userID int, user *app.User) {
 
 func (m *User) InsertUser(user *app.CreateUserHyUserPayload) (int, error) {
 	//m.Db.DB.Exec("INSERT INTO t_users (user_name, email, password) VALUES (?, ?, ?)", user.UserName, user.Email, user.Password)
-	insUser := InsertUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
+	insUser := ParamUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
 	m.Db.DB.Table("t_users").Save(&insUser)
 	if m.Db.DB.Error != nil {
 		return 0, m.Db.DB.Error
@@ -76,4 +76,25 @@ func (m *User) InsertUser(user *app.CreateUserHyUserPayload) (int, error) {
 
 	//lg.Debugf("Id: %d", insUser.Id)
 	return insUser.Id, nil
+}
+
+func (m *User) UpdateUser(userID int, user *app.UpdateUserHyUserPayload) error {
+	//m.Db.DB.Exec("INSERT INTO t_users (user_name, email, password) VALUES (?, ?, ?)", user.UserName, user.Email, user.Password)
+	updUser := ParamUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
+	m.Db.DB.Table("t_users").Where("id = ?", userID).Update(&updUser)
+	if m.Db.DB.Error != nil {
+		return m.Db.DB.Error
+	}
+
+	return nil
+}
+
+func (m *User) DeleteUser(userID int) error {
+	m.Db.DB.Table("t_users").Where("id = ?", userID).Delete(&ParamUser{})
+	if m.Db.DB.Error != nil {
+		return m.Db.DB.Error
+	}
+
+	return nil
+
 }

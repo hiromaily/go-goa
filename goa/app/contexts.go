@@ -765,7 +765,7 @@ type UpdateUserHyUserContext struct {
 	*goa.ResponseData
 	*goa.RequestData
 	UserID  int
-	Payload *UserPayload
+	Payload *UpdateUserHyUserPayload
 }
 
 // NewUpdateUserHyUserContext parses the incoming request URL and body, performs validations and creates the
@@ -787,6 +787,109 @@ func NewUpdateUserHyUserContext(ctx context.Context, r *http.Request, service *g
 		}
 	}
 	return &rctx, err
+}
+
+// updateUserHyUserPayload is the hy_user UpdateUser action payload.
+type updateUserHyUserPayload struct {
+	// E-mail of user
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// Password
+	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	// First name
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *updateUserHyUserPayload) Validate() (err error) {
+	if payload.UserName == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "user_name"))
+	}
+	if payload.Email == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "email"))
+	}
+	if payload.Password == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))
+	}
+	if payload.Email != nil {
+		if err2 := goa.ValidateFormat(goa.FormatEmail, *payload.Email); err2 != nil {
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`raw.email`, *payload.Email, goa.FormatEmail, err2))
+		}
+	}
+	if payload.Password != nil {
+		if utf8.RuneCountInString(*payload.Password) < 8 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 8, true))
+		}
+	}
+	if payload.Password != nil {
+		if utf8.RuneCountInString(*payload.Password) > 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 20, false))
+		}
+	}
+	if payload.UserName != nil {
+		if utf8.RuneCountInString(*payload.UserName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, *payload.UserName, utf8.RuneCountInString(*payload.UserName), 2, true))
+		}
+	}
+	if payload.UserName != nil {
+		if utf8.RuneCountInString(*payload.UserName) > 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, *payload.UserName, utf8.RuneCountInString(*payload.UserName), 20, false))
+		}
+	}
+	return
+}
+
+// Publicize creates UpdateUserHyUserPayload from updateUserHyUserPayload
+func (payload *updateUserHyUserPayload) Publicize() *UpdateUserHyUserPayload {
+	var pub UpdateUserHyUserPayload
+	if payload.Email != nil {
+		pub.Email = *payload.Email
+	}
+	if payload.Password != nil {
+		pub.Password = *payload.Password
+	}
+	if payload.UserName != nil {
+		pub.UserName = *payload.UserName
+	}
+	return &pub
+}
+
+// UpdateUserHyUserPayload is the hy_user UpdateUser action payload.
+type UpdateUserHyUserPayload struct {
+	// E-mail of user
+	Email string `form:"email" json:"email" xml:"email"`
+	// Password
+	Password string `form:"password" json:"password" xml:"password"`
+	// First name
+	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *UpdateUserHyUserPayload) Validate() (err error) {
+	if payload.UserName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "user_name"))
+	}
+	if payload.Email == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "email"))
+	}
+	if payload.Password == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))
+	}
+	if err2 := goa.ValidateFormat(goa.FormatEmail, payload.Email); err2 != nil {
+		err = goa.MergeErrors(err, goa.InvalidFormatError(`raw.email`, payload.Email, goa.FormatEmail, err2))
+	}
+	if utf8.RuneCountInString(payload.Password) < 8 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 8, true))
+	}
+	if utf8.RuneCountInString(payload.Password) > 20 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 20, false))
+	}
+	if utf8.RuneCountInString(payload.UserName) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, payload.UserName, utf8.RuneCountInString(payload.UserName), 2, true))
+	}
+	if utf8.RuneCountInString(payload.UserName) > 20 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, payload.UserName, utf8.RuneCountInString(payload.UserName), 20, false))
+	}
+	return
 }
 
 // OK sends a HTTP response with status code 200.
