@@ -26,9 +26,7 @@ func NewHyUserController(service *goa.Service, ctx *c.Ctx) *HyUserController {
 // UserList runs the UserList action.
 func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 	// HyUserController_UserList: start_implement
-	fmt.Println("[hy_user][UserList]", ctx)
-
-	// Get UserList
+	fmt.Println("[hy_user][UserList]")
 
 	//type User struct {
 	//	Email     string `form:"email" json:"email" xml:"email"`
@@ -41,8 +39,9 @@ func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 	svc := &m.User{Db: c.ctx.Db}
 	svc.UserList(&users)
 
-	//if len(users) == 0{
-	//}
+	if len(users) == 0 {
+		ctx.NoContent()
+	}
 
 	//type UserCollection []*User
 	res := app.UserCollection(users)
@@ -52,13 +51,20 @@ func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 // GetUser runs the GetUser action.
 func (c *HyUserController) GetUser(ctx *app.GetUserHyUserContext) error {
 	// HyUserController_GetUser: start_implement
-	fmt.Println("[hy_user][GetUser]", ctx)
+	fmt.Println("[hy_user][GetUser]")
 
-	// Put your logic here
+	user := &app.User{}
 
-	// HyUserController_GetUser: end_implement
-	res := &app.User{}
-	return ctx.OK(res)
+	svc := &m.User{Db: c.ctx.Db}
+	svc.GetUser(ctx.UserID, user)
+
+	if user.ID == nil {
+		//404
+		return ctx.NotFound()
+	}
+
+	//res := &app.User{}
+	return ctx.OK(user)
 }
 
 // CreateUser runs the CreateUser action.

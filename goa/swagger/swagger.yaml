@@ -1,5 +1,4 @@
 consumes:
-- application/x-www-form-urlencoded
 - application/xml
 - application/json
 definitions:

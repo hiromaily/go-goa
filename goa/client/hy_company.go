@@ -97,7 +97,7 @@ func (c *Client) NewCreateCompanyHyCompanyRequest(ctx context.Context, path stri
 	}
 	header := req.Header
 	if contentType == "*/*" {
-		header.Set("Content-Type", "application/x-www-form-urlencoded")
+		header.Set("Content-Type", "application/xml")
 	} else {
 		header.Set("Content-Type", contentType)
 	}
@@ -210,7 +210,7 @@ func (c *Client) NewUpdateCompanyHyCompanyRequest(ctx context.Context, path stri
 	}
 	header := req.Header
 	if contentType == "*/*" {
-		header.Set("Content-Type", "application/x-www-form-urlencoded")
+		header.Set("Content-Type", "application/xml")
 	} else {
 		header.Set("Content-Type", contentType)
 	}

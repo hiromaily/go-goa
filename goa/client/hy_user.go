@@ -65,7 +65,7 @@ func (c *Client) NewCreateUserHyUserRequest(ctx context.Context, path string, pa
 	}
 	header := req.Header
 	if contentType == "*/*" {
-		header.Set("Content-Type", "application/x-www-form-urlencoded")
+		header.Set("Content-Type", "application/xml")
 	} else {
 		header.Set("Content-Type", contentType)
 	}
@@ -178,7 +178,7 @@ func (c *Client) NewUpdateUserHyUserRequest(ctx context.Context, path string, pa
 	}
 	header := req.Header
 	if contentType == "*/*" {
-		header.Set("Content-Type", "application/x-www-form-urlencoded")
+		header.Set("Content-Type", "application/xml")
 	} else {
 		header.Set("Content-Type", contentType)
 	}

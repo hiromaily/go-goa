@@ -1,10 +1,12 @@
 package main_test
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/http/httputil"
 	//"net/http/httptest"
 	"encoding/json"
 	"errors"
@@ -14,19 +16,38 @@ import (
 	"testing"
 	"time"
 
-	r "github.com/hiromaily/golibs/runtimes"
 	lg "github.com/hiromaily/golibs/log"
+	r "github.com/hiromaily/golibs/runtimes"
 )
 
 const SERVER_HOST = "http://localhost:8080"
 
+//These struct were copied from ./goa/app/contexts.go
+type loginAuthPayload struct {
+	// E-mail of user
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// Password
+	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+}
+
+type createUserHyUserPayload struct {
+	// E-mail of user
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// Password
+	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	// First name
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+}
+
 var (
-	jwtToken     string
-	errRedirect  = errors.New("redirect")
-	contentType  = map[string]string{"Content-Type": "application/x-www-form-urlencoded"}
-	jwtAuth      = map[string]string{"Authorization": "Bearer %s"}
-	loginHeaders = []map[string]string{contentType}
-	userHeaders  = []map[string]string{jwtAuth}
+	jwtToken          string
+	errRedirect       = errors.New("redirect")
+	contentTypeForm   = map[string]string{"Content-Type": "application/x-www-form-urlencoded"}
+	contentTypeJson   = map[string]string{"Content-Type": "application/json"}
+	jwtAuth           = map[string]string{"Authorization": "Bearer %s"}
+	loginHeaders      = []map[string]string{contentTypeJson}
+	loginWrongHeaders = []map[string]string{contentTypeForm}
+	userHeaders       = []map[string]string{jwtAuth}
 )
 
 type TableTest struct {
@@ -55,15 +76,17 @@ var loginAPITests = []LoginAPITest{
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginHeaders, "", nil}, "", ""},
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginHeaders, "", nil}, "hiro", ""},
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginHeaders, "", nil}, "wrong", "something"},
-	{TableTest{"/api/auth/login", http.StatusNotFound, "GET", loginHeaders, "", nil}, "aaaa@test.jp", "password"},
-	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", nil, "", nil}, "aaaa@test.jp", "password"},
-	{TableTest{"/api/auth/login", http.StatusOK, "POST", loginHeaders, "", nil}, "aaaa@test.jp", "password"},
+	{TableTest{"/api/auth/login", http.StatusNotFound, "GET", loginHeaders, "", nil}, "aaaa1@test.jp", "password"},
+	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", nil, "", nil}, "aaaa1@test.jp", "password"},
+	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginWrongHeaders, "", nil}, "aaaa1@test.jp", "password"},
+	{TableTest{"/api/auth/login", http.StatusOK, "POST", loginHeaders, "", nil}, "aaaa1@test.jp", "password"},
 }
 
 var userAPITests = []TableTest{
 	{"/api/user", http.StatusOK, "GET", userHeaders, "", nil},
+	{"/api/user/999999", http.StatusNotFound, "GET", userHeaders, "", nil},
 	{"/api/user/1", http.StatusOK, "GET", userHeaders, "", nil},
-	{"/api/user", http.StatusOK, "POST", userHeaders, "", nil},
+	//{"/api/user", http.StatusOK, "POST", userHeaders, "", nil},
 	//{"/api/user/%s", http.StatusOK, "GET", userHeaders, "", nil},
 	//{"/api/user/%s", http.StatusOK, "PUT", userHeaders, "", nil},
 	//{"/api/user/%s", http.StatusOK, "GET", userHeaders, "", nil},
@@ -96,7 +119,7 @@ func TestMain(m *testing.M) {
 }
 
 //-----------------------------------------------------------------------------
-// function
+// function utility
 //-----------------------------------------------------------------------------
 // SkipLog is to skip test with func name
 func skipLog(t *testing.T) {
@@ -104,6 +127,19 @@ func skipLog(t *testing.T) {
 	t.Skip(fmt.Sprintf("skipping %s", r.CurrentFunc(2)))
 }
 
+func convertJson(model interface{}) ([]byte, error) {
+	data, err := json.Marshal(model)
+	if err != nil {
+		return nil, fmt.Errorf("[ERROR] When calling `json.Marshal`: %v\n", err)
+	}
+	//fmt.Println("[Debug] Json Data:", string(data))
+
+	return data, nil
+}
+
+//-----------------------------------------------------------------------------
+// function
+//-----------------------------------------------------------------------------
 // Set HTTP Header
 func setHTTPHeaders(req *http.Request, headers []map[string]string) {
 	//req.Header.Set("Authorization", "Bearer access-token")
@@ -111,6 +147,27 @@ func setHTTPHeaders(req *http.Request, headers []map[string]string) {
 		for k, v := range header {
 			req.Header.Set(k, v)
 		}
+	}
+}
+
+func searchHTTPHeaders(key string, headers []map[string]string) string {
+	//req.Header.Set("Authorization", "Bearer access-token")
+	for _, header := range headers {
+		for k, v := range header {
+			if k == key {
+				return v
+			}
+		}
+	}
+	return ""
+}
+
+func dumpHTTP(req *http.Request) {
+	b, err := httputil.DumpRequestOut(req, true)
+	if err != nil {
+		fmt.Printf("[dumpHTTP] error: %s\n", err)
+	} else {
+		fmt.Printf("[dumpHTTP] headers:\n%s\n", b)
 	}
 }
 
@@ -183,6 +240,9 @@ func sendRequest(url, method string, bd io.Reader, headers []map[string]string) 
 		setHTTPHeaders(req, headers)
 	}
 
+	//dump
+	//dumpHTTP(req)
+
 	//3. send
 	client := &http.Client{
 		Timeout: time.Duration(3) * time.Second,
@@ -224,12 +284,33 @@ func TestLoginOnTable(t *testing.T) {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
 
 		//body
-		values := url.Values{}
-		values.Set("email", tt.email)
-		values.Set("password", tt.password)
+		var ioReader io.Reader
+		//contentTypeForm   = map[string]string{"Content-Type": "application/x-www-form-urlencoded"}
+		//contentTypeJson   = map[string]string{"Content-Type": "application/json"}
+		if searchHTTPHeaders("Content-Type", tt.headers) == "application/json" {
+			//json
+			//this pattern can't work somehow
+			//var jsonData string = `{"email": "%s","password": "%s"}`
+			//jsonData = fmt.Sprintf(jsonData, tt.email, tt.password)
+			//jsonByte, err := json.Marshal(jsonData)
+
+			loginData := loginAuthPayload{}
+			loginData.Email = &tt.email
+			loginData.Password = &tt.password
+			jsonByte, err := convertJson(&loginData)
+			if err != nil {
+				t.Fatalf("[%s] json data for request is invalid.", tt.url)
+			}
+			ioReader = bytes.NewReader(jsonByte)
+		} else {
+			values := url.Values{}
+			values.Set("email", tt.email)
+			values.Set("password", tt.password)
+			ioReader = strings.NewReader(values.Encode())
+		}
 
 		//send request
-		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, strings.NewReader(values.Encode()), tt.headers)
+		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, ioReader, tt.headers)
 		checkError(t, err, code, header, tt.TableTest, i+1)
 
 		//jwt
@@ -245,7 +326,8 @@ func TestLoginOnTable(t *testing.T) {
 }
 
 func TestUserAPIOnTable(t *testing.T) {
-	skipLog(t)
+	//skipLog(t)
+
 	//http localhost:8080/api/user 'Authorization: Bearer $(TOKEN)'
 	//http localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
 	//http POST http://localhost:8080/api/user name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
@@ -257,8 +339,10 @@ func TestUserAPIOnTable(t *testing.T) {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
 		//send request
 		//fmt.Println(tt.headers)
-		_, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, nil, tt.headers)
+		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, nil, tt.headers)
 		checkError(t, err, code, header, tt, i+1)
+
+		fmt.Println("[Debug] body:", string(body))
 	}
 }
 

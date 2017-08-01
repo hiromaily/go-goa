@@ -14,7 +14,6 @@ import (
 	"context"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/cors"
-	"github.com/goadesign/goa/encoding/form"
 	"net/http"
 )
 
@@ -24,13 +23,12 @@ func initService(service *goa.Service) {
 	service.Encoder.Register(goa.NewJSONEncoder, "application/json")
 	service.Encoder.Register(goa.NewGobEncoder, "application/gob", "application/x-gob")
 	service.Encoder.Register(goa.NewXMLEncoder, "application/xml")
-	service.Decoder.Register(form.NewDecoder, "application/x-www-form-urlencoded")
 	service.Decoder.Register(goa.NewXMLDecoder, "application/xml")
 	service.Decoder.Register(goa.NewJSONDecoder, "application/json")
 
 	// Setup default encoder and decoder
 	service.Encoder.Register(goa.NewJSONEncoder, "*/*")
-	service.Decoder.Register(form.NewDecoder, "*/*")
+	service.Decoder.Register(goa.NewXMLDecoder, "*/*")
 }
 
 // AuthController is the controller interface for the Auth actions.

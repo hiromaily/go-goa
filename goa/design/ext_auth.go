@@ -18,7 +18,6 @@ var LoginPayload = Type("LoginPayload", func() {
 	Attribute("password", String, "Password", fieldPassword)
 })
 
-
 // TODO:This code may be better to move to resources.go
 // Resource jwt uses the JWTSecurity security scheme.
 var _ = Resource("auth", func() {

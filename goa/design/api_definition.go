@@ -5,7 +5,7 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-//This is basic whole API definition
+//This is basic whole API definition ★★★
 // API defines the microservice endpoint and
 // other global properties
 
@@ -45,10 +45,11 @@ var _ = API("api", func() {
 	BasePath("/api")
 
 	// API's Resource Content-Type
-	Consumes("application/x-www-form-urlencoded", func() {
-		Package("github.com/goadesign/goa/encoding/form")
-	})
-	Consumes("application/xml") // ★
+	// Consumes is used when accepting requests (for http request)
+	//Consumes("application/x-www-form-urlencoded", func() {
+	//	Package("github.com/goadesign/goa/encoding/form")
+	//})
+	Consumes("application/xml")
 	Consumes("application/json")
 
 	//Consumes("application/json")

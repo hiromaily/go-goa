@@ -19,7 +19,7 @@ type User struct {
 }
 
 type LoginUser struct {
-	id        int
+	id       int
 	userName string
 }
 
@@ -48,4 +48,14 @@ func (m *User) Login(email, password string) error {
 
 func (m *User) UserList(users *[]*app.User) {
 	m.Db.DB.Raw("SELECT id, user_name, email FROM t_users WHERE delete_flg=?", "0").Scan(users)
+}
+
+func (m *User) GetUser(userID int, user *app.User) {
+	users := []*app.User{}
+	m.Db.DB.Raw("SELECT id, user_name, email FROM t_users WHERE delete_flg=? AND id=? limit 1", "0", userID).Scan(&users)
+
+	if len(users) == 1 {
+		*user = *users[0]
+	}
+	return
 }

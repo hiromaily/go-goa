@@ -62,7 +62,7 @@ func (c *Client) NewLoginAuthRequest(ctx context.Context, path string, payload *
 	}
 	header := req.Header
 	if contentType == "*/*" {
-		header.Set("Content-Type", "application/x-www-form-urlencoded")
+		header.Set("Content-Type", "application/xml")
 	} else {
 		header.Set("Content-Type", contentType)
 	}
