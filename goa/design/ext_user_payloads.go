@@ -17,7 +17,7 @@ var UserPayload = Type("UserPayload", func() {
 
 	Attribute("user_name", String, "First name", func() {
 		MinLength(2)
-		MinLength(20)
+		MaxLength(20)
 		Example("Hiroki")
 	})
 	Attribute("email", String, "E-mail of user", fieldEmail)

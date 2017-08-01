@@ -168,7 +168,7 @@ Payload example:
 
 {
    "email": "hy@gmail.com",
-   "password": "xxxxx",
+   "password": "xxxxxxxx",
    "user_name": "Hiroki"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
@@ -261,7 +261,7 @@ Payload example:
 
 {
    "email": "hy@gmail.com",
-   "password": "xxxxx"
+   "password": "xxxxxxxx"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
 	}
@@ -306,7 +306,7 @@ Payload example:
 
 {
    "email": "hy@gmail.com",
-   "password": "xxxxx",
+   "password": "xxxxxxxx",
    "user_name": "Hiroki"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },

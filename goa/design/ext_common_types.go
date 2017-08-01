@@ -26,7 +26,7 @@ var fieldEmail = func() {
 var fieldPassword = func() {
 	Description("Password")
 	MinLength(8)
-	MinLength(20)
+	MaxLength(20)
 	Example("xxxxxxxx")
 }
 

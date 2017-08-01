@@ -32,8 +32,7 @@ func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 
 	//type User struct {
 	//	Email     string `form:"email" json:"email" xml:"email"`
-	//	FirstName string `form:"first_name" json:"first_name" xml:"first_name"`
-	//	LastName  string `form:"last_name" json:"last_name" xml:"last_name"`
+	//	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
 	//	// User ID
 	//	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	//}

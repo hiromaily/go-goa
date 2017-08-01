@@ -20,8 +20,7 @@ type User struct {
 
 type LoginUser struct {
 	id        int
-	firstName string
-	lastName  string
+	userName string
 }
 
 // Count is to count
@@ -33,9 +32,8 @@ func (m *User) Count() (cnt int) {
 
 // TODO:Login is for login
 func (m *User) Login(email, password string) error {
-	//TODO:hash password
 	var users []LoginUser
-	m.Db.DB.Raw("SELECT id, first_name, last_name FROM t_users WHERE delete_flg=? AND email=? AND password=?", "0", email, hs.GetMD5Plus(password, "")).Scan(&users)
+	m.Db.DB.Raw("SELECT id, user_name FROM t_users WHERE delete_flg=? AND email=? AND password=?", "0", email, hs.GetMD5Plus(password, "")).Scan(&users)
 
 	lg.Debugf("len(users): %v", len(users))
 	if len(users) == 0 {
@@ -44,10 +42,10 @@ func (m *User) Login(email, password string) error {
 		return errors.New("data in database would be broken.")
 	}
 
-	lg.Debugf("users[0].firstName: %v", users[0].firstName)
+	lg.Debugf("users[0].userName: %v", users[0].userName)
 	return nil
 }
 
 func (m *User) UserList(users *[]*app.User) {
-	m.Db.DB.Raw("SELECT id, first_name, last_name, email FROM t_users WHERE delete_flg=?", "0").Scan(users)
+	m.Db.DB.Raw("SELECT id, user_name, email FROM t_users WHERE delete_flg=?", "0").Scan(users)
 }

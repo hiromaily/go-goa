@@ -9,17 +9,17 @@ import (
 var CompanyPayload = Type("CompanyPayload", func() {
 	Attribute("name", String, "Name of company", func() {
 		MinLength(2)
-		MinLength(40)
+		MaxLength(40)
 		Example("Sony")
 	})
 	Attribute("country", String, "Country of HQ", func() {
 		MinLength(2)
-		MinLength(40)
+		MaxLength(40)
 		Example("Japan")
 	})
 	Attribute("address", String, "Address of company", func() {
 		MinLength(2)
-		MinLength(40)
+		MaxLength(40)
 		Example("Tokyo")
 	})
 })

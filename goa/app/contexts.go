@@ -60,8 +60,13 @@ func (payload *loginAuthPayload) Validate() (err error) {
 		}
 	}
 	if payload.Password != nil {
-		if utf8.RuneCountInString(*payload.Password) < 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 20, true))
+		if utf8.RuneCountInString(*payload.Password) < 8 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 8, true))
+		}
+	}
+	if payload.Password != nil {
+		if utf8.RuneCountInString(*payload.Password) > 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 20, false))
 		}
 	}
 	return
@@ -98,8 +103,11 @@ func (payload *LoginAuthPayload) Validate() (err error) {
 	if err2 := goa.ValidateFormat(goa.FormatEmail, payload.Email); err2 != nil {
 		err = goa.MergeErrors(err, goa.InvalidFormatError(`raw.email`, payload.Email, goa.FormatEmail, err2))
 	}
-	if utf8.RuneCountInString(payload.Password) < 20 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 20, true))
+	if utf8.RuneCountInString(payload.Password) < 8 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 8, true))
+	}
+	if utf8.RuneCountInString(payload.Password) > 20 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 20, false))
 	}
 	return
 }
@@ -234,18 +242,33 @@ func (payload *createCompanyHyCompanyPayload) Validate() (err error) {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "address"))
 	}
 	if payload.Address != nil {
-		if utf8.RuneCountInString(*payload.Address) < 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, *payload.Address, utf8.RuneCountInString(*payload.Address), 40, true))
+		if utf8.RuneCountInString(*payload.Address) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, *payload.Address, utf8.RuneCountInString(*payload.Address), 2, true))
+		}
+	}
+	if payload.Address != nil {
+		if utf8.RuneCountInString(*payload.Address) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, *payload.Address, utf8.RuneCountInString(*payload.Address), 40, false))
 		}
 	}
 	if payload.Country != nil {
-		if utf8.RuneCountInString(*payload.Country) < 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.country`, *payload.Country, utf8.RuneCountInString(*payload.Country), 40, true))
+		if utf8.RuneCountInString(*payload.Country) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.country`, *payload.Country, utf8.RuneCountInString(*payload.Country), 2, true))
+		}
+	}
+	if payload.Country != nil {
+		if utf8.RuneCountInString(*payload.Country) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.country`, *payload.Country, utf8.RuneCountInString(*payload.Country), 40, false))
 		}
 	}
 	if payload.Name != nil {
-		if utf8.RuneCountInString(*payload.Name) < 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.name`, *payload.Name, utf8.RuneCountInString(*payload.Name), 40, true))
+		if utf8.RuneCountInString(*payload.Name) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.name`, *payload.Name, utf8.RuneCountInString(*payload.Name), 2, true))
+		}
+	}
+	if payload.Name != nil {
+		if utf8.RuneCountInString(*payload.Name) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.name`, *payload.Name, utf8.RuneCountInString(*payload.Name), 40, false))
 		}
 	}
 	return
@@ -287,14 +310,23 @@ func (payload *CreateCompanyHyCompanyPayload) Validate() (err error) {
 	if payload.Address == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "address"))
 	}
-	if utf8.RuneCountInString(payload.Address) < 40 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, payload.Address, utf8.RuneCountInString(payload.Address), 40, true))
+	if utf8.RuneCountInString(payload.Address) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, payload.Address, utf8.RuneCountInString(payload.Address), 2, true))
 	}
-	if utf8.RuneCountInString(payload.Country) < 40 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.country`, payload.Country, utf8.RuneCountInString(payload.Country), 40, true))
+	if utf8.RuneCountInString(payload.Address) > 40 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, payload.Address, utf8.RuneCountInString(payload.Address), 40, false))
 	}
-	if utf8.RuneCountInString(payload.Name) < 40 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.name`, payload.Name, utf8.RuneCountInString(payload.Name), 40, true))
+	if utf8.RuneCountInString(payload.Country) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.country`, payload.Country, utf8.RuneCountInString(payload.Country), 2, true))
+	}
+	if utf8.RuneCountInString(payload.Country) > 40 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.country`, payload.Country, utf8.RuneCountInString(payload.Country), 40, false))
+	}
+	if utf8.RuneCountInString(payload.Name) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.name`, payload.Name, utf8.RuneCountInString(payload.Name), 2, true))
+	}
+	if utf8.RuneCountInString(payload.Name) > 40 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.name`, payload.Name, utf8.RuneCountInString(payload.Name), 40, false))
 	}
 	return
 }
@@ -518,13 +550,23 @@ func (payload *createUserHyUserPayload) Validate() (err error) {
 		}
 	}
 	if payload.Password != nil {
-		if utf8.RuneCountInString(*payload.Password) < 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 20, true))
+		if utf8.RuneCountInString(*payload.Password) < 8 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 8, true))
+		}
+	}
+	if payload.Password != nil {
+		if utf8.RuneCountInString(*payload.Password) > 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, *payload.Password, utf8.RuneCountInString(*payload.Password), 20, false))
 		}
 	}
 	if payload.UserName != nil {
-		if utf8.RuneCountInString(*payload.UserName) < 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, *payload.UserName, utf8.RuneCountInString(*payload.UserName), 20, true))
+		if utf8.RuneCountInString(*payload.UserName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, *payload.UserName, utf8.RuneCountInString(*payload.UserName), 2, true))
+		}
+	}
+	if payload.UserName != nil {
+		if utf8.RuneCountInString(*payload.UserName) > 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, *payload.UserName, utf8.RuneCountInString(*payload.UserName), 20, false))
 		}
 	}
 	return
@@ -569,11 +611,17 @@ func (payload *CreateUserHyUserPayload) Validate() (err error) {
 	if err2 := goa.ValidateFormat(goa.FormatEmail, payload.Email); err2 != nil {
 		err = goa.MergeErrors(err, goa.InvalidFormatError(`raw.email`, payload.Email, goa.FormatEmail, err2))
 	}
-	if utf8.RuneCountInString(payload.Password) < 20 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 20, true))
+	if utf8.RuneCountInString(payload.Password) < 8 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 8, true))
 	}
-	if utf8.RuneCountInString(payload.UserName) < 20 {
-		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, payload.UserName, utf8.RuneCountInString(payload.UserName), 20, true))
+	if utf8.RuneCountInString(payload.Password) > 20 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.password`, payload.Password, utf8.RuneCountInString(payload.Password), 20, false))
+	}
+	if utf8.RuneCountInString(payload.UserName) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, payload.UserName, utf8.RuneCountInString(payload.UserName), 2, true))
+	}
+	if utf8.RuneCountInString(payload.UserName) > 20 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.user_name`, payload.UserName, utf8.RuneCountInString(payload.UserName), 20, false))
 	}
 	return
 }

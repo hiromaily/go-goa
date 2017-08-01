@@ -1,16 +1,16 @@
-FROM golang:1.8
+FROM hirokiy/goplus:1.8
+#FROM golang:1.8
 
 #RUN echo $GOPATH => /go
 
 #ARG redisHostName=default-redis-server
 #ARG mysqlHostName=default-mysql-server
 
-RUN apt-get -y update && apt-get install -y git
+#RUN apt-get -y update && apt-get install -y git
 
 
-RUN go get -u github.com/goadesign/goa/... && \
-#go get -u github.com/pilu/fresh
-go get -u github.com/hiromaily/fresh
+#RUN go get -u github.com/goadesign/goa/... && \
+#go get -u github.com/hiromaily/fresh
 
 RUN go get -u github.com/hiromaily/go-goa/...
 
