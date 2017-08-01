@@ -19,6 +19,43 @@ go-goa is sameple for how to use goa framework
 ## Install
 First, please check Makefile.
 
+```bash
+# Run Docker
+dcup:
+	docker-compose build
+	docker-compose up
+```
+
+## Directory structure
+| Directory NAME  | Description                        |
+|:----------------|:-----------------------------------|
+| docker          | docker resources                   |
+| ext             | extension source code for logic    |
+| goa             | generated files by goa             |
+| public          | static files                       |
+| resources       | swagger-ui, toml files and so on   |
+
+
+
+## Usage
+Please check Makefile.
+
+```bash
+# updating goa framework is required to keep latest.
+updgoa:
+	go get -u github.com/goadesign/goa/...  
+
+# After modifying goa/design/* files
+genfull: gencln aftergen
+# ==> this regenerate goa related files. Don't worry, your logic files are in ext/...
+
+# Integration Test
+gotest:
+	go test -v ext/cmd/*.go
+
+```
+
+
 ## dependency management tool
 [dep](https://github.com/golang/dep)
 
@@ -27,31 +64,26 @@ First, please check Makefile.
 * manifest.json
 * vendor/
 
-## Usage
-#### Which files should be changed for adding logic code?
-* ./hy_company.go
-* ./hy_user.go
-
 
 ## API List
 * ctrl=Health action=Health route=GET /api/_ah/health
-
+* ctrl=Public files=goa/swagger/swagger.json route=GET /swagger.json
 * ctrl=Public files=public/ route=GET /*filepath
+* ctrl=Public files=resources/swagger-ui/dist/ route=GET /swagger-ui/*filepath
 * ctrl=Public files=public/index.html route=GET /
-* ctrl=Public files=swagger-ui/dist/ route=GET /swagger-ui/*filepath
-* ctrl=Public files=swagger-ui/dist/index.html route=GET /swagger-ui/
+* ctrl=Public files=resources/swagger-ui/dist/index.html route=GET /swagger-ui/
+* ctrl=Auth action=Login route=POST /api/auth/login
+* ctrl=HyUser action=CreateUser route=POST /api/user security=jwt
+* ctrl=HyUser action=DeleteUser route=DELETE /api/user/:userID security=jwt
+* ctrl=HyUser action=GetUser route=GET /api/user/:userID security=jwt
+* ctrl=HyUser action=UpdateUser route=PUT /api/user/:userID security=jwt
+* ctrl=HyUser action=UserList route=GET /api/user security=jwt
+* ctrl=HyCompany action=CompanyList route=GET /api/company security=jwt
+* ctrl=HyCompany action=CreateCompany route=POST /api/company security=jwt
+* ctrl=HyCompany action=DeleteCompany route=DELETE /api/company/:companyID security=jwt
+* ctrl=HyCompany action=GetCompany route=GET /api/company/:companyID security=jwt
+* ctrl=HyCompany action=UpdateCompany route=PUT /api/company/:companyID security=jwt
 
-* ctrl=HyUser action=UserList route=GET /api/user
-* ctrl=HyUser action=GetUser route=GET /api/user/:userID
-* ctrl=HyUser action=CreateUser route=POST /api/user
-* ctrl=HyUser action=UpdateUser route=PUT /api/user/:userID
-* ctrl=HyUser action=DeleteUser route=DELETE /api/user/:userID
-
-* ctrl=HyCompany action=CompanyList route=GET /api/company
-* ctrl=HyCompany action=GetCompany route=GET /api/company/:companyID
-* ctrl=HyCompany action=CreateCompany route=POST /api/company
-* ctrl=HyCompany action=UpdateCompany route=PUT /api/company/:companyID
-* ctrl=HyCompany action=DeleteCompany route=DELETE /api/company/:companyID
 
 ## Performance
 To eveluate performance, [hey](https://github.com/rakyll/hey) has been used.
