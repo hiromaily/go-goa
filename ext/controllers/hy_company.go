@@ -2,8 +2,10 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/goadesign/goa"
 	c "github.com/hiromaily/go-goa/ext/context"
+	m "github.com/hiromaily/go-goa/ext/models"
 	"github.com/hiromaily/go-goa/goa/app"
 )
 
@@ -23,12 +25,37 @@ func NewHyCompanyController(service *goa.Service, ctx *c.Ctx) *HyCompanyControll
 
 // CompanyList runs the CompanyList action.
 func (c *HyCompanyController) CompanyList(ctx *app.CompanyListHyCompanyContext) error {
-	// HyCompanyController_CompanyList: start_implement
+	fmt.Println("[hy_company][CompanyList]")
+	var companies []*app.CompanyIdname
 
-	// Put your logic here
+	svc := &m.Company{Db: c.ctx.Db}
+	svc.CompanyList(&companies)
 
-	// HyCompanyController_CompanyList: end_implement
-	res := &app.Company{}
+	if len(companies) == 0 {
+		return ctx.NoContent()
+	}
+
+	res := app.CompanyIdnameCollection(companies)
+	return ctx.OKIdname(res)
+}
+
+// GetCompanyGroup runs the GetCompanyGroup action.
+func (c *HyCompanyController) GetCompanyGroup(ctx *app.GetCompanyGroupHyCompanyContext) error {
+	fmt.Println("[hy_company][GetCompanyGroup]")
+	var companies []*app.Company
+
+	svc := &m.Company{Db: c.ctx.Db}
+
+	err := svc.GetCompanyGroup(ctx.CompanyID, ctx.HqFlg, &companies)
+	if err != nil {
+		return err
+	}
+
+	if len(companies) == 0 {
+		return ctx.NoContent()
+	}
+
+	res := app.CompanyCollection(companies)
 	return ctx.OK(res)
 }
 
@@ -39,7 +66,8 @@ func (c *HyCompanyController) CreateCompany(ctx *app.CreateCompanyHyCompanyConte
 	// Put your logic here
 
 	// HyCompanyController_CreateCompany: end_implement
-	return nil
+	res := &app.Company{}
+	return ctx.OK(res)
 }
 
 // DeleteCompany runs the DeleteCompany action.
@@ -52,17 +80,6 @@ func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyConte
 	return nil
 }
 
-// GetCompany runs the GetCompany action.
-func (c *HyCompanyController) GetCompany(ctx *app.GetCompanyHyCompanyContext) error {
-	// HyCompanyController_GetCompany: start_implement
-
-	// Put your logic here
-
-	// HyCompanyController_GetCompany: end_implement
-	res := &app.Company{}
-	return ctx.OK(res)
-}
-
 // UpdateCompany runs the UpdateCompany action.
 func (c *HyCompanyController) UpdateCompany(ctx *app.UpdateCompanyHyCompanyContext) error {
 	// HyCompanyController_UpdateCompany: start_implement
@@ -70,5 +87,6 @@ func (c *HyCompanyController) UpdateCompany(ctx *app.UpdateCompanyHyCompanyConte
 	// Put your logic here
 
 	// HyCompanyController_UpdateCompany: end_implement
-	return nil
+	res := &app.Company{}
+	return ctx.OK(res)
 }

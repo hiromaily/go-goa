@@ -19,33 +19,36 @@ definitions:
     description: A company information (default view)
     example:
       address: Culpa voluptatem ullam.
-      company_id: Sit dolor neque nulla.
-      country_name: Nisi dolorum.
-      hq_flg: Sunt cum aut blanditiis accusantium.
-      id: 1
-      name: Et aut tempora et beatae sapiente.
+      company_id: 2
+      country_name: Sit dolor neque nulla.
+      hq_flg: Nisi dolorum.
+      id: 10
+      name: Sunt cum aut blanditiis accusantium.
     properties:
       address:
         example: Culpa voluptatem ullam.
         type: string
       company_id:
+        description: Company ID
+        example: 2
+        minimum: 1
+        type: integer
+      country_name:
         example: Sit dolor neque nulla.
         type: string
-      country_name:
-        example: Nisi dolorum.
-        type: string
       hq_flg:
-        example: Sunt cum aut blanditiis accusantium.
+        example: Nisi dolorum.
         type: string
       id:
         description: Company Detail ID
-        example: 1
+        example: 10
         minimum: 1
         type: integer
       name:
-        example: Et aut tempora et beatae sapiente.
+        example: Sunt cum aut blanditiis accusantium.
         type: string
     required:
+    - company_id
     - name
     title: 'Mediatype identifier: application/vnd.company+json; view=default'
     type: object
@@ -54,23 +57,23 @@ definitions:
       view)
     example:
     - address: Culpa voluptatem ullam.
-      company_id: Sit dolor neque nulla.
-      country_name: Nisi dolorum.
-      hq_flg: Sunt cum aut blanditiis accusantium.
-      id: 1
-      name: Et aut tempora et beatae sapiente.
+      company_id: 2
+      country_name: Sit dolor neque nulla.
+      hq_flg: Nisi dolorum.
+      id: 10
+      name: Sunt cum aut blanditiis accusantium.
     - address: Culpa voluptatem ullam.
-      company_id: Sit dolor neque nulla.
-      country_name: Nisi dolorum.
-      hq_flg: Sunt cum aut blanditiis accusantium.
-      id: 1
-      name: Et aut tempora et beatae sapiente.
+      company_id: 2
+      country_name: Sit dolor neque nulla.
+      hq_flg: Nisi dolorum.
+      id: 10
+      name: Sunt cum aut blanditiis accusantium.
     - address: Culpa voluptatem ullam.
-      company_id: Sit dolor neque nulla.
-      country_name: Nisi dolorum.
-      hq_flg: Sunt cum aut blanditiis accusantium.
-      id: 1
-      name: Et aut tempora et beatae sapiente.
+      company_id: 2
+      country_name: Sit dolor neque nulla.
+      hq_flg: Nisi dolorum.
+      id: 10
+      name: Sunt cum aut blanditiis accusantium.
     items:
       $ref: '#/definitions/Company'
     title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
@@ -245,12 +248,12 @@ definitions:
   User:
     description: A user information (default view)
     example:
-      email: Quo alias aut quo aut.
+      email: Aut tempora et beatae sapiente.
       id: 1
-      user_name: Ducimus est.
+      user_name: Eveniet vel nesciunt omnis est ducimus est.
     properties:
       email:
-        example: Quo alias aut quo aut.
+        example: Aut tempora et beatae sapiente.
         type: string
       id:
         description: User ID
@@ -258,7 +261,7 @@ definitions:
         minimum: 1
         type: integer
       user_name:
-        example: Ducimus est.
+        example: Eveniet vel nesciunt omnis est ducimus est.
         type: string
     required:
     - user_name
@@ -268,12 +271,12 @@ definitions:
   UserCollection:
     description: UserCollection is the media type for an array of User (default view)
     example:
-    - email: Quo alias aut quo aut.
+    - email: Aut tempora et beatae sapiente.
       id: 1
-      user_name: Ducimus est.
-    - email: Quo alias aut quo aut.
+      user_name: Eveniet vel nesciunt omnis est ducimus est.
+    - email: Aut tempora et beatae sapiente.
       id: 1
-      user_name: Ducimus est.
+      user_name: Eveniet vel nesciunt omnis est ducimus est.
     items:
       $ref: '#/definitions/User'
     title: 'Mediatype identifier: application/vnd.user+json; type=collection; view=default'
@@ -498,32 +501,39 @@ paths:
 
         Required security scopes:
           * `api:access`
-      operationId: hy_company#GetCompany
+      operationId: hy_company#GetCompanyGroup
       parameters:
       - in: path
         name: companyID
         required: true
         type: integer
+      - enum:
+        - "1"
+        - "0"
+        in: query
+        name: hq_flg
+        required: false
+        type: string
       produces:
       - application/vnd.goa.error
-      - application/vnd.company+json
+      - application/vnd.company+json; type=collection
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/Company'
+            $ref: '#/definitions/CompanyCollection'
+        "204":
+          description: No Content
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
-        "404":
-          description: Not Found
       schemes:
       - http
       security:
       - jwt:
         - api:access
-      summary: GetCompany hy_company
+      summary: GetCompanyGroup hy_company
       tags:
       - hy_company
     put:

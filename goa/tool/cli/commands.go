@@ -59,9 +59,10 @@ type (
 		PrettyPrint bool
 	}
 
-	// GetCompanyHyCompanyCommand is the command line data structure for the GetCompany action of hy_company
-	GetCompanyHyCompanyCommand struct {
+	// GetCompanyGroupHyCompanyCommand is the command line data structure for the GetCompanyGroup action of hy_company
+	GetCompanyGroupHyCompanyCommand struct {
 		CompanyID   int
+		HqFlg       string
 		PrettyPrint bool
 	}
 
@@ -209,10 +210,10 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "get-company",
+		Use:   "get-company-group",
 		Short: `Retrieve company with given company_id`,
 	}
-	tmp6 := new(GetCompanyHyCompanyCommand)
+	tmp6 := new(GetCompanyGroupHyCompanyCommand)
 	sub = &cobra.Command{
 		Use:   `hy-company ["/api/company/COMPANYID"]`,
 		Short: ``,
@@ -695,8 +696,8 @@ func (cmd *DeleteCompanyHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *cl
 	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, `Company ID`)
 }
 
-// Run makes the HTTP request corresponding to the GetCompanyHyCompanyCommand command.
-func (cmd *GetCompanyHyCompanyCommand) Run(c *client.Client, args []string) error {
+// Run makes the HTTP request corresponding to the GetCompanyGroupHyCompanyCommand command.
+func (cmd *GetCompanyGroupHyCompanyCommand) Run(c *client.Client, args []string) error {
 	var path string
 	if len(args) > 0 {
 		path = args[0]
@@ -705,7 +706,7 @@ func (cmd *GetCompanyHyCompanyCommand) Run(c *client.Client, args []string) erro
 	}
 	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
 	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.GetCompanyHyCompany(ctx, path)
+	resp, err := c.GetCompanyGroupHyCompany(ctx, path, stringFlagVal("hq_flg", cmd.HqFlg))
 	if err != nil {
 		goa.LogError(ctx, "failed", "err", err)
 		return err
@@ -716,9 +717,11 @@ func (cmd *GetCompanyHyCompanyCommand) Run(c *client.Client, args []string) erro
 }
 
 // RegisterFlags registers the command flags with the command line.
-func (cmd *GetCompanyHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+func (cmd *GetCompanyGroupHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var companyID int
 	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, ``)
+	var hqFlg string
+	cc.Flags().StringVar(&cmd.HqFlg, "hq_flg", hqFlg, ``)
 }
 
 // Run makes the HTTP request corresponding to the UpdateCompanyHyCompanyCommand command.

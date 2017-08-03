@@ -30,7 +30,7 @@ type ParamUser struct {
 	Password string `gorm:"column:password"`
 }
 
-// Count is to count
+// TODO:Count is to count
 func (m *User) Count() (cnt int) {
 	//m.Ctx.Db
 	//m.Db.DB
@@ -96,5 +96,4 @@ func (m *User) DeleteUser(userID int) error {
 	}
 
 	return nil
-
 }

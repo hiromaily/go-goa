@@ -39,7 +39,7 @@ func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 	svc.UserList(&users)
 
 	if len(users) == 0 {
-		ctx.NoContent()
+		return ctx.NoContent()
 	}
 
 	//type UserCollection []*User

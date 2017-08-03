@@ -99,9 +99,13 @@ var Company = MediaType("application/vnd.company+json", func() {
 	Attributes(func() {
 		Attribute("id", Integer, "Company Detail ID", func() {
 			Minimum(1)
-			Example(1)
+			Example(10)
 		})
-		Attribute("company_id")
+		Attribute("company_id", Integer, "Company ID", func() {
+			Minimum(1)
+			Example(2)
+		})
+		//Attribute("company_id")
 		Attribute("name")
 		Attribute("hq_flg")
 		Attribute("country_name")
@@ -110,7 +114,7 @@ var Company = MediaType("application/vnd.company+json", func() {
 		Attribute("updated_at")
 
 		//when field is zero or empty, data is not return unless it's not set in Required
-		Required("name")
+		Required("company_id", "name")
 	})
 
 	//View defines a rendering of the media type
@@ -126,9 +130,9 @@ var Company = MediaType("application/vnd.company+json", func() {
 		//Attribute("created_by")
 	})
 
-	View("name", func() {
+	View("idname", func() {
 		Description("only company's id and name")
-		Attribute("company_id")
+		Attribute("id")
 		Attribute("name")
 	})
 })

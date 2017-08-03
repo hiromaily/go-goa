@@ -188,6 +188,8 @@ gotest:
 	go test -v ext/cmd/*.go
 	#go test -v ext/cmd/*.go -f ${TOMLPATH}
 
+gotest2:
+	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestCompanyAPIOnTable"
 
 ###############################################################################
 # httpie

@@ -168,7 +168,7 @@ type HyCompanyController interface {
 	CompanyList(*CompanyListHyCompanyContext) error
 	CreateCompany(*CreateCompanyHyCompanyContext) error
 	DeleteCompany(*DeleteCompanyHyCompanyContext) error
-	GetCompany(*GetCompanyHyCompanyContext) error
+	GetCompanyGroup(*GetCompanyGroupHyCompanyContext) error
 	UpdateCompany(*UpdateCompanyHyCompanyContext) error
 }
 
@@ -242,16 +242,16 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 			return err
 		}
 		// Build the context
-		rctx, err := NewGetCompanyHyCompanyContext(ctx, req, service)
+		rctx, err := NewGetCompanyGroupHyCompanyContext(ctx, req, service)
 		if err != nil {
 			return err
 		}
-		return ctrl.GetCompany(rctx)
+		return ctrl.GetCompanyGroup(rctx)
 	}
 	h = handleSecurity("jwt", h, "api:access")
 	h = handleHyCompanyOrigin(h)
-	service.Mux.Handle("GET", "/api/company/:companyID", ctrl.MuxHandler("GetCompany", h, nil))
-	service.LogInfo("mount", "ctrl", "HyCompany", "action", "GetCompany", "route", "GET /api/company/:companyID", "security", "jwt")
+	service.Mux.Handle("GET", "/api/company/:companyID", ctrl.MuxHandler("GetCompanyGroup", h, nil))
+	service.LogInfo("mount", "ctrl", "HyCompany", "action", "GetCompanyGroup", "route", "GET /api/company/:companyID", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request

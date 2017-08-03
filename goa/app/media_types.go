@@ -34,8 +34,9 @@ func (mt *Authorized) Validate() (err error) {
 //
 // Identifier: application/vnd.company+json; view=default
 type Company struct {
-	Address     *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
-	CompanyID   *string `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	// Company ID
+	CompanyID   int     `form:"company_id" json:"company_id" xml:"company_id"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	HqFlg       *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
 	// Company Detail ID
@@ -45,8 +46,12 @@ type Company struct {
 
 // Validate validates the Company media type instance.
 func (mt *Company) Validate() (err error) {
+
 	if mt.Name == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
+	}
+	if mt.CompanyID < 1 {
+		err = goa.MergeErrors(err, goa.InvalidRangeError(`response.company_id`, mt.CompanyID, 1, true))
 	}
 	if mt.ID != nil {
 		if *mt.ID < 1 {
@@ -56,18 +61,24 @@ func (mt *Company) Validate() (err error) {
 	return
 }
 
-// A company information (name view)
+// A company information (idname view)
 //
-// Identifier: application/vnd.company+json; view=name
-type CompanyName struct {
-	CompanyID *string `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	Name      string  `form:"name" json:"name" xml:"name"`
+// Identifier: application/vnd.company+json; view=idname
+type CompanyIdname struct {
+	// Company Detail ID
+	ID   *int   `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	Name string `form:"name" json:"name" xml:"name"`
 }
 
-// Validate validates the CompanyName media type instance.
-func (mt *CompanyName) Validate() (err error) {
+// Validate validates the CompanyIdname media type instance.
+func (mt *CompanyIdname) Validate() (err error) {
 	if mt.Name == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
+	}
+	if mt.ID != nil {
+		if *mt.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, *mt.ID, 1, true))
+		}
 	}
 	return
 }
@@ -89,13 +100,13 @@ func (mt CompanyCollection) Validate() (err error) {
 	return
 }
 
-// CompanyCollection is the media type for an array of Company (name view)
+// CompanyCollection is the media type for an array of Company (idname view)
 //
-// Identifier: application/vnd.company+json; type=collection; view=name
-type CompanyNameCollection []*CompanyName
+// Identifier: application/vnd.company+json; type=collection; view=idname
+type CompanyIdnameCollection []*CompanyIdname
 
-// Validate validates the CompanyNameCollection media type instance.
-func (mt CompanyNameCollection) Validate() (err error) {
+// Validate validates the CompanyIdnameCollection media type instance.
+func (mt CompanyIdnameCollection) Validate() (err error) {
 	for _, e := range mt {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {

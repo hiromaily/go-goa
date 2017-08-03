@@ -179,11 +179,11 @@ func (ctx *CompanyListHyCompanyContext) OK(r CompanyCollection) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// OKName sends a HTTP response with status code 200.
-func (ctx *CompanyListHyCompanyContext) OKName(r CompanyNameCollection) error {
+// OKIdname sends a HTTP response with status code 200.
+func (ctx *CompanyListHyCompanyContext) OKIdname(r CompanyIdnameCollection) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
 	if r == nil {
-		r = CompanyNameCollection{}
+		r = CompanyIdnameCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -391,8 +391,8 @@ func (ctx *CreateCompanyHyCompanyContext) OK(r *Company) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// OKName sends a HTTP response with status code 200.
-func (ctx *CreateCompanyHyCompanyContext) OKName(r *CompanyName) error {
+// OKIdname sends a HTTP response with status code 200.
+func (ctx *CreateCompanyHyCompanyContext) OKIdname(r *CompanyIdname) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -456,23 +456,24 @@ func (ctx *DeleteCompanyHyCompanyContext) NotFound() error {
 	return nil
 }
 
-// GetCompanyHyCompanyContext provides the hy_company GetCompany action context.
-type GetCompanyHyCompanyContext struct {
+// GetCompanyGroupHyCompanyContext provides the hy_company GetCompanyGroup action context.
+type GetCompanyGroupHyCompanyContext struct {
 	context.Context
 	*goa.ResponseData
 	*goa.RequestData
 	CompanyID int
+	HqFlg     *string
 }
 
-// NewGetCompanyHyCompanyContext parses the incoming request URL and body, performs validations and creates the
-// context used by the hy_company controller GetCompany action.
-func NewGetCompanyHyCompanyContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetCompanyHyCompanyContext, error) {
+// NewGetCompanyGroupHyCompanyContext parses the incoming request URL and body, performs validations and creates the
+// context used by the hy_company controller GetCompanyGroup action.
+func NewGetCompanyGroupHyCompanyContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetCompanyGroupHyCompanyContext, error) {
 	var err error
 	resp := goa.ContextResponse(ctx)
 	resp.Service = service
 	req := goa.ContextRequest(ctx)
 	req.Request = r
-	rctx := GetCompanyHyCompanyContext{Context: ctx, ResponseData: resp, RequestData: req}
+	rctx := GetCompanyGroupHyCompanyContext{Context: ctx, ResponseData: resp, RequestData: req}
 	paramCompanyID := req.Params["companyID"]
 	if len(paramCompanyID) > 0 {
 		rawCompanyID := paramCompanyID[0]
@@ -482,31 +483,47 @@ func NewGetCompanyHyCompanyContext(ctx context.Context, r *http.Request, service
 			err = goa.MergeErrors(err, goa.InvalidParamTypeError("companyID", rawCompanyID, "integer"))
 		}
 	}
+	paramHqFlg := req.Params["hq_flg"]
+	if len(paramHqFlg) > 0 {
+		rawHqFlg := paramHqFlg[0]
+		rctx.HqFlg = &rawHqFlg
+		if rctx.HqFlg != nil {
+			if !(*rctx.HqFlg == "1" || *rctx.HqFlg == "0") {
+				err = goa.MergeErrors(err, goa.InvalidEnumValueError(`hq_flg`, *rctx.HqFlg, []interface{}{"1", "0"}))
+			}
+		}
+	}
 	return &rctx, err
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *GetCompanyHyCompanyContext) OK(r *Company) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+func (ctx *GetCompanyGroupHyCompanyContext) OK(r CompanyCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
+	if r == nil {
+		r = CompanyCollection{}
+	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// OKName sends a HTTP response with status code 200.
-func (ctx *GetCompanyHyCompanyContext) OKName(r *CompanyName) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+// OKIdname sends a HTTP response with status code 200.
+func (ctx *GetCompanyGroupHyCompanyContext) OKIdname(r CompanyIdnameCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
+	if r == nil {
+		r = CompanyIdnameCollection{}
+	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// NoContent sends a HTTP response with status code 204.
+func (ctx *GetCompanyGroupHyCompanyContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
 }
 
 // BadRequest sends a HTTP response with status code 400.
-func (ctx *GetCompanyHyCompanyContext) BadRequest(r error) error {
+func (ctx *GetCompanyGroupHyCompanyContext) BadRequest(r error) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
-}
-
-// NotFound sends a HTTP response with status code 404.
-func (ctx *GetCompanyHyCompanyContext) NotFound() error {
-	ctx.ResponseData.WriteHeader(404)
-	return nil
 }
 
 // UpdateCompanyHyCompanyContext provides the hy_company UpdateCompany action context.
@@ -710,8 +727,8 @@ func (ctx *UpdateCompanyHyCompanyContext) OK(r *Company) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// OKName sends a HTTP response with status code 200.
-func (ctx *UpdateCompanyHyCompanyContext) OKName(r *CompanyName) error {
+// OKIdname sends a HTTP response with status code 200.
+func (ctx *UpdateCompanyHyCompanyContext) OKIdname(r *CompanyIdname) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }

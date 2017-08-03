@@ -166,16 +166,21 @@ var _ = Resource(resourcePrefix+"company", func() {
 		Response(BadRequest, ErrorMedia)
 	})
 
-	Action("GetCompany", func() {
+	Action("GetCompanyGroup", func() {
 		Routing(
 			GET("/:companyID"),
 		)
 		Description("Retrieve company with given company_id")
 		Params(func() {
 			Param("companyID", Integer)
+			//query string
+			//Param("hq_flg", String)
+			Param("hq_flg", func() {
+				Enum("1", "0")
+			})
 		})
-		Response(OK)
-		Response(NotFound)
+		Response(OK, CollectionOf(Company))
+		Response(NoContent)
 		Response(BadRequest, ErrorMedia)
 	})
 

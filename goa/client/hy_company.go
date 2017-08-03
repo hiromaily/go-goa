@@ -144,29 +144,34 @@ func (c *Client) NewDeleteCompanyHyCompanyRequest(ctx context.Context, path stri
 	return req, nil
 }
 
-// GetCompanyHyCompanyPath computes a request path to the GetCompany action of hy_company.
-func GetCompanyHyCompanyPath(companyID int) string {
+// GetCompanyGroupHyCompanyPath computes a request path to the GetCompanyGroup action of hy_company.
+func GetCompanyGroupHyCompanyPath(companyID int) string {
 	param0 := strconv.Itoa(companyID)
 
 	return fmt.Sprintf("/api/company/%s", param0)
 }
 
 // Retrieve company with given company_id
-func (c *Client) GetCompanyHyCompany(ctx context.Context, path string) (*http.Response, error) {
-	req, err := c.NewGetCompanyHyCompanyRequest(ctx, path)
+func (c *Client) GetCompanyGroupHyCompany(ctx context.Context, path string, hqFlg *string) (*http.Response, error) {
+	req, err := c.NewGetCompanyGroupHyCompanyRequest(ctx, path, hqFlg)
 	if err != nil {
 		return nil, err
 	}
 	return c.Client.Do(ctx, req)
 }
 
-// NewGetCompanyHyCompanyRequest create the request corresponding to the GetCompany action endpoint of the hy_company resource.
-func (c *Client) NewGetCompanyHyCompanyRequest(ctx context.Context, path string) (*http.Request, error) {
+// NewGetCompanyGroupHyCompanyRequest create the request corresponding to the GetCompanyGroup action endpoint of the hy_company resource.
+func (c *Client) NewGetCompanyGroupHyCompanyRequest(ctx context.Context, path string, hqFlg *string) (*http.Request, error) {
 	scheme := c.Scheme
 	if scheme == "" {
 		scheme = "http"
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
+	values := u.Query()
+	if hqFlg != nil {
+		values.Set("hq_flg", *hqFlg)
+	}
+	u.RawQuery = values.Encode()
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err

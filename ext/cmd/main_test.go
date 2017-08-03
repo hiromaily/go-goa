@@ -48,8 +48,8 @@ var (
 	jwtAuth           = map[string]string{"Authorization": "Bearer %s"}
 	loginHeaders      = []map[string]string{contentTypeJson}
 	loginWrongHeaders = []map[string]string{contentTypeForm}
-	userHeaders       = []map[string]string{jwtAuth}
-	userJsonHeaders   = []map[string]string{jwtAuth, contentTypeJson}
+	jwtHeaders        = []map[string]string{jwtAuth}
+	jwtJsonHeaders    = []map[string]string{jwtAuth, contentTypeJson}
 )
 
 type TableTest struct {
@@ -92,30 +92,48 @@ type UserAPITest struct {
 }
 
 var userAPITests = []UserAPITest{
-	{TableTest{"/api/user", http.StatusOK, "GET", userHeaders, "", nil}, "", "", ""},
-	{TableTest{"/api/user/999999", http.StatusNotFound, "GET", userHeaders, "", nil}, "", "", ""},
-	{TableTest{"/api/user/1", http.StatusOK, "GET", userHeaders, "", nil}, "", "", ""},
-	{TableTest{"/api/user", http.StatusBadRequest, "POST", userJsonHeaders, "", nil}, "", "", ""},
+	{TableTest{"/api/user", http.StatusOK, "GET", jwtHeaders, "", nil}, "", "", ""},
+	{TableTest{"/api/user/999999", http.StatusNotFound, "GET", jwtHeaders, "", nil}, "", "", ""},
+	{TableTest{"/api/user/1", http.StatusOK, "GET", jwtHeaders, "", nil}, "", "", ""},
+	{TableTest{"/api/user", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, "", "", ""},
 	//TODO:this test return 200 though http header doesn't include [Content-Type: application/json]
-	{TableTest{"/api/user", http.StatusOK, "POST", userHeaders, "", nil},
+	{TableTest{"/api/user", http.StatusOK, "POST", jwtHeaders, "", nil},
 		"fromtest01@test.com",
 		"testtest01",
 		"testuser01",
 	},
-	{TableTest{"/api/user", http.StatusOK, "POST", userJsonHeaders, "saveID", nil},
+	{TableTest{"/api/user", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil},
 		"fromtest02@test.com",
 		"testtest02",
 		"testuser02",
 	},
-	{TableTest{"/api/user/%d", http.StatusOK, "GET", userHeaders, "setID", nil}, "", "", ""},
-	{TableTest{"/api/user/%d", http.StatusOK, "PUT", userJsonHeaders, "setID", nil},
+	{TableTest{"/api/user/%d", http.StatusOK, "GET", jwtHeaders, "setID", nil}, "", "", ""},
+	{TableTest{"/api/user/%d", http.StatusOK, "PUT", jwtJsonHeaders, "setID", nil},
 		"updatedUser03@test.com",
 		"testtest03",
 		"testuser03",
 	},
 	//{TableTest{"/api/user/%d", http.StatusOK, "GET", userHeaders, "", nil}, "", "", ""},
-	{TableTest{"/api/user/%d", http.StatusOK, "DELETE", userHeaders, "setID", nil}, "", "", ""},
-	{TableTest{"/api/user/%d", http.StatusNotFound, "GET", userHeaders, "", nil}, "", "", ""},
+	{TableTest{"/api/user/%d", http.StatusOK, "DELETE", jwtHeaders, "setID", nil}, "", "", ""},
+	{TableTest{"/api/user/%d", http.StatusNotFound, "GET", jwtHeaders, "", nil}, "", "", ""},
+}
+
+type CompanyAPITest struct {
+	TableTest
+	companyID int
+	name      string
+	hqFlg     string
+	countryID int
+	address   string
+}
+
+var companyAPITests = []CompanyAPITest{
+	{TableTest{"/api/company", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
+	{TableTest{"/api/company/999", http.StatusNoContent, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
+	{TableTest{"/api/company/1", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
+	{TableTest{"/api/company/1?hq_flg=0", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
+	{TableTest{"/api/company/1?hq_flg=1", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
+	{TableTest{"/api/company/1?hq_flg=2", http.StatusBadRequest, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
 }
 
 //-----------------------------------------------------------------------------
@@ -396,6 +414,21 @@ func TestUserAPIOnTable(t *testing.T) {
 		} else if tt.nextPage == "setID" {
 			userAPITests[i+1].url = fmt.Sprintf(userAPITests[i+1].url, saveID)
 		}
+
+		fmt.Println("[Debug] body:", string(body))
+	}
+}
+
+func TestCompanyAPIOnTable(t *testing.T) {
+
+	//companyAPITests
+	var ioReader io.Reader
+
+	for i, tt := range companyAPITests {
+		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
+
+		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, ioReader, tt.headers)
+		checkError(t, err, code, header, tt.TableTest, i+1)
 
 		fmt.Println("[Debug] body:", string(body))
 	}

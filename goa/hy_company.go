@@ -47,14 +47,14 @@ func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyConte
 	return nil
 }
 
-// GetCompany runs the GetCompany action.
-func (c *HyCompanyController) GetCompany(ctx *app.GetCompanyHyCompanyContext) error {
-	// HyCompanyController_GetCompany: start_implement
+// GetCompanyGroup runs the GetCompanyGroup action.
+func (c *HyCompanyController) GetCompanyGroup(ctx *app.GetCompanyGroupHyCompanyContext) error {
+	// HyCompanyController_GetCompanyGroup: start_implement
 
 	// Put your logic here
 
-	// HyCompanyController_GetCompany: end_implement
-	res := &app.Company{}
+	// HyCompanyController_GetCompanyGroup: end_implement
+	res := app.CompanyCollection{}
 	return ctx.OK(res)
 }
 
