@@ -25,7 +25,7 @@ type CreateUserHyUserPayload struct {
 	Email string `form:"email" json:"email" xml:"email"`
 	// Password
 	Password string `form:"password" json:"password" xml:"password"`
-	// First name
+	// User name
 	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
 }
 
@@ -82,7 +82,7 @@ func DeleteUserHyUserPath(userID int) string {
 	return fmt.Sprintf("/api/user/%s", param0)
 }
 
-// DeleteUserHyUser makes a request to the DeleteUser action endpoint of the hy_user resource
+// Delete user
 func (c *Client) DeleteUserHyUser(ctx context.Context, path string) (*http.Response, error) {
 	req, err := c.NewDeleteUserHyUserRequest(ctx, path)
 	if err != nil {
@@ -147,7 +147,7 @@ type UpdateUserHyUserPayload struct {
 	Email string `form:"email" json:"email" xml:"email"`
 	// Password
 	Password string `form:"password" json:"password" xml:"password"`
-	// First name
+	// User name
 	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
 }
 

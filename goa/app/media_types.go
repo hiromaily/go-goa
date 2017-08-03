@@ -34,71 +34,74 @@ func (mt *Authorized) Validate() (err error) {
 //
 // Identifier: application/vnd.company+json; view=default
 type Company struct {
-	Address string `form:"address" json:"address" xml:"address"`
-	Country string `form:"country" json:"country" xml:"country"`
-	// API href of company
-	Href string `form:"href" json:"href" xml:"href"`
-	// ID of company
-	ID   int    `form:"id" json:"id" xml:"id"`
+	Address     *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	CompanyID   *string `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
+	HqFlg       *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+	// Company Detail ID
+	ID   *int   `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	Name string `form:"name" json:"name" xml:"name"`
 }
 
 // Validate validates the Company media type instance.
 func (mt *Company) Validate() (err error) {
-
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
-	}
 	if mt.Name == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
 	}
-	if mt.Country == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "country"))
-	}
-	if mt.Address == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "address"))
+	if mt.ID != nil {
+		if *mt.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, *mt.ID, 1, true))
+		}
 	}
 	return
 }
 
-// A company information (link view)
+// A company information (name view)
 //
-// Identifier: application/vnd.company+json; view=link
-type CompanyLink struct {
-	// API href of company
-	Href string `form:"href" json:"href" xml:"href"`
-	// ID of company
-	ID int `form:"id" json:"id" xml:"id"`
+// Identifier: application/vnd.company+json; view=name
+type CompanyName struct {
+	CompanyID *string `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	Name      string  `form:"name" json:"name" xml:"name"`
 }
 
-// Validate validates the CompanyLink media type instance.
-func (mt *CompanyLink) Validate() (err error) {
-
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+// Validate validates the CompanyName media type instance.
+func (mt *CompanyName) Validate() (err error) {
+	if mt.Name == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
 	}
 	return
 }
 
-// A company information (tiny view)
+// CompanyCollection is the media type for an array of Company (default view)
 //
-// Identifier: application/vnd.company+json; view=tiny
-type CompanyTiny struct {
-	// API href of company
-	Href string `form:"href" json:"href" xml:"href"`
-	// ID of company
-	ID   int    `form:"id" json:"id" xml:"id"`
-	Name string `form:"name" json:"name" xml:"name"`
+// Identifier: application/vnd.company+json; type=collection; view=default
+type CompanyCollection []*Company
+
+// Validate validates the CompanyCollection media type instance.
+func (mt CompanyCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
 }
 
-// Validate validates the CompanyTiny media type instance.
-func (mt *CompanyTiny) Validate() (err error) {
+// CompanyCollection is the media type for an array of Company (name view)
+//
+// Identifier: application/vnd.company+json; type=collection; view=name
+type CompanyNameCollection []*CompanyName
 
-	if mt.Href == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
-	}
-	if mt.Name == "" {
-		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "name"))
+// Validate validates the CompanyNameCollection media type instance.
+func (mt CompanyNameCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
 	}
 	return
 }

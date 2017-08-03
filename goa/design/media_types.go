@@ -88,7 +88,6 @@ var User = MediaType("application/vnd.user+json", func() {
 //-----------------------------------------------------------------------------
 // Company is the company resource media type.
 //-----------------------------------------------------------------------------
-//TODO: unimplemented
 var Company = MediaType("application/vnd.company+json", func() {
 	Description("A company information")
 
@@ -98,45 +97,39 @@ var Company = MediaType("application/vnd.company+json", func() {
 	Reference(CommonResponse)
 
 	Attributes(func() {
-		Attribute("id", Integer, "ID of company", func() {
+		Attribute("id", Integer, "Company Detail ID", func() {
+			Minimum(1)
 			Example(1)
 		})
-		Attribute("href", String, "API href of company", func() {
-			Example("/company/1")
-		})
-
+		Attribute("company_id")
 		Attribute("name")
-		Attribute("country")
+		Attribute("hq_flg")
+		Attribute("country_name")
 		Attribute("address")
 		Attribute("created_at")
 		Attribute("updated_at")
 
 		//when field is zero or empty, data is not return unless it's not set in Required
-		Required("id", "href", "name", "country", "address")
+		Required("name")
 	})
 
 	//View defines a rendering of the media type
 	//Media types may have multiple views　(it can change response pattern)
 	View("default", func() {
 		Attribute("id")
-		Attribute("href")
+		Attribute("company_id")
 		Attribute("name")
-		Attribute("country")
+		Attribute("hq_flg")
+		Attribute("country_name")
 		Attribute("address")
 		//Attribute("created_at")
 		//Attribute("created_by")
 	})
 
-	View("tiny", func() {
-		Description("tiny is the view used to id list")
-		Attribute("id")
-		Attribute("href")
+	View("name", func() {
+		Description("only company's id and name")
+		Attribute("company_id")
 		Attribute("name")
-	})
-
-	View("link", func() {
-		Attribute("id")
-		Attribute("href")
 	})
 })
 

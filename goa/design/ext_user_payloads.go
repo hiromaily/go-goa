@@ -15,7 +15,7 @@ var UserPayload = Type("UserPayload", func() {
 	//`created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'created date',
 	//`updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'updated date',
 
-	Attribute("user_name", String, "First name", func() {
+	Attribute("user_name", String, "User name", func() {
 		MinLength(2)
 		MaxLength(20)
 		Example("Hiroki")

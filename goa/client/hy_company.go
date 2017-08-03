@@ -55,9 +55,13 @@ func (c *Client) NewCompanyListHyCompanyRequest(ctx context.Context, path string
 type CreateCompanyHyCompanyPayload struct {
 	// Address of company
 	Address string `form:"address" json:"address" xml:"address"`
-	// Country of HQ
-	Country string `form:"country" json:"country" xml:"country"`
-	// Name of company
+	// Company ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	// Country's ID
+	CountryID string `form:"country_id" json:"country_id" xml:"country_id"`
+	// Headquarters flg
+	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+	// Company Name
 	Name string `form:"name" json:"name" xml:"name"`
 }
 
@@ -67,7 +71,7 @@ func CreateCompanyHyCompanyPath() string {
 	return fmt.Sprintf("/api/company")
 }
 
-// Record new company
+// Create new company
 func (c *Client) CreateCompanyHyCompany(ctx context.Context, path string, payload *CreateCompanyHyCompanyPayload, contentType string) (*http.Response, error) {
 	req, err := c.NewCreateCompanyHyCompanyRequest(ctx, path, payload, contentType)
 	if err != nil {
@@ -114,7 +118,7 @@ func DeleteCompanyHyCompanyPath(companyID int) string {
 	return fmt.Sprintf("/api/company/%s", param0)
 }
 
-// DeleteCompanyHyCompany makes a request to the DeleteCompany action endpoint of the hy_company resource
+// Delete company
 func (c *Client) DeleteCompanyHyCompany(ctx context.Context, path string) (*http.Response, error) {
 	req, err := c.NewDeleteCompanyHyCompanyRequest(ctx, path)
 	if err != nil {
@@ -147,7 +151,7 @@ func GetCompanyHyCompanyPath(companyID int) string {
 	return fmt.Sprintf("/api/company/%s", param0)
 }
 
-// Retrieve company with given id
+// Retrieve company with given company_id
 func (c *Client) GetCompanyHyCompany(ctx context.Context, path string) (*http.Response, error) {
 	req, err := c.NewGetCompanyHyCompanyRequest(ctx, path)
 	if err != nil {
@@ -173,6 +177,20 @@ func (c *Client) NewGetCompanyHyCompanyRequest(ctx context.Context, path string)
 	return req, nil
 }
 
+// UpdateCompanyHyCompanyPayload is the hy_company UpdateCompany action payload.
+type UpdateCompanyHyCompanyPayload struct {
+	// Address of company
+	Address string `form:"address" json:"address" xml:"address"`
+	// Company ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	// Country's ID
+	CountryID string `form:"country_id" json:"country_id" xml:"country_id"`
+	// Headquarters flg
+	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+	// Company Name
+	Name string `form:"name" json:"name" xml:"name"`
+}
+
 // UpdateCompanyHyCompanyPath computes a request path to the UpdateCompany action of hy_company.
 func UpdateCompanyHyCompanyPath(companyID int) string {
 	param0 := strconv.Itoa(companyID)
@@ -180,8 +198,8 @@ func UpdateCompanyHyCompanyPath(companyID int) string {
 	return fmt.Sprintf("/api/company/%s", param0)
 }
 
-// UpdateCompanyHyCompany makes a request to the UpdateCompany action endpoint of the hy_company resource
-func (c *Client) UpdateCompanyHyCompany(ctx context.Context, path string, payload *CompanyPayload, contentType string) (*http.Response, error) {
+// Change company properties
+func (c *Client) UpdateCompanyHyCompany(ctx context.Context, path string, payload *UpdateCompanyHyCompanyPayload, contentType string) (*http.Response, error) {
 	req, err := c.NewUpdateCompanyHyCompanyRequest(ctx, path, payload, contentType)
 	if err != nil {
 		return nil, err
@@ -190,7 +208,7 @@ func (c *Client) UpdateCompanyHyCompany(ctx context.Context, path string, payloa
 }
 
 // NewUpdateCompanyHyCompanyRequest create the request corresponding to the UpdateCompany action endpoint of the hy_company resource.
-func (c *Client) NewUpdateCompanyHyCompanyRequest(ctx context.Context, path string, payload *CompanyPayload, contentType string) (*http.Request, error) {
+func (c *Client) NewUpdateCompanyHyCompanyRequest(ctx context.Context, path string, payload *UpdateCompanyHyCompanyPayload, contentType string) (*http.Request, error) {
 	var body bytes.Buffer
 	if contentType == "" {
 		contentType = "*/*" // Use default encoder

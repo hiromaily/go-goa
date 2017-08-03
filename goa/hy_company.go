@@ -22,7 +22,7 @@ func (c *HyCompanyController) CompanyList(ctx *app.CompanyListHyCompanyContext) 
 	// Put your logic here
 
 	// HyCompanyController_CompanyList: end_implement
-	res := &app.Company{}
+	res := app.CompanyCollection{}
 	return ctx.OK(res)
 }
 
@@ -33,7 +33,8 @@ func (c *HyCompanyController) CreateCompany(ctx *app.CreateCompanyHyCompanyConte
 	// Put your logic here
 
 	// HyCompanyController_CreateCompany: end_implement
-	return nil
+	res := &app.Company{}
+	return ctx.OK(res)
 }
 
 // DeleteCompany runs the DeleteCompany action.
@@ -64,5 +65,6 @@ func (c *HyCompanyController) UpdateCompany(ctx *app.UpdateCompanyHyCompanyConte
 	// Put your logic here
 
 	// HyCompanyController_UpdateCompany: end_implement
-	return nil
+	res := &app.Company{}
+	return ctx.OK(res)
 }

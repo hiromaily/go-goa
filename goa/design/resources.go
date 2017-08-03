@@ -107,6 +107,7 @@ var _ = Resource(resourcePrefix+"user", func() {
 			PUT("/:userID"),
 		)
 		Description("Change user properties")
+
 		Params(func() {
 			Param("userID", Integer, "User ID")
 		})
@@ -125,6 +126,8 @@ var _ = Resource(resourcePrefix+"user", func() {
 		Routing(
 			DELETE("/:userID"),
 		)
+		Description("Delete user ")
+
 		Params(func() {
 			Param("userID", Integer, "User ID")
 		})
@@ -158,22 +161,16 @@ var _ = Resource(resourcePrefix+"company", func() {
 		Description("List all companies")
 		//NoSecurity()
 
-		Response(OK)
-		Response(NotFound)
+		Response(OK, CollectionOf(Company)) //multiple response
+		Response(NoContent)
 		Response(BadRequest, ErrorMedia)
-		//Response(OK, func() {
-		//	Media(CollectionOf(Company, func() {
-		//		View("default")
-		//		View("tiny")
-		//	}))
-		//})
 	})
 
 	Action("GetCompany", func() {
 		Routing(
 			GET("/:companyID"),
 		)
-		Description("Retrieve company with given id")
+		Description("Retrieve company with given company_id")
 		Params(func() {
 			Param("companyID", Integer)
 		})
@@ -200,16 +197,16 @@ var _ = Resource(resourcePrefix+"company", func() {
 		Routing(
 			POST(""),
 		)
-		Description("Record new company")
+		Description("Create new company")
 		Payload(CompanyPayload, func() {
-			Required("name", "country", "address")
+			Required("name", "country_id", "address")
 		})
 
 		//no response template named "Created" in resource "hy_company" action "CreateCompany"
 		//=>it should be defined in api_definition.go
 		//Response(Created, "^/user/[0-9]+/company/[0-9]+$")
+		Response(OK)
 		Response(Created)
-		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
 
@@ -217,24 +214,30 @@ var _ = Resource(resourcePrefix+"company", func() {
 		Routing(
 			PUT("/:companyID"),
 		)
+		Description("Change company properties")
+
 		Params(func() {
 			Param("companyID", Integer)
 		})
-		Payload(CompanyPayload)
-		Response(NoContent)
+		Payload(CompanyPayload, func() {
+			Required("name", "country_id", "address")
+		})
+
+		Response(OK)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
 
-	//TODO:somohow confliction error occur
-	//=> type miss
 	Action("DeleteCompany", func() {
 		Routing(
 			DELETE("/:companyID"),
 		)
+		Description("Delete company")
+
 		Params(func() {
-			Param("companyID", Integer)
+			Param("companyID", Integer, "Company ID")
 		})
+
 		Response(NoContent)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)

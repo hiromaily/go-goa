@@ -19,90 +19,103 @@ definitions:
     description: A company information (default view)
     example:
       address: Culpa voluptatem ullam.
-      country: Sit dolor neque nulla.
-      href: /company/1
+      company_id: Sit dolor neque nulla.
+      country_name: Nisi dolorum.
+      hq_flg: Sunt cum aut blanditiis accusantium.
       id: 1
-      name: Nisi dolorum.
+      name: Et aut tempora et beatae sapiente.
     properties:
       address:
         example: Culpa voluptatem ullam.
         type: string
-      country:
+      company_id:
         example: Sit dolor neque nulla.
         type: string
-      href:
-        description: API href of company
-        example: /company/1
-        type: string
-      id:
-        description: ID of company
-        example: 1
-        format: int64
-        type: integer
-      name:
+      country_name:
         example: Nisi dolorum.
         type: string
+      hq_flg:
+        example: Sunt cum aut blanditiis accusantium.
+        type: string
+      id:
+        description: Company Detail ID
+        example: 1
+        minimum: 1
+        type: integer
+      name:
+        example: Et aut tempora et beatae sapiente.
+        type: string
     required:
-    - id
-    - href
     - name
-    - country
-    - address
     title: 'Mediatype identifier: application/vnd.company+json; view=default'
     type: object
-  CompanyPayload:
+  CompanyCollection:
+    description: CompanyCollection is the media type for an array of Company (default
+      view)
     example:
-      address: Tokyo
-      country: Japan
-      name: Sony
-    properties:
-      address:
-        description: Address of company
-        example: Tokyo
-        maxLength: 40
-        minLength: 2
-        type: string
-      country:
-        description: Country of HQ
-        example: Japan
-        maxLength: 40
-        minLength: 2
-        type: string
-      name:
-        description: Name of company
-        example: Sony
-        maxLength: 40
-        minLength: 2
-        type: string
-    title: CompanyPayload
-    type: object
+    - address: Culpa voluptatem ullam.
+      company_id: Sit dolor neque nulla.
+      country_name: Nisi dolorum.
+      hq_flg: Sunt cum aut blanditiis accusantium.
+      id: 1
+      name: Et aut tempora et beatae sapiente.
+    - address: Culpa voluptatem ullam.
+      company_id: Sit dolor neque nulla.
+      country_name: Nisi dolorum.
+      hq_flg: Sunt cum aut blanditiis accusantium.
+      id: 1
+      name: Et aut tempora et beatae sapiente.
+    - address: Culpa voluptatem ullam.
+      company_id: Sit dolor neque nulla.
+      country_name: Nisi dolorum.
+      hq_flg: Sunt cum aut blanditiis accusantium.
+      id: 1
+      name: Et aut tempora et beatae sapiente.
+    items:
+      $ref: '#/definitions/Company'
+    title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
+    type: array
   CreateCompanyHyCompanyPayload:
     example:
-      address: Tokyo
-      country: Japan
-      name: Sony
+      address: Shinagawa Tokyo
+      company_id: 10
+      country_id: Japan
+      hq_flg: "1"
+      name: Company
     properties:
       address:
         description: Address of company
-        example: Tokyo
-        maxLength: 40
+        example: Shinagawa Tokyo
+        maxLength: 80
         minLength: 2
         type: string
-      country:
-        description: Country of HQ
+      company_id:
+        description: Company ID
+        example: 10
+        maximum: 999999
+        minimum: 1
+        type: integer
+      country_id:
+        description: Country's ID
         example: Japan
-        maxLength: 40
+        maxLength: 60
         minLength: 2
+        type: string
+      hq_flg:
+        description: Headquarters flg
+        example: "1"
+        maxLength: 1
+        minLength: 1
         type: string
       name:
-        description: Name of company
-        example: Sony
+        description: Company Name
+        example: Company
         maxLength: 40
         minLength: 2
         type: string
     required:
     - name
-    - country
+    - country_id
     - address
     title: CreateCompanyHyCompanyPayload
     type: object
@@ -124,7 +137,7 @@ definitions:
         minLength: 8
         type: string
       user_name:
-        description: First name
+        description: User name
         example: Hiroki
         maxLength: 20
         minLength: 2
@@ -156,6 +169,50 @@ definitions:
     - password
     title: LoginAuthPayload
     type: object
+  UpdateCompanyHyCompanyPayload:
+    example:
+      address: Shinagawa Tokyo
+      company_id: 10
+      country_id: Japan
+      hq_flg: "1"
+      name: Company
+    properties:
+      address:
+        description: Address of company
+        example: Shinagawa Tokyo
+        maxLength: 80
+        minLength: 2
+        type: string
+      company_id:
+        description: Company ID
+        example: 10
+        maximum: 999999
+        minimum: 1
+        type: integer
+      country_id:
+        description: Country's ID
+        example: Japan
+        maxLength: 60
+        minLength: 2
+        type: string
+      hq_flg:
+        description: Headquarters flg
+        example: "1"
+        maxLength: 1
+        minLength: 1
+        type: string
+      name:
+        description: Company Name
+        example: Company
+        maxLength: 40
+        minLength: 2
+        type: string
+    required:
+    - name
+    - country_id
+    - address
+    title: UpdateCompanyHyCompanyPayload
+    type: object
   UpdateUserHyUserPayload:
     example:
       email: hy@gmail.com
@@ -174,7 +231,7 @@ definitions:
         minLength: 8
         type: string
       user_name:
-        description: First name
+        description: User name
         example: Hiroki
         maxLength: 20
         minLength: 2
@@ -188,12 +245,12 @@ definitions:
   User:
     description: A user information (default view)
     example:
-      email: Sunt cum aut blanditiis accusantium.
+      email: Quo alias aut quo aut.
       id: 1
-      user_name: Quia quo alias aut quo.
+      user_name: Ducimus est.
     properties:
       email:
-        example: Sunt cum aut blanditiis accusantium.
+        example: Quo alias aut quo aut.
         type: string
       id:
         description: User ID
@@ -201,7 +258,7 @@ definitions:
         minimum: 1
         type: integer
       user_name:
-        example: Quia quo alias aut quo.
+        example: Ducimus est.
         type: string
     required:
     - user_name
@@ -211,15 +268,12 @@ definitions:
   UserCollection:
     description: UserCollection is the media type for an array of User (default view)
     example:
-    - email: Sunt cum aut blanditiis accusantium.
+    - email: Quo alias aut quo aut.
       id: 1
-      user_name: Quia quo alias aut quo.
-    - email: Sunt cum aut blanditiis accusantium.
+      user_name: Ducimus est.
+    - email: Quo alias aut quo aut.
       id: 1
-      user_name: Quia quo alias aut quo.
-    - email: Sunt cum aut blanditiis accusantium.
-      id: 1
-      user_name: Quia quo alias aut quo.
+      user_name: Ducimus est.
     items:
       $ref: '#/definitions/User'
     title: 'Mediatype identifier: application/vnd.user+json; type=collection; view=default'
@@ -350,18 +404,18 @@ paths:
       operationId: hy_company#CompanyList
       produces:
       - application/vnd.goa.error
-      - application/vnd.company+json
+      - application/vnd.company+json; type=collection
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/Company'
+            $ref: '#/definitions/CompanyCollection'
+        "204":
+          description: No Content
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
-        "404":
-          description: Not Found
       schemes:
       - http
       security:
@@ -372,7 +426,7 @@ paths:
       - hy_company
     post:
       description: |-
-        Record new company
+        Create new company
 
         Required security scopes:
           * `api:access`
@@ -385,15 +439,18 @@ paths:
           $ref: '#/definitions/CreateCompanyHyCompanyPayload'
       produces:
       - application/vnd.goa.error
+      - application/vnd.company+json
       responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
         "201":
           description: Created
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
-        "404":
-          description: Not Found
       schemes:
       - http
       security:
@@ -405,11 +462,14 @@ paths:
   /api/company/{companyID}:
     delete:
       description: |-
+        Delete company
+
         Required security scopes:
           * `api:access`
       operationId: hy_company#DeleteCompany
       parameters:
-      - in: path
+      - description: Company ID
+        in: path
         name: companyID
         required: true
         type: integer
@@ -434,7 +494,7 @@ paths:
       - hy_company
     get:
       description: |-
-        Retrieve company with given id
+        Retrieve company with given company_id
 
         Required security scopes:
           * `api:access`
@@ -468,6 +528,8 @@ paths:
       - hy_company
     put:
       description: |-
+        Change company properties
+
         Required security scopes:
           * `api:access`
       operationId: hy_company#UpdateCompany
@@ -480,12 +542,15 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/CompanyPayload'
+          $ref: '#/definitions/UpdateCompanyHyCompanyPayload'
       produces:
       - application/vnd.goa.error
+      - application/vnd.company+json
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
         "400":
           description: Bad Request
           schema:
@@ -567,9 +632,7 @@ paths:
       - hy_user
   /api/user/{userID}:
     delete:
-      description: |-
-        Required security scopes:
-          * `api:access`
+      description: "Delete user \n\nRequired security scopes:\n  * `api:access`"
       operationId: hy_user#DeleteUser
       parameters:
       - description: User ID

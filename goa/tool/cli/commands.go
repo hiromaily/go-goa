@@ -54,6 +54,7 @@ type (
 
 	// DeleteCompanyHyCompanyCommand is the command line data structure for the DeleteCompany action of hy_company
 	DeleteCompanyHyCompanyCommand struct {
+		// Company ID
 		CompanyID   int
 		PrettyPrint bool
 	}
@@ -133,7 +134,7 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "create-company",
-		Short: `Record new company`,
+		Short: `Create new company`,
 	}
 	tmp2 := new(CreateCompanyHyCompanyCommand)
 	sub = &cobra.Command{
@@ -144,9 +145,11 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 Payload example:
 
 {
-   "address": "Tokyo",
-   "country": "Japan",
-   "name": "Sony"
+   "address": "Shinagawa Tokyo",
+   "company_id": 10,
+   "country_id": "Japan",
+   "hq_flg": "1",
+   "name": "Company"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
 	}
@@ -179,7 +182,7 @@ Payload example:
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "delete-company",
-		Short: ``,
+		Short: `Delete company`,
 	}
 	tmp4 := new(DeleteCompanyHyCompanyCommand)
 	sub = &cobra.Command{
@@ -193,7 +196,7 @@ Payload example:
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "delete-user",
-		Short: ``,
+		Short: `Delete user `,
 	}
 	tmp5 := new(DeleteUserHyUserCommand)
 	sub = &cobra.Command{
@@ -207,7 +210,7 @@ Payload example:
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "get-company",
-		Short: `Retrieve company with given id`,
+		Short: `Retrieve company with given company_id`,
 	}
 	tmp6 := new(GetCompanyHyCompanyCommand)
 	sub = &cobra.Command{
@@ -271,7 +274,7 @@ Payload example:
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-company",
-		Short: ``,
+		Short: `Change company properties`,
 	}
 	tmp10 := new(UpdateCompanyHyCompanyCommand)
 	sub = &cobra.Command{
@@ -282,9 +285,11 @@ Payload example:
 Payload example:
 
 {
-   "address": "Tokyo",
-   "country": "Japan",
-   "name": "Sony"
+   "address": "Shinagawa Tokyo",
+   "company_id": 10,
+   "country_id": "Japan",
+   "hq_flg": "1",
+   "name": "Company"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp10.Run(c, args) },
 	}
@@ -687,7 +692,7 @@ func (cmd *DeleteCompanyHyCompanyCommand) Run(c *client.Client, args []string) e
 // RegisterFlags registers the command flags with the command line.
 func (cmd *DeleteCompanyHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var companyID int
-	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, ``)
+	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, `Company ID`)
 }
 
 // Run makes the HTTP request corresponding to the GetCompanyHyCompanyCommand command.
@@ -724,7 +729,7 @@ func (cmd *UpdateCompanyHyCompanyCommand) Run(c *client.Client, args []string) e
 	} else {
 		path = fmt.Sprintf("/api/company/%v", cmd.CompanyID)
 	}
-	var payload client.CompanyPayload
+	var payload client.UpdateCompanyHyCompanyPayload
 	if cmd.Payload != "" {
 		err := json.Unmarshal([]byte(cmd.Payload), &payload)
 		if err != nil {

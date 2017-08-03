@@ -265,7 +265,7 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 		}
 		// Build the payload
 		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
-			rctx.Payload = rawPayload.(*CompanyPayload)
+			rctx.Payload = rawPayload.(*UpdateCompanyHyCompanyPayload)
 		} else {
 			return goa.MissingPayloadError()
 		}
@@ -320,7 +320,7 @@ func unmarshalCreateCompanyHyCompanyPayload(ctx context.Context, service *goa.Se
 
 // unmarshalUpdateCompanyHyCompanyPayload unmarshals the request body into the context request data Payload field.
 func unmarshalUpdateCompanyHyCompanyPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
-	payload := &companyPayload{}
+	payload := &updateCompanyHyCompanyPayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}

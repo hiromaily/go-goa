@@ -74,7 +74,7 @@ DROP TABLE IF EXISTS `t_companies`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_companies` (
   `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'Company ID',
-  `name`       varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company Name',
+  `name`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company Name',
   `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
@@ -149,7 +149,7 @@ UNLOCK TABLES;
 -- Table structure for table `t_countries`
 --
 
-CREATE TABLE `t_countries` (
+CREATE TABLE `m_countries` (
   `id`         SMALLINT NOT NULL AUTO_INCREMENT COMMENT'Country ID',
   `country_code` varchar(2) NOT NULL default'' COMMENT'Country Code',
   `name`       varchar(60) COLLATE utf8_unicode_ci NOT NULL COMMENT'Country Name',
@@ -161,9 +161,9 @@ CREATE TABLE `t_countries` (
 /*!40101 SET character_set_client = @saved_cs_client */;
   ;
 
-LOCK TABLES `t_countries` WRITE;
-/*!40000 ALTER TABLE `t_countries` DISABLE KEYS */;
-INSERT INTO `t_countries` VALUES
+LOCK TABLES `m_countries` WRITE;
+/*!40000 ALTER TABLE `m_countries` DISABLE KEYS */;
+INSERT INTO `m_countries` VALUES
   (null,'AF','Afghanistan','0',now(),now()),
   (null,'AL','Albania','0',now(),now()),
   (null,'DZ','Algeria','0',now(),now()),
@@ -409,7 +409,7 @@ INSERT INTO `t_countries` VALUES
   (null,'ZR','Zaire','0',now(),now()),
   (null,'ZM','Zambia','0',now(),now()),
   (null,'ZW','Zimbabwe','0',now(),now());
-  /*!40000 ALTER TABLE `t_countries` ENABLE KEYS */;
+  /*!40000 ALTER TABLE `m_countries` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
