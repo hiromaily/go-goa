@@ -34,38 +34,386 @@ DROP TABLE IF EXISTS `t_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'User ID',
-  `user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'User Name',
-  `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'E-Mail Address',
-  `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Password',
-  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT '0' COMMENT 'delete flg',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'created date',
-  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'updated date',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT'User ID',
+  `user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT'User Name',
+  `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'E-Mail Address',
+  `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'Password',
+  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Users Table';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Users Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `t_users`
---
 
 LOCK TABLES `t_users` WRITE;
 /*!40000 ALTER TABLE `t_users` DISABLE KEYS */;
 INSERT INTO `t_users` VALUES
-  (1,'harry1','aaaa1@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (2,'harry2','aaaa2@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (3,'harry3','aaaa3@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (4,'harry4','aaaa4@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (5,'harry5','aaaa5@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (6,'harry6','aaaa6@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (7,'harry7','aaaa7@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (8,'harry8','aaaa8@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (9,'harry9','aaaa9@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (10,'harry10','aaaa10@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (11,'harry11','aaaa11@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15'),
-  (12,'harry12','aaaa12@test.jp','02aaa55939a894316cfc3427234bf201','0','2017-07-31 21:43:15','2017-07-31 21:43:15');
+  (1,'harry1','aaaa1@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (2,'harry2','aaaa2@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (3,'harry3','aaaa3@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (4,'harry4','aaaa4@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (5,'harry5','aaaa5@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (6,'harry6','aaaa6@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (7,'harry7','aaaa7@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (8,'harry8','aaaa8@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (9,'harry9','aaaa9@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (10,'harry10','aaaa10@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (11,'harry11','aaaa11@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (12,'harry12','aaaa12@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now());
 /*!40000 ALTER TABLE `t_users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+--
+-- Table structure for table `t_companies`
+--
+
+DROP TABLE IF EXISTS `t_companies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_companies` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'Company ID',
+  `name`       varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company Name',
+  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Company Table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+LOCK TABLES `t_companies` WRITE;
+/*!40000 ALTER TABLE `t_companies` DISABLE KEYS */;
+INSERT INTO `t_companies` VALUES
+  (1,'company01','0',now(),now()),
+  (2,'company02','0',now(),now()),
+  (3,'company03','0',now(),now()),
+  (4,'company04','0',now(),now()),
+  (5,'company05','0',now(),now()),
+  (6,'company06','0',now(),now()),
+  (7,'company07','0',now(),now()),
+  (8,'company08','0',now(),now()),
+  (9,'company09','0',now(),now()),
+  (10,'company10','0',now(),now());
+/*!40000 ALTER TABLE `t_companies` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `t_company_detail`
+--
+
+CREATE TABLE `t_company_detail` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'Company detail ID',
+  `company_id` int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company ID',
+  `hq_flg`     char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'headquarters flg',
+  `country_id` smallint COLLATE utf8_unicode_ci NOT NULL COMMENT'Country ID',
+  `address`    varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'Address',
+  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Company Detail Table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+LOCK TABLES `t_company_detail` WRITE;
+/*!40000 ALTER TABLE `t_company_detail` DISABLE KEYS */;
+INSERT INTO `t_company_detail` VALUES
+  (null,1,'1',110,'1-1-1 Meguro-ku Tokyo','0',now(),now()),
+  (null,1,'0',230,'somewhere','0',now(),now()),
+  (null,1,'0',229,'somewhere','0',now(),now()),
+  (null,2,'1',230,'somewhere','0',now(),now()),
+  (null,2,'0',80,'somewhere','0',now(),now()),
+  (null,3,'1',80,'somewhere','0',now(),now()),
+  (null,3,'0',155,'somewhere','0',now(),now()),
+  (null,4,'1',155,'somewhere','0',now(),now()),
+  (null,4,'0',72,'somewhere','0',now(),now()),
+  (null,4,'0',210,'somewhere','0',now(),now()),
+  (null,5,'1',72,'somewhere','0',now(),now()),
+  (null,5,'0',110,'somewhere','0',now(),now()),
+  (null,6,'1',110,'somewhere','0',now(),now()),
+  (null,6,'0',80,'somewhere','0',now(),now()),
+  (null,7,'1',230,'somewhere','0',now(),now()),
+  (null,7,'0',110,'somewhere','0',now(),now()),
+  (null,7,'0',229,'somewhere','0',now(),now()),
+  (null,8,'1',80,'somewhere','0',now(),now()),
+  (null,9,'1',80,'somewhere','0',now(),now()),
+  (null,10,'1',229,'somewhere','0',now(),now());
+/*!40000 ALTER TABLE `t_company_detail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `t_countries`
+--
+
+CREATE TABLE `t_countries` (
+  `id`         SMALLINT NOT NULL AUTO_INCREMENT COMMENT'Country ID',
+  `country_code` varchar(2) NOT NULL default'' COMMENT'Country Code',
+  `name`       varchar(60) COLLATE utf8_unicode_ci NOT NULL COMMENT'Country Name',
+  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Country Table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+  ;
+
+LOCK TABLES `t_countries` WRITE;
+/*!40000 ALTER TABLE `t_countries` DISABLE KEYS */;
+INSERT INTO `t_countries` VALUES
+  (null,'AF','Afghanistan','0',now(),now()),
+  (null,'AL','Albania','0',now(),now()),
+  (null,'DZ','Algeria','0',now(),now()),
+  (null,'DS','American Samoa','0',now(),now()),
+  (null,'AD','Andorra','0',now(),now()),
+  (null,'AO','Angola','0',now(),now()),
+  (null,'AI','Anguilla','0',now(),now()),
+  (null,'AQ','Antarctica','0',now(),now()),
+  (null,'AG','Antigua and Barbuda','0',now(),now()),
+  (null,'AR','Argentina','0',now(),now()),
+  (null,'AM','Armenia','0',now(),now()),
+  (null,'AW','Aruba','0',now(),now()),
+  (null,'AU','Australia','0',now(),now()),
+  (null,'AT','Austria','0',now(),now()),
+  (null,'AZ','Azerbaijan','0',now(),now()),
+  (null,'BS','Bahamas','0',now(),now()),
+  (null,'BH','Bahrain','0',now(),now()),
+  (null,'BD','Bangladesh','0',now(),now()),
+  (null,'BB','Barbados','0',now(),now()),
+  (null,'BY','Belarus','0',now(),now()),
+  (null,'BE','Belgium','0',now(),now()),
+  (null,'BZ','Belize','0',now(),now()),
+  (null,'BJ','Benin','0',now(),now()),
+  (null,'BM','Bermuda','0',now(),now()),
+  (null,'BT','Bhutan','0',now(),now()),
+  (null,'BO','Bolivia','0',now(),now()),
+  (null,'BA','Bosnia and Herzegovina','0',now(),now()),
+  (null,'BW','Botswana','0',now(),now()),
+  (null,'BV','Bouvet Island','0',now(),now()),
+  (null,'BR','Brazil','0',now(),now()),
+  (null,'IO','British Indian Ocean Territory','0',now(),now()),
+  (null,'BN','Brunei Darussalam','0',now(),now()),
+  (null,'BG','Bulgaria','0',now(),now()),
+  (null,'BF','Burkina Faso','0',now(),now()),
+  (null,'BI','Burundi','0',now(),now()),
+  (null,'KH','Cambodia','0',now(),now()),
+  (null,'CM','Cameroon','0',now(),now()),
+  (null,'CA','Canada','0',now(),now()),
+  (null,'CV','Cape Verde','0',now(),now()),
+  (null,'KY','Cayman Islands','0',now(),now()),
+  (null,'CF','Central African Republic','0',now(),now()),
+  (null,'TD','Chad','0',now(),now()),
+  (null,'CL','Chile','0',now(),now()),
+  (null,'CN','China','0',now(),now()),
+  (null,'CX','Christmas Island','0',now(),now()),
+  (null,'CC','Cocos (Keeling) Islands','0',now(),now()),
+  (null,'CO','Colombia','0',now(),now()),
+  (null,'KM','Comoros','0',now(),now()),
+  (null,'CG','Congo','0',now(),now()),
+  (null,'CK','Cook Islands','0',now(),now()),
+  (null,'CR','Costa Rica','0',now(),now()),
+  (null,'HR','Croatia (Hrvatska)','0',now(),now()),
+  (null,'CU','Cuba','0',now(),now()),
+  (null,'CY','Cyprus','0',now(),now()),
+  (null,'CZ','Czech Republic','0',now(),now()),
+  (null,'DK','Denmark','0',now(),now()),
+  (null,'DJ','Djibouti','0',now(),now()),
+  (null,'DM','Dominica','0',now(),now()),
+  (null,'DO','Dominican Republic','0',now(),now()),
+  (null,'TP','East Timor','0',now(),now()),
+  (null,'EC','Ecuador','0',now(),now()),
+  (null,'EG','Egypt','0',now(),now()),
+  (null,'SV','El Salvador','0',now(),now()),
+  (null,'GQ','Equatorial Guinea','0',now(),now()),
+  (null,'ER','Eritrea','0',now(),now()),
+  (null,'EE','Estonia','0',now(),now()),
+  (null,'ET','Ethiopia','0',now(),now()),
+  (null,'FK','Falkland Islands (Malvinas)','0',now(),now()),
+  (null,'FO','Faroe Islands','0',now(),now()),
+  (null,'FJ','Fiji','0',now(),now()),
+  (null,'FI','Finland','0',now(),now()),
+  (null,'FR','France','0',now(),now()),
+  (null,'FX','France, Metropolitan','0',now(),now()),
+  (null,'GF','French Guiana','0',now(),now()),
+  (null,'PF','French Polynesia','0',now(),now()),
+  (null,'TF','French Southern Territories','0',now(),now()),
+  (null,'GA','Gabon','0',now(),now()),
+  (null,'GM','Gambia','0',now(),now()),
+  (null,'GE','Georgia','0',now(),now()),
+  (null,'DE','Germany','0',now(),now()),
+  (null,'GH','Ghana','0',now(),now()),
+  (null,'GI','Gibraltar','0',now(),now()),
+  (null,'GK','Guernsey','0',now(),now()),
+  (null,'GR','Greece','0',now(),now()),
+  (null,'GL','Greenland','0',now(),now()),
+  (null,'GD','Grenada','0',now(),now()),
+  (null,'GP','Guadeloupe','0',now(),now()),
+  (null,'GU','Guam','0',now(),now()),
+  (null,'GT','Guatemala','0',now(),now()),
+  (null,'GN','Guinea','0',now(),now()),
+  (null,'GW','Guinea-Bissau','0',now(),now()),
+  (null,'GY','Guyana','0',now(),now()),
+  (null,'HT','Haiti','0',now(),now()),
+  (null,'HM','Heard and Mc Donald Islands','0',now(),now()),
+  (null,'HN','Honduras','0',now(),now()),
+  (null,'HK','Hong Kong','0',now(),now()),
+  (null,'HU','Hungary','0',now(),now()),
+  (null,'IS','Iceland','0',now(),now()),
+  (null,'IN','India','0',now(),now()),
+  (null,'IM','Isle of Man','0',now(),now()),
+  (null,'ID','Indonesia','0',now(),now()),
+  (null,'IR','Iran (Islamic Republic of)','0',now(),now()),
+  (null,'IQ','Iraq','0',now(),now()),
+  (null,'IE','Ireland','0',now(),now()),
+  (null,'IL','Israel','0',now(),now()),
+  (null,'IT','Italy','0',now(),now()),
+  (null,'CI','Ivory Coast','0',now(),now()),
+  (null,'JE','Jersey','0',now(),now()),
+  (null,'JM','Jamaica','0',now(),now()),
+  (null,'JP','Japan','0',now(),now()),
+  (null,'JO','Jordan','0',now(),now()),
+  (null,'KZ','Kazakhstan','0',now(),now()),
+  (null,'KE','Kenya','0',now(),now()),
+  (null,'KI','Kiribati','0',now(),now()),
+  (null,'KP','Korea, Democratic People''s Republic of','0',now(),now()),
+  (null,'KR','Korea, Republic of','0',now(),now()),
+  (null,'XK','Kosovo','0',now(),now()),
+  (null,'KW','Kuwait','0',now(),now()),
+  (null,'KG','Kyrgyzstan','0',now(),now()),
+  (null,'LA','Lao People''s Democratic Republic','0',now(),now()),
+  (null,'LV','Latvia','0',now(),now()),
+  (null,'LB','Lebanon','0',now(),now()),
+  (null,'LS','Lesotho','0',now(),now()),
+  (null,'LR','Liberia','0',now(),now()),
+  (null,'LY','Libyan Arab Jamahiriya','0',now(),now()),
+  (null,'LI','Liechtenstein','0',now(),now()),
+  (null,'LT','Lithuania','0',now(),now()),
+  (null,'LU','Luxembourg','0',now(),now()),
+  (null,'MO','Macau','0',now(),now()),
+  (null,'MK','Macedonia','0',now(),now()),
+  (null,'MG','Madagascar','0',now(),now()),
+  (null,'MW','Malawi','0',now(),now()),
+  (null,'MY','Malaysia','0',now(),now()),
+  (null,'MV','Maldives','0',now(),now()),
+  (null,'ML','Mali','0',now(),now()),
+  (null,'MT','Malta','0',now(),now()),
+  (null,'MH','Marshall Islands','0',now(),now()),
+  (null,'MQ','Martinique','0',now(),now()),
+  (null,'MR','Mauritania','0',now(),now()),
+  (null,'MU','Mauritius','0',now(),now()),
+  (null,'TY','Mayotte','0',now(),now()),
+  (null,'MX','Mexico','0',now(),now()),
+  (null,'FM','Micronesia, Federated States of','0',now(),now()),
+  (null,'MD','Moldova, Republic of','0',now(),now()),
+  (null,'MC','Monaco','0',now(),now()),
+  (null,'MN','Mongolia','0',now(),now()),
+  (null,'ME','Montenegro','0',now(),now()),
+  (null,'MS','Montserrat','0',now(),now()),
+  (null,'MA','Morocco','0',now(),now()),
+  (null,'MZ','Mozambique','0',now(),now()),
+  (null,'MM','Myanmar','0',now(),now()),
+  (null,'NA','Namibia','0',now(),now()),
+  (null,'NR','Nauru','0',now(),now()),
+  (null,'NP','Nepal','0',now(),now()),
+  (null,'NL','Netherlands','0',now(),now()),
+  (null,'AN','Netherlands Antilles','0',now(),now()),
+  (null,'NC','New Caledonia','0',now(),now()),
+  (null,'NZ','New Zealand','0',now(),now()),
+  (null,'NI','Nicaragua','0',now(),now()),
+  (null,'NE','Niger','0',now(),now()),
+  (null,'NG','Nigeria','0',now(),now()),
+  (null,'NU','Niue','0',now(),now()),
+  (null,'NF','Norfolk Island','0',now(),now()),
+  (null,'MP','Northern Mariana Islands','0',now(),now()),
+  (null,'NO','Norway','0',now(),now()),
+  (null,'OM','Oman','0',now(),now()),
+  (null,'PK','Pakistan','0',now(),now()),
+  (null,'PW','Palau','0',now(),now()),
+  (null,'PS','Palestine','0',now(),now()),
+  (null,'PA','Panama','0',now(),now()),
+  (null,'PG','Papua New Guinea','0',now(),now()),
+  (null,'PY','Paraguay','0',now(),now()),
+  (null,'PE','Peru','0',now(),now()),
+  (null,'PH','Philippines','0',now(),now()),
+  (null,'PN','Pitcairn','0',now(),now()),
+  (null,'PL','Poland','0',now(),now()),
+  (null,'PT','Portugal','0',now(),now()),
+  (null,'PR','Puerto Rico','0',now(),now()),
+  (null,'QA','Qatar','0',now(),now()),
+  (null,'RE','Reunion','0',now(),now()),
+  (null,'RO','Romania','0',now(),now()),
+  (null,'RU','Russian Federation','0',now(),now()),
+  (null,'RW','Rwanda','0',now(),now()),
+  (null,'KN','Saint Kitts and Nevis','0',now(),now()),
+  (null,'LC','Saint Lucia','0',now(),now()),
+  (null,'VC','Saint Vincent and the Grenadines','0',now(),now()),
+  (null,'WS','Samoa','0',now(),now()),
+  (null,'SM','San Marino','0',now(),now()),
+  (null,'ST','Sao Tome and Principe','0',now(),now()),
+  (null,'SA','Saudi Arabia','0',now(),now()),
+  (null,'SN','Senegal','0',now(),now()),
+  (null,'RS','Serbia','0',now(),now()),
+  (null,'SC','Seychelles','0',now(),now()),
+  (null,'SL','Sierra Leone','0',now(),now()),
+  (null,'SG','Singapore','0',now(),now()),
+  (null,'SK','Slovakia','0',now(),now()),
+  (null,'SI','Slovenia','0',now(),now()),
+  (null,'SB','Solomon Islands','0',now(),now()),
+  (null,'SO','Somalia','0',now(),now()),
+  (null,'ZA','South Africa','0',now(),now()),
+  (null,'GS','South Georgia South Sandwich Islands','0',now(),now()),
+  (null,'ES','Spain','0',now(),now()),
+  (null,'LK','Sri Lanka','0',now(),now()),
+  (null,'SH','St. Helena','0',now(),now()),
+  (null,'PM','St. Pierre and Miquelon','0',now(),now()),
+  (null,'SD','Sudan','0',now(),now()),
+  (null,'SR','Suriname','0',now(),now()),
+  (null,'SJ','Svalbard and Jan Mayen Islands','0',now(),now()),
+  (null,'SZ','Swaziland','0',now(),now()),
+  (null,'SE','Sweden','0',now(),now()),
+  (null,'CH','Switzerland','0',now(),now()),
+  (null,'SY','Syrian Arab Republic','0',now(),now()),
+  (null,'TW','Taiwan','0',now(),now()),
+  (null,'TJ','Tajikistan','0',now(),now()),
+  (null,'TZ','Tanzania','0',now(),now()),
+  (null,'TH','Thailand','0',now(),now()),
+  (null,'TG','Togo','0',now(),now()),
+  (null,'TK','Tokelau','0',now(),now()),
+  (null,'TO','Tonga','0',now(),now()),
+  (null,'TT','Trinidad and Tobago','0',now(),now()),
+  (null,'TN','Tunisia','0',now(),now()),
+  (null,'TR','Turkey','0',now(),now()),
+  (null,'TM','Turkmenistan','0',now(),now()),
+  (null,'TC','Turks and Caicos Islands','0',now(),now()),
+  (null,'TV','Tuvalu','0',now(),now()),
+  (null,'UG','Uganda','0',now(),now()),
+  (null,'UA','Ukraine','0',now(),now()),
+  (null,'AE','United Arab Emirates','0',now(),now()),
+  (null,'GB','United Kingdom','0',now(),now()),
+  (null,'US','United States','0',now(),now()),
+  (null,'UM','United States minor outlying islands','0',now(),now()),
+  (null,'UY','Uruguay','0',now(),now()),
+  (null,'UZ','Uzbekistan','0',now(),now()),
+  (null,'VU','Vanuatu','0',now(),now()),
+  (null,'VA','Vatican City State','0',now(),now()),
+  (null,'VE','Venezuela','0',now(),now()),
+  (null,'VN','Vietnam','0',now(),now()),
+  (null,'VG','Virgin Islands (British)','0',now(),now()),
+  (null,'VI','Virgin Islands (U.S.)','0',now(),now()),
+  (null,'WF','Wallis and Futuna Islands','0',now(),now()),
+  (null,'EH','Western Sahara','0',now(),now()),
+  (null,'YE','Yemen','0',now(),now()),
+  (null,'ZR','Zaire','0',now(),now()),
+  (null,'ZM','Zambia','0',now(),now()),
+  (null,'ZW','Zimbabwe','0',now(),now());
+  /*!40000 ALTER TABLE `t_countries` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
