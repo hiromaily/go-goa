@@ -19,7 +19,7 @@ definitions:
     description: A company information (default view)
     example:
       address: Culpa voluptatem ullam.
-      company_id: 2
+      company_id: 10
       country_name: Sit dolor neque nulla.
       hq_flg: Nisi dolorum.
       id: 10
@@ -29,8 +29,8 @@ definitions:
         example: Culpa voluptatem ullam.
         type: string
       company_id:
-        description: Company ID
-        example: 2
+        description: ID
+        example: 10
         minimum: 1
         type: integer
       country_name:
@@ -40,7 +40,7 @@ definitions:
         example: Nisi dolorum.
         type: string
       id:
-        description: Company Detail ID
+        description: ID
         example: 10
         minimum: 1
         type: integer
@@ -49,6 +49,7 @@ definitions:
         type: string
     required:
     - name
+    - address
     title: 'Mediatype identifier: application/vnd.company+json; view=default'
     type: object
   CompanyCollection:
@@ -56,19 +57,19 @@ definitions:
       view)
     example:
     - address: Culpa voluptatem ullam.
-      company_id: 2
+      company_id: 10
       country_name: Sit dolor neque nulla.
       hq_flg: Nisi dolorum.
       id: 10
       name: Sunt cum aut blanditiis accusantium.
     - address: Culpa voluptatem ullam.
-      company_id: 2
+      company_id: 10
       country_name: Sit dolor neque nulla.
       hq_flg: Nisi dolorum.
       id: 10
       name: Sunt cum aut blanditiis accusantium.
     - address: Culpa voluptatem ullam.
-      company_id: 2
+      company_id: 10
       country_name: Sit dolor neque nulla.
       hq_flg: Nisi dolorum.
       id: 10
@@ -80,37 +81,23 @@ definitions:
   CreateCompanyHyCompanyPayload:
     example:
       address: Shinagawa Tokyo
-      company_id: 10
       country_id: 110
-      hq_flg: "1"
       name: Company
     properties:
       address:
-        description: Address of company
+        description: Company Address
         example: Shinagawa Tokyo
         maxLength: 80
         minLength: 2
         type: string
-      company_id:
-        description: Company ID
-        example: 10
-        maximum: 999999
-        minimum: 1
-        type: integer
       country_id:
-        description: Country's ID
+        description: Country ID
         example: 110
         maximum: 999
         minimum: 1
         type: integer
-      hq_flg:
-        description: Headquarters flg
-        example: "1"
-        maxLength: 1
-        minLength: 1
-        type: string
       name:
-        description: Company Name
+        description: Company name
         example: Company
         maxLength: 40
         minLength: 2
@@ -174,37 +161,23 @@ definitions:
   UpdateCompanyHyCompanyPayload:
     example:
       address: Shinagawa Tokyo
-      company_id: 10
       country_id: 110
-      hq_flg: "1"
       name: Company
     properties:
       address:
-        description: Address of company
+        description: Company Address
         example: Shinagawa Tokyo
         maxLength: 80
         minLength: 2
         type: string
-      company_id:
-        description: Company ID
-        example: 10
-        maximum: 999999
-        minimum: 1
-        type: integer
       country_id:
-        description: Country's ID
+        description: Country ID
         example: 110
         maximum: 999
         minimum: 1
         type: integer
-      hq_flg:
-        description: Headquarters flg
-        example: "1"
-        maxLength: 1
-        minLength: 1
-        type: string
       name:
-        description: Company Name
+        description: Company name
         example: Company
         maxLength: 40
         minLength: 2

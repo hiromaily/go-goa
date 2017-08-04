@@ -111,29 +111,28 @@ var userAPITests = []UserAPITest{
 
 type CompanyAPITest struct {
 	TableTest
-	companyID int
-	name      string
-	hqFlg     string
+	//companyID int
+	name string
+	//hqFlg     string
 	countryID int
 	address   string
 }
 
 var companyAPITests = []CompanyAPITest{
-	{TableTest{"/api/company", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
-	{TableTest{"/api/company/999", http.StatusNoContent, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
-	{TableTest{"/api/company/1", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
-	{TableTest{"/api/company/1?hq_flg=0", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
-	{TableTest{"/api/company/1?hq_flg=1", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
-	{TableTest{"/api/company/1?hq_flg=2", http.StatusBadRequest, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
-	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, 0, "", "1", 111, "idontknow"},
-	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, 0, "newCompany01", "", 111, "idontknow"},
-	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, 0, "newCompany01", "1", 0, "idontknow"},
-	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, 0, "newCompany01", "1", 111, ""},
-	{TableTest{"/api/company", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil}, 0, "newCompany01", "1", 111, "idontknow"},
-	{TableTest{"/api/company/%d?hq_flg=1", http.StatusOK, "GET", jwtHeaders, "setID", nil}, 0, "", "", 0, ""},
-	{TableTest{"/api/company/%d", http.StatusOK, "PUT", jwtJsonHeaders, "setID", nil}, 0, "newCompany02", "1", 80, "idontknow2"},
-	{TableTest{"/api/company/%d", http.StatusOK, "DELETE", jwtHeaders, "setID", nil}, 0, "", "", 0, ""},
-	{TableTest{"/api/company/%d?hq_flg=1", http.StatusNoContent, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
+	{TableTest{"/api/company", http.StatusOK, "GET", jwtHeaders, "", nil}, "", 0, ""},
+	{TableTest{"/api/company/999", http.StatusNoContent, "GET", jwtHeaders, "", nil}, "", 0, ""},
+	{TableTest{"/api/company/1", http.StatusOK, "GET", jwtHeaders, "", nil}, "", 0, ""},
+	{TableTest{"/api/company/1?hq_flg=0", http.StatusOK, "GET", jwtHeaders, "", nil}, "", 0, ""},
+	{TableTest{"/api/company/1?hq_flg=1", http.StatusOK, "GET", jwtHeaders, "", nil}, "", 0, ""},
+	{TableTest{"/api/company/1?hq_flg=2", http.StatusBadRequest, "GET", jwtHeaders, "", nil}, "", 0, ""},
+	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, "", 111, "idontknow"},
+	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, "newCompany01", 0, "idontknow"},
+	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, "newCompany01", 111, ""},
+	{TableTest{"/api/company", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil}, "newCompany01", 111, "idontknow"},
+	{TableTest{"/api/company/%d?hq_flg=1", http.StatusOK, "GET", jwtHeaders, "setID", nil}, "", 0, ""},
+	{TableTest{"/api/company/%d", http.StatusOK, "PUT", jwtJsonHeaders, "setID", nil}, "newCompany02", 80, "idontknow2"},
+	{TableTest{"/api/company/%d", http.StatusOK, "DELETE", jwtHeaders, "setID", nil}, "", 0, ""},
+	{TableTest{"/api/company/%d?hq_flg=1", http.StatusNoContent, "GET", jwtHeaders, "", nil}, "", 0, ""},
 }
 
 //-----------------------------------------------------------------------------
@@ -462,10 +461,10 @@ func TestCompanyAPIOnTable(t *testing.T) {
 			//json
 			data := client.CreateCompanyHyCompanyPayload{}
 			data.Name = tt.name
-			if tt.companyID != 0 {
-				data.CompanyID = &tt.companyID
-			}
-			data.HqFlg = &tt.hqFlg
+			//if tt.companyID != 0 {
+			//	data.CompanyID = &tt.companyID
+			//}
+			//data.HqFlg = &tt.hqFlg
 			data.CountryID = tt.countryID
 			data.Address = tt.address
 			jsonByte, err := convertJson(&data)

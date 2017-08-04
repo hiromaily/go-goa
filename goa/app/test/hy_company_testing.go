@@ -144,74 +144,6 @@ func CompanyListHyCompanyNoContent(t goatest.TInterface, ctx context.Context, se
 	return rw
 }
 
-// CompanyListHyCompanyOKComanyid runs the method CompanyList of the given controller with the given parameters.
-// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func CompanyListHyCompanyOKComanyid(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController) (http.ResponseWriter, app.CompanyComanyidCollection) {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	u := &url.URL{
-		Path: fmt.Sprintf("/api/company"),
-	}
-	req, err := http.NewRequest("GET", u.String(), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	prms := url.Values{}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
-	companyListCtx, _err := app.NewCompanyListHyCompanyContext(goaCtx, req, service)
-	if _err != nil {
-		panic("invalid test data " + _err.Error()) // bug
-	}
-
-	// Perform action
-	_err = ctrl.CompanyList(companyListCtx)
-
-	// Validate response
-	if _err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
-	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-	var mt app.CompanyComanyidCollection
-	if resp != nil {
-		var ok bool
-		mt, ok = resp.(app.CompanyComanyidCollection)
-		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyComanyidCollection", resp, resp)
-		}
-		_err = mt.Validate()
-		if _err != nil {
-			t.Errorf("invalid response media type: %s", _err)
-		}
-	}
-
-	// Return results
-	return rw, mt
-}
-
 // CompanyListHyCompanyOK runs the method CompanyList of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
@@ -269,6 +201,74 @@ func CompanyListHyCompanyOK(t goatest.TInterface, ctx context.Context, service *
 		mt, ok = resp.(app.CompanyCollection)
 		if !ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyCollection", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// CompanyListHyCompanyOKID runs the method CompanyList of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func CompanyListHyCompanyOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController) (http.ResponseWriter, app.CompanyIDCollection) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/company"),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
+	companyListCtx, _err := app.NewCompanyListHyCompanyContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
+	}
+
+	// Perform action
+	_err = ctrl.CompanyList(companyListCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt app.CompanyIDCollection
+	if resp != nil {
+		var ok bool
+		mt, ok = resp.(app.CompanyIDCollection)
+		if !ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyIDCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -491,86 +491,6 @@ func CreateCompanyHyCompanyCreated(t goatest.TInterface, ctx context.Context, se
 	return rw
 }
 
-// CreateCompanyHyCompanyOKComanyid runs the method CreateCompany of the given controller with the given parameters and payload.
-// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func CreateCompanyHyCompanyOKComanyid(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, payload *app.CreateCompanyHyCompanyPayload) (http.ResponseWriter, *app.CompanyComanyid) {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Validate payload
-	err := payload.Validate()
-	if err != nil {
-		e, ok := err.(goa.ServiceError)
-		if !ok {
-			panic(err) // bug
-		}
-		t.Errorf("unexpected payload validation error: %+v", e)
-		return nil, nil
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	u := &url.URL{
-		Path: fmt.Sprintf("/api/company"),
-	}
-	req, _err := http.NewRequest("POST", u.String(), nil)
-	if _err != nil {
-		panic("invalid test " + _err.Error()) // bug
-	}
-	prms := url.Values{}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
-	createCompanyCtx, __err := app.NewCreateCompanyHyCompanyContext(goaCtx, req, service)
-	if __err != nil {
-		panic("invalid test data " + __err.Error()) // bug
-	}
-	createCompanyCtx.Payload = payload
-
-	// Perform action
-	__err = ctrl.CreateCompany(createCompanyCtx)
-
-	// Validate response
-	if __err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
-	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-	var mt *app.CompanyComanyid
-	if resp != nil {
-		var _ok bool
-		mt, _ok = resp.(*app.CompanyComanyid)
-		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyComanyid", resp, resp)
-		}
-		__err = mt.Validate()
-		if __err != nil {
-			t.Errorf("invalid response media type: %s", __err)
-		}
-	}
-
-	// Return results
-	return rw, mt
-}
-
 // CreateCompanyHyCompanyOK runs the method CreateCompany of the given controller with the given parameters and payload.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
@@ -640,6 +560,86 @@ func CreateCompanyHyCompanyOK(t goatest.TInterface, ctx context.Context, service
 		mt, _ok = resp.(*app.Company)
 		if !_ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.Company", resp, resp)
+		}
+		__err = mt.Validate()
+		if __err != nil {
+			t.Errorf("invalid response media type: %s", __err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// CreateCompanyHyCompanyOKID runs the method CreateCompany of the given controller with the given parameters and payload.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func CreateCompanyHyCompanyOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, payload *app.CreateCompanyHyCompanyPayload) (http.ResponseWriter, *app.CompanyID) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Validate payload
+	err := payload.Validate()
+	if err != nil {
+		e, ok := err.(goa.ServiceError)
+		if !ok {
+			panic(err) // bug
+		}
+		t.Errorf("unexpected payload validation error: %+v", e)
+		return nil, nil
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/company"),
+	}
+	req, _err := http.NewRequest("POST", u.String(), nil)
+	if _err != nil {
+		panic("invalid test " + _err.Error()) // bug
+	}
+	prms := url.Values{}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
+	createCompanyCtx, __err := app.NewCreateCompanyHyCompanyContext(goaCtx, req, service)
+	if __err != nil {
+		panic("invalid test data " + __err.Error()) // bug
+	}
+	createCompanyCtx.Payload = payload
+
+	// Perform action
+	__err = ctrl.CreateCompany(createCompanyCtx)
+
+	// Validate response
+	if __err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.CompanyID
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(*app.CompanyID)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyID", resp, resp)
 		}
 		__err = mt.Validate()
 		if __err != nil {
@@ -853,75 +853,6 @@ func DeleteCompanyHyCompanyNotFound(t goatest.TInterface, ctx context.Context, s
 	return rw
 }
 
-// DeleteCompanyHyCompanyOKComanyid runs the method DeleteCompany of the given controller with the given parameters.
-// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func DeleteCompanyHyCompanyOKComanyid(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, companyID int) (http.ResponseWriter, *app.CompanyComanyid) {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	u := &url.URL{
-		Path: fmt.Sprintf("/api/company/%v", companyID),
-	}
-	req, err := http.NewRequest("DELETE", u.String(), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	prms := url.Values{}
-	prms["companyID"] = []string{fmt.Sprintf("%v", companyID)}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
-	deleteCompanyCtx, _err := app.NewDeleteCompanyHyCompanyContext(goaCtx, req, service)
-	if _err != nil {
-		panic("invalid test data " + _err.Error()) // bug
-	}
-
-	// Perform action
-	_err = ctrl.DeleteCompany(deleteCompanyCtx)
-
-	// Validate response
-	if _err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
-	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-	var mt *app.CompanyComanyid
-	if resp != nil {
-		var ok bool
-		mt, ok = resp.(*app.CompanyComanyid)
-		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyComanyid", resp, resp)
-		}
-		_err = mt.Validate()
-		if _err != nil {
-			t.Errorf("invalid response media type: %s", _err)
-		}
-	}
-
-	// Return results
-	return rw, mt
-}
-
 // DeleteCompanyHyCompanyOK runs the method DeleteCompany of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
@@ -980,6 +911,75 @@ func DeleteCompanyHyCompanyOK(t goatest.TInterface, ctx context.Context, service
 		mt, ok = resp.(*app.Company)
 		if !ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.Company", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// DeleteCompanyHyCompanyOKID runs the method DeleteCompany of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func DeleteCompanyHyCompanyOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, companyID int) (http.ResponseWriter, *app.CompanyID) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/company/%v", companyID),
+	}
+	req, err := http.NewRequest("DELETE", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["companyID"] = []string{fmt.Sprintf("%v", companyID)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
+	deleteCompanyCtx, _err := app.NewDeleteCompanyHyCompanyContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
+	}
+
+	// Perform action
+	_err = ctrl.DeleteCompany(deleteCompanyCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.CompanyID
+	if resp != nil {
+		var ok bool
+		mt, ok = resp.(*app.CompanyID)
+		if !ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyID", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -1202,85 +1202,6 @@ func GetCompanyGroupHyCompanyNoContent(t goatest.TInterface, ctx context.Context
 	return rw
 }
 
-// GetCompanyGroupHyCompanyOKComanyid runs the method GetCompanyGroup of the given controller with the given parameters.
-// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func GetCompanyGroupHyCompanyOKComanyid(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, companyID int, hqFlg *string) (http.ResponseWriter, app.CompanyComanyidCollection) {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	query := url.Values{}
-	if hqFlg != nil {
-		sliceVal := []string{*hqFlg}
-		query["hq_flg"] = sliceVal
-	}
-	u := &url.URL{
-		Path:     fmt.Sprintf("/api/company/%v", companyID),
-		RawQuery: query.Encode(),
-	}
-	req, err := http.NewRequest("GET", u.String(), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	prms := url.Values{}
-	prms["companyID"] = []string{fmt.Sprintf("%v", companyID)}
-	if hqFlg != nil {
-		sliceVal := []string{*hqFlg}
-		prms["hq_flg"] = sliceVal
-	}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
-	getCompanyGroupCtx, _err := app.NewGetCompanyGroupHyCompanyContext(goaCtx, req, service)
-	if _err != nil {
-		panic("invalid test data " + _err.Error()) // bug
-	}
-
-	// Perform action
-	_err = ctrl.GetCompanyGroup(getCompanyGroupCtx)
-
-	// Validate response
-	if _err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
-	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-	var mt app.CompanyComanyidCollection
-	if resp != nil {
-		var ok bool
-		mt, ok = resp.(app.CompanyComanyidCollection)
-		if !ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyComanyidCollection", resp, resp)
-		}
-		_err = mt.Validate()
-		if _err != nil {
-			t.Errorf("invalid response media type: %s", _err)
-		}
-	}
-
-	// Return results
-	return rw, mt
-}
-
 // GetCompanyGroupHyCompanyOK runs the method GetCompanyGroup of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
@@ -1349,6 +1270,85 @@ func GetCompanyGroupHyCompanyOK(t goatest.TInterface, ctx context.Context, servi
 		mt, ok = resp.(app.CompanyCollection)
 		if !ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyCollection", resp, resp)
+		}
+		_err = mt.Validate()
+		if _err != nil {
+			t.Errorf("invalid response media type: %s", _err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// GetCompanyGroupHyCompanyOKID runs the method GetCompanyGroup of the given controller with the given parameters.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func GetCompanyGroupHyCompanyOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, companyID int, hqFlg *string) (http.ResponseWriter, app.CompanyIDCollection) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	query := url.Values{}
+	if hqFlg != nil {
+		sliceVal := []string{*hqFlg}
+		query["hq_flg"] = sliceVal
+	}
+	u := &url.URL{
+		Path:     fmt.Sprintf("/api/company/%v", companyID),
+		RawQuery: query.Encode(),
+	}
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["companyID"] = []string{fmt.Sprintf("%v", companyID)}
+	if hqFlg != nil {
+		sliceVal := []string{*hqFlg}
+		prms["hq_flg"] = sliceVal
+	}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
+	getCompanyGroupCtx, _err := app.NewGetCompanyGroupHyCompanyContext(goaCtx, req, service)
+	if _err != nil {
+		panic("invalid test data " + _err.Error()) // bug
+	}
+
+	// Perform action
+	_err = ctrl.GetCompanyGroup(getCompanyGroupCtx)
+
+	// Validate response
+	if _err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt app.CompanyIDCollection
+	if resp != nil {
+		var ok bool
+		mt, ok = resp.(app.CompanyIDCollection)
+		if !ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyIDCollection", resp, resp)
 		}
 		_err = mt.Validate()
 		if _err != nil {
@@ -1584,87 +1584,6 @@ func UpdateCompanyHyCompanyNotFound(t goatest.TInterface, ctx context.Context, s
 	return rw
 }
 
-// UpdateCompanyHyCompanyOKComanyid runs the method UpdateCompany of the given controller with the given parameters and payload.
-// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
-// If ctx is nil then context.Background() is used.
-// If service is nil then a default service is created.
-func UpdateCompanyHyCompanyOKComanyid(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, companyID int, payload *app.UpdateCompanyHyCompanyPayload) (http.ResponseWriter, *app.CompanyComanyid) {
-	// Setup service
-	var (
-		logBuf bytes.Buffer
-		resp   interface{}
-
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
-	)
-	if service == nil {
-		service = goatest.Service(&logBuf, respSetter)
-	} else {
-		logger := log.New(&logBuf, "", log.Ltime)
-		service.WithLogger(goa.NewLogger(logger))
-		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
-		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
-		service.Encoder.Register(newEncoder, "*/*")
-	}
-
-	// Validate payload
-	err := payload.Validate()
-	if err != nil {
-		e, ok := err.(goa.ServiceError)
-		if !ok {
-			panic(err) // bug
-		}
-		t.Errorf("unexpected payload validation error: %+v", e)
-		return nil, nil
-	}
-
-	// Setup request context
-	rw := httptest.NewRecorder()
-	u := &url.URL{
-		Path: fmt.Sprintf("/api/company/%v", companyID),
-	}
-	req, _err := http.NewRequest("PUT", u.String(), nil)
-	if _err != nil {
-		panic("invalid test " + _err.Error()) // bug
-	}
-	prms := url.Values{}
-	prms["companyID"] = []string{fmt.Sprintf("%v", companyID)}
-	if ctx == nil {
-		ctx = context.Background()
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
-	updateCompanyCtx, __err := app.NewUpdateCompanyHyCompanyContext(goaCtx, req, service)
-	if __err != nil {
-		panic("invalid test data " + __err.Error()) // bug
-	}
-	updateCompanyCtx.Payload = payload
-
-	// Perform action
-	__err = ctrl.UpdateCompany(updateCompanyCtx)
-
-	// Validate response
-	if __err != nil {
-		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
-	}
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-	var mt *app.CompanyComanyid
-	if resp != nil {
-		var _ok bool
-		mt, _ok = resp.(*app.CompanyComanyid)
-		if !_ok {
-			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyComanyid", resp, resp)
-		}
-		__err = mt.Validate()
-		if __err != nil {
-			t.Errorf("invalid response media type: %s", __err)
-		}
-	}
-
-	// Return results
-	return rw, mt
-}
-
 // UpdateCompanyHyCompanyOK runs the method UpdateCompany of the given controller with the given parameters and payload.
 // It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
 // If ctx is nil then context.Background() is used.
@@ -1735,6 +1654,87 @@ func UpdateCompanyHyCompanyOK(t goatest.TInterface, ctx context.Context, service
 		mt, _ok = resp.(*app.Company)
 		if !_ok {
 			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.Company", resp, resp)
+		}
+		__err = mt.Validate()
+		if __err != nil {
+			t.Errorf("invalid response media type: %s", __err)
+		}
+	}
+
+	// Return results
+	return rw, mt
+}
+
+// UpdateCompanyHyCompanyOKID runs the method UpdateCompany of the given controller with the given parameters and payload.
+// It returns the response writer so it's possible to inspect the response headers and the media type struct written to the response.
+// If ctx is nil then context.Background() is used.
+// If service is nil then a default service is created.
+func UpdateCompanyHyCompanyOKID(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, companyID int, payload *app.UpdateCompanyHyCompanyPayload) (http.ResponseWriter, *app.CompanyID) {
+	// Setup service
+	var (
+		logBuf bytes.Buffer
+		resp   interface{}
+
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+	)
+	if service == nil {
+		service = goatest.Service(&logBuf, respSetter)
+	} else {
+		logger := log.New(&logBuf, "", log.Ltime)
+		service.WithLogger(goa.NewLogger(logger))
+		newEncoder := func(io.Writer) goa.Encoder { return respSetter }
+		service.Encoder = goa.NewHTTPEncoder() // Make sure the code ends up using this decoder
+		service.Encoder.Register(newEncoder, "*/*")
+	}
+
+	// Validate payload
+	err := payload.Validate()
+	if err != nil {
+		e, ok := err.(goa.ServiceError)
+		if !ok {
+			panic(err) // bug
+		}
+		t.Errorf("unexpected payload validation error: %+v", e)
+		return nil, nil
+	}
+
+	// Setup request context
+	rw := httptest.NewRecorder()
+	u := &url.URL{
+		Path: fmt.Sprintf("/api/company/%v", companyID),
+	}
+	req, _err := http.NewRequest("PUT", u.String(), nil)
+	if _err != nil {
+		panic("invalid test " + _err.Error()) // bug
+	}
+	prms := url.Values{}
+	prms["companyID"] = []string{fmt.Sprintf("%v", companyID)}
+	if ctx == nil {
+		ctx = context.Background()
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "HyCompanyTest"), rw, req, prms)
+	updateCompanyCtx, __err := app.NewUpdateCompanyHyCompanyContext(goaCtx, req, service)
+	if __err != nil {
+		panic("invalid test data " + __err.Error()) // bug
+	}
+	updateCompanyCtx.Payload = payload
+
+	// Perform action
+	__err = ctrl.UpdateCompany(updateCompanyCtx)
+
+	// Validate response
+	if __err != nil {
+		t.Fatalf("controller returned %+v, logs:\n%s", __err, logBuf.String())
+	}
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+	var mt *app.CompanyID
+	if resp != nil {
+		var _ok bool
+		mt, _ok = resp.(*app.CompanyID)
+		if !_ok {
+			t.Fatalf("invalid response media: got variable of type %T, value %+v, expected instance of app.CompanyID", resp, resp)
 		}
 		__err = mt.Validate()
 		if __err != nil {

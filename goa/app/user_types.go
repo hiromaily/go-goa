@@ -17,9 +17,9 @@ import (
 
 // commonResponse user type.
 type commonResponse struct {
-	// Date of creation
+	// Datetime
 	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
-	// Date of update
+	// Datetime
 	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
@@ -52,9 +52,9 @@ func (ut *commonResponse) Publicize() *CommonResponse {
 
 // CommonResponse user type.
 type CommonResponse struct {
-	// Date of creation
+	// Datetime
 	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
-	// Date of update
+	// Datetime
 	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
@@ -75,15 +75,11 @@ func (ut *CommonResponse) Validate() (err error) {
 
 // companyPayload user type.
 type companyPayload struct {
-	// Address of company
+	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
-	// Company ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Country's ID
+	// Country ID
 	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
-	// Headquarters flg
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
-	// Company Name
+	// Company name
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 }
 
@@ -99,16 +95,6 @@ func (ut *companyPayload) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
 		}
 	}
-	if ut.CompanyID != nil {
-		if *ut.CompanyID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.company_id`, *ut.CompanyID, 1, true))
-		}
-	}
-	if ut.CompanyID != nil {
-		if *ut.CompanyID > 999999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.company_id`, *ut.CompanyID, 999999, false))
-		}
-	}
 	if ut.CountryID != nil {
 		if *ut.CountryID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 1, true))
@@ -117,16 +103,6 @@ func (ut *companyPayload) Validate() (err error) {
 	if ut.CountryID != nil {
 		if *ut.CountryID > 999 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
-		}
-	}
-	if ut.HqFlg != nil {
-		if utf8.RuneCountInString(*ut.HqFlg) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.hq_flg`, *ut.HqFlg, utf8.RuneCountInString(*ut.HqFlg), 1, true))
-		}
-	}
-	if ut.HqFlg != nil {
-		if utf8.RuneCountInString(*ut.HqFlg) > 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.hq_flg`, *ut.HqFlg, utf8.RuneCountInString(*ut.HqFlg), 1, false))
 		}
 	}
 	if ut.Name != nil {
@@ -148,14 +124,8 @@ func (ut *companyPayload) Publicize() *CompanyPayload {
 	if ut.Address != nil {
 		pub.Address = ut.Address
 	}
-	if ut.CompanyID != nil {
-		pub.CompanyID = ut.CompanyID
-	}
 	if ut.CountryID != nil {
 		pub.CountryID = ut.CountryID
-	}
-	if ut.HqFlg != nil {
-		pub.HqFlg = ut.HqFlg
 	}
 	if ut.Name != nil {
 		pub.Name = ut.Name
@@ -165,15 +135,11 @@ func (ut *companyPayload) Publicize() *CompanyPayload {
 
 // CompanyPayload user type.
 type CompanyPayload struct {
-	// Address of company
+	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
-	// Company ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Country's ID
+	// Country ID
 	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
-	// Headquarters flg
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
-	// Company Name
+	// Company name
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 }
 
@@ -189,14 +155,47 @@ func (ut *CompanyPayload) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
 		}
 	}
-	if ut.CompanyID != nil {
-		if *ut.CompanyID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.company_id`, *ut.CompanyID, 1, true))
+	if ut.CountryID != nil {
+		if *ut.CountryID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 1, true))
 		}
 	}
-	if ut.CompanyID != nil {
-		if *ut.CompanyID > 999999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.company_id`, *ut.CompanyID, 999999, false))
+	if ut.CountryID != nil {
+		if *ut.CountryID > 999 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
+		}
+	}
+	if ut.Name != nil {
+		if utf8.RuneCountInString(*ut.Name) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 2, true))
+		}
+	}
+	if ut.Name != nil {
+		if utf8.RuneCountInString(*ut.Name) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 40, false))
+		}
+	}
+	return
+}
+
+// companyTinyPayload user type.
+type companyTinyPayload struct {
+	// Company Address
+	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	// Country ID
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+}
+
+// Validate validates the companyTinyPayload type instance.
+func (ut *companyTinyPayload) Validate() (err error) {
+	if ut.Address != nil {
+		if utf8.RuneCountInString(*ut.Address) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
+		}
+	}
+	if ut.Address != nil {
+		if utf8.RuneCountInString(*ut.Address) > 80 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
 		}
 	}
 	if ut.CountryID != nil {
@@ -209,24 +208,49 @@ func (ut *CompanyPayload) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
 		}
 	}
-	if ut.HqFlg != nil {
-		if utf8.RuneCountInString(*ut.HqFlg) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.hq_flg`, *ut.HqFlg, utf8.RuneCountInString(*ut.HqFlg), 1, true))
+	return
+}
+
+// Publicize creates CompanyTinyPayload from companyTinyPayload
+func (ut *companyTinyPayload) Publicize() *CompanyTinyPayload {
+	var pub CompanyTinyPayload
+	if ut.Address != nil {
+		pub.Address = ut.Address
+	}
+	if ut.CountryID != nil {
+		pub.CountryID = ut.CountryID
+	}
+	return &pub
+}
+
+// CompanyTinyPayload user type.
+type CompanyTinyPayload struct {
+	// Company Address
+	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	// Country ID
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+}
+
+// Validate validates the CompanyTinyPayload type instance.
+func (ut *CompanyTinyPayload) Validate() (err error) {
+	if ut.Address != nil {
+		if utf8.RuneCountInString(*ut.Address) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
 		}
 	}
-	if ut.HqFlg != nil {
-		if utf8.RuneCountInString(*ut.HqFlg) > 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.hq_flg`, *ut.HqFlg, utf8.RuneCountInString(*ut.HqFlg), 1, false))
+	if ut.Address != nil {
+		if utf8.RuneCountInString(*ut.Address) > 80 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
 		}
 	}
-	if ut.Name != nil {
-		if utf8.RuneCountInString(*ut.Name) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 2, true))
+	if ut.CountryID != nil {
+		if *ut.CountryID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 1, true))
 		}
 	}
-	if ut.Name != nil {
-		if utf8.RuneCountInString(*ut.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 40, false))
+	if ut.CountryID != nil {
+		if *ut.CountryID > 999 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
 		}
 	}
 	return

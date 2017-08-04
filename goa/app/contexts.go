@@ -170,20 +170,20 @@ func NewCompanyListHyCompanyContext(ctx context.Context, r *http.Request, servic
 	return &rctx, err
 }
 
-// OKComanyid sends a HTTP response with status code 200.
-func (ctx *CompanyListHyCompanyContext) OKComanyid(r CompanyComanyidCollection) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
-	if r == nil {
-		r = CompanyComanyidCollection{}
-	}
-	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
-}
-
 // OK sends a HTTP response with status code 200.
 func (ctx *CompanyListHyCompanyContext) OK(r CompanyCollection) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
 	if r == nil {
 		r = CompanyCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKId sends a HTTP response with status code 200.
+func (ctx *CompanyListHyCompanyContext) OKId(r CompanyIDCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
+	if r == nil {
+		r = CompanyIDCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -231,15 +231,11 @@ func NewCreateCompanyHyCompanyContext(ctx context.Context, r *http.Request, serv
 
 // createCompanyHyCompanyPayload is the hy_company CreateCompany action payload.
 type createCompanyHyCompanyPayload struct {
-	// Address of company
+	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
-	// Company ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Country's ID
+	// Country ID
 	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
-	// Headquarters flg
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
-	// Company Name
+	// Company name
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 }
 
@@ -264,16 +260,6 @@ func (payload *createCompanyHyCompanyPayload) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, *payload.Address, utf8.RuneCountInString(*payload.Address), 80, false))
 		}
 	}
-	if payload.CompanyID != nil {
-		if *payload.CompanyID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.company_id`, *payload.CompanyID, 1, true))
-		}
-	}
-	if payload.CompanyID != nil {
-		if *payload.CompanyID > 999999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.company_id`, *payload.CompanyID, 999999, false))
-		}
-	}
 	if payload.CountryID != nil {
 		if *payload.CountryID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, *payload.CountryID, 1, true))
@@ -282,16 +268,6 @@ func (payload *createCompanyHyCompanyPayload) Validate() (err error) {
 	if payload.CountryID != nil {
 		if *payload.CountryID > 999 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, *payload.CountryID, 999, false))
-		}
-	}
-	if payload.HqFlg != nil {
-		if utf8.RuneCountInString(*payload.HqFlg) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.hq_flg`, *payload.HqFlg, utf8.RuneCountInString(*payload.HqFlg), 1, true))
-		}
-	}
-	if payload.HqFlg != nil {
-		if utf8.RuneCountInString(*payload.HqFlg) > 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.hq_flg`, *payload.HqFlg, utf8.RuneCountInString(*payload.HqFlg), 1, false))
 		}
 	}
 	if payload.Name != nil {
@@ -313,14 +289,8 @@ func (payload *createCompanyHyCompanyPayload) Publicize() *CreateCompanyHyCompan
 	if payload.Address != nil {
 		pub.Address = *payload.Address
 	}
-	if payload.CompanyID != nil {
-		pub.CompanyID = payload.CompanyID
-	}
 	if payload.CountryID != nil {
 		pub.CountryID = *payload.CountryID
-	}
-	if payload.HqFlg != nil {
-		pub.HqFlg = payload.HqFlg
 	}
 	if payload.Name != nil {
 		pub.Name = *payload.Name
@@ -330,15 +300,11 @@ func (payload *createCompanyHyCompanyPayload) Publicize() *CreateCompanyHyCompan
 
 // CreateCompanyHyCompanyPayload is the hy_company CreateCompany action payload.
 type CreateCompanyHyCompanyPayload struct {
-	// Address of company
+	// Company Address
 	Address string `form:"address" json:"address" xml:"address"`
-	// Company ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Country's ID
+	// Country ID
 	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
-	// Headquarters flg
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
-	// Company Name
+	// Company name
 	Name string `form:"name" json:"name" xml:"name"`
 }
 
@@ -357,31 +323,11 @@ func (payload *CreateCompanyHyCompanyPayload) Validate() (err error) {
 	if utf8.RuneCountInString(payload.Address) > 80 {
 		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, payload.Address, utf8.RuneCountInString(payload.Address), 80, false))
 	}
-	if payload.CompanyID != nil {
-		if *payload.CompanyID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.company_id`, *payload.CompanyID, 1, true))
-		}
-	}
-	if payload.CompanyID != nil {
-		if *payload.CompanyID > 999999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.company_id`, *payload.CompanyID, 999999, false))
-		}
-	}
 	if payload.CountryID < 1 {
 		err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, payload.CountryID, 1, true))
 	}
 	if payload.CountryID > 999 {
 		err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, payload.CountryID, 999, false))
-	}
-	if payload.HqFlg != nil {
-		if utf8.RuneCountInString(*payload.HqFlg) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.hq_flg`, *payload.HqFlg, utf8.RuneCountInString(*payload.HqFlg), 1, true))
-		}
-	}
-	if payload.HqFlg != nil {
-		if utf8.RuneCountInString(*payload.HqFlg) > 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.hq_flg`, *payload.HqFlg, utf8.RuneCountInString(*payload.HqFlg), 1, false))
-		}
 	}
 	if utf8.RuneCountInString(payload.Name) < 2 {
 		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.name`, payload.Name, utf8.RuneCountInString(payload.Name), 2, true))
@@ -392,14 +338,14 @@ func (payload *CreateCompanyHyCompanyPayload) Validate() (err error) {
 	return
 }
 
-// OKComanyid sends a HTTP response with status code 200.
-func (ctx *CreateCompanyHyCompanyContext) OKComanyid(r *CompanyComanyid) error {
+// OK sends a HTTP response with status code 200.
+func (ctx *CreateCompanyHyCompanyContext) OK(r *Company) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// OK sends a HTTP response with status code 200.
-func (ctx *CreateCompanyHyCompanyContext) OK(r *Company) error {
+// OKId sends a HTTP response with status code 200.
+func (ctx *CreateCompanyHyCompanyContext) OKId(r *CompanyID) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -451,14 +397,14 @@ func NewDeleteCompanyHyCompanyContext(ctx context.Context, r *http.Request, serv
 	return &rctx, err
 }
 
-// OKComanyid sends a HTTP response with status code 200.
-func (ctx *DeleteCompanyHyCompanyContext) OKComanyid(r *CompanyComanyid) error {
+// OK sends a HTTP response with status code 200.
+func (ctx *DeleteCompanyHyCompanyContext) OK(r *Company) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// OK sends a HTTP response with status code 200.
-func (ctx *DeleteCompanyHyCompanyContext) OK(r *Company) error {
+// OKId sends a HTTP response with status code 200.
+func (ctx *DeleteCompanyHyCompanyContext) OKId(r *CompanyID) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -521,20 +467,20 @@ func NewGetCompanyGroupHyCompanyContext(ctx context.Context, r *http.Request, se
 	return &rctx, err
 }
 
-// OKComanyid sends a HTTP response with status code 200.
-func (ctx *GetCompanyGroupHyCompanyContext) OKComanyid(r CompanyComanyidCollection) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
-	if r == nil {
-		r = CompanyComanyidCollection{}
-	}
-	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
-}
-
 // OK sends a HTTP response with status code 200.
 func (ctx *GetCompanyGroupHyCompanyContext) OK(r CompanyCollection) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
 	if r == nil {
 		r = CompanyCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKId sends a HTTP response with status code 200.
+func (ctx *GetCompanyGroupHyCompanyContext) OKId(r CompanyIDCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
+	if r == nil {
+		r = CompanyIDCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -592,15 +538,11 @@ func NewUpdateCompanyHyCompanyContext(ctx context.Context, r *http.Request, serv
 
 // updateCompanyHyCompanyPayload is the hy_company UpdateCompany action payload.
 type updateCompanyHyCompanyPayload struct {
-	// Address of company
+	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
-	// Company ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Country's ID
+	// Country ID
 	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
-	// Headquarters flg
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
-	// Company Name
+	// Company name
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 }
 
@@ -625,16 +567,6 @@ func (payload *updateCompanyHyCompanyPayload) Validate() (err error) {
 			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, *payload.Address, utf8.RuneCountInString(*payload.Address), 80, false))
 		}
 	}
-	if payload.CompanyID != nil {
-		if *payload.CompanyID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.company_id`, *payload.CompanyID, 1, true))
-		}
-	}
-	if payload.CompanyID != nil {
-		if *payload.CompanyID > 999999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.company_id`, *payload.CompanyID, 999999, false))
-		}
-	}
 	if payload.CountryID != nil {
 		if *payload.CountryID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, *payload.CountryID, 1, true))
@@ -643,16 +575,6 @@ func (payload *updateCompanyHyCompanyPayload) Validate() (err error) {
 	if payload.CountryID != nil {
 		if *payload.CountryID > 999 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, *payload.CountryID, 999, false))
-		}
-	}
-	if payload.HqFlg != nil {
-		if utf8.RuneCountInString(*payload.HqFlg) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.hq_flg`, *payload.HqFlg, utf8.RuneCountInString(*payload.HqFlg), 1, true))
-		}
-	}
-	if payload.HqFlg != nil {
-		if utf8.RuneCountInString(*payload.HqFlg) > 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.hq_flg`, *payload.HqFlg, utf8.RuneCountInString(*payload.HqFlg), 1, false))
 		}
 	}
 	if payload.Name != nil {
@@ -674,14 +596,8 @@ func (payload *updateCompanyHyCompanyPayload) Publicize() *UpdateCompanyHyCompan
 	if payload.Address != nil {
 		pub.Address = *payload.Address
 	}
-	if payload.CompanyID != nil {
-		pub.CompanyID = payload.CompanyID
-	}
 	if payload.CountryID != nil {
 		pub.CountryID = *payload.CountryID
-	}
-	if payload.HqFlg != nil {
-		pub.HqFlg = payload.HqFlg
 	}
 	if payload.Name != nil {
 		pub.Name = *payload.Name
@@ -691,15 +607,11 @@ func (payload *updateCompanyHyCompanyPayload) Publicize() *UpdateCompanyHyCompan
 
 // UpdateCompanyHyCompanyPayload is the hy_company UpdateCompany action payload.
 type UpdateCompanyHyCompanyPayload struct {
-	// Address of company
+	// Company Address
 	Address string `form:"address" json:"address" xml:"address"`
-	// Company ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Country's ID
+	// Country ID
 	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
-	// Headquarters flg
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
-	// Company Name
+	// Company name
 	Name string `form:"name" json:"name" xml:"name"`
 }
 
@@ -718,31 +630,11 @@ func (payload *UpdateCompanyHyCompanyPayload) Validate() (err error) {
 	if utf8.RuneCountInString(payload.Address) > 80 {
 		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, payload.Address, utf8.RuneCountInString(payload.Address), 80, false))
 	}
-	if payload.CompanyID != nil {
-		if *payload.CompanyID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.company_id`, *payload.CompanyID, 1, true))
-		}
-	}
-	if payload.CompanyID != nil {
-		if *payload.CompanyID > 999999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.company_id`, *payload.CompanyID, 999999, false))
-		}
-	}
 	if payload.CountryID < 1 {
 		err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, payload.CountryID, 1, true))
 	}
 	if payload.CountryID > 999 {
 		err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, payload.CountryID, 999, false))
-	}
-	if payload.HqFlg != nil {
-		if utf8.RuneCountInString(*payload.HqFlg) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.hq_flg`, *payload.HqFlg, utf8.RuneCountInString(*payload.HqFlg), 1, true))
-		}
-	}
-	if payload.HqFlg != nil {
-		if utf8.RuneCountInString(*payload.HqFlg) > 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.hq_flg`, *payload.HqFlg, utf8.RuneCountInString(*payload.HqFlg), 1, false))
-		}
 	}
 	if utf8.RuneCountInString(payload.Name) < 2 {
 		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.name`, payload.Name, utf8.RuneCountInString(payload.Name), 2, true))
@@ -753,14 +645,14 @@ func (payload *UpdateCompanyHyCompanyPayload) Validate() (err error) {
 	return
 }
 
-// OKComanyid sends a HTTP response with status code 200.
-func (ctx *UpdateCompanyHyCompanyContext) OKComanyid(r *CompanyComanyid) error {
+// OK sends a HTTP response with status code 200.
+func (ctx *UpdateCompanyHyCompanyContext) OK(r *Company) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// OK sends a HTTP response with status code 200.
-func (ctx *UpdateCompanyHyCompanyContext) OK(r *Company) error {
+// OKId sends a HTTP response with status code 200.
+func (ctx *UpdateCompanyHyCompanyContext) OKId(r *CompanyID) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }

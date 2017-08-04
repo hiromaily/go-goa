@@ -149,9 +149,7 @@ Payload example:
 
 {
    "address": "Shinagawa Tokyo",
-   "company_id": 10,
    "country_id": 110,
-   "hq_flg": "1",
    "name": "Company"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
@@ -289,9 +287,7 @@ Payload example:
 
 {
    "address": "Shinagawa Tokyo",
-   "company_id": 10,
    "country_id": 110,
-   "hq_flg": "1",
    "name": "Company"
 }`,
 		RunE: func(cmd *cobra.Command, args []string) error { return tmp10.Run(c, args) },

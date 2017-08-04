@@ -53,15 +53,11 @@ func (c *Client) NewCompanyListHyCompanyRequest(ctx context.Context, path string
 
 // CreateCompanyHyCompanyPayload is the hy_company CreateCompany action payload.
 type CreateCompanyHyCompanyPayload struct {
-	// Address of company
+	// Company Address
 	Address string `form:"address" json:"address" xml:"address"`
-	// Company ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Country's ID
+	// Country ID
 	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
-	// Headquarters flg
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
-	// Company Name
+	// Company name
 	Name string `form:"name" json:"name" xml:"name"`
 }
 
@@ -184,15 +180,11 @@ func (c *Client) NewGetCompanyGroupHyCompanyRequest(ctx context.Context, path st
 
 // UpdateCompanyHyCompanyPayload is the hy_company UpdateCompany action payload.
 type UpdateCompanyHyCompanyPayload struct {
-	// Address of company
+	// Company Address
 	Address string `form:"address" json:"address" xml:"address"`
-	// Company ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Country's ID
+	// Country ID
 	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
-	// Headquarters flg
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
-	// Company Name
+	// Company name
 	Name string `form:"name" json:"name" xml:"name"`
 }
 

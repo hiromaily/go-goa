@@ -72,8 +72,8 @@ func (c *HyCompanyController) CreateCompany(ctx *app.CreateCompanyHyCompanyConte
 		return err
 	}
 
-	res := &app.CompanyComanyid{CompanyID: &companyID}
-	return ctx.OKComanyid(res)
+	res := &app.CompanyID{CompanyID: &companyID}
+	return ctx.OKId(res)
 }
 
 // UpdateCompany runs the UpdateCompany action.
@@ -86,8 +86,8 @@ func (c *HyCompanyController) UpdateCompany(ctx *app.UpdateCompanyHyCompanyConte
 		return err
 	}
 
-	res := &app.CompanyComanyid{CompanyID: &ctx.CompanyID}
-	return ctx.OKComanyid(res)
+	res := &app.CompanyID{CompanyID: &ctx.CompanyID}
+	return ctx.OKId(res)
 }
 
 // DeleteCompany runs the DeleteCompany action.
@@ -100,6 +100,6 @@ func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyConte
 		return err
 	}
 
-	res := &app.CompanyComanyid{CompanyID: &ctx.CompanyID}
-	return ctx.OKComanyid(res)
+	res := &app.CompanyID{CompanyID: &ctx.CompanyID}
+	return ctx.OKId(res)
 }

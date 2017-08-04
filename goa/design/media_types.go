@@ -65,6 +65,8 @@ var User = MediaType("application/vnd.user+json", func() {
 		Attribute("created_at")
 		Attribute("updated_at")
 
+		//TODO:required value in media_type is given priority over this part...
+		//That means, this part would affect on Action-Payload-Required
 		//when field is zero or empty, data is not return unless it's not set in Required
 		Required("user_name", "email", "password")
 	})
@@ -97,15 +99,8 @@ var Company = MediaType("application/vnd.company+json", func() {
 	Reference(CommonResponse)
 
 	Attributes(func() {
-		Attribute("id", Integer, "Company Detail ID", func() {
-			Minimum(1)
-			Example(10)
-		})
-		Attribute("company_id", Integer, "Company ID", func() {
-			Minimum(1)
-			Example(2)
-		})
-		//Attribute("company_id")
+		Attribute("id", Integer, "Company Detail ID", fieldID)
+		Attribute("company_id", Integer, "Company ID", fieldID)
 		Attribute("name")
 		Attribute("hq_flg")
 		Attribute("country_name")
@@ -113,8 +108,10 @@ var Company = MediaType("application/vnd.company+json", func() {
 		Attribute("created_at")
 		Attribute("updated_at")
 
+		//TODO:required value in media_type is given priority over this part...
+		//That means, this part would affect on Action-Payload-Required
 		//when field is zero or empty, data is not return unless it's not set in Required
-		Required("name")
+		Required("name", "address")
 	})
 
 	//View defines a rendering of the media type
@@ -130,7 +127,7 @@ var Company = MediaType("application/vnd.company+json", func() {
 		//Attribute("created_by")
 	})
 
-	View("comanyid", func() {
+	View("id", func() {
 		Description("only company's id")
 		Attribute("company_id")
 	})
