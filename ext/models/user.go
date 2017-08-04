@@ -10,6 +10,7 @@ import (
 	//"github.com/jinzhu/gorm"
 	//"golang.org/x/crypto/bcrypt"
 	//"gopkg.in/guregu/null.v3"
+	"fmt"
 )
 
 // User is user object in Database
@@ -30,6 +31,8 @@ type ParamUser struct {
 	Password string `gorm:"column:password"`
 }
 
+const TableUser = "t_users"
+
 // TODO:Count is to count
 func (m *User) Count() (cnt int) {
 	//m.Ctx.Db
@@ -48,51 +51,54 @@ func (m *User) Login(email, password string) error {
 		return errors.New("data in database would be broken.")
 	}
 
-	//lg.Debugf("users[0].userName: %v", users[0].userName)
 	return nil
 }
 
-func (m *User) UserList(users *[]*app.User) {
-	m.Db.DB.Raw("SELECT id, user_name, email FROM t_users WHERE delete_flg=?", "0").Scan(users)
+func (m *User) UserList(users *[]*app.User) error {
+	if err := m.Db.DB.Raw("SELECT id, user_name, email FROM t_users WHERE delete_flg=?", "0").Scan(users).Error; err != nil {
+		fmt.Println("[error]", err)
+		return err
+	}
+
+	return nil
 }
 
-func (m *User) GetUser(userID int, user *app.User) {
+func (m *User) GetUser(userID int, user *app.User) error {
 	users := []*app.User{}
-	m.Db.DB.Raw("SELECT id, user_name, email FROM t_users WHERE delete_flg=? AND id=? limit 1", "0", userID).Scan(&users)
+	if err := m.Db.DB.Raw("SELECT id, user_name, email FROM t_users WHERE delete_flg=? AND id=? limit 1", "0", userID).Scan(&users).Error; err != nil {
+		fmt.Println("[error]", err)
+		return err
+	}
 
 	if len(users) == 1 {
 		*user = *users[0]
 	}
-	return
+	return nil
 }
 
 func (m *User) InsertUser(user *app.CreateUserHyUserPayload) (int, error) {
 	//m.Db.DB.Exec("INSERT INTO t_users (user_name, email, password) VALUES (?, ?, ?)", user.UserName, user.Email, user.Password)
 	insUser := ParamUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
-	m.Db.DB.Table("t_users").Save(&insUser)
-	if m.Db.DB.Error != nil {
-		return 0, m.Db.DB.Error
+	if err := m.Db.DB.Table(TableUser).Save(&insUser).Error; err != nil {
+		return 0, err
 	}
 
-	//lg.Debugf("Id: %d", insUser.Id)
 	return insUser.Id, nil
 }
 
 func (m *User) UpdateUser(userID int, user *app.UpdateUserHyUserPayload) error {
 	//m.Db.DB.Exec("INSERT INTO t_users (user_name, email, password) VALUES (?, ?, ?)", user.UserName, user.Email, user.Password)
 	updUser := ParamUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
-	m.Db.DB.Table("t_users").Where("id = ?", userID).Update(&updUser)
-	if m.Db.DB.Error != nil {
-		return m.Db.DB.Error
+	if err := m.Db.DB.Table(TableUser).Where("id = ?", userID).Update(&updUser).Error; err != nil {
+		return err
 	}
 
 	return nil
 }
 
 func (m *User) DeleteUser(userID int) error {
-	m.Db.DB.Table("t_users").Where("id = ?", userID).Delete(&ParamUser{})
-	if m.Db.DB.Error != nil {
-		return m.Db.DB.Error
+	if err := m.Db.DB.Table(TableUser).Where("id = ?", userID).Delete(&ParamUser{}).Error; err != nil {
+		return err
 	}
 
 	return nil

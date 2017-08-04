@@ -172,7 +172,7 @@ var _ = Resource(resourcePrefix+"company", func() {
 		)
 		Description("Retrieve company with given company_id")
 		Params(func() {
-			Param("companyID", Integer)
+			Param("companyID", Integer, "Company ID")
 			//query string
 			//Param("hq_flg", String)
 			Param("hq_flg", func() {
@@ -204,6 +204,7 @@ var _ = Resource(resourcePrefix+"company", func() {
 		)
 		Description("Create new company")
 		Payload(CompanyPayload, func() {
+			//TODO:required value in media_type is given priority over this part...
 			Required("name", "country_id", "address")
 		})
 
@@ -222,7 +223,7 @@ var _ = Resource(resourcePrefix+"company", func() {
 		Description("Change company properties")
 
 		Params(func() {
-			Param("companyID", Integer)
+			Param("companyID", Integer, "Company ID")
 		})
 		Payload(CompanyPayload, func() {
 			Required("name", "country_id", "address")
@@ -243,7 +244,7 @@ var _ = Resource(resourcePrefix+"company", func() {
 			Param("companyID", Integer, "Company ID")
 		})
 
-		Response(NoContent)
+		Response(OK)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})

@@ -114,7 +114,7 @@ var Company = MediaType("application/vnd.company+json", func() {
 		Attribute("updated_at")
 
 		//when field is zero or empty, data is not return unless it's not set in Required
-		Required("company_id", "name")
+		Required("name")
 	})
 
 	//View defines a rendering of the media type
@@ -130,9 +130,14 @@ var Company = MediaType("application/vnd.company+json", func() {
 		//Attribute("created_by")
 	})
 
+	View("comanyid", func() {
+		Description("only company's id")
+		Attribute("company_id")
+	})
+
 	View("idname", func() {
 		Description("only company's id and name")
-		Attribute("id")
+		Attribute("company_id")
 		Attribute("name")
 	})
 })

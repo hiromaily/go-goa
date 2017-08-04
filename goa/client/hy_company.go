@@ -58,7 +58,7 @@ type CreateCompanyHyCompanyPayload struct {
 	// Company ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Country's ID
-	CountryID string `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
 	// Headquarters flg
 	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
 	// Company Name
@@ -189,7 +189,7 @@ type UpdateCompanyHyCompanyPayload struct {
 	// Company ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Country's ID
-	CountryID string `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
 	// Headquarters flg
 	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
 	// Company Name

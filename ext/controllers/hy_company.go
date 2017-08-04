@@ -29,7 +29,10 @@ func (c *HyCompanyController) CompanyList(ctx *app.CompanyListHyCompanyContext) 
 	var companies []*app.CompanyIdname
 
 	svc := &m.Company{Db: c.ctx.Db}
-	svc.CompanyList(&companies)
+	err := svc.CompanyList(&companies)
+	if err != nil {
+		return err
+	}
 
 	if len(companies) == 0 {
 		return ctx.NoContent()
@@ -61,32 +64,42 @@ func (c *HyCompanyController) GetCompanyGroup(ctx *app.GetCompanyGroupHyCompanyC
 
 // CreateCompany runs the CreateCompany action.
 func (c *HyCompanyController) CreateCompany(ctx *app.CreateCompanyHyCompanyContext) error {
-	// HyCompanyController_CreateCompany: start_implement
+	fmt.Println("[hy_user][CreateCompany]")
 
-	// Put your logic here
+	svc := &m.Company{Db: c.ctx.Db}
+	companyID, err := svc.InsertCompany(ctx.Payload) //*CreateCompanyHyCompanyPayload
+	if err != nil {
+		return err
+	}
 
-	// HyCompanyController_CreateCompany: end_implement
-	res := &app.Company{}
-	return ctx.OK(res)
-}
-
-// DeleteCompany runs the DeleteCompany action.
-func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyContext) error {
-	// HyCompanyController_DeleteCompany: start_implement
-
-	// Put your logic here
-
-	// HyCompanyController_DeleteCompany: end_implement
-	return nil
+	res := &app.CompanyComanyid{CompanyID: &companyID}
+	return ctx.OKComanyid(res)
 }
 
 // UpdateCompany runs the UpdateCompany action.
 func (c *HyCompanyController) UpdateCompany(ctx *app.UpdateCompanyHyCompanyContext) error {
-	// HyCompanyController_UpdateCompany: start_implement
+	fmt.Println("[hy_user][UpdateCompany]")
 
-	// Put your logic here
+	svc := &m.Company{Db: c.ctx.Db}
+	err := svc.UpdateCompany(ctx.CompanyID, ctx.Payload)
+	if err != nil {
+		return err
+	}
 
-	// HyCompanyController_UpdateCompany: end_implement
-	res := &app.Company{}
-	return ctx.OK(res)
+	res := &app.CompanyComanyid{CompanyID: &ctx.CompanyID}
+	return ctx.OKComanyid(res)
+}
+
+// DeleteCompany runs the DeleteCompany action.
+func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyContext) error {
+	fmt.Println("[hy_user][DeleteCompany]")
+
+	svc := &m.Company{Db: c.ctx.Db}
+	err := svc.DeleteCompany(ctx.CompanyID)
+	if err != nil {
+		return err
+	}
+
+	res := &app.CompanyComanyid{CompanyID: &ctx.CompanyID}
+	return ctx.OKComanyid(res)
 }

@@ -16,6 +16,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/hiromaily/go-goa/goa/client"
 	lg "github.com/hiromaily/golibs/log"
 	r "github.com/hiromaily/golibs/runtimes"
 )
@@ -28,16 +29,6 @@ type loginAuthPayload struct {
 	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
 	// Password
 	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
-}
-
-//TODO:change
-type createUserHyUserPayload struct {
-	// E-mail of user
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
-	// Password
-	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
-	// First name
-	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 var (
@@ -134,6 +125,15 @@ var companyAPITests = []CompanyAPITest{
 	{TableTest{"/api/company/1?hq_flg=0", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
 	{TableTest{"/api/company/1?hq_flg=1", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
 	{TableTest{"/api/company/1?hq_flg=2", http.StatusBadRequest, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
+	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, 0, "", "1", 111, "idontknow"},
+	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, 0, "newCompany01", "", 111, "idontknow"},
+	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, 0, "newCompany01", "1", 0, "idontknow"},
+	{TableTest{"/api/company", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, 0, "newCompany01", "1", 111, ""},
+	{TableTest{"/api/company", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil}, 0, "newCompany01", "1", 111, "idontknow"},
+	{TableTest{"/api/company/%d?hq_flg=1", http.StatusOK, "GET", jwtHeaders, "setID", nil}, 0, "", "", 0, ""},
+	{TableTest{"/api/company/%d", http.StatusOK, "PUT", jwtJsonHeaders, "setID", nil}, 0, "newCompany02", "1", 80, "idontknow2"},
+	{TableTest{"/api/company/%d", http.StatusOK, "DELETE", jwtHeaders, "setID", nil}, 0, "", "", 0, ""},
+	{TableTest{"/api/company/%d?hq_flg=1", http.StatusNoContent, "GET", jwtHeaders, "", nil}, 0, "", "", 0, ""},
 }
 
 //-----------------------------------------------------------------------------
@@ -264,17 +264,33 @@ func getJWT(body []byte) (string, error) {
 	return jwt.Token, nil
 }
 
-func getID(body []byte) (int, error) {
+func getID(body []byte, fieldName string) (int, error) {
+	var err error
 	type ResID struct {
 		ID int `json:"id"`
 	}
-	var resid ResID
+	type ResCompanyID struct {
+		ID int `json:"company_id"`
+	}
+	var resId ResID
+	var resComId ResCompanyID
 
-	err := json.Unmarshal(body, &resid)
+	if fieldName == "id" {
+		err = json.Unmarshal(body, &resId)
+	} else if fieldName == "company_id" {
+		err = json.Unmarshal(body, &resComId)
+	} else {
+		return 0, errors.New("fieldName is invalid.")
+	}
+
 	if err != nil {
 		return 0, err
 	}
-	return resid.ID, nil
+
+	if fieldName == "id" {
+		return resId.ID, nil
+	}
+	return resComId.ID, nil
 }
 
 func sendRequest(url, method string, bd io.Reader, headers []map[string]string) ([]byte, int, http.Header, error) {
@@ -391,11 +407,11 @@ func TestUserAPIOnTable(t *testing.T) {
 		ioReader = nil
 		if tt.method == "POST" || tt.method == "PUT" {
 			//json
-			userData := createUserHyUserPayload{}
-			userData.Email = &tt.email
-			userData.Password = &tt.password
-			userData.UserName = &tt.userName
-			jsonByte, err := convertJson(&userData)
+			data := client.CreateUserHyUserPayload{}
+			data.Email = tt.email
+			data.Password = tt.password
+			data.UserName = tt.userName
+			jsonByte, err := convertJson(&data)
 			if err != nil {
 				t.Fatalf("[%s] json data for request is invalid.", tt.url)
 			}
@@ -405,7 +421,7 @@ func TestUserAPIOnTable(t *testing.T) {
 		checkError(t, err, code, header, tt.TableTest, i+1)
 
 		if tt.nextPage == "saveID" {
-			saveID, err = getID(body)
+			saveID, err = getID(body, "id")
 			if err != nil {
 				t.Fatalf("[%s] ID could not be retrieved from body.", tt.url)
 				return
@@ -423,12 +439,55 @@ func TestCompanyAPIOnTable(t *testing.T) {
 
 	//companyAPITests
 	var ioReader io.Reader
+	var saveID int
+
+	type CreateCompanyHyCompanyPayload struct {
+		// Company Name
+		Name string `form:"name" json:"name" xml:"name"`
+		// Company ID
+		CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+		// Headquarters flg
+		HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+		// Country's ID
+		CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+		// Address of company
+		Address string `form:"address" json:"address" xml:"address"`
+	}
 
 	for i, tt := range companyAPITests {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
+		//send request
+		ioReader = nil
+		if tt.method == "POST" || tt.method == "PUT" {
+			//json
+			data := client.CreateCompanyHyCompanyPayload{}
+			data.Name = tt.name
+			if tt.companyID != 0 {
+				data.CompanyID = &tt.companyID
+			}
+			data.HqFlg = &tt.hqFlg
+			data.CountryID = tt.countryID
+			data.Address = tt.address
+			jsonByte, err := convertJson(&data)
+			if err != nil {
+				t.Fatalf("[%s] json data for request is invalid.", tt.url)
+			}
+			ioReader = bytes.NewReader(jsonByte)
+		}
 
 		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, ioReader, tt.headers)
 		checkError(t, err, code, header, tt.TableTest, i+1)
+
+		if tt.nextPage == "saveID" {
+			saveID, err = getID(body, "company_id")
+			if err != nil {
+				t.Fatalf("[%s] ID could not be retrieved from body.", tt.url)
+				return
+			}
+			companyAPITests[i+1].url = fmt.Sprintf(companyAPITests[i+1].url, saveID)
+		} else if tt.nextPage == "setID" {
+			companyAPITests[i+1].url = fmt.Sprintf(companyAPITests[i+1].url, saveID)
+		}
 
 		fmt.Println("[Debug] body:", string(body))
 	}

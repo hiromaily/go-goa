@@ -61,6 +61,7 @@ type (
 
 	// GetCompanyGroupHyCompanyCommand is the command line data structure for the GetCompanyGroup action of hy_company
 	GetCompanyGroupHyCompanyCommand struct {
+		// Company ID
 		CompanyID   int
 		HqFlg       string
 		PrettyPrint bool
@@ -70,6 +71,7 @@ type (
 	UpdateCompanyHyCompanyCommand struct {
 		Payload     string
 		ContentType string
+		// Company ID
 		CompanyID   int
 		PrettyPrint bool
 	}
@@ -148,7 +150,7 @@ Payload example:
 {
    "address": "Shinagawa Tokyo",
    "company_id": 10,
-   "country_id": "Japan",
+   "country_id": 110,
    "hq_flg": "1",
    "name": "Company"
 }`,
@@ -288,7 +290,7 @@ Payload example:
 {
    "address": "Shinagawa Tokyo",
    "company_id": 10,
-   "country_id": "Japan",
+   "country_id": 110,
    "hq_flg": "1",
    "name": "Company"
 }`,
@@ -719,7 +721,7 @@ func (cmd *GetCompanyGroupHyCompanyCommand) Run(c *client.Client, args []string)
 // RegisterFlags registers the command flags with the command line.
 func (cmd *GetCompanyGroupHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var companyID int
-	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, ``)
+	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, `Company ID`)
 	var hqFlg string
 	cc.Flags().StringVar(&cmd.HqFlg, "hq_flg", hqFlg, ``)
 }
@@ -756,7 +758,7 @@ func (cmd *UpdateCompanyHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *cl
 	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
 	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 	var companyID int
-	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, ``)
+	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, `Company ID`)
 }
 
 // Run makes the HTTP request corresponding to the CreateUserHyUserCommand command.

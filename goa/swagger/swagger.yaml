@@ -48,7 +48,6 @@ definitions:
         example: Sunt cum aut blanditiis accusantium.
         type: string
     required:
-    - company_id
     - name
     title: 'Mediatype identifier: application/vnd.company+json; view=default'
     type: object
@@ -82,7 +81,7 @@ definitions:
     example:
       address: Shinagawa Tokyo
       company_id: 10
-      country_id: Japan
+      country_id: 110
       hq_flg: "1"
       name: Company
     properties:
@@ -100,10 +99,10 @@ definitions:
         type: integer
       country_id:
         description: Country's ID
-        example: Japan
-        maxLength: 60
-        minLength: 2
-        type: string
+        example: 110
+        maximum: 999
+        minimum: 1
+        type: integer
       hq_flg:
         description: Headquarters flg
         example: "1"
@@ -176,7 +175,7 @@ definitions:
     example:
       address: Shinagawa Tokyo
       company_id: 10
-      country_id: Japan
+      country_id: 110
       hq_flg: "1"
       name: Company
     properties:
@@ -194,10 +193,10 @@ definitions:
         type: integer
       country_id:
         description: Country's ID
-        example: Japan
-        maxLength: 60
-        minLength: 2
-        type: string
+        example: 110
+        maximum: 999
+        minimum: 1
+        type: integer
       hq_flg:
         description: Headquarters flg
         example: "1"
@@ -478,9 +477,12 @@ paths:
         type: integer
       produces:
       - application/vnd.goa.error
+      - application/vnd.company+json
       responses:
-        "204":
-          description: No Content
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
         "400":
           description: Bad Request
           schema:
@@ -503,7 +505,8 @@ paths:
           * `api:access`
       operationId: hy_company#GetCompanyGroup
       parameters:
-      - in: path
+      - description: Company ID
+        in: path
         name: companyID
         required: true
         type: integer
@@ -544,7 +547,8 @@ paths:
           * `api:access`
       operationId: hy_company#UpdateCompany
       parameters:
-      - in: path
+      - description: Company ID
+        in: path
         name: companyID
         required: true
         type: integer

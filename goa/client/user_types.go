@@ -80,7 +80,7 @@ type companyPayload struct {
 	// Company ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Country's ID
-	CountryID *string `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
 	// Headquarters flg
 	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
 	// Company Name
@@ -110,13 +110,13 @@ func (ut *companyPayload) Validate() (err error) {
 		}
 	}
 	if ut.CountryID != nil {
-		if utf8.RuneCountInString(*ut.CountryID) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.country_id`, *ut.CountryID, utf8.RuneCountInString(*ut.CountryID), 2, true))
+		if *ut.CountryID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 1, true))
 		}
 	}
 	if ut.CountryID != nil {
-		if utf8.RuneCountInString(*ut.CountryID) > 60 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.country_id`, *ut.CountryID, utf8.RuneCountInString(*ut.CountryID), 60, false))
+		if *ut.CountryID > 999 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
 		}
 	}
 	if ut.HqFlg != nil {
@@ -170,7 +170,7 @@ type CompanyPayload struct {
 	// Company ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Country's ID
-	CountryID *string `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
 	// Headquarters flg
 	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
 	// Company Name
@@ -200,13 +200,13 @@ func (ut *CompanyPayload) Validate() (err error) {
 		}
 	}
 	if ut.CountryID != nil {
-		if utf8.RuneCountInString(*ut.CountryID) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.country_id`, *ut.CountryID, utf8.RuneCountInString(*ut.CountryID), 2, true))
+		if *ut.CountryID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 1, true))
 		}
 	}
 	if ut.CountryID != nil {
-		if utf8.RuneCountInString(*ut.CountryID) > 60 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.country_id`, *ut.CountryID, utf8.RuneCountInString(*ut.CountryID), 60, false))
+		if *ut.CountryID > 999 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
 		}
 	}
 	if ut.HqFlg != nil {

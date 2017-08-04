@@ -44,7 +44,8 @@ func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyConte
 	// Put your logic here
 
 	// HyCompanyController_DeleteCompany: end_implement
-	return nil
+	res := &app.Company{}
+	return ctx.OK(res)
 }
 
 // GetCompanyGroup runs the GetCompanyGroup action.

@@ -36,10 +36,10 @@ var CompanyPayload = Type("CompanyPayload", func() {
 		MaxLength(1)
 		Example("1")
 	})
-	Attribute("country_id", String, "Country's ID", func() {
-		MinLength(2)
-		MaxLength(60)
-		Example("Japan")
+	Attribute("country_id", Integer, "Country's ID", func() {
+		Minimum(1)
+		Maximum(999)
+		Example(110)
 	})
 	Attribute("address", String, "Address of company", func() {
 		MinLength(2)

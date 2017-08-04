@@ -36,7 +36,10 @@ func (c *HyUserController) UserList(ctx *app.UserListHyUserContext) error {
 	var users []*app.User
 
 	svc := &m.User{Db: c.ctx.Db}
-	svc.UserList(&users)
+	err := svc.UserList(&users)
+	if err != nil {
+		return err
+	}
 
 	if len(users) == 0 {
 		return ctx.NoContent()
@@ -54,7 +57,10 @@ func (c *HyUserController) GetUser(ctx *app.GetUserHyUserContext) error {
 	user := &app.User{}
 
 	svc := &m.User{Db: c.ctx.Db}
-	svc.GetUser(ctx.UserID, user)
+	err := svc.GetUser(ctx.UserID, user)
+	if err != nil {
+		return err
+	}
 
 	if user.ID == nil {
 		//404
@@ -67,7 +73,7 @@ func (c *HyUserController) GetUser(ctx *app.GetUserHyUserContext) error {
 
 // CreateUser runs the CreateUser action.
 func (c *HyUserController) CreateUser(ctx *app.CreateUserHyUserContext) error {
-	fmt.Println("[hy_user][GetUser]")
+	fmt.Println("[hy_user][CreateUser]")
 
 	svc := &m.User{Db: c.ctx.Db}
 	userID, err := svc.InsertUser(ctx.Payload) //*CreateUserHyUserPayload
