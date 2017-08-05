@@ -55,7 +55,8 @@ func (c *HyCompanyController) GetCompanyGroup(ctx *app.GetCompanyGroupHyCompanyC
 	}
 
 	if len(companies) == 0 {
-		return ctx.NoContent()
+		//return ctx.NoContent()
+		return ctx.NotFound()
 	}
 
 	res := app.CompanyCollection(companies)

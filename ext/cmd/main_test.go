@@ -120,7 +120,7 @@ type CompanyAPITest struct {
 
 var companyAPITests = []CompanyAPITest{
 	{TableTest{"/api/company", http.StatusOK, "GET", jwtHeaders, "", nil}, "", 0, ""},
-	{TableTest{"/api/company/999", http.StatusNoContent, "GET", jwtHeaders, "", nil}, "", 0, ""},
+	{TableTest{"/api/company/999", http.StatusNotFound, "GET", jwtHeaders, "", nil}, "", 0, ""},
 	{TableTest{"/api/company/1", http.StatusOK, "GET", jwtHeaders, "", nil}, "", 0, ""},
 	{TableTest{"/api/company/1?hq_flg=0", http.StatusOK, "GET", jwtHeaders, "", nil}, "", 0, ""},
 	{TableTest{"/api/company/1?hq_flg=1", http.StatusOK, "GET", jwtHeaders, "", nil}, "", 0, ""},
@@ -132,7 +132,7 @@ var companyAPITests = []CompanyAPITest{
 	{TableTest{"/api/company/%d?hq_flg=1", http.StatusOK, "GET", jwtHeaders, "setID", nil}, "", 0, ""},
 	{TableTest{"/api/company/%d", http.StatusOK, "PUT", jwtJsonHeaders, "setID", nil}, "newCompany02", 80, "idontknow2"},
 	{TableTest{"/api/company/%d", http.StatusOK, "DELETE", jwtHeaders, "setID", nil}, "", 0, ""},
-	{TableTest{"/api/company/%d?hq_flg=1", http.StatusNoContent, "GET", jwtHeaders, "", nil}, "", 0, ""},
+	{TableTest{"/api/company/%d?hq_flg=1", http.StatusNotFound, "GET", jwtHeaders, "", nil}, "", 0, ""},
 }
 
 type CompanyDetailAPITest struct {
@@ -142,9 +142,13 @@ type CompanyDetailAPITest struct {
 }
 
 var companyDetailAPITests = []CompanyDetailAPITest{
-	{TableTest{"/api/company/branch/1", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil}, 85, "branch address 99"},
-	{TableTest{"/api/company/branch/%d", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, ""},
 	{TableTest{"/api/company/branch/9999", http.StatusNotFound, "GET", jwtHeaders, "", nil}, 0, ""},
+	{TableTest{"/api/company/branch/1", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil}, 85, "branch address 99"},
+	{TableTest{"/api/company/branch/%d", http.StatusOK, "GET", jwtHeaders, "setID", nil}, 0, ""},
+	{TableTest{"/api/company/branch/%d", http.StatusOK, "PUT", jwtJsonHeaders, "setID", nil}, 77, "branch address 77"},
+	{TableTest{"/api/company/branch/%d", http.StatusOK, "GET", jwtHeaders, "setID", nil}, 0, ""},
+	{TableTest{"/api/company/branch/%d", http.StatusOK, "DELETE", jwtJsonHeaders, "setID", nil}, 77, "branch address 77"},
+	{TableTest{"/api/company/branch/%d", http.StatusNotFound, "GET", jwtHeaders, "", nil}, 0, ""},
 }
 
 //-----------------------------------------------------------------------------

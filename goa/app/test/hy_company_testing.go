@@ -1352,11 +1352,11 @@ func GetCompanyGroupHyCompanyBadRequest(t goatest.TInterface, ctx context.Contex
 	return rw, mt
 }
 
-// GetCompanyGroupHyCompanyNoContent runs the method GetCompanyGroup of the given controller with the given parameters.
+// GetCompanyGroupHyCompanyNotFound runs the method GetCompanyGroup of the given controller with the given parameters.
 // It returns the response writer so it's possible to inspect the response headers.
 // If ctx is nil then context.Background() is used.
 // If service is nil then a default service is created.
-func GetCompanyGroupHyCompanyNoContent(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, companyID int, hqFlg *string) http.ResponseWriter {
+func GetCompanyGroupHyCompanyNotFound(t goatest.TInterface, ctx context.Context, service *goa.Service, ctrl app.HyCompanyController, companyID int, hqFlg *string) http.ResponseWriter {
 	// Setup service
 	var (
 		logBuf bytes.Buffer
@@ -1411,8 +1411,8 @@ func GetCompanyGroupHyCompanyNoContent(t goatest.TInterface, ctx context.Context
 	if _err != nil {
 		t.Fatalf("controller returned %+v, logs:\n%s", _err, logBuf.String())
 	}
-	if rw.Code != 204 {
-		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
+	if rw.Code != 404 {
+		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
 	}
 
 	// Return results

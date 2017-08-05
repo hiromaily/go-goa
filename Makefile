@@ -190,6 +190,9 @@ gotest:
 	go test -v ext/cmd/*.go
 	#go test -v ext/cmd/*.go -f ${TOMLPATH}
 
+gotest1:
+	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestUserAPIOnTable"
+
 gotest2:
 	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestCompanyAPIOnTable"
 

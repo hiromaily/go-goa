@@ -180,7 +180,8 @@ var _ = Resource(resourcePrefix+"company", func() {
 			})
 		})
 		Response(OK, CollectionOf(Company))
-		Response(NoContent)
+		//Response(NoContent)
+		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
 

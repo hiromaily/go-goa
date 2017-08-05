@@ -542,12 +542,12 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/CompanyCollection'
-        "204":
-          description: No Content
         "400":
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
+        "404":
+          description: Not Found
       schemes:
       - http
       security:

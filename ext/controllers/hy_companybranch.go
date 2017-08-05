@@ -59,22 +59,28 @@ func (c *HyCompanybranchController) CreateCompanyBranch(ctx *app.CreateCompanyBr
 
 // UpdateCompanyBranch runs the UpdateCompanyBranch action.
 func (c *HyCompanybranchController) UpdateCompanyBranch(ctx *app.UpdateCompanyBranchHyCompanybranchContext) error {
-	// HyCompanybranchController_UpdateCompanyBranch: start_implement
+	fmt.Println("[hy_companybranch][UpdateCompanyBranch]")
 
-	// Put your logic here
+	svc := &m.Company{Db: c.ctx.Db}
+	err := svc.UpdateCompanyBranch(ctx.ID, ctx.Payload)
+	if err != nil {
+		return err
+	}
 
-	// HyCompanybranchController_UpdateCompanyBranch: end_implement
-	res := &app.Company{}
-	return ctx.OK(res)
+	res := &app.CompanyDetailid{ID: &ctx.ID}
+	return ctx.OKDetailid(res)
 }
 
 // DeleteCompanyBranch runs the DeleteCompanyBranch action.
 func (c *HyCompanybranchController) DeleteCompanyBranch(ctx *app.DeleteCompanyBranchHyCompanybranchContext) error {
-	// HyCompanybranchController_DeleteCompanyBranch: start_implement
+	fmt.Println("[hy_companybranch][DeleteCompanyBranch]")
 
-	// Put your logic here
+	svc := &m.Company{Db: c.ctx.Db}
+	err := svc.DeleteCompanyBranch(ctx.ID)
+	if err != nil {
+		return err
+	}
 
-	// HyCompanybranchController_DeleteCompanyBranch: end_implement
-	res := &app.Company{}
-	return ctx.OK(res)
+	res := &app.CompanyDetailid{ID: &ctx.ID}
+	return ctx.OKDetailid(res)
 }

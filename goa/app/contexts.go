@@ -524,16 +524,16 @@ func (ctx *GetCompanyGroupHyCompanyContext) OKIdname(r CompanyIdnameCollection) 
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
-// NoContent sends a HTTP response with status code 204.
-func (ctx *GetCompanyGroupHyCompanyContext) NoContent() error {
-	ctx.ResponseData.WriteHeader(204)
-	return nil
-}
-
 // BadRequest sends a HTTP response with status code 400.
 func (ctx *GetCompanyGroupHyCompanyContext) BadRequest(r error) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetCompanyGroupHyCompanyContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
 }
 
 // UpdateCompanyHyCompanyContext provides the hy_company UpdateCompany action context.

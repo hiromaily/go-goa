@@ -27,6 +27,12 @@ type ParamCompanyDetail struct {
 	Address   string `gorm:"column:address"`
 }
 
+type ParamCompanyDetailTiny struct {
+	ID        int    `gorm:"column:id"`
+	CountryID int    `gorm:"column:country_id"`
+	Address   string `gorm:"column:address"`
+}
+
 func (m *Company) CompanyList(companies *[]*app.CompanyIdname) error {
 	if err := m.Db.DB.Raw("SELECT id, name FROM t_companies WHERE delete_flg=?", "0").Scan(companies).Error; err != nil {
 		return err
@@ -163,26 +169,23 @@ func (m *Company) InsertCompanyBranch(companyID int, company *app.CreateCompanyB
 	return insCompany.ID, nil
 }
 
-//func (m *Company) UpdateCompanyBranch(companyID int, ID int, company *app.UpdateCompanyBranchHyCompanyPayload) error {
-//	tx := m.Db.DB.Begin()
-//
-//	updCompany := ParamCompanyDetail{CountryID: company.CountryID, Address: company.Address, HqFlg: "1", CompanyID: companyID}
-//	if err := tx.Table(TableCompanyDetail).Where("company_id = ? AND hq_flg = ?", companyID, "1").Update(&updCompany).Error; err != nil {
-//		tx.Rollback()
-//		return err
-//	}
-//
-//	tx.Commit()
-//	return nil
-//}
-
-func (m *Company) DeleteCompanyBranch(companyID, ID int) error {
+func (m *Company) UpdateCompanyBranch(ID int, company *app.UpdateCompanyBranchHyCompanybranchPayload) error {
 	tx := m.Db.DB.Begin()
-	if err := tx.Table(TableCompanyDetail).Where("company_id = ?", companyID).Delete(&ParamCompanyDetail{}).Error; err != nil {
+
+	updCompany := ParamCompanyDetailTiny{CountryID: company.CountryID, Address: company.Address}
+	fmt.Println("[updCompany]", updCompany)
+	if err := tx.Table(TableCompanyDetail).Where("id=? AND delete_flg=?", ID, "0").Update(&updCompany).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
-	if err := tx.Table(TableCompany).Where("id = ?", companyID).Delete(&ParamCompany{}).Error; err != nil {
+
+	tx.Commit()
+	return nil
+}
+
+func (m *Company) DeleteCompanyBranch(ID int) error {
+	tx := m.Db.DB.Begin()
+	if err := tx.Table(TableCompanyDetail).Where("id = ? AND hq_flg<>?", ID, "1").Delete(&ParamCompanyDetail{}).Error; err != nil {
 		tx.Rollback()
 		return err
 	}
