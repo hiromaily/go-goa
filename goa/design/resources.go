@@ -248,16 +248,30 @@ var _ = Resource(resourcePrefix+"company", func() {
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
+})
+
+var _ = Resource(resourcePrefix+"companybranch", func() {
+
+	DefaultMedia(Company)
+	BasePath("/company/branch")
+
+	Security(JWT, func() { // Use JWT to auth requests to this endpoint
+		Scope("api:access") // Enforce presence of "api" scope in JWT claims.
+	})
+
+	// Parent sets the resource parent
+	//Parent("user")  //TODO: how does it work??
 
 	//-----------------------------------------------------------------------------
 	// Company branch
 	//-----------------------------------------------------------------------------
 	Action("GetCompanyBranch", func() {
 		Routing(
-			GET("/:companyID/branch/:ID"),
+			GET("/:ID"),
 		)
 		Description("Retrieve company branch with given id")
 		Params(func() {
+			//Param("companyID", Integer, "Company ID")
 			Param("ID", Integer, "Company detail ID")
 		})
 		Response(OK)
@@ -266,13 +280,15 @@ var _ = Resource(resourcePrefix+"company", func() {
 	})
 
 	Action("CreateCompanyBranch", func() {
+		//TODO:somehow POST path should be unique
 		Routing(
-			//POST("/:companyID/"),
-			POST("/:companyID/branch/"),
+			//POST("/:companyID"),
+			POST("/:ID"),
 		)
 		Description("Create new company branch")
 		Params(func() {
-			Param("companyID", Integer, "Company ID")
+			//Param("companyID", Integer, "Company ID")
+			Param("ID", Integer, "Company ID") //TODO:Though this name is ID, but companyID is set.
 		})
 		Payload(CompanyTinyPayload, func() {
 			//TODO:required value in media_type is given priority over this part...
@@ -284,6 +300,41 @@ var _ = Resource(resourcePrefix+"company", func() {
 		//Response(Created, "^/user/[0-9]+/company/[0-9]+$")
 		Response(OK)
 		Response(Created)
+		Response(BadRequest, ErrorMedia)
+	})
+
+	Action("UpdateCompanyBranch", func() {
+		Routing(
+			PUT("/:ID"),
+		)
+		Description("Change company branch properties")
+
+		Params(func() {
+			//Param("companyID", Integer, "Company ID")
+			Param("ID", Integer, "Company detail ID")
+		})
+		Payload(CompanyTinyPayload, func() {
+			Required("country_id", "address")
+		})
+
+		Response(OK)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+	})
+
+	Action("DeleteCompanyBranch", func() {
+		Routing(
+			DELETE("/:ID"),
+		)
+		Description("Delete company branch")
+
+		Params(func() {
+			//Param("companyID", Integer, "Company ID")
+			Param("ID", Integer, "Company detail ID")
+		})
+
+		Response(OK)
+		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
 

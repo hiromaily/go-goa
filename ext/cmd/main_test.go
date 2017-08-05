@@ -142,8 +142,9 @@ type CompanyDetailAPITest struct {
 }
 
 var companyDetailAPITests = []CompanyDetailAPITest{
-	{TableTest{"/api/company/1/branch/", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil}, 85, "branch address 99"},
-	{TableTest{"/api/company/1/branch/%d", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, ""},
+	{TableTest{"/api/company/branch/1", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil}, 85, "branch address 99"},
+	{TableTest{"/api/company/branch/%d", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, ""},
+	{TableTest{"/api/company/branch/9999", http.StatusNotFound, "GET", jwtHeaders, "", nil}, 0, ""},
 }
 
 //-----------------------------------------------------------------------------
@@ -502,7 +503,7 @@ func TestCompanyBranchAPIOnTable(t *testing.T) {
 		ioReader = nil
 		if tt.method == "POST" || tt.method == "PUT" {
 			//json
-			data := client.CreateCompanyBranchHyCompanyPayload{}
+			data := client.CreateCompanyBranchHyCompanybranchPayload{}
 			data.CountryID = tt.countryID
 			data.Address = tt.address
 			jsonByte, err := convertJson(&data)

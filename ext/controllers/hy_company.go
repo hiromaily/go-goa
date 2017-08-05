@@ -103,38 +103,3 @@ func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyConte
 	res := &app.CompanyID{CompanyID: &ctx.CompanyID}
 	return ctx.OKId(res)
 }
-
-// GetCompanyBranch runs the GetCompanyBranch action.
-func (c *HyCompanyController) GetCompanyBranch(ctx *app.GetCompanyBranchHyCompanyContext) error {
-	fmt.Println("[hy_company][GetCompanyBranch]")
-
-	//var companies []*app.Company
-	company := &app.Company{}
-
-	svc := &m.Company{Db: c.ctx.Db}
-	err := svc.GetCompanyBranch(ctx.ID, company)
-	if err != nil {
-		return err
-	}
-
-	if company.ID == nil {
-		return ctx.NotFound()
-	}
-
-	//res := &app.Company{}
-	return ctx.OK(company)
-}
-
-// CreateCompanyBranch runs the CreateCompanyBranch action.
-func (c *HyCompanyController) CreateCompanyBranch(ctx *app.CreateCompanyBranchHyCompanyContext) error {
-	fmt.Println("[hy_company][CreateCompanyBranch]")
-
-	svc := &m.Company{Db: c.ctx.Db}
-	ID, err := svc.InsertCompanyBranch(ctx.CompanyID, ctx.Payload)
-	if err != nil {
-		return err
-	}
-
-	res := &app.CompanyDetailid{ID: &ID}
-	return ctx.OKDetailid(res)
-}

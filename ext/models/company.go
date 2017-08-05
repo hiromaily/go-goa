@@ -146,8 +146,7 @@ SELECT cd.id as id, cd.company_id as company_id, c.name as name, cd.hq_flg as hq
 	return nil
 }
 
-func (m *Company) InsertCompanyBranch(companyID int, company *app.CreateCompanyBranchHyCompanyPayload) (int, error) {
-	//TODO:transaction is required
+func (m *Company) InsertCompanyBranch(companyID int, company *app.CreateCompanyBranchHyCompanybranchPayload) (int, error) {
 	tx := m.Db.DB.Begin()
 
 	insCompany := ParamCompanyDetail{
@@ -162,4 +161,32 @@ func (m *Company) InsertCompanyBranch(companyID int, company *app.CreateCompanyB
 	}
 	tx.Commit()
 	return insCompany.ID, nil
+}
+
+//func (m *Company) UpdateCompanyBranch(companyID int, ID int, company *app.UpdateCompanyBranchHyCompanyPayload) error {
+//	tx := m.Db.DB.Begin()
+//
+//	updCompany := ParamCompanyDetail{CountryID: company.CountryID, Address: company.Address, HqFlg: "1", CompanyID: companyID}
+//	if err := tx.Table(TableCompanyDetail).Where("company_id = ? AND hq_flg = ?", companyID, "1").Update(&updCompany).Error; err != nil {
+//		tx.Rollback()
+//		return err
+//	}
+//
+//	tx.Commit()
+//	return nil
+//}
+
+func (m *Company) DeleteCompanyBranch(companyID, ID int) error {
+	tx := m.Db.DB.Begin()
+	if err := tx.Table(TableCompanyDetail).Where("company_id = ?", companyID).Delete(&ParamCompanyDetail{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	if err := tx.Table(TableCompany).Where("id = ?", companyID).Delete(&ParamCompany{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+	return nil
 }

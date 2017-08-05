@@ -116,5 +116,10 @@ func newAPI(ctx *c.Ctx) *goa.Service {
 	service.Context = context.WithValue(service.Context, "HyCompanyController", hyCompanyController)
 	app.MountHyCompanyController(service, hyCompanyController)
 
+	//HyCompanyBranch
+	hyCompanyBranchController := ctl.NewHyCompanybranchController(service, ctx)
+	service.Context = context.WithValue(service.Context, "HyCompanyBranchController", hyCompanyBranchController)
+	app.MountHyCompanybranchController(service, hyCompanyBranchController)
+
 	return service
 }

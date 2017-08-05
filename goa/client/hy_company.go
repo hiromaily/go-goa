@@ -107,61 +107,6 @@ func (c *Client) NewCreateCompanyHyCompanyRequest(ctx context.Context, path stri
 	return req, nil
 }
 
-// CreateCompanyBranchHyCompanyPayload is the hy_company CreateCompanyBranch action payload.
-type CreateCompanyBranchHyCompanyPayload struct {
-	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
-	// Country ID
-	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
-}
-
-// CreateCompanyBranchHyCompanyPath computes a request path to the CreateCompanyBranch action of hy_company.
-func CreateCompanyBranchHyCompanyPath(companyID int) string {
-	param0 := strconv.Itoa(companyID)
-
-	return fmt.Sprintf("/api/company/%s/branch/", param0)
-}
-
-// Create new company branch
-func (c *Client) CreateCompanyBranchHyCompany(ctx context.Context, path string, payload *CreateCompanyBranchHyCompanyPayload, contentType string) (*http.Response, error) {
-	req, err := c.NewCreateCompanyBranchHyCompanyRequest(ctx, path, payload, contentType)
-	if err != nil {
-		return nil, err
-	}
-	return c.Client.Do(ctx, req)
-}
-
-// NewCreateCompanyBranchHyCompanyRequest create the request corresponding to the CreateCompanyBranch action endpoint of the hy_company resource.
-func (c *Client) NewCreateCompanyBranchHyCompanyRequest(ctx context.Context, path string, payload *CreateCompanyBranchHyCompanyPayload, contentType string) (*http.Request, error) {
-	var body bytes.Buffer
-	if contentType == "" {
-		contentType = "*/*" // Use default encoder
-	}
-	err := c.Encoder.Encode(payload, &body, contentType)
-	if err != nil {
-		return nil, fmt.Errorf("failed to encode body: %s", err)
-	}
-	scheme := c.Scheme
-	if scheme == "" {
-		scheme = "http"
-	}
-	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	req, err := http.NewRequest("POST", u.String(), &body)
-	if err != nil {
-		return nil, err
-	}
-	header := req.Header
-	if contentType == "*/*" {
-		header.Set("Content-Type", "application/xml")
-	} else {
-		header.Set("Content-Type", contentType)
-	}
-	if c.JWTSigner != nil {
-		c.JWTSigner.Sign(req)
-	}
-	return req, nil
-}
-
 // DeleteCompanyHyCompanyPath computes a request path to the DeleteCompany action of hy_company.
 func DeleteCompanyHyCompanyPath(companyID int) string {
 	param0 := strconv.Itoa(companyID)
@@ -186,40 +131,6 @@ func (c *Client) NewDeleteCompanyHyCompanyRequest(ctx context.Context, path stri
 	}
 	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-	if c.JWTSigner != nil {
-		c.JWTSigner.Sign(req)
-	}
-	return req, nil
-}
-
-// GetCompanyBranchHyCompanyPath computes a request path to the GetCompanyBranch action of hy_company.
-func GetCompanyBranchHyCompanyPath(companyID string, id int) string {
-	param0 := companyID
-	param1 := strconv.Itoa(id)
-
-	return fmt.Sprintf("/api/company/%s/branch/%s", param0, param1)
-}
-
-// Retrieve company branch with given id
-func (c *Client) GetCompanyBranchHyCompany(ctx context.Context, path string) (*http.Response, error) {
-	req, err := c.NewGetCompanyBranchHyCompanyRequest(ctx, path)
-	if err != nil {
-		return nil, err
-	}
-	return c.Client.Do(ctx, req)
-}
-
-// NewGetCompanyBranchHyCompanyRequest create the request corresponding to the GetCompanyBranch action endpoint of the hy_company resource.
-func (c *Client) NewGetCompanyBranchHyCompanyRequest(ctx context.Context, path string) (*http.Request, error) {
-	scheme := c.Scheme
-	if scheme == "" {
-		scheme = "http"
-	}
-	u := url.URL{Host: c.Host, Scheme: scheme, Path: path}
-	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
 	}

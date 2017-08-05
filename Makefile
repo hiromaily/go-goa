@@ -121,6 +121,8 @@ aftergen:
 	mv -f ./resources/tmp/tmp.go ./goa/hy_user.go
 	sed -e "1s/main/goa/" ./goa/hy_company.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/hy_company.go
+	sed -e "1s/main/goa/" ./goa/hy_companybranch.go >> ./resources/tmp/tmp.go
+	mv -f ./resources/tmp/tmp.go ./goa/hy_companybranch.go
 
 genfull: gencln aftergen
 

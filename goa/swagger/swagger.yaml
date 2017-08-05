@@ -78,7 +78,7 @@ definitions:
       $ref: '#/definitions/Company'
     title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
     type: array
-  CreateCompanyBranchHyCompanyPayload:
+  CreateCompanyBranchHyCompanybranchPayload:
     example:
       address: Shinagawa Tokyo
       country_id: 110
@@ -98,7 +98,7 @@ definitions:
     required:
     - country_id
     - address
-    title: CreateCompanyBranchHyCompanyPayload
+    title: CreateCompanyBranchHyCompanybranchPayload
     type: object
   CreateCompanyHyCompanyPayload:
     example:
@@ -179,6 +179,28 @@ definitions:
     - email
     - password
     title: LoginAuthPayload
+    type: object
+  UpdateCompanyBranchHyCompanybranchPayload:
+    example:
+      address: Shinagawa Tokyo
+      country_id: 110
+    properties:
+      address:
+        description: Company Address
+        example: Shinagawa Tokyo
+        maxLength: 80
+        minLength: 2
+        type: string
+      country_id:
+        description: Country ID
+        example: 110
+        maximum: 999
+        minimum: 1
+        type: integer
+    required:
+    - country_id
+    - address
+    title: UpdateCompanyBranchHyCompanybranchPayload
     type: object
   UpdateCompanyHyCompanyPayload:
     example:
@@ -574,65 +596,20 @@ paths:
       summary: UpdateCompany hy_company
       tags:
       - hy_company
-  /api/company/{companyID}/branch/:
-    post:
+  /api/company/branch/{ID}:
+    delete:
       description: |-
-        Create new company branch
+        Delete company branch
 
         Required security scopes:
           * `api:access`
-      operationId: hy_company#CreateCompanyBranch
-      parameters:
-      - description: Company ID
-        in: path
-        name: companyID
-        required: true
-        type: integer
-      - in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/CreateCompanyBranchHyCompanyPayload'
-      produces:
-      - application/vnd.goa.error
-      - application/vnd.company+json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/Company'
-        "201":
-          description: Created
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/error'
-      schemes:
-      - http
-      security:
-      - jwt:
-        - api:access
-      summary: CreateCompanyBranch hy_company
-      tags:
-      - hy_company
-  /api/company/{companyID}/branch/{ID}:
-    get:
-      description: |-
-        Retrieve company branch with given id
-
-        Required security scopes:
-          * `api:access`
-      operationId: hy_company#GetCompanyBranch
+      operationId: hy_companybranch#DeleteCompanyBranch
       parameters:
       - description: Company detail ID
         in: path
         name: ID
         required: true
         type: integer
-      - in: path
-        name: companyID
-        required: true
-        type: string
       produces:
       - application/vnd.goa.error
       - application/vnd.company+json
@@ -652,9 +629,124 @@ paths:
       security:
       - jwt:
         - api:access
-      summary: GetCompanyBranch hy_company
+      summary: DeleteCompanyBranch hy_companybranch
       tags:
-      - hy_company
+      - hy_companybranch
+    get:
+      description: |-
+        Retrieve company branch with given id
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_companybranch#GetCompanyBranch
+      parameters:
+      - description: Company detail ID
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.company+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: GetCompanyBranch hy_companybranch
+      tags:
+      - hy_companybranch
+    post:
+      description: |-
+        Create new company branch
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_companybranch#CreateCompanyBranch
+      parameters:
+      - description: Company ID
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreateCompanyBranchHyCompanybranchPayload'
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.company+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: CreateCompanyBranch hy_companybranch
+      tags:
+      - hy_companybranch
+    put:
+      description: |-
+        Change company branch properties
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_companybranch#UpdateCompanyBranch
+      parameters:
+      - description: Company detail ID
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateCompanyBranchHyCompanybranchPayload'
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.company+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: UpdateCompanyBranch hy_companybranch
+      tags:
+      - hy_companybranch
   /api/user:
     get:
       description: |-

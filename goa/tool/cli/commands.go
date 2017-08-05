@@ -20,7 +20,6 @@ import (
 	"github.com/hiromaily/go-goa/goa/client"
 	"github.com/spf13/cobra"
 	"log"
-	"net/url"
 	"os"
 	"path"
 	"strconv"
@@ -53,27 +52,10 @@ type (
 		PrettyPrint bool
 	}
 
-	// CreateCompanyBranchHyCompanyCommand is the command line data structure for the CreateCompanyBranch action of hy_company
-	CreateCompanyBranchHyCompanyCommand struct {
-		Payload     string
-		ContentType string
-		// Company ID
-		CompanyID   int
-		PrettyPrint bool
-	}
-
 	// DeleteCompanyHyCompanyCommand is the command line data structure for the DeleteCompany action of hy_company
 	DeleteCompanyHyCompanyCommand struct {
 		// Company ID
 		CompanyID   int
-		PrettyPrint bool
-	}
-
-	// GetCompanyBranchHyCompanyCommand is the command line data structure for the GetCompanyBranch action of hy_company
-	GetCompanyBranchHyCompanyCommand struct {
-		// Company detail ID
-		ID          int
-		CompanyID   string
 		PrettyPrint bool
 	}
 
@@ -91,6 +73,38 @@ type (
 		ContentType string
 		// Company ID
 		CompanyID   int
+		PrettyPrint bool
+	}
+
+	// CreateCompanyBranchHyCompanybranchCommand is the command line data structure for the CreateCompanyBranch action of hy_companybranch
+	CreateCompanyBranchHyCompanybranchCommand struct {
+		Payload     string
+		ContentType string
+		// Company ID
+		ID          int
+		PrettyPrint bool
+	}
+
+	// DeleteCompanyBranchHyCompanybranchCommand is the command line data structure for the DeleteCompanyBranch action of hy_companybranch
+	DeleteCompanyBranchHyCompanybranchCommand struct {
+		// Company detail ID
+		ID          int
+		PrettyPrint bool
+	}
+
+	// GetCompanyBranchHyCompanybranchCommand is the command line data structure for the GetCompanyBranch action of hy_companybranch
+	GetCompanyBranchHyCompanybranchCommand struct {
+		// Company detail ID
+		ID          int
+		PrettyPrint bool
+	}
+
+	// UpdateCompanyBranchHyCompanybranchCommand is the command line data structure for the UpdateCompanyBranch action of hy_companybranch
+	UpdateCompanyBranchHyCompanybranchCommand struct {
+		Payload     string
+		ContentType string
+		// Company detail ID
+		ID          int
 		PrettyPrint bool
 	}
 
@@ -180,9 +194,9 @@ Payload example:
 		Use:   "create-company-branch",
 		Short: `Create new company branch`,
 	}
-	tmp3 := new(CreateCompanyBranchHyCompanyCommand)
+	tmp3 := new(CreateCompanyBranchHyCompanybranchCommand)
 	sub = &cobra.Command{
-		Use:   `hy-company ["/api/company/COMPANYID/branch/"]`,
+		Use:   `hy-companybranch ["/api/company/branch/ID"]`,
 		Short: ``,
 		Long: `
 
@@ -236,12 +250,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "delete-user",
-		Short: `Delete user `,
+		Use:   "delete-company-branch",
+		Short: `Delete company branch`,
 	}
-	tmp6 := new(DeleteUserHyUserCommand)
+	tmp6 := new(DeleteCompanyBranchHyCompanybranchCommand)
 	sub = &cobra.Command{
-		Use:   `hy-user ["/api/user/USERID"]`,
+		Use:   `hy-companybranch ["/api/company/branch/ID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp6.Run(c, args) },
 	}
@@ -250,12 +264,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "get-company-branch",
-		Short: `Retrieve company branch with given id`,
+		Use:   "delete-user",
+		Short: `Delete user `,
 	}
-	tmp7 := new(GetCompanyBranchHyCompanyCommand)
+	tmp7 := new(DeleteUserHyUserCommand)
 	sub = &cobra.Command{
-		Use:   `hy-company ["/api/company/COMPANYID/branch/ID"]`,
+		Use:   `hy-user ["/api/user/USERID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp7.Run(c, args) },
 	}
@@ -264,12 +278,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "get-company-group",
-		Short: `Retrieve company with given company_id`,
+		Use:   "get-company-branch",
+		Short: `Retrieve company branch with given id`,
 	}
-	tmp8 := new(GetCompanyGroupHyCompanyCommand)
+	tmp8 := new(GetCompanyBranchHyCompanybranchCommand)
 	sub = &cobra.Command{
-		Use:   `hy-company ["/api/company/COMPANYID"]`,
+		Use:   `hy-companybranch ["/api/company/branch/ID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp8.Run(c, args) },
 	}
@@ -278,12 +292,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "get-user",
-		Short: `Retrieve user with given id.`,
+		Use:   "get-company-group",
+		Short: `Retrieve company with given company_id`,
 	}
-	tmp9 := new(GetUserHyUserCommand)
+	tmp9 := new(GetCompanyGroupHyCompanyCommand)
 	sub = &cobra.Command{
-		Use:   `hy-user ["/api/user/USERID"]`,
+		Use:   `hy-company ["/api/company/COMPANYID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
 	}
@@ -292,12 +306,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "health",
-		Short: `Perform health check.`,
+		Use:   "get-user",
+		Short: `Retrieve user with given id.`,
 	}
-	tmp10 := new(HealthHealthCommand)
+	tmp10 := new(GetUserHyUserCommand)
 	sub = &cobra.Command{
-		Use:   `health ["/api/_ah/health"]`,
+		Use:   `hy-user ["/api/user/USERID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp10.Run(c, args) },
 	}
@@ -306,10 +320,24 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
+		Use:   "health",
+		Short: `Perform health check.`,
+	}
+	tmp11 := new(HealthHealthCommand)
+	sub = &cobra.Command{
+		Use:   `health ["/api/_ah/health"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },
+	}
+	tmp11.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp11.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
 		Use:   "login",
 		Short: `user login`,
 	}
-	tmp11 := new(LoginAuthCommand)
+	tmp12 := new(LoginAuthCommand)
 	sub = &cobra.Command{
 		Use:   `auth ["/api/auth/login"]`,
 		Short: `This resource uses JWT to secure its endpoints`,
@@ -321,17 +349,17 @@ Payload example:
    "email": "hy@gmail.com",
    "password": "xxxxxxxx"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp12.Run(c, args) },
 	}
-	tmp11.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp11.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp12.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp12.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-company",
 		Short: `Change company properties`,
 	}
-	tmp12 := new(UpdateCompanyHyCompanyCommand)
+	tmp13 := new(UpdateCompanyHyCompanyCommand)
 	sub = &cobra.Command{
 		Use:   `hy-company ["/api/company/COMPANYID"]`,
 		Short: ``,
@@ -344,17 +372,39 @@ Payload example:
    "country_id": 110,
    "name": "Company"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp12.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp13.Run(c, args) },
 	}
-	tmp12.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp12.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp13.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp13.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "update-company-branch",
+		Short: `Change company branch properties`,
+	}
+	tmp14 := new(UpdateCompanyBranchHyCompanybranchCommand)
+	sub = &cobra.Command{
+		Use:   `hy-companybranch ["/api/company/branch/ID"]`,
+		Short: ``,
+		Long: `
+
+Payload example:
+
+{
+   "address": "Shinagawa Tokyo",
+   "country_id": 110
+}`,
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp14.Run(c, args) },
+	}
+	tmp14.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp14.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-user",
 		Short: `Change user properties`,
 	}
-	tmp13 := new(UpdateUserHyUserCommand)
+	tmp15 := new(UpdateUserHyUserCommand)
 	sub = &cobra.Command{
 		Use:   `hy-user ["/api/user/USERID"]`,
 		Short: ``,
@@ -367,24 +417,24 @@ Payload example:
    "password": "xxxxxxxx",
    "user_name": "Hiroki"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp13.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp15.Run(c, args) },
 	}
-	tmp13.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp13.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp15.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp15.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "user-list",
 		Short: `Retrieve all users.`,
 	}
-	tmp14 := new(UserListHyUserCommand)
+	tmp16 := new(UserListHyUserCommand)
 	sub = &cobra.Command{
 		Use:   `hy-user ["/api/user"]`,
 		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp14.Run(c, args) },
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp16.Run(c, args) },
 	}
-	tmp14.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp14.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp16.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp16.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 
@@ -722,41 +772,6 @@ func (cmd *CreateCompanyHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *cl
 	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 }
 
-// Run makes the HTTP request corresponding to the CreateCompanyBranchHyCompanyCommand command.
-func (cmd *CreateCompanyBranchHyCompanyCommand) Run(c *client.Client, args []string) error {
-	var path string
-	if len(args) > 0 {
-		path = args[0]
-	} else {
-		path = fmt.Sprintf("/api/company/%v/branch/", cmd.CompanyID)
-	}
-	var payload client.CreateCompanyBranchHyCompanyPayload
-	if cmd.Payload != "" {
-		err := json.Unmarshal([]byte(cmd.Payload), &payload)
-		if err != nil {
-			return fmt.Errorf("failed to deserialize payload: %s", err)
-		}
-	}
-	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
-	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.CreateCompanyBranchHyCompany(ctx, path, &payload, cmd.ContentType)
-	if err != nil {
-		goa.LogError(ctx, "failed", "err", err)
-		return err
-	}
-
-	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
-	return nil
-}
-
-// RegisterFlags registers the command flags with the command line.
-func (cmd *CreateCompanyBranchHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
-	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
-	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
-	var companyID int
-	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, `Company ID`)
-}
-
 // Run makes the HTTP request corresponding to the DeleteCompanyHyCompanyCommand command.
 func (cmd *DeleteCompanyHyCompanyCommand) Run(c *client.Client, args []string) error {
 	var path string
@@ -781,34 +796,6 @@ func (cmd *DeleteCompanyHyCompanyCommand) Run(c *client.Client, args []string) e
 func (cmd *DeleteCompanyHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var companyID int
 	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, `Company ID`)
-}
-
-// Run makes the HTTP request corresponding to the GetCompanyBranchHyCompanyCommand command.
-func (cmd *GetCompanyBranchHyCompanyCommand) Run(c *client.Client, args []string) error {
-	var path string
-	if len(args) > 0 {
-		path = args[0]
-	} else {
-		path = fmt.Sprintf("/api/company/%v/branch/%v", url.QueryEscape(cmd.CompanyID), cmd.ID)
-	}
-	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
-	ctx := goa.WithLogger(context.Background(), logger)
-	resp, err := c.GetCompanyBranchHyCompany(ctx, path)
-	if err != nil {
-		goa.LogError(ctx, "failed", "err", err)
-		return err
-	}
-
-	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
-	return nil
-}
-
-// RegisterFlags registers the command flags with the command line.
-func (cmd *GetCompanyBranchHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
-	var id int
-	cc.Flags().IntVar(&cmd.ID, "ID", id, `Company detail ID`)
-	var companyID string
-	cc.Flags().StringVar(&cmd.CompanyID, "companyID", companyID, ``)
 }
 
 // Run makes the HTTP request corresponding to the GetCompanyGroupHyCompanyCommand command.
@@ -872,6 +859,128 @@ func (cmd *UpdateCompanyHyCompanyCommand) RegisterFlags(cc *cobra.Command, c *cl
 	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
 	var companyID int
 	cc.Flags().IntVar(&cmd.CompanyID, "companyID", companyID, `Company ID`)
+}
+
+// Run makes the HTTP request corresponding to the CreateCompanyBranchHyCompanybranchCommand command.
+func (cmd *CreateCompanyBranchHyCompanybranchCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/api/company/branch/%v", cmd.ID)
+	}
+	var payload client.CreateCompanyBranchHyCompanybranchPayload
+	if cmd.Payload != "" {
+		err := json.Unmarshal([]byte(cmd.Payload), &payload)
+		if err != nil {
+			return fmt.Errorf("failed to deserialize payload: %s", err)
+		}
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.CreateCompanyBranchHyCompanybranch(ctx, path, &payload, cmd.ContentType)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *CreateCompanyBranchHyCompanybranchCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
+	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
+	var id int
+	cc.Flags().IntVar(&cmd.ID, "ID", id, `Company ID`)
+}
+
+// Run makes the HTTP request corresponding to the DeleteCompanyBranchHyCompanybranchCommand command.
+func (cmd *DeleteCompanyBranchHyCompanybranchCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/api/company/branch/%v", cmd.ID)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.DeleteCompanyBranchHyCompanybranch(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *DeleteCompanyBranchHyCompanybranchCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var id int
+	cc.Flags().IntVar(&cmd.ID, "ID", id, `Company detail ID`)
+}
+
+// Run makes the HTTP request corresponding to the GetCompanyBranchHyCompanybranchCommand command.
+func (cmd *GetCompanyBranchHyCompanybranchCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/api/company/branch/%v", cmd.ID)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.GetCompanyBranchHyCompanybranch(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *GetCompanyBranchHyCompanybranchCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var id int
+	cc.Flags().IntVar(&cmd.ID, "ID", id, `Company detail ID`)
+}
+
+// Run makes the HTTP request corresponding to the UpdateCompanyBranchHyCompanybranchCommand command.
+func (cmd *UpdateCompanyBranchHyCompanybranchCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/api/company/branch/%v", cmd.ID)
+	}
+	var payload client.UpdateCompanyBranchHyCompanybranchPayload
+	if cmd.Payload != "" {
+		err := json.Unmarshal([]byte(cmd.Payload), &payload)
+		if err != nil {
+			return fmt.Errorf("failed to deserialize payload: %s", err)
+		}
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.UpdateCompanyBranchHyCompanybranch(ctx, path, &payload, cmd.ContentType)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *UpdateCompanyBranchHyCompanybranchCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request body encoded in JSON")
+	cc.Flags().StringVar(&cmd.ContentType, "content", "", "Request content type override, e.g. 'application/x-www-form-urlencoded'")
+	var id int
+	cc.Flags().IntVar(&cmd.ID, "ID", id, `Company detail ID`)
 }
 
 // Run makes the HTTP request corresponding to the CreateUserHyUserCommand command.
