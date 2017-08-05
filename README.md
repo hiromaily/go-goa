@@ -81,8 +81,13 @@ gotest:
 * ctrl=HyCompany action=CompanyList route=GET /api/company security=jwt
 * ctrl=HyCompany action=CreateCompany route=POST /api/company security=jwt
 * ctrl=HyCompany action=DeleteCompany route=DELETE /api/company/:companyID security=jwt
-* ctrl=HyCompany action=GetCompany route=GET /api/company/:companyID security=jwt
+* ctrl=HyCompany action=GetCompanyGroup route=GET /api/company/:companyID security=jwt
 * ctrl=HyCompany action=UpdateCompany route=PUT /api/company/:companyID security=jwt
+* ctrl=HyCompanybranch action=CreateCompanyBranch route=POST /api/company/branch/:ID security=jwt
+* ctrl=HyCompanybranch action=DeleteCompanyBranch route=DELETE /api/company/branch/:ID security=jwt
+* ctrl=HyCompanybranch action=GetCompanyBranch route=GET /api/company/branch/:ID security=jwt
+* ctrl=HyCompanybranch action=UpdateCompanyBranch route=PUT /api/company/branch/:ID security=jwt
+
 
 
 ## Performance
