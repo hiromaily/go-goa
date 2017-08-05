@@ -55,6 +55,10 @@ gotest:
 
 ```
 
+## How to return dynamic html??
+I guess, goa framework can't treat `text/html` Content-type.
+So, dynamic data can be fetched by Ajax from front side as JSON.
+
 
 ## dependency management tool
 [dep](https://github.com/golang/dep)
