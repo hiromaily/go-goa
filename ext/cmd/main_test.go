@@ -112,8 +112,8 @@ var userAPITests = []UserAPITest{
 type CompanyAPITest struct {
 	TableTest
 	//companyID int
-	name string
 	//hqFlg     string
+	name      string
 	countryID int
 	address   string
 }
@@ -133,6 +133,17 @@ var companyAPITests = []CompanyAPITest{
 	{TableTest{"/api/company/%d", http.StatusOK, "PUT", jwtJsonHeaders, "setID", nil}, "newCompany02", 80, "idontknow2"},
 	{TableTest{"/api/company/%d", http.StatusOK, "DELETE", jwtHeaders, "setID", nil}, "", 0, ""},
 	{TableTest{"/api/company/%d?hq_flg=1", http.StatusNoContent, "GET", jwtHeaders, "", nil}, "", 0, ""},
+}
+
+type CompanyDetailAPITest struct {
+	TableTest
+	countryID int
+	address   string
+}
+
+var companyDetailAPITests = []CompanyDetailAPITest{
+	{TableTest{"/api/company/1/branch/", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil}, 85, "branch address 99"},
+	{TableTest{"/api/company/1/branch/%d", http.StatusOK, "GET", jwtHeaders, "", nil}, 0, ""},
 }
 
 //-----------------------------------------------------------------------------
@@ -440,19 +451,6 @@ func TestCompanyAPIOnTable(t *testing.T) {
 	var ioReader io.Reader
 	var saveID int
 
-	type CreateCompanyHyCompanyPayload struct {
-		// Company Name
-		Name string `form:"name" json:"name" xml:"name"`
-		// Company ID
-		CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-		// Headquarters flg
-		HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
-		// Country's ID
-		CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
-		// Address of company
-		Address string `form:"address" json:"address" xml:"address"`
-	}
-
 	for i, tt := range companyAPITests {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
 		//send request
@@ -490,6 +488,47 @@ func TestCompanyAPIOnTable(t *testing.T) {
 
 		fmt.Println("[Debug] body:", string(body))
 	}
+}
+
+func TestCompanyBranchAPIOnTable(t *testing.T) {
+
+	//companyAPITests
+	var ioReader io.Reader
+	var saveID int
+
+	for i, tt := range companyDetailAPITests {
+		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
+		//send request
+		ioReader = nil
+		if tt.method == "POST" || tt.method == "PUT" {
+			//json
+			data := client.CreateCompanyBranchHyCompanyPayload{}
+			data.CountryID = tt.countryID
+			data.Address = tt.address
+			jsonByte, err := convertJson(&data)
+			if err != nil {
+				t.Fatalf("[%s] json data for request is invalid.", tt.url)
+			}
+			ioReader = bytes.NewReader(jsonByte)
+		}
+
+		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, ioReader, tt.headers)
+		checkError(t, err, code, header, tt.TableTest, i+1)
+
+		if tt.nextPage == "saveID" {
+			saveID, err = getID(body, "id")
+			if err != nil {
+				t.Fatalf("[%s] ID could not be retrieved from body.", tt.url)
+				return
+			}
+			companyDetailAPITests[i+1].url = fmt.Sprintf(companyDetailAPITests[i+1].url, saveID)
+		} else if tt.nextPage == "setID" {
+			companyDetailAPITests[i+1].url = fmt.Sprintf(companyDetailAPITests[i+1].url, saveID)
+		}
+
+		fmt.Println("[Debug] body:", string(body))
+	}
+
 }
 
 //-----------------------------------------------------------------------------

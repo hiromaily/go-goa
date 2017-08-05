@@ -179,6 +179,15 @@ func (ctx *CompanyListHyCompanyContext) OK(r CompanyCollection) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
+// OKDetailid sends a HTTP response with status code 200.
+func (ctx *CompanyListHyCompanyContext) OKDetailid(r CompanyDetailidCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
+	if r == nil {
+		r = CompanyDetailidCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
 // OKId sends a HTTP response with status code 200.
 func (ctx *CompanyListHyCompanyContext) OKId(r CompanyIDCollection) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
@@ -344,6 +353,12 @@ func (ctx *CreateCompanyHyCompanyContext) OK(r *Company) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
+// OKDetailid sends a HTTP response with status code 200.
+func (ctx *CreateCompanyHyCompanyContext) OKDetailid(r *CompanyDetailid) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
 // OKId sends a HTTP response with status code 200.
 func (ctx *CreateCompanyHyCompanyContext) OKId(r *CompanyID) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
@@ -364,6 +379,152 @@ func (ctx *CreateCompanyHyCompanyContext) Created() error {
 
 // BadRequest sends a HTTP response with status code 400.
 func (ctx *CreateCompanyHyCompanyContext) BadRequest(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// CreateCompanyBranchHyCompanyContext provides the hy_company CreateCompanyBranch action context.
+type CreateCompanyBranchHyCompanyContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	CompanyID int
+	Payload   *CreateCompanyBranchHyCompanyPayload
+}
+
+// NewCreateCompanyBranchHyCompanyContext parses the incoming request URL and body, performs validations and creates the
+// context used by the hy_company controller CreateCompanyBranch action.
+func NewCreateCompanyBranchHyCompanyContext(ctx context.Context, r *http.Request, service *goa.Service) (*CreateCompanyBranchHyCompanyContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := CreateCompanyBranchHyCompanyContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramCompanyID := req.Params["companyID"]
+	if len(paramCompanyID) > 0 {
+		rawCompanyID := paramCompanyID[0]
+		if companyID, err2 := strconv.Atoi(rawCompanyID); err2 == nil {
+			rctx.CompanyID = companyID
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("companyID", rawCompanyID, "integer"))
+		}
+	}
+	return &rctx, err
+}
+
+// createCompanyBranchHyCompanyPayload is the hy_company CreateCompanyBranch action payload.
+type createCompanyBranchHyCompanyPayload struct {
+	// Company Address
+	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	// Country ID
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *createCompanyBranchHyCompanyPayload) Validate() (err error) {
+	if payload.CountryID == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "country_id"))
+	}
+	if payload.Address == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "address"))
+	}
+	if payload.Address != nil {
+		if utf8.RuneCountInString(*payload.Address) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, *payload.Address, utf8.RuneCountInString(*payload.Address), 2, true))
+		}
+	}
+	if payload.Address != nil {
+		if utf8.RuneCountInString(*payload.Address) > 80 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, *payload.Address, utf8.RuneCountInString(*payload.Address), 80, false))
+		}
+	}
+	if payload.CountryID != nil {
+		if *payload.CountryID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, *payload.CountryID, 1, true))
+		}
+	}
+	if payload.CountryID != nil {
+		if *payload.CountryID > 999 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, *payload.CountryID, 999, false))
+		}
+	}
+	return
+}
+
+// Publicize creates CreateCompanyBranchHyCompanyPayload from createCompanyBranchHyCompanyPayload
+func (payload *createCompanyBranchHyCompanyPayload) Publicize() *CreateCompanyBranchHyCompanyPayload {
+	var pub CreateCompanyBranchHyCompanyPayload
+	if payload.Address != nil {
+		pub.Address = *payload.Address
+	}
+	if payload.CountryID != nil {
+		pub.CountryID = *payload.CountryID
+	}
+	return &pub
+}
+
+// CreateCompanyBranchHyCompanyPayload is the hy_company CreateCompanyBranch action payload.
+type CreateCompanyBranchHyCompanyPayload struct {
+	// Company Address
+	Address string `form:"address" json:"address" xml:"address"`
+	// Country ID
+	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *CreateCompanyBranchHyCompanyPayload) Validate() (err error) {
+
+	if payload.Address == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "address"))
+	}
+	if utf8.RuneCountInString(payload.Address) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, payload.Address, utf8.RuneCountInString(payload.Address), 2, true))
+	}
+	if utf8.RuneCountInString(payload.Address) > 80 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`raw.address`, payload.Address, utf8.RuneCountInString(payload.Address), 80, false))
+	}
+	if payload.CountryID < 1 {
+		err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, payload.CountryID, 1, true))
+	}
+	if payload.CountryID > 999 {
+		err = goa.MergeErrors(err, goa.InvalidRangeError(`raw.country_id`, payload.CountryID, 999, false))
+	}
+	return
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *CreateCompanyBranchHyCompanyContext) OK(r *Company) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKDetailid sends a HTTP response with status code 200.
+func (ctx *CreateCompanyBranchHyCompanyContext) OKDetailid(r *CompanyDetailid) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKId sends a HTTP response with status code 200.
+func (ctx *CreateCompanyBranchHyCompanyContext) OKId(r *CompanyID) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKIdname sends a HTTP response with status code 200.
+func (ctx *CreateCompanyBranchHyCompanyContext) OKIdname(r *CompanyIdname) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// Created sends a HTTP response with status code 201.
+func (ctx *CreateCompanyBranchHyCompanyContext) Created() error {
+	ctx.ResponseData.WriteHeader(201)
+	return nil
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *CreateCompanyBranchHyCompanyContext) BadRequest(r error) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
 }
@@ -403,6 +564,12 @@ func (ctx *DeleteCompanyHyCompanyContext) OK(r *Company) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
+// OKDetailid sends a HTTP response with status code 200.
+func (ctx *DeleteCompanyHyCompanyContext) OKDetailid(r *CompanyDetailid) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
 // OKId sends a HTTP response with status code 200.
 func (ctx *DeleteCompanyHyCompanyContext) OKId(r *CompanyID) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
@@ -423,6 +590,77 @@ func (ctx *DeleteCompanyHyCompanyContext) BadRequest(r error) error {
 
 // NotFound sends a HTTP response with status code 404.
 func (ctx *DeleteCompanyHyCompanyContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// GetCompanyBranchHyCompanyContext provides the hy_company GetCompanyBranch action context.
+type GetCompanyBranchHyCompanyContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	ID        int
+	CompanyID string
+}
+
+// NewGetCompanyBranchHyCompanyContext parses the incoming request URL and body, performs validations and creates the
+// context used by the hy_company controller GetCompanyBranch action.
+func NewGetCompanyBranchHyCompanyContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetCompanyBranchHyCompanyContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetCompanyBranchHyCompanyContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramID := req.Params["ID"]
+	if len(paramID) > 0 {
+		rawID := paramID[0]
+		if id, err2 := strconv.Atoi(rawID); err2 == nil {
+			rctx.ID = id
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("ID", rawID, "integer"))
+		}
+	}
+	paramCompanyID := req.Params["companyID"]
+	if len(paramCompanyID) > 0 {
+		rawCompanyID := paramCompanyID[0]
+		rctx.CompanyID = rawCompanyID
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *GetCompanyBranchHyCompanyContext) OK(r *Company) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKDetailid sends a HTTP response with status code 200.
+func (ctx *GetCompanyBranchHyCompanyContext) OKDetailid(r *CompanyDetailid) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKId sends a HTTP response with status code 200.
+func (ctx *GetCompanyBranchHyCompanyContext) OKId(r *CompanyID) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKIdname sends a HTTP response with status code 200.
+func (ctx *GetCompanyBranchHyCompanyContext) OKIdname(r *CompanyIdname) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *GetCompanyBranchHyCompanyContext) BadRequest(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetCompanyBranchHyCompanyContext) NotFound() error {
 	ctx.ResponseData.WriteHeader(404)
 	return nil
 }
@@ -472,6 +710,15 @@ func (ctx *GetCompanyGroupHyCompanyContext) OK(r CompanyCollection) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
 	if r == nil {
 		r = CompanyCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKDetailid sends a HTTP response with status code 200.
+func (ctx *GetCompanyGroupHyCompanyContext) OKDetailid(r CompanyDetailidCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.company+json; type=collection")
+	if r == nil {
+		r = CompanyDetailidCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -647,6 +894,12 @@ func (payload *UpdateCompanyHyCompanyPayload) Validate() (err error) {
 
 // OK sends a HTTP response with status code 200.
 func (ctx *UpdateCompanyHyCompanyContext) OK(r *Company) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKDetailid sends a HTTP response with status code 200.
+func (ctx *UpdateCompanyHyCompanyContext) OKDetailid(r *CompanyDetailid) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }

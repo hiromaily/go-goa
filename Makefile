@@ -191,6 +191,9 @@ gotest:
 gotest2:
 	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestCompanyAPIOnTable"
 
+gotest3:
+	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestCompanyBranchAPIOnTable"
+
 ###############################################################################
 # httpie
 ###############################################################################

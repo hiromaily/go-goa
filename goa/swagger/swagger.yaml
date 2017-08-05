@@ -78,6 +78,28 @@ definitions:
       $ref: '#/definitions/Company'
     title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
     type: array
+  CreateCompanyBranchHyCompanyPayload:
+    example:
+      address: Shinagawa Tokyo
+      country_id: 110
+    properties:
+      address:
+        description: Company Address
+        example: Shinagawa Tokyo
+        maxLength: 80
+        minLength: 2
+        type: string
+      country_id:
+        description: Country ID
+        example: 110
+        maximum: 999
+        minimum: 1
+        type: integer
+    required:
+    - country_id
+    - address
+    title: CreateCompanyBranchHyCompanyPayload
+    type: object
   CreateCompanyHyCompanyPayload:
     example:
       address: Shinagawa Tokyo
@@ -550,6 +572,87 @@ paths:
       - jwt:
         - api:access
       summary: UpdateCompany hy_company
+      tags:
+      - hy_company
+  /api/company/{companyID}/branch/:
+    post:
+      description: |-
+        Create new company branch
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_company#CreateCompanyBranch
+      parameters:
+      - description: Company ID
+        in: path
+        name: companyID
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreateCompanyBranchHyCompanyPayload'
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.company+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: CreateCompanyBranch hy_company
+      tags:
+      - hy_company
+  /api/company/{companyID}/branch/{ID}:
+    get:
+      description: |-
+        Retrieve company branch with given id
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_company#GetCompanyBranch
+      parameters:
+      - description: Company detail ID
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - in: path
+        name: companyID
+        required: true
+        type: string
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.company+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Company'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: GetCompanyBranch hy_company
       tags:
       - hy_company
   /api/user:

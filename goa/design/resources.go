@@ -249,28 +249,43 @@ var _ = Resource(resourcePrefix+"company", func() {
 		Response(BadRequest, ErrorMedia)
 	})
 
-	//
-	//
-	//Action("CreateCompanyBranch", func() {
-	//	Routing(
-	//		POST("/:companyID/"),
-	//	)
-	//	Description("Create new company branch")
-	//	Params(func() {
-	//		Param("companyID", Integer, "Company ID")
-	//	})
-	//	Payload(CompanyTinyPayload, func() {
-	//		//TODO:required value in media_type is given priority over this part...
-	//		Required("country_id", "address")
-	//	})
-	//
-	//	//no response template named "Created" in resource "hy_company" action "CreateCompany"
-	//	//=>it should be defined in api_definition.go
-	//	//Response(Created, "^/user/[0-9]+/company/[0-9]+$")
-	//	Response(OK)
-	//	Response(Created)
-	//	Response(BadRequest, ErrorMedia)
-	//})
+	//-----------------------------------------------------------------------------
+	// Company branch
+	//-----------------------------------------------------------------------------
+	Action("GetCompanyBranch", func() {
+		Routing(
+			GET("/:companyID/branch/:ID"),
+		)
+		Description("Retrieve company branch with given id")
+		Params(func() {
+			Param("ID", Integer, "Company detail ID")
+		})
+		Response(OK)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+	})
+
+	Action("CreateCompanyBranch", func() {
+		Routing(
+			//POST("/:companyID/"),
+			POST("/:companyID/branch/"),
+		)
+		Description("Create new company branch")
+		Params(func() {
+			Param("companyID", Integer, "Company ID")
+		})
+		Payload(CompanyTinyPayload, func() {
+			//TODO:required value in media_type is given priority over this part...
+			Required("country_id", "address")
+		})
+
+		//no response template named "Created" in resource "hy_company" action "CreateCompany"
+		//=>it should be defined in api_definition.go
+		//Response(Created, "^/user/[0-9]+/company/[0-9]+$")
+		Response(OK)
+		Response(Created)
+		Response(BadRequest, ErrorMedia)
+	})
 
 })
 

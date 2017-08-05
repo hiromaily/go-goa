@@ -120,3 +120,46 @@ func (m *Company) DeleteCompany(companyID int) error {
 	tx.Commit()
 	return nil
 }
+
+func (m *Company) GetCompanyBranch(branchID int, company *app.Company) error {
+	companies := []*app.Company{}
+	sql := `
+SELECT cd.id as id, cd.company_id as company_id, c.name as name, cd.hq_flg as hq_flg,
+  country.name as country_name, cd.address as address
+ FROM t_company_detail AS cd
+ LEFT JOIN t_companies AS c ON c.id = cd.company_id
+ LEFT JOIN m_countries AS country ON cd.country_id = country.id
+ WHERE c.delete_flg=?
+ AND cd.delete_flg=?
+ AND country.delete_flg=?
+ AND cd.id=?
+`
+
+	if err := m.Db.DB.Raw(sql, "0", "0", "0", branchID).Scan(&companies).Error; err != nil {
+		return err
+	}
+
+	if len(companies) == 1 {
+		*company = *companies[0]
+	}
+
+	return nil
+}
+
+func (m *Company) InsertCompanyBranch(companyID int, company *app.CreateCompanyBranchHyCompanyPayload) (int, error) {
+	//TODO:transaction is required
+	tx := m.Db.DB.Begin()
+
+	insCompany := ParamCompanyDetail{
+		HqFlg:     "0",
+		CompanyID: companyID,
+		CountryID: company.CountryID,
+		Address:   company.Address,
+	}
+	if err := tx.Table(TableCompanyDetail).Save(&insCompany).Error; err != nil {
+		tx.Rollback()
+		return 0, err
+	}
+	tx.Commit()
+	return insCompany.ID, nil
+}

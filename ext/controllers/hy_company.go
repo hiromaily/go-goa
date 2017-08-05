@@ -64,10 +64,10 @@ func (c *HyCompanyController) GetCompanyGroup(ctx *app.GetCompanyGroupHyCompanyC
 
 // CreateCompany runs the CreateCompany action.
 func (c *HyCompanyController) CreateCompany(ctx *app.CreateCompanyHyCompanyContext) error {
-	fmt.Println("[hy_user][CreateCompany]")
+	fmt.Println("[hy_company][CreateCompany]")
 
 	svc := &m.Company{Db: c.ctx.Db}
-	companyID, err := svc.InsertCompany(ctx.Payload) //*CreateCompanyHyCompanyPayload
+	companyID, err := svc.InsertCompany(ctx.Payload)
 	if err != nil {
 		return err
 	}
@@ -78,7 +78,7 @@ func (c *HyCompanyController) CreateCompany(ctx *app.CreateCompanyHyCompanyConte
 
 // UpdateCompany runs the UpdateCompany action.
 func (c *HyCompanyController) UpdateCompany(ctx *app.UpdateCompanyHyCompanyContext) error {
-	fmt.Println("[hy_user][UpdateCompany]")
+	fmt.Println("[hy_company][UpdateCompany]")
 
 	svc := &m.Company{Db: c.ctx.Db}
 	err := svc.UpdateCompany(ctx.CompanyID, ctx.Payload)
@@ -92,7 +92,7 @@ func (c *HyCompanyController) UpdateCompany(ctx *app.UpdateCompanyHyCompanyConte
 
 // DeleteCompany runs the DeleteCompany action.
 func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyContext) error {
-	fmt.Println("[hy_user][DeleteCompany]")
+	fmt.Println("[hy_company][DeleteCompany]")
 
 	svc := &m.Company{Db: c.ctx.Db}
 	err := svc.DeleteCompany(ctx.CompanyID)
@@ -102,4 +102,39 @@ func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyConte
 
 	res := &app.CompanyID{CompanyID: &ctx.CompanyID}
 	return ctx.OKId(res)
+}
+
+// GetCompanyBranch runs the GetCompanyBranch action.
+func (c *HyCompanyController) GetCompanyBranch(ctx *app.GetCompanyBranchHyCompanyContext) error {
+	fmt.Println("[hy_company][GetCompanyBranch]")
+
+	//var companies []*app.Company
+	company := &app.Company{}
+
+	svc := &m.Company{Db: c.ctx.Db}
+	err := svc.GetCompanyBranch(ctx.ID, company)
+	if err != nil {
+		return err
+	}
+
+	if company.ID == nil {
+		return ctx.NotFound()
+	}
+
+	//res := &app.Company{}
+	return ctx.OK(company)
+}
+
+// CreateCompanyBranch runs the CreateCompanyBranch action.
+func (c *HyCompanyController) CreateCompanyBranch(ctx *app.CreateCompanyBranchHyCompanyContext) error {
+	fmt.Println("[hy_company][CreateCompanyBranch]")
+
+	svc := &m.Company{Db: c.ctx.Db}
+	ID, err := svc.InsertCompanyBranch(ctx.CompanyID, ctx.Payload)
+	if err != nil {
+		return err
+	}
+
+	res := &app.CompanyDetailid{ID: &ID}
+	return ctx.OKDetailid(res)
 }

@@ -167,7 +167,9 @@ type HyCompanyController interface {
 	goa.Muxer
 	CompanyList(*CompanyListHyCompanyContext) error
 	CreateCompany(*CreateCompanyHyCompanyContext) error
+	CreateCompanyBranch(*CreateCompanyBranchHyCompanyContext) error
 	DeleteCompany(*DeleteCompanyHyCompanyContext) error
+	GetCompanyBranch(*GetCompanyBranchHyCompanyContext) error
 	GetCompanyGroup(*GetCompanyGroupHyCompanyContext) error
 	UpdateCompany(*UpdateCompanyHyCompanyContext) error
 }
@@ -177,7 +179,9 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 	initService(service)
 	var h goa.Handler
 	service.Mux.Handle("OPTIONS", "/api/company", ctrl.MuxHandler("preflight", handleHyCompanyOrigin(cors.HandlePreflight()), nil))
+	service.Mux.Handle("OPTIONS", "/api/company/:companyID/branch/", ctrl.MuxHandler("preflight", handleHyCompanyOrigin(cors.HandlePreflight()), nil))
 	service.Mux.Handle("OPTIONS", "/api/company/:companyID", ctrl.MuxHandler("preflight", handleHyCompanyOrigin(cors.HandlePreflight()), nil))
+	service.Mux.Handle("OPTIONS", "/api/company/:companyID/branch/:ID", ctrl.MuxHandler("preflight", handleHyCompanyOrigin(cors.HandlePreflight()), nil))
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -225,6 +229,29 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 			return err
 		}
 		// Build the context
+		rctx, err := NewCreateCompanyBranchHyCompanyContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		// Build the payload
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*CreateCompanyBranchHyCompanyPayload)
+		} else {
+			return goa.MissingPayloadError()
+		}
+		return ctrl.CreateCompanyBranch(rctx)
+	}
+	h = handleSecurity("jwt", h, "api:access")
+	h = handleHyCompanyOrigin(h)
+	service.Mux.Handle("POST", "/api/company/:companyID/branch/", ctrl.MuxHandler("CreateCompanyBranch", h, unmarshalCreateCompanyBranchHyCompanyPayload))
+	service.LogInfo("mount", "ctrl", "HyCompany", "action", "CreateCompanyBranch", "route", "POST /api/company/:companyID/branch/", "security", "jwt")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
 		rctx, err := NewDeleteCompanyHyCompanyContext(ctx, req, service)
 		if err != nil {
 			return err
@@ -235,6 +262,23 @@ func MountHyCompanyController(service *goa.Service, ctrl HyCompanyController) {
 	h = handleHyCompanyOrigin(h)
 	service.Mux.Handle("DELETE", "/api/company/:companyID", ctrl.MuxHandler("DeleteCompany", h, nil))
 	service.LogInfo("mount", "ctrl", "HyCompany", "action", "DeleteCompany", "route", "DELETE /api/company/:companyID", "security", "jwt")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetCompanyBranchHyCompanyContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.GetCompanyBranch(rctx)
+	}
+	h = handleSecurity("jwt", h, "api:access")
+	h = handleHyCompanyOrigin(h)
+	service.Mux.Handle("GET", "/api/company/:companyID/branch/:ID", ctrl.MuxHandler("GetCompanyBranch", h, nil))
+	service.LogInfo("mount", "ctrl", "HyCompany", "action", "GetCompanyBranch", "route", "GET /api/company/:companyID/branch/:ID", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		// Check if there was an error loading the request
@@ -306,6 +350,21 @@ func handleHyCompanyOrigin(h goa.Handler) goa.Handler {
 // unmarshalCreateCompanyHyCompanyPayload unmarshals the request body into the context request data Payload field.
 func unmarshalCreateCompanyHyCompanyPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
 	payload := &createCompanyHyCompanyPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	if err := payload.Validate(); err != nil {
+		// Initialize payload with private data structure so it can be logged
+		goa.ContextRequest(ctx).Payload = payload
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
+// unmarshalCreateCompanyBranchHyCompanyPayload unmarshals the request body into the context request data Payload field.
+func unmarshalCreateCompanyBranchHyCompanyPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &createCompanyBranchHyCompanyPayload{}
 	if err := service.DecodeRequest(req, payload); err != nil {
 		return err
 	}

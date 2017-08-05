@@ -73,6 +73,24 @@ func (mt *Company) Validate() (err error) {
 	return
 }
 
+// A company information (detailid view)
+//
+// Identifier: application/vnd.company+json; view=detailid
+type CompanyDetailid struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+}
+
+// Validate validates the CompanyDetailid media type instance.
+func (mt *CompanyDetailid) Validate() (err error) {
+	if mt.ID != nil {
+		if *mt.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, *mt.ID, 1, true))
+		}
+	}
+	return
+}
+
 // A company information (id view)
 //
 // Identifier: application/vnd.company+json; view=id
@@ -120,6 +138,13 @@ func (c *Client) DecodeCompany(resp *http.Response) (*Company, error) {
 	return &decoded, err
 }
 
+// DecodeCompanyDetailid decodes the CompanyDetailid instance encoded in resp body.
+func (c *Client) DecodeCompanyDetailid(resp *http.Response) (*CompanyDetailid, error) {
+	var decoded CompanyDetailid
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
 // DecodeCompanyID decodes the CompanyID instance encoded in resp body.
 func (c *Client) DecodeCompanyID(resp *http.Response) (*CompanyID, error) {
 	var decoded CompanyID
@@ -141,6 +166,23 @@ type CompanyCollection []*Company
 
 // Validate validates the CompanyCollection media type instance.
 func (mt CompanyCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
+// CompanyCollection is the media type for an array of Company (detailid view)
+//
+// Identifier: application/vnd.company+json; type=collection; view=detailid
+type CompanyDetailidCollection []*CompanyDetailid
+
+// Validate validates the CompanyDetailidCollection media type instance.
+func (mt CompanyDetailidCollection) Validate() (err error) {
 	for _, e := range mt {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {
@@ -188,6 +230,13 @@ func (mt CompanyIdnameCollection) Validate() (err error) {
 // DecodeCompanyCollection decodes the CompanyCollection instance encoded in resp body.
 func (c *Client) DecodeCompanyCollection(resp *http.Response) (CompanyCollection, error) {
 	var decoded CompanyCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
+}
+
+// DecodeCompanyDetailidCollection decodes the CompanyDetailidCollection instance encoded in resp body.
+func (c *Client) DecodeCompanyDetailidCollection(resp *http.Response) (CompanyDetailidCollection, error) {
+	var decoded CompanyDetailidCollection
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return decoded, err
 }

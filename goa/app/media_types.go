@@ -65,6 +65,24 @@ func (mt *Company) Validate() (err error) {
 	return
 }
 
+// A company information (detailid view)
+//
+// Identifier: application/vnd.company+json; view=detailid
+type CompanyDetailid struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+}
+
+// Validate validates the CompanyDetailid media type instance.
+func (mt *CompanyDetailid) Validate() (err error) {
+	if mt.ID != nil {
+		if *mt.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, *mt.ID, 1, true))
+		}
+	}
+	return
+}
+
 // A company information (id view)
 //
 // Identifier: application/vnd.company+json; view=id
@@ -112,6 +130,23 @@ type CompanyCollection []*Company
 
 // Validate validates the CompanyCollection media type instance.
 func (mt CompanyCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
+// CompanyCollection is the media type for an array of Company (detailid view)
+//
+// Identifier: application/vnd.company+json; type=collection; view=detailid
+type CompanyDetailidCollection []*CompanyDetailid
+
+// Validate validates the CompanyDetailidCollection media type instance.
+func (mt CompanyDetailidCollection) Validate() (err error) {
 	for _, e := range mt {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {

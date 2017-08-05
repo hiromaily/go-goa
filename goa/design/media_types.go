@@ -126,6 +126,10 @@ var Company = MediaType("application/vnd.company+json", func() {
 		//Attribute("created_at")
 		//Attribute("created_by")
 	})
+	View("detailid", func() {
+		Description("only company's detail id")
+		Attribute("id")
+	})
 
 	View("id", func() {
 		Description("only company's id")
