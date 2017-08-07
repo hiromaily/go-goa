@@ -42,6 +42,7 @@ WORKDIR /go/src/github.com/hiromaily/go-goa
 # Docker use Godeps because these are for TravisCI
 #RUN	rm -rf Godeps ./vendor
 #RUN go get -d -v -u ./ext/cmd/
+RUN	rm -rf frontend_workspace
 
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/go-goa ./ext/cmd/main.go

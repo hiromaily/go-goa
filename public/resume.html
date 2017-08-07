@@ -646,16 +646,37 @@
 </div>
 
 
+
+<like-tech></like-tech>
+<dislike-tech></dislike-tech>
+
 <script src="assets/library/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/riot@3.6/riot.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/riot/3.6.1/riot+compiler.min.js"></script>-->
+<script src="resume_components/like_tech.tag" type="riot/tag"></script>
+<script src="resume_components/dislike_tech.tag" type="riot/tag"></script>
+
 <script>
-    $(document)
-        .ready(function() {
-            $('.ui.selection.dropdown').dropdown();
-            $('.ui.menu .ui.dropdown').dropdown({
-                on: 'hover'
-            });
-        })
-    ;
+    //$(document).ready(function() {});
+    riot.mount('like-tech', {
+        items : [
+            { tech : 'Golang'},
+            { tech : 'Python'},
+            { tech : 'React'},
+            { tech : 'Microservice architecture'},
+            { tech : 'Docker'},
+            { tech : 'DevOps'}
+        ]
+    } );
+
+    riot.mount('dislike-tech', {
+        items : [
+            { tech : 'Microsoft .NET'},
+            { tech : 'Ruby'},
+            { tech : 'Java'}
+        ]
+    } );
+
 </script>
 <script src="js/semantic.js"></script>
 </body>

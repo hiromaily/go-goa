@@ -1,2 +1,3 @@
 Makefile linguist-language=golang
 public/* linguist-documentation
+frontend_workspace/* linguist-documentation

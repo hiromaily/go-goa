@@ -1,8 +1,10 @@
 .idea/*
+!.gitkeep
+node_modules
+docker/mysql/data/*
+docker/redis/data/*
+docker/golang/*
 resources/tmp/*
 #resources/swagger-ui/*
 #!resources/swagger-ui/dist/*
-docker/mysql/data/*
-docker/redis/data/*
-!.gitkeep
 public/swagger

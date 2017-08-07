@@ -1,0 +1,22 @@
+{
+  "items":
+  [
+    {
+      "title": "Full Stack Engineer",
+      "company": "2Gears",
+      "country": "nl",
+      "term": "Dec 2016 - Jul 2017",
+      "description": ["Developed fin-tech web application both front-end and back-end.", "Setting <a>Docker</a> configuration."],
+      "techs": ["Node.js", "ES6", "Ext JS", "Docker", "PostgreSQL", "JIRA"]
+    },
+    {
+      "title": "Full Stack Engineer",
+      "company": "2Gears",
+      "country": "nl",
+      "term": "Dec 2016 - Jul 2017",
+      "description": ["Developed fin-tech web application both front-end and back-end.", "Setting <a>Docker</a> configuration."],
+      "techs": ["Node.js", "ES6", "Ext JS", "Docker", "PostgreSQL", "JIRA"]
+    }
+  ]
+}
+
