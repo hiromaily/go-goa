@@ -72,6 +72,7 @@ var loginAPITests = []LoginAPITest{
 	{TableTest{"/api/auth/login", http.StatusNotFound, "GET", loginHeaders, "", nil}, "aaaa1@test.jp", "password"},
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", nil, "", nil}, "aaaa1@test.jp", "password"},
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginWrongHeaders, "", nil}, "aaaa1@test.jp", "password"},
+	{TableTest{"/api/auth/login", http.StatusUnauthorized, "POST", loginHeaders, "", nil}, "aaaa1@test.jp", "wrongpassword"},
 	{TableTest{"/api/auth/login", http.StatusOK, "POST", loginHeaders, "", nil}, "aaaa1@test.jp", "password"},
 }
 

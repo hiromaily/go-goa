@@ -20,8 +20,8 @@ type User struct {
 }
 
 type LoginUser struct {
-	id       int
-	userName string
+	ID       int
+	UserName string
 }
 
 type ParamUser struct {
@@ -43,15 +43,18 @@ func (m *User) Count() (cnt int) {
 // Login is for login
 func (m *User) Login(email, password string) (int, error) {
 	var users []LoginUser
-	m.Db.DB.Raw("SELECT id, user_name FROM t_users WHERE delete_flg=? AND email=? AND password=?", "0", email, hs.GetMD5Plus(password, "")).Scan(&users)
 
-	if len(users) == 0 {
+	if err := m.Db.DB.Raw("SELECT id, user_name FROM t_users WHERE delete_flg=? AND email=? AND password=?", "0", email, hs.GetMD5Plus(password, "")).Scan(&users).Error; err != nil {
+		return 0, err
+	}
+
+	if len(users) == 0 || users[0].ID == 0 {
 		return 0, errors.New("invalid input.")
 	} else if len(users) > 1 {
 		return 0, errors.New("data in database would be broken.")
 	}
 
-	return users[0].id, nil
+	return users[0].ID, nil
 }
 
 func (m *User) UserList(users *[]*app.User) error {
