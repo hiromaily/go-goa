@@ -14,6 +14,9 @@ before_install:
   #- go get github.com/mattn/goveralls
   #- go get golang.org/x/tools/cmd/cover
 
+before_script:
+  - sleep 10
+
 script:
   - docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
   #- go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml
