@@ -1,0 +1,11 @@
+{
+  "items":
+    [
+      { "tech" : "Golang"},
+      { "tech" : "Python"},
+      { "tech" : "React"},
+      { "tech" : "Microservice architecture"},
+      { "tech" : "Docker"},
+      { "tech" : "DevOps"}
+    ]
+}
