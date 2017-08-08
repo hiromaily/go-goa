@@ -9,7 +9,7 @@ import (
 )
 
 // GenerateToken is to generate token
-func GenerateToken(c *c.Ctx) (string, error) {
+func GenerateToken(c *c.Ctx, userID int) (string, error) {
 	token := jwtgo.New(jwtgo.SigningMethodHS512)
 	expires := time.Now().Add(time.Duration(60) * time.Minute).Unix()
 	token.Claims = jwtgo.MapClaims{
@@ -21,7 +21,7 @@ func GenerateToken(c *c.Ctx) (string, error) {
 		"nbf":    2,                     // time before which the token is not yet valid (2 minutes ago)
 		"sub":    "subject",             // the subject/principal is whom the token is about
 		"scopes": "api:access",          // token scope - not a standard claim
-		//"user":   user,
+		"user":   userID,                // userID
 	}
 	//TODO: key
 	signedToken, err := token.SignedString([]byte(c.Conf.Jwt.Key))

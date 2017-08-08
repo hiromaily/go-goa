@@ -41,17 +41,17 @@ func (m *User) Count() (cnt int) {
 }
 
 // Login is for login
-func (m *User) Login(email, password string) error {
+func (m *User) Login(email, password string) (int, error) {
 	var users []LoginUser
 	m.Db.DB.Raw("SELECT id, user_name FROM t_users WHERE delete_flg=? AND email=? AND password=?", "0", email, hs.GetMD5Plus(password, "")).Scan(&users)
 
 	if len(users) == 0 {
-		return errors.New("invalid input.")
+		return 0, errors.New("invalid input.")
 	} else if len(users) > 1 {
-		return errors.New("data in database would be broken.")
+		return 0, errors.New("data in database would be broken.")
 	}
 
-	return nil
+	return users[0].id, nil
 }
 
 func (m *User) UserList(users *[]*app.User) error {

@@ -30,13 +30,13 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 
 	// Login
 	svc := &m.User{Db: c.ctx.Db}
-	err := svc.Login(ctx.Payload.Email, ctx.Payload.Password)
+	id, err := svc.Login(ctx.Payload.Email, ctx.Payload.Password)
 	if err != nil {
 		return ctx.Unauthorized()
 	}
 
 	// Generate JWT
-	signedToken, err := jwt.GenerateToken(c.ctx)
+	signedToken, err := jwt.GenerateToken(c.ctx, id)
 	if err != nil {
 		return ctx.Unauthorized()
 	}
