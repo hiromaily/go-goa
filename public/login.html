@@ -26,10 +26,6 @@
   <link rel="stylesheet" type="text/css" href="css/components/message.css">
   <link rel="stylesheet" type="text/css" href="css/components/icon.css">
 
-  <script src="assets/library/jquery.min.js"></script>
-  <script src="js/components/form.js"></script>
-  <script src="js/components/transition.js"></script>
-
   <style type="text/css">
     body {
       background-color: #DADADA;
@@ -44,56 +40,18 @@
       max-width: 450px;
     }
   </style>
-  <script>
-  $(document)
-    .ready(function() {
-      $('.ui.form')
-        .form({
-          fields: {
-            email: {
-              identifier  : 'email',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter your e-mail'
-                },
-                {
-                  type   : 'email',
-                  prompt : 'Please enter a valid e-mail'
-                }
-              ]
-            },
-            password: {
-              identifier  : 'password',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'Please enter your password'
-                },
-                {
-                  type   : 'length[6]',
-                  prompt : 'Your password must be at least 6 characters'
-                }
-              ]
-            }
-          }
-        })
-      ;
-    })
-  ;
-  </script>
 </head>
 <body>
 
 <div class="ui middle aligned center aligned grid">
   <div class="column">
     <h2 class="ui teal image header">
-      <img src="assets/images/logo.png" class="image">
+      <img src="img/hy.png" class="image">
       <div class="content">
         Log-in to your account
       </div>
     </h2>
-    <form class="ui large form">
+    <form id="loginForm" class="ui large form">
       <div class="ui stacked segment">
         <div class="field">
           <div class="ui left icon input">
@@ -107,18 +65,120 @@
             <input type="password" name="password" placeholder="Password">
           </div>
         </div>
-        <div class="ui fluid large teal submit button">Login</div>
+        <div class="ui fluid large teal button">Login</div>
       </div>
 
       <div class="ui error message"></div>
 
     </form>
 
+    <!--
     <div class="ui message">
       New to us? <a href="#">Sign Up</a>
     </div>
+    -->
   </div>
 </div>
+<script src="assets/library/jquery.min.js"></script>
+<script src="js/components/form.js"></script>
+<script src="js/components/transition.js"></script>
+<script>
+$(document)
+    .ready(function() {
+        $('.ui.form')
+            .form({
+                fields: {
+                    email: {
+                        identifier  : 'email',
+                        rules: [
+                            {
+                                type   : 'empty',
+                                prompt : 'Please enter your e-mail'
+                            },
+                            {
+                                type   : 'email',
+                                prompt : 'Please enter a valid e-mail'
+                            }
+                        ]
+                    },
+                    password: {
+                        identifier  : 'password',
+                        rules: [
+                            {
+                                type   : 'empty',
+                                prompt : 'Please enter your password'
+                            },
+                            {
+                                type   : 'length[6]',
+                                prompt : 'Your password must be at least 6 characters'
+                            }
+                        ]
+                    }
+                }
+            })
+        ;
+    })
+;
+</script>
+<script>
+$('.button').on('click', (function(e) {
+  console.log("login click");
+  if( $('.ui.form').form('is valid') ) {
+      //Ajax for login
+      login();
+  }else{
+      $('.ui.form').form('validate form');
+  }
+
+
+}));
+function login() {
+    //create data
+
+    //aaaa1@test.jp
+    //password
+    console.log($('input[name="email"]').val());
+    console.log($('input[name="password"]').val());
+
+    let payload = {
+        email: $('input[name="email"]').val(),
+        password: $('input[name="password"]').val()
+    };
+
+    let data = new FormData();
+    data.append( "json", JSON.stringify( payload ) );
+
+    let url = '/api/auth/login';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            //'Authorization': 'Bearer: xxxxx'
+            'Content-Type': 'application/json'
+        },
+        body: data
+    }).then(function(response) {
+        return response.json();
+    }).then(function(json) {
+        console.log("res:", json);
+        if (json.status && json.status != 200){
+            //error
+            console.log("login error");
+
+            $('.ui.form').form('add prompt', 'email');
+            $('.ui.form .error.message').html('Please enter a valid email and password').show();
+        }else{
+            //success
+            console.log("login OK");
+            //$('.ui.form .error.message').hide();
+
+            //save jwt
+
+            //redirect
+
+        }
+    });
+}
+</script>
 
 </body>
 
