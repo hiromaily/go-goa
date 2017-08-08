@@ -122,14 +122,11 @@ $(document)
 </script>
 <script>
 $('.button').on('click', (function(e) {
-  console.log("login click");
   if( $('.ui.form').form('is valid') ) {
-      //Ajax for login
       login();
   }else{
       $('.ui.form').form('validate form');
   }
-
 
 }));
 function login() {
@@ -137,25 +134,20 @@ function login() {
 
     //aaaa1@test.jp
     //password
-    console.log($('input[name="email"]').val());
-    console.log($('input[name="password"]').val());
 
+    let url = '/api/auth/login';
     let payload = {
         email: $('input[name="email"]').val(),
         password: $('input[name="password"]').val()
     };
 
-    let data = new FormData();
-    data.append( "json", JSON.stringify( payload ) );
-
-    let url = '/api/auth/login';
     fetch(url, {
         method: 'POST',
         headers: {
             //'Authorization': 'Bearer: xxxxx'
             'Content-Type': 'application/json'
         },
-        body: data
+        body: JSON.stringify(payload)
     }).then(function(response) {
         return response.json();
     }).then(function(json) {
@@ -171,15 +163,15 @@ function login() {
             console.log("login OK");
             //$('.ui.form .error.message').hide();
 
-            //save jwt
+            //save jwt into sessionStrage
+            sessionStorage.setItem('jwt', json.token);
+            //console.log(sessionStorage.getItem('jwt'));
 
             //redirect
-
+            location.href = '/resume.html';
         }
     });
 }
 </script>
-
 </body>
-
 </html>
