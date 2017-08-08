@@ -1,0 +1,8 @@
+exclude_paths:
+  - docker/**/*
+  - goa/**/*
+  - public/**/*
+  - resources/**/*
+  - frontend_workspace/**/*
+  - 'runner.conf'
+  
