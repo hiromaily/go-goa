@@ -27,12 +27,12 @@ type commonResponse struct {
 func (ut *commonResponse) Validate() (err error) {
 	if ut.CreatedAt != nil {
 		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.CreatedAt); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.created_at`, *ut.CreatedAt, goa.FormatDateTime, err2))
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`request.created_at`, *ut.CreatedAt, goa.FormatDateTime, err2))
 		}
 	}
 	if ut.UpdatedAt != nil {
 		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.UpdatedAt); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.updated_at`, *ut.UpdatedAt, goa.FormatDateTime, err2))
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`request.updated_at`, *ut.UpdatedAt, goa.FormatDateTime, err2))
 		}
 	}
 	return
@@ -62,12 +62,12 @@ type CommonResponse struct {
 func (ut *CommonResponse) Validate() (err error) {
 	if ut.CreatedAt != nil {
 		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.CreatedAt); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.created_at`, *ut.CreatedAt, goa.FormatDateTime, err2))
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`type.created_at`, *ut.CreatedAt, goa.FormatDateTime, err2))
 		}
 	}
 	if ut.UpdatedAt != nil {
 		if err2 := goa.ValidateFormat(goa.FormatDateTime, *ut.UpdatedAt); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.updated_at`, *ut.UpdatedAt, goa.FormatDateTime, err2))
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`type.updated_at`, *ut.UpdatedAt, goa.FormatDateTime, err2))
 		}
 	}
 	return
@@ -87,32 +87,32 @@ type companyPayload struct {
 func (ut *companyPayload) Validate() (err error) {
 	if ut.Address != nil {
 		if utf8.RuneCountInString(*ut.Address) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
 		}
 	}
 	if ut.Address != nil {
 		if utf8.RuneCountInString(*ut.Address) > 80 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
 		}
 	}
 	if ut.CountryID != nil {
 		if *ut.CountryID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 1, true))
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.country_id`, *ut.CountryID, 1, true))
 		}
 	}
 	if ut.CountryID != nil {
 		if *ut.CountryID > 999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.country_id`, *ut.CountryID, 999, false))
 		}
 	}
 	if ut.Name != nil {
 		if utf8.RuneCountInString(*ut.Name) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 2, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 2, true))
 		}
 	}
 	if ut.Name != nil {
 		if utf8.RuneCountInString(*ut.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 40, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 40, false))
 		}
 	}
 	return
@@ -147,32 +147,32 @@ type CompanyPayload struct {
 func (ut *CompanyPayload) Validate() (err error) {
 	if ut.Address != nil {
 		if utf8.RuneCountInString(*ut.Address) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
 		}
 	}
 	if ut.Address != nil {
 		if utf8.RuneCountInString(*ut.Address) > 80 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
 		}
 	}
 	if ut.CountryID != nil {
 		if *ut.CountryID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 1, true))
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.country_id`, *ut.CountryID, 1, true))
 		}
 	}
 	if ut.CountryID != nil {
 		if *ut.CountryID > 999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.country_id`, *ut.CountryID, 999, false))
 		}
 	}
 	if ut.Name != nil {
 		if utf8.RuneCountInString(*ut.Name) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 2, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 2, true))
 		}
 	}
 	if ut.Name != nil {
 		if utf8.RuneCountInString(*ut.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 40, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.name`, *ut.Name, utf8.RuneCountInString(*ut.Name), 40, false))
 		}
 	}
 	return
@@ -190,22 +190,22 @@ type companyTinyPayload struct {
 func (ut *companyTinyPayload) Validate() (err error) {
 	if ut.Address != nil {
 		if utf8.RuneCountInString(*ut.Address) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
 		}
 	}
 	if ut.Address != nil {
 		if utf8.RuneCountInString(*ut.Address) > 80 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
 		}
 	}
 	if ut.CountryID != nil {
 		if *ut.CountryID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 1, true))
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.country_id`, *ut.CountryID, 1, true))
 		}
 	}
 	if ut.CountryID != nil {
 		if *ut.CountryID > 999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`request.country_id`, *ut.CountryID, 999, false))
 		}
 	}
 	return
@@ -235,22 +235,22 @@ type CompanyTinyPayload struct {
 func (ut *CompanyTinyPayload) Validate() (err error) {
 	if ut.Address != nil {
 		if utf8.RuneCountInString(*ut.Address) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 2, true))
 		}
 	}
 	if ut.Address != nil {
 		if utf8.RuneCountInString(*ut.Address) > 80 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.address`, *ut.Address, utf8.RuneCountInString(*ut.Address), 80, false))
 		}
 	}
 	if ut.CountryID != nil {
 		if *ut.CountryID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 1, true))
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.country_id`, *ut.CountryID, 1, true))
 		}
 	}
 	if ut.CountryID != nil {
 		if *ut.CountryID > 999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.country_id`, *ut.CountryID, 999, false))
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`type.country_id`, *ut.CountryID, 999, false))
 		}
 	}
 	return
@@ -268,17 +268,17 @@ type loginPayload struct {
 func (ut *loginPayload) Validate() (err error) {
 	if ut.Email != nil {
 		if err2 := goa.ValidateFormat(goa.FormatEmail, *ut.Email); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.email`, *ut.Email, goa.FormatEmail, err2))
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`request.email`, *ut.Email, goa.FormatEmail, err2))
 		}
 	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) < 8 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 8, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 8, true))
 		}
 	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) > 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, false))
 		}
 	}
 	return
@@ -308,17 +308,17 @@ type LoginPayload struct {
 func (ut *LoginPayload) Validate() (err error) {
 	if ut.Email != nil {
 		if err2 := goa.ValidateFormat(goa.FormatEmail, *ut.Email); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.email`, *ut.Email, goa.FormatEmail, err2))
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`type.email`, *ut.Email, goa.FormatEmail, err2))
 		}
 	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) < 8 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 8, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 8, true))
 		}
 	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) > 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, false))
 		}
 	}
 	return
@@ -338,27 +338,27 @@ type userPayload struct {
 func (ut *userPayload) Validate() (err error) {
 	if ut.Email != nil {
 		if err2 := goa.ValidateFormat(goa.FormatEmail, *ut.Email); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.email`, *ut.Email, goa.FormatEmail, err2))
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`request.email`, *ut.Email, goa.FormatEmail, err2))
 		}
 	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) < 8 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 8, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 8, true))
 		}
 	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) > 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, false))
 		}
 	}
 	if ut.UserName != nil {
 		if utf8.RuneCountInString(*ut.UserName) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 2, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 2, true))
 		}
 	}
 	if ut.UserName != nil {
 		if utf8.RuneCountInString(*ut.UserName) > 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 20, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 20, false))
 		}
 	}
 	return
@@ -393,27 +393,27 @@ type UserPayload struct {
 func (ut *UserPayload) Validate() (err error) {
 	if ut.Email != nil {
 		if err2 := goa.ValidateFormat(goa.FormatEmail, *ut.Email); err2 != nil {
-			err = goa.MergeErrors(err, goa.InvalidFormatError(`response.email`, *ut.Email, goa.FormatEmail, err2))
+			err = goa.MergeErrors(err, goa.InvalidFormatError(`type.email`, *ut.Email, goa.FormatEmail, err2))
 		}
 	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) < 8 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 8, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 8, true))
 		}
 	}
 	if ut.Password != nil {
 		if utf8.RuneCountInString(*ut.Password) > 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.password`, *ut.Password, utf8.RuneCountInString(*ut.Password), 20, false))
 		}
 	}
 	if ut.UserName != nil {
 		if utf8.RuneCountInString(*ut.UserName) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 2, true))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 2, true))
 		}
 	}
 	if ut.UserName != nil {
 		if utf8.RuneCountInString(*ut.UserName) > 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 20, false))
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.user_name`, *ut.UserName, utf8.RuneCountInString(*ut.UserName), 20, false))
 		}
 	}
 	return
