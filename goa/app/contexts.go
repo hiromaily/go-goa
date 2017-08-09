@@ -1594,3 +1594,127 @@ func (ctx *UserListHyUserContext) BadRequest(r error) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
 }
+
+// GetUserDislikeTechHyUsertechContext provides the hy_usertech GetUserDislikeTech action context.
+type GetUserDislikeTechHyUsertechContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	UserID int
+}
+
+// NewGetUserDislikeTechHyUsertechContext parses the incoming request URL and body, performs validations and creates the
+// context used by the hy_usertech controller GetUserDislikeTech action.
+func NewGetUserDislikeTechHyUsertechContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetUserDislikeTechHyUsertechContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetUserDislikeTechHyUsertechContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramUserID := req.Params["userID"]
+	if len(paramUserID) > 0 {
+		rawUserID := paramUserID[0]
+		if userID, err2 := strconv.Atoi(rawUserID); err2 == nil {
+			rctx.UserID = userID
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("userID", rawUserID, "integer"))
+		}
+		if rctx.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`userID`, rctx.UserID, 1, true))
+		}
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *GetUserDislikeTechHyUsertechContext) OK(r UsertechCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.usertech+json; type=collection")
+	if r == nil {
+		r = UsertechCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKTech sends a HTTP response with status code 200.
+func (ctx *GetUserDislikeTechHyUsertechContext) OKTech(r UsertechTechCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.usertech+json; type=collection")
+	if r == nil {
+		r = UsertechTechCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *GetUserDislikeTechHyUsertechContext) BadRequest(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetUserDislikeTechHyUsertechContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// GetUserLikeTechHyUsertechContext provides the hy_usertech GetUserLikeTech action context.
+type GetUserLikeTechHyUsertechContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	UserID int
+}
+
+// NewGetUserLikeTechHyUsertechContext parses the incoming request URL and body, performs validations and creates the
+// context used by the hy_usertech controller GetUserLikeTech action.
+func NewGetUserLikeTechHyUsertechContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetUserLikeTechHyUsertechContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetUserLikeTechHyUsertechContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramUserID := req.Params["userID"]
+	if len(paramUserID) > 0 {
+		rawUserID := paramUserID[0]
+		if userID, err2 := strconv.Atoi(rawUserID); err2 == nil {
+			rctx.UserID = userID
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("userID", rawUserID, "integer"))
+		}
+		if rctx.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`userID`, rctx.UserID, 1, true))
+		}
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *GetUserLikeTechHyUsertechContext) OK(r UsertechCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.usertech+json; type=collection")
+	if r == nil {
+		r = UsertechCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKTech sends a HTTP response with status code 200.
+func (ctx *GetUserLikeTechHyUsertechContext) OKTech(r UsertechTechCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.usertech+json; type=collection")
+	if r == nil {
+		r = UsertechTechCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *GetUserLikeTechHyUsertechContext) BadRequest(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetUserLikeTechHyUsertechContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}

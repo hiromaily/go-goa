@@ -68,12 +68,6 @@ definitions:
       hq_flg: Nisi dolorum.
       id: 10
       name: Sunt cum aut blanditiis accusantium.
-    - address: Culpa voluptatem ullam.
-      company_id: 10
-      country_name: Sit dolor neque nulla.
-      hq_flg: Nisi dolorum.
-      id: 10
-      name: Sunt cum aut blanditiis accusantium.
     items:
       $ref: '#/definitions/Company'
     title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
@@ -265,15 +259,15 @@ definitions:
     description: A user information (default view)
     example:
       email: Aut tempora et beatae sapiente.
-      id: 1
+      id: 10
       user_name: Eveniet vel nesciunt omnis est ducimus est.
     properties:
       email:
         example: Aut tempora et beatae sapiente.
         type: string
       id:
-        description: User ID
-        example: 1
+        description: ID
+        example: 10
         minimum: 1
         type: integer
       user_name:
@@ -288,14 +282,53 @@ definitions:
     description: UserCollection is the media type for an array of User (default view)
     example:
     - email: Aut tempora et beatae sapiente.
-      id: 1
+      id: 10
       user_name: Eveniet vel nesciunt omnis est ducimus est.
     - email: Aut tempora et beatae sapiente.
-      id: 1
+      id: 10
+      user_name: Eveniet vel nesciunt omnis est ducimus est.
+    - email: Aut tempora et beatae sapiente.
+      id: 10
       user_name: Eveniet vel nesciunt omnis est ducimus est.
     items:
       $ref: '#/definitions/User'
     title: 'Mediatype identifier: application/vnd.user+json; type=collection; view=default'
+    type: array
+  Usertech:
+    description: A user information (default view)
+    example:
+      id: 10
+      tech_name: Golang
+    properties:
+      id:
+        description: ID
+        example: 10
+        minimum: 1
+        type: integer
+      tech_name:
+        description: Tech name
+        example: Golang
+        maxLength: 40
+        minLength: 2
+        type: string
+    required:
+    - tech_name
+    title: 'Mediatype identifier: application/vnd.usertech+json; view=default'
+    type: object
+  UsertechCollection:
+    description: UsertechCollection is the media type for an array of Usertech (default
+      view)
+    example:
+    - id: 10
+      tech_name: Golang
+    - id: 10
+      tech_name: Golang
+    - id: 10
+      tech_name: Golang
+    items:
+      $ref: '#/definitions/Usertech'
+    title: 'Mediatype identifier: application/vnd.usertech+json; type=collection;
+      view=default'
     type: array
   error:
     description: Error response media type (default view)
@@ -920,6 +953,80 @@ paths:
       summary: UpdateUser hy_user
       tags:
       - hy_user
+  /api/user/{userID}/disliketech:
+    get:
+      description: |-
+        Retrieve user's dislike techs.
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_usertech#GetUserDislikeTech
+      parameters:
+      - description: User ID
+        in: path
+        minimum: 1
+        name: userID
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.usertech+json; type=collection
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/UsertechCollection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: GetUserDislikeTech hy_usertech
+      tags:
+      - hy_usertech
+  /api/user/{userID}/liketech:
+    get:
+      description: |-
+        Retrieve user's favorite techs.
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_usertech#GetUserLikeTech
+      parameters:
+      - description: User ID
+        in: path
+        minimum: 1
+        name: userID
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.usertech+json; type=collection
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/UsertechCollection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: GetUserLikeTech hy_usertech
+      tags:
+      - hy_usertech
   /swagger-ui/{filepath}:
     get:
       operationId: public#/swagger-ui/*filepath

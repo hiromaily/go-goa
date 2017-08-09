@@ -656,6 +656,81 @@ func unmarshalUpdateUserHyUserPayload(ctx context.Context, service *goa.Service,
 	return nil
 }
 
+// HyUsertechController is the controller interface for the HyUsertech actions.
+type HyUsertechController interface {
+	goa.Muxer
+	GetUserDislikeTech(*GetUserDislikeTechHyUsertechContext) error
+	GetUserLikeTech(*GetUserLikeTechHyUsertechContext) error
+}
+
+// MountHyUsertechController "mounts" a HyUsertech resource controller on the given service.
+func MountHyUsertechController(service *goa.Service, ctrl HyUsertechController) {
+	initService(service)
+	var h goa.Handler
+	service.Mux.Handle("OPTIONS", "/api/user/:userID/disliketech", ctrl.MuxHandler("preflight", handleHyUsertechOrigin(cors.HandlePreflight()), nil))
+	service.Mux.Handle("OPTIONS", "/api/user/:userID/liketech", ctrl.MuxHandler("preflight", handleHyUsertechOrigin(cors.HandlePreflight()), nil))
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetUserDislikeTechHyUsertechContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.GetUserDislikeTech(rctx)
+	}
+	h = handleSecurity("jwt", h, "api:access")
+	h = handleHyUsertechOrigin(h)
+	service.Mux.Handle("GET", "/api/user/:userID/disliketech", ctrl.MuxHandler("GetUserDislikeTech", h, nil))
+	service.LogInfo("mount", "ctrl", "HyUsertech", "action", "GetUserDislikeTech", "route", "GET /api/user/:userID/disliketech", "security", "jwt")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetUserLikeTechHyUsertechContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.GetUserLikeTech(rctx)
+	}
+	h = handleSecurity("jwt", h, "api:access")
+	h = handleHyUsertechOrigin(h)
+	service.Mux.Handle("GET", "/api/user/:userID/liketech", ctrl.MuxHandler("GetUserLikeTech", h, nil))
+	service.LogInfo("mount", "ctrl", "HyUsertech", "action", "GetUserLikeTech", "route", "GET /api/user/:userID/liketech", "security", "jwt")
+}
+
+// handleHyUsertechOrigin applies the CORS response headers corresponding to the origin.
+func handleHyUsertechOrigin(h goa.Handler) goa.Handler {
+
+	return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		origin := req.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			return h(ctx, rw, req)
+		}
+		if cors.MatchOrigin(origin, "http://swagger.goa.design") {
+			ctx = goa.WithLogContext(ctx, "origin", origin)
+			rw.Header().Set("Access-Control-Allow-Origin", origin)
+			rw.Header().Set("Vary", "Origin")
+			rw.Header().Set("Access-Control-Max-Age", "600")
+			rw.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := req.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				rw.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+			}
+			return h(ctx, rw, req)
+		}
+
+		return h(ctx, rw, req)
+	}
+}
+
 // PublicController is the controller interface for the Public actions.
 type PublicController interface {
 	goa.Muxer

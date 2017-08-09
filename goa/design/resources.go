@@ -140,6 +140,57 @@ var _ = Resource(resourcePrefix+"user", func() {
 })
 
 //-----------------------------------------------------------------------------
+// User Tech
+//-----------------------------------------------------------------------------
+var _ = Resource(resourcePrefix+"usertech", func() {
+
+	DefaultMedia(UserTech) //Response Media Type
+	BasePath("/user")
+
+	Security(JWT, func() { // Use JWT to auth requests to this endpoint
+		Scope("api:access") // Enforce presence of "api" scope in JWT claims.
+	})
+
+	//
+	Action("GetUserLikeTech", func() {
+		Routing(
+			GET("/:userID/liketech"),
+		)
+		Description("Retrieve user's favorite techs.")
+
+		// Params is for get parameter
+		Params(func() {
+			Param("userID", Integer, "User ID", func() {
+				Minimum(1)
+			})
+		})
+		Response(OK, CollectionOf(UserTech)) //multiple response
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+	})
+
+	//
+	Action("GetUserDislikeTech", func() {
+		Routing(
+			GET("/:userID/disliketech"),
+		)
+		Description("Retrieve user's dislike techs.")
+
+		// Params is for get parameter
+		Params(func() {
+			Param("userID", Integer, "User ID", func() {
+				Minimum(1)
+			})
+		})
+
+		Response(OK, CollectionOf(UserTech)) //multiple response
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+	})
+
+})
+
+//-----------------------------------------------------------------------------
 // Company
 //-----------------------------------------------------------------------------
 var _ = Resource(resourcePrefix+"company", func() {
@@ -251,6 +302,9 @@ var _ = Resource(resourcePrefix+"company", func() {
 	})
 })
 
+//-----------------------------------------------------------------------------
+// Company branch
+//-----------------------------------------------------------------------------
 var _ = Resource(resourcePrefix+"companybranch", func() {
 
 	DefaultMedia(Company)
@@ -263,9 +317,6 @@ var _ = Resource(resourcePrefix+"companybranch", func() {
 	// Parent sets the resource parent
 	//Parent("user")  //TODO: how does it work??
 
-	//-----------------------------------------------------------------------------
-	// Company branch
-	//-----------------------------------------------------------------------------
 	Action("GetCompanyBranch", func() {
 		Routing(
 			GET("/:ID"),

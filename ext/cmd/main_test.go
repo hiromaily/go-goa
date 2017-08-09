@@ -10,12 +10,12 @@ import (
 	//"net/http/httptest"
 	"encoding/json"
 	"errors"
+	"flag"
 	"net/url"
 	"os"
 	"strings"
 	"testing"
 	"time"
-	"flag"
 
 	"github.com/hiromaily/go-goa/goa/client"
 	lg "github.com/hiromaily/golibs/log"
@@ -24,6 +24,7 @@ import (
 
 const SERVER_HOST = "http://localhost:8080"
 const HEALTH_CHECK = "/api/_ah/health"
+
 var (
 	health = flag.Int("health", 0, "number of health check")
 )
@@ -115,6 +116,16 @@ var userAPITests = []UserAPITest{
 	{TableTest{"/api/user/%d", http.StatusNotFound, "GET", jwtHeaders, "", nil}, "", "", ""},
 }
 
+var userTechTests = []TableTest{
+	{"/api/user/1/liketech", http.StatusOK, "GET", jwtHeaders, "", nil},
+	{"/api/user/999/liketech", http.StatusNotFound, "GET", jwtHeaders, "", nil},
+	{"/api/user/1/liketech", http.StatusUnauthorized, "GET", nil, "", nil},
+	{"/api/user/1/disliketech", http.StatusOK, "GET", jwtHeaders, "", nil},
+	{"/api/user/999/disliketech", http.StatusNotFound, "GET", jwtHeaders, "", nil},
+	{"/api/user/1/disliketech", http.StatusUnauthorized, "GET", nil, "", nil},
+}
+
+
 type CompanyAPITest struct {
 	TableTest
 	//companyID int
@@ -169,7 +180,7 @@ func init() {
 }
 
 func setup() {
-	if *health != 0{
+	if *health != 0 {
 		checkHealth()
 	}
 }
@@ -206,10 +217,10 @@ func convertJson(model interface{}) ([]byte, error) {
 	return data, nil
 }
 
-func checkHealth(){
+func checkHealth() {
 	for i := 0; i < *health; i++ {
 		_, _, _, err := sendRequest(SERVER_HOST+HEALTH_CHECK, "GET", nil, nil)
-		if err == nil{
+		if err == nil {
 			return
 		}
 		//sleep
@@ -469,6 +480,18 @@ func TestUserAPIOnTable(t *testing.T) {
 		} else if tt.nextPage == "setID" {
 			userAPITests[i+1].url = fmt.Sprintf(userAPITests[i+1].url, saveID)
 		}
+
+		fmt.Println("[Debug] body:", string(body))
+	}
+}
+
+func TestGetUserTechOnTable(t *testing.T) {
+	for i, tt := range userTechTests {
+		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
+
+		//send request
+		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, nil, tt.headers)
+		checkError(t, err, code, header, tt, i+1)
 
 		fmt.Println("[Debug] body:", string(body))
 	}

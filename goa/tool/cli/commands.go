@@ -143,6 +143,20 @@ type (
 		PrettyPrint bool
 	}
 
+	// GetUserDislikeTechHyUsertechCommand is the command line data structure for the GetUserDislikeTech action of hy_usertech
+	GetUserDislikeTechHyUsertechCommand struct {
+		// User ID
+		UserID      int
+		PrettyPrint bool
+	}
+
+	// GetUserLikeTechHyUsertechCommand is the command line data structure for the GetUserLikeTech action of hy_usertech
+	GetUserLikeTechHyUsertechCommand struct {
+		// User ID
+		UserID      int
+		PrettyPrint bool
+	}
+
 	// DownloadCommand is the command line data structure for the download command.
 	DownloadCommand struct {
 		// OutFile is the path to the download output file.
@@ -320,12 +334,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "health",
-		Short: `Perform health check.`,
+		Use:   "get-user-dislike-tech",
+		Short: `Retrieve user's dislike techs.`,
 	}
-	tmp11 := new(HealthHealthCommand)
+	tmp11 := new(GetUserDislikeTechHyUsertechCommand)
 	sub = &cobra.Command{
-		Use:   `health ["/api/_ah/health"]`,
+		Use:   `hy-usertech ["/api/user/USERID/disliketech"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },
 	}
@@ -334,10 +348,38 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
+		Use:   "get-user-like-tech",
+		Short: `Retrieve user's favorite techs.`,
+	}
+	tmp12 := new(GetUserLikeTechHyUsertechCommand)
+	sub = &cobra.Command{
+		Use:   `hy-usertech ["/api/user/USERID/liketech"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp12.Run(c, args) },
+	}
+	tmp12.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp12.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "health",
+		Short: `Perform health check.`,
+	}
+	tmp13 := new(HealthHealthCommand)
+	sub = &cobra.Command{
+		Use:   `health ["/api/_ah/health"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp13.Run(c, args) },
+	}
+	tmp13.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp13.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
 		Use:   "login",
 		Short: `user login`,
 	}
-	tmp12 := new(LoginAuthCommand)
+	tmp14 := new(LoginAuthCommand)
 	sub = &cobra.Command{
 		Use:   `auth ["/api/auth/login"]`,
 		Short: `This resource uses JWT to secure its endpoints`,
@@ -349,17 +391,17 @@ Payload example:
    "email": "hy@gmail.com",
    "password": "xxxxxxxx"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp12.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp14.Run(c, args) },
 	}
-	tmp12.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp12.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp14.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp14.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-company",
 		Short: `Change company properties`,
 	}
-	tmp13 := new(UpdateCompanyHyCompanyCommand)
+	tmp15 := new(UpdateCompanyHyCompanyCommand)
 	sub = &cobra.Command{
 		Use:   `hy-company ["/api/company/COMPANYID"]`,
 		Short: ``,
@@ -372,17 +414,17 @@ Payload example:
    "country_id": 110,
    "name": "Company"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp13.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp15.Run(c, args) },
 	}
-	tmp13.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp13.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp15.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp15.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-company-branch",
 		Short: `Change company branch properties`,
 	}
-	tmp14 := new(UpdateCompanyBranchHyCompanybranchCommand)
+	tmp16 := new(UpdateCompanyBranchHyCompanybranchCommand)
 	sub = &cobra.Command{
 		Use:   `hy-companybranch ["/api/company/branch/ID"]`,
 		Short: ``,
@@ -394,17 +436,17 @@ Payload example:
    "address": "Shinagawa Tokyo",
    "country_id": 110
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp14.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp16.Run(c, args) },
 	}
-	tmp14.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp14.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp16.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp16.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-user",
 		Short: `Change user properties`,
 	}
-	tmp15 := new(UpdateUserHyUserCommand)
+	tmp17 := new(UpdateUserHyUserCommand)
 	sub = &cobra.Command{
 		Use:   `hy-user ["/api/user/USERID"]`,
 		Short: ``,
@@ -417,24 +459,24 @@ Payload example:
    "password": "xxxxxxxx",
    "user_name": "Hiroki"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp15.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp17.Run(c, args) },
 	}
-	tmp15.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp15.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp17.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp17.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "user-list",
 		Short: `Retrieve all users.`,
 	}
-	tmp16 := new(UserListHyUserCommand)
+	tmp18 := new(UserListHyUserCommand)
 	sub = &cobra.Command{
 		Use:   `hy-user ["/api/user"]`,
 		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp16.Run(c, args) },
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp18.Run(c, args) },
 	}
-	tmp16.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp16.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp18.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp18.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 
@@ -1125,4 +1167,56 @@ func (cmd *UserListHyUserCommand) Run(c *client.Client, args []string) error {
 
 // RegisterFlags registers the command flags with the command line.
 func (cmd *UserListHyUserCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+}
+
+// Run makes the HTTP request corresponding to the GetUserDislikeTechHyUsertechCommand command.
+func (cmd *GetUserDislikeTechHyUsertechCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/api/user/%v/disliketech", cmd.UserID)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.GetUserDislikeTechHyUsertech(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *GetUserDislikeTechHyUsertechCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var userID int
+	cc.Flags().IntVar(&cmd.UserID, "userID", userID, `User ID`)
+}
+
+// Run makes the HTTP request corresponding to the GetUserLikeTechHyUsertechCommand command.
+func (cmd *GetUserLikeTechHyUsertechCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/api/user/%v/liketech", cmd.UserID)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.GetUserLikeTechHyUsertech(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *GetUserLikeTechHyUsertechCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var userID int
+	cc.Flags().IntVar(&cmd.UserID, "userID", userID, `User ID`)
 }

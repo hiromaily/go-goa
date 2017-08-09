@@ -418,3 +418,54 @@ func (ut *UserPayload) Validate() (err error) {
 	}
 	return
 }
+
+// userTechPayload user type.
+type userTechPayload struct {
+	// Tech name
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
+}
+
+// Validate validates the userTechPayload type instance.
+func (ut *userTechPayload) Validate() (err error) {
+	if ut.TechName != nil {
+		if utf8.RuneCountInString(*ut.TechName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.tech_name`, *ut.TechName, utf8.RuneCountInString(*ut.TechName), 2, true))
+		}
+	}
+	if ut.TechName != nil {
+		if utf8.RuneCountInString(*ut.TechName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.tech_name`, *ut.TechName, utf8.RuneCountInString(*ut.TechName), 40, false))
+		}
+	}
+	return
+}
+
+// Publicize creates UserTechPayload from userTechPayload
+func (ut *userTechPayload) Publicize() *UserTechPayload {
+	var pub UserTechPayload
+	if ut.TechName != nil {
+		pub.TechName = ut.TechName
+	}
+	return &pub
+}
+
+// UserTechPayload user type.
+type UserTechPayload struct {
+	// Tech name
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
+}
+
+// Validate validates the UserTechPayload type instance.
+func (ut *UserTechPayload) Validate() (err error) {
+	if ut.TechName != nil {
+		if utf8.RuneCountInString(*ut.TechName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.tech_name`, *ut.TechName, utf8.RuneCountInString(*ut.TechName), 2, true))
+		}
+	}
+	if ut.TechName != nil {
+		if utf8.RuneCountInString(*ut.TechName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.tech_name`, *ut.TechName, utf8.RuneCountInString(*ut.TechName), 40, false))
+		}
+	}
+	return
+}

@@ -254,10 +254,10 @@ UNLOCK TABLES;
 -- Table structure for table `t_user_dislike_tech`
 --
 
-DROP TABLE IF EXISTS `t_user_dislike_tech`;
+DROP TABLE IF EXISTS `t_user_dislike_techs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_user_dislike_tech` (
+CREATE TABLE `t_user_dislike_techs` (
   `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
   `user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
   `tech_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech ID',
@@ -269,13 +269,13 @@ CREATE TABLE `t_user_dislike_tech` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-LOCK TABLES `t_user_dislike_tech` WRITE;
-/*!40000 ALTER TABLE `t_user_dislike_tech` DISABLE KEYS */;
-INSERT INTO `t_user_dislike_tech` VALUES
+LOCK TABLES `t_user_dislike_techs` WRITE;
+/*!40000 ALTER TABLE `t_user_dislike_techs` DISABLE KEYS */;
+INSERT INTO `t_user_dislike_techs` VALUES
   (null,1,25,'0',now(),now()),
   (null,1,12,'0',now(),now()),
   (null,1,26,'0',now(),now());
-/*!40000 ALTER TABLE `t_user_dislike_tech` ENABLE KEYS */;
+/*!40000 ALTER TABLE `t_user_dislike_techs` ENABLE KEYS */;
 UNLOCK TABLES;
 
 

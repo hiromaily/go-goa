@@ -13,6 +13,7 @@ package client
 import (
 	"github.com/goadesign/goa"
 	"net/http"
+	"unicode/utf8"
 )
 
 // An authorized response (default view)
@@ -267,7 +268,7 @@ func (c *Client) DecodeErrorResponse(resp *http.Response) (*goa.ErrorResponse, e
 // Identifier: application/vnd.user+json; view=default
 type User struct {
 	Email string `form:"email" json:"email" xml:"email"`
-	// User ID
+	// ID
 	ID       *int   `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
 }
@@ -292,7 +293,7 @@ func (mt *User) Validate() (err error) {
 //
 // Identifier: application/vnd.user+json; view=id
 type UserID struct {
-	// User ID
+	// ID
 	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 }
 
@@ -397,4 +398,117 @@ func (c *Client) DecodeUsercomany(resp *http.Response) (*Usercomany, error) {
 	var decoded Usercomany
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
+}
+
+// A user information (default view)
+//
+// Identifier: application/vnd.usertech+json; view=default
+type Usertech struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Tech name
+	TechName string `form:"tech_name" json:"tech_name" xml:"tech_name"`
+}
+
+// Validate validates the Usertech media type instance.
+func (mt *Usertech) Validate() (err error) {
+	if mt.TechName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "tech_name"))
+	}
+	if mt.ID != nil {
+		if *mt.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, *mt.ID, 1, true))
+		}
+	}
+	if utf8.RuneCountInString(mt.TechName) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.tech_name`, mt.TechName, utf8.RuneCountInString(mt.TechName), 2, true))
+	}
+	if utf8.RuneCountInString(mt.TechName) > 40 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.tech_name`, mt.TechName, utf8.RuneCountInString(mt.TechName), 40, false))
+	}
+	return
+}
+
+// A user information (tech view)
+//
+// Identifier: application/vnd.usertech+json; view=tech
+type UsertechTech struct {
+	// Tech name
+	TechName string `form:"tech_name" json:"tech_name" xml:"tech_name"`
+}
+
+// Validate validates the UsertechTech media type instance.
+func (mt *UsertechTech) Validate() (err error) {
+	if mt.TechName == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "tech_name"))
+	}
+	if utf8.RuneCountInString(mt.TechName) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.tech_name`, mt.TechName, utf8.RuneCountInString(mt.TechName), 2, true))
+	}
+	if utf8.RuneCountInString(mt.TechName) > 40 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.tech_name`, mt.TechName, utf8.RuneCountInString(mt.TechName), 40, false))
+	}
+	return
+}
+
+// DecodeUsertech decodes the Usertech instance encoded in resp body.
+func (c *Client) DecodeUsertech(resp *http.Response) (*Usertech, error) {
+	var decoded Usertech
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// DecodeUsertechTech decodes the UsertechTech instance encoded in resp body.
+func (c *Client) DecodeUsertechTech(resp *http.Response) (*UsertechTech, error) {
+	var decoded UsertechTech
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// UsertechCollection is the media type for an array of Usertech (default view)
+//
+// Identifier: application/vnd.usertech+json; type=collection; view=default
+type UsertechCollection []*Usertech
+
+// Validate validates the UsertechCollection media type instance.
+func (mt UsertechCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
+// UsertechCollection is the media type for an array of Usertech (tech view)
+//
+// Identifier: application/vnd.usertech+json; type=collection; view=tech
+type UsertechTechCollection []*UsertechTech
+
+// Validate validates the UsertechTechCollection media type instance.
+func (mt UsertechTechCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
+// DecodeUsertechCollection decodes the UsertechCollection instance encoded in resp body.
+func (c *Client) DecodeUsertechCollection(resp *http.Response) (UsertechCollection, error) {
+	var decoded UsertechCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
+}
+
+// DecodeUsertechTechCollection decodes the UsertechTechCollection instance encoded in resp body.
+func (c *Client) DecodeUsertechTechCollection(resp *http.Response) (UsertechTechCollection, error) {
+	var decoded UsertechTechCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
 }

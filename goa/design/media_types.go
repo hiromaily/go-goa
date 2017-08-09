@@ -55,17 +55,14 @@ var User = MediaType("application/vnd.user+json", func() {
 	//`updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'updated date',
 
 	Attributes(func() {
-		Attribute("id", Integer, "User ID", func() {
-			Minimum(1)
-			Example(1)
-		})
+		Attribute("id", Integer, "User ID", fieldID)
 		Attribute("user_name")
 		Attribute("email")
 		Attribute("password")
 		Attribute("created_at")
 		Attribute("updated_at")
 
-		//TODO:required value in media_type is given priority over this part...
+		//TODO:required value in media_type is given priority over resource...
 		//That means, this part would affect on Action-Payload-Required
 		//when field is zero or empty, data is not return unless it's not set in Required
 		Required("user_name", "email", "password")
@@ -84,6 +81,49 @@ var User = MediaType("application/vnd.user+json", func() {
 	View("id", func() {
 		Description("id is the view used to id list")
 		Attribute("id")
+	})
+})
+
+//-----------------------------------------------------------------------------
+// UserTech is the user tech resource media type.
+//-----------------------------------------------------------------------------
+var UserTech = MediaType("application/vnd.usertech+json", func() {
+	// Response Description
+	Description("A user information")
+
+	ContentType("application/json")
+
+	// Reference can be used in: MediaType, Type
+	// Though set Reference, Attribute is required
+	Reference(UserTechPayload)
+
+	//`id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
+	//`user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
+	//`tech_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech ID',
+	//`name`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech Name',
+
+	Attributes(func() {
+		Attribute("id", Integer, "Tech ID", fieldID)
+		Attribute("tech_name")
+
+		//TODO:required value in media_type is given priority over resource...
+		//That means, this part would affect on Action-Payload-Required
+		//when field is zero or empty, data is not return unless it's not set in Required
+		Required("tech_name")
+	})
+
+	//View defines a rendering of the media type
+	//Media types may have multiple views　(it can change response pattern)
+	//View default is for UserList, GetUser,
+	View("default", func() {
+		Attribute("id")
+		Attribute("tech_name")
+	})
+
+	//View id is for UserList, GetUser,
+	View("tech", func() {
+		Description("id is the view used to id list")
+		Attribute("tech_name")
 	})
 })
 
@@ -108,7 +148,7 @@ var Company = MediaType("application/vnd.company+json", func() {
 		Attribute("created_at")
 		Attribute("updated_at")
 
-		//TODO:required value in media_type is given priority over this part...
+		//TODO:required value in media_type is given priority over resource...
 		//That means, this part would affect on Action-Payload-Required
 		//when field is zero or empty, data is not return unless it's not set in Required
 		Required("name", "address")
