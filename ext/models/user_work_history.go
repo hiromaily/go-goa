@@ -2,8 +2,11 @@ package models
 
 import (
 	"fmt"
+	"encoding/json"
 	"github.com/hiromaily/go-goa/goa/app"
 	"github.com/hiromaily/golibs/db/gorm"
+	u "github.com/hiromaily/golibs/utils"
+
 )
 
 // User is user object in Database
@@ -28,11 +31,11 @@ const TableName = "t_user_work_history"
 //	// used techs
 //	Techs *interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
 //}
-func (m *UserWorkHistory) GetUserWorks(userID int, userTechs *[]*app.Userworkhistory) error {
+func (m *UserWorkHistory) GetUserWorks(userID int, userWorks *[]*app.Userworkhistory) error {
 	sql := `
 SELECT uwh.title, c.name as company, LOWER(mc.country_code) as country,
  CONCAT(DATE_FORMAT(IFNULL(uwh.started_at, ""),'%Y %b'), " - ", DATE_FORMAT(IFNULL(uwh.ended_at, ""),'%Y %b')) as term,
- uwh.description
+ uwh.description, uwh.tech_ids as techs
  FROM t_user_work_history AS uwh
  LEFT JOIN t_company_detail AS cd ON uwh.company_branch_id = cd.id
  LEFT JOIN t_companies AS c ON c.id = cd.company_id
@@ -47,9 +50,26 @@ SELECT uwh.title, c.name as company, LOWER(mc.country_code) as country,
 	//sql includes format character, so it can't be used below.
 	//sql = fmt.Sprintf(sql, TableName)
 
-	if err := m.Db.DB.Raw(sql, "0", "0", "0", "0", userID).Scan(userTechs).Error; err != nil {
+	if err := m.Db.DB.Raw(sql, "0", "0", "0", "0", userID).Scan(userWorks).Error; err != nil {
 		fmt.Println("[error]", err)
 		return err
+	}
+
+	//Decoded Json should be encoded
+	for i, v := range *userWorks {
+		//1.description
+		var descriptions []interface{}
+		json.Unmarshal(u.ItoByte(*v.Description), &descriptions)
+		//fmt.Println(descriptions)
+		// *[]*app.Userworkhistory
+		*(*userWorks)[i].Description = descriptions
+
+		//2.techs
+		var techs []interface{}
+		json.Unmarshal(u.ItoByte(*v.Techs), &techs)
+		//fmt.Println(techs)
+		// *[]*app.Userworkhistory
+		*(*userWorks)[i].Techs = techs
 	}
 
 	return nil
