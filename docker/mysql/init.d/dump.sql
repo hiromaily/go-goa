@@ -51,16 +51,16 @@ LOCK TABLES `t_users` WRITE;
 INSERT INTO `t_users` VALUES
   (1,'hiroki','hiroki@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
   (2,'guest','guest@guest.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (3,'harry3','aaaa3@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (4,'harry4','aaaa4@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (5,'harry5','aaaa5@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (6,'harry6','aaaa6@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (7,'harry7','aaaa7@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (8,'harry8','aaaa8@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (9,'harry9','aaaa9@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (10,'harry10','aaaa10@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (11,'harry11','aaaa11@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (12,'harry12','aaaa12@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now());
+  (3,'harry3','aaaa3@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (4,'harry4','aaaa4@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (5,'harry5','aaaa5@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (6,'harry6','aaaa6@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (7,'harry7','aaaa7@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (8,'harry8','aaaa8@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (9,'harry9','aaaa9@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (10,'harry10','aaaa10@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (11,'harry11','aaaa11@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (12,'harry12','aaaa12@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now());
 /*!40000 ALTER TABLE `t_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -287,15 +287,16 @@ DROP TABLE IF EXISTS `t_user_work_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_user_work_history` (
-  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
-  `user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
+  `id`          int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
+  `user_id`     int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
   `company_branch_id`  int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company Branch ID',
-  `title`      varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Title',
-  `started_at` date DEFAULT NULL COMMENT'Started Date',
-  `ended_at`   date DEFAULT NULL COMMENT'Ended Date',
-  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
-  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+  `title`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Title',
+  `description` json NOT NULL COMMENT'Description',
+  `started_at`  date DEFAULT NULL COMMENT'Started Date',
+  `ended_at`    date DEFAULT NULL COMMENT'Ended Date',
+  `delete_flg`  char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Work History Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -304,48 +305,53 @@ CREATE TABLE `t_user_work_history` (
 LOCK TABLES `t_user_work_history` WRITE;
 /*!40000 ALTER TABLE `t_user_work_history` DISABLE KEYS */;
 INSERT INTO `t_user_work_history` VALUES
-  (null,1,2,'Developer for this resume site','2017-07-16','2017-08-08','0',now(),now()),
-  (null,1,6,'Full Stack Engineer','2016-12-20','2017-07-15','0',now(),now()),
-  (null,1,4,'Full Stack Engineer','2016-10-19','2017-11-30','0',now(),now()),
-  (null,1,1,'Golang and React(ES6) programmer','2016-07-01','2017-09-30','0',now(),now()),
-  (null,1,1,'Golang and PHP (HACK) programmer','2015-10-01','2016-06-30','0',now(),now()),
-  (null,1,1,'Python programmer','2015-04-01','2015-09-30','0',now(),now()),
-  (null,1,1,'Front-End Engineer','2011-11-01','2013-12-31','0',now(),now()),
-  (null,1,1,'Application Engineer','2010-09-01','2011-10-31','0',now(),now()),
-  (null,1,1,'Application Engineer','2011-02-01','2011-04-30','0',now(),now()),
-  (null,1,1,'PHP Programmer','2010-07-01','2010-08-31','0',now(),now()),
-  (null,1,1,'ActionScript3.0 and PHP Programmer','2010-01-15','2010-06-30','0',now(),now()),
-  (null,1,1,'ASP.NET Programmer','2009-01-01','2009-11-30','0',now(),now()),
-  (null,1,7,'Application Engineer','2007-01-01','2008-12-31','0',now(),now()),
-  (null,1,8,'Application Engineer','2005-04-01','2006-11-30','0',now(),now()),
-  (null,1,9,'Junior Software Engineer','2002-09-01','2005-03-31','0',now(),now());
+  (null,1,2,'Developer for this resume site',
+   '["Developed resume site for job seeking."]',
+   '2017-07-16','2017-08-08','0',now(),now()),
+  (null,1,6,'Full Stack Engineer',
+   '["Developed event management web application both front-end and back-end.","Setting <a>Docker</a> configuration."]',
+   '2016-12-20','2017-07-15','0',now(),now()),
+  (null,1,4,'Full Stack Engineer',
+   '["Developed event management web application both front-end and back-end.",["API Server was developed by <a>Golang</a> with GOA framework"],"Setting <a>Docker</a> configuration."]',
+   '2016-10-19','2017-11-30','0',now(),now()),
+  (null,1,1,'Golang and React(ES6) programmer',
+   '["Developed web-server (framework) and reverse proxy and <a>JWT</a> based API and login with <a>OAuth2</a> as authentication plus various libraries using <a>Golang</a>.", "Developed worker program to scrape news information to set into <a>MongoDB</a>.", "eveloped front-end using <a>React</a> plus <a>ES6</a> and setup script for environment.", "Setting <a>Docker</a> configuration."]',
+   '2016-07-01','2017-09-30','0',now(),now()),
+  (null,1,1,'Golang and PHP (HACK) programmer',
+   '["Developed advertisement distribution system on back-end for messaging application called <a>LINE</a> using <a>Golang</a>.", ["<a href=\\"https://line.me/en/\\">LINE</a> is popular messaging application like WhatsApp.","Number of monthly active LINE users in 2016 was more than <a>217 million</a> monthly active users."],"Built CI (<a>Jenkins</a>) Environment"]',
+   '2015-10-01','2016-06-30','0',now(),now()),
+  (null,1,1,'Python programmer',
+   '["Developed education system so-called <a>MOOC</a> using edx open source project.", "Built videos distribution environment on AWS S3 and 3rd party CDN and developed various batch program using <a>AWS boto(Python)</a>."]',
+   '2015-04-01','2015-09-30','0',now(),now()),
+  (null,1,1,'Front-End Engineer',
+   '["Developed iPhone and Android game apps.", "Developed auto-generator for View template in MVC from mock designed HTML and runtime library in Javascript.</a>.", "Strategized developing process for Smartphone application."]',
+   '2011-11-01','2013-12-31','0',now(),now()),
+  (null,1,1,'Application Engineer',
+   '["Developed 3D a terrestrial globe using <a>ActionScript3.0</a> and PaperVision3D.", "Developed various site using Javascript.</a>.", "Planed and developed Augmented Reality application so-called <a>AR</a> that can change clothes for those who stand in front of web camera connected to PC using <a>C++</a>, <a>OpenCV</a>, <a>openFrameworks</a>."]',
+   '2010-09-01','2011-10-31','0',now(),now()),
+  (null,1,1,'Application Engineer',
+   '["Developed management system for students attendance and leaving on Linux Set Top Box. In order to make real time interactive communications on the web, built HTTP Server using <a>Python</a> and <a>Commet</a> was used for it. And developed <a>Flash</a> applicaton as UI and shell scripts for sending signal when touching devices detected."]',
+   '2011-02-01','2011-04-30','0',now(),now()),
+  (null,1,1,'PHP Programmer',
+   '["Developed fashion related game on cell phone on <a>LAMP</a> environment", "Improved performance on <a>MySQL</a>."]',
+   '2010-07-01','2010-08-31','0',now(),now()),
+  (null,1,1,'ActionScript3.0 and PHP Programmer',
+   '["Developed real-time chat online game among multiple users."]',
+   '2010-01-15','2010-06-30','0',now(),now()),
+  (null,1,1,'ASP.NET Programmer',
+   '["Developed EC site for music data protected by <a>Microsoft DRM</a>."]',
+   '2009-01-01','2009-11-30','0',now(),now()),
+  (null,1,7,'Application Engineer',
+   '["Developed various video players using <a>Flash</a>, <a>Silverlight</a>, <a>Javascript</a> and <a>BittorrentDNA</a> for P2P on the web and Nintendo Wii Platform.", "Managed and developed podcast portal site including optimizing database performance.", "Developed <a>Microsoft DRM</a> management system packaging video and issuing license using <a>ASP.NET(C#)</a>.", "Developed billing API of credit card and electronic money on movie download sites."]',
+   '2007-01-01','2008-12-31','0',now(),now()),
+  (null,1,8,'Application Engineer',
+   '["Managed entire projects including planning and proposal, negotiation, system requirement definition, estimates of developement, progress management.", "Developed video contributing software using C++, Flash.", "Developed EC site for video using PHP, MySQL.", "Developed billing API of credit card and electronic money on movie download sites."]',
+   '2005-04-01','2006-11-30','0',now(),now()),
+  (null,1,9,'Junior Software Engineer',
+   '["Developed car auction system using VB, C, Java."]',
+   '2002-09-01','2005-03-31','0',now(),now());
 /*!40000 ALTER TABLE `t_user_work_history` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
---
--- Table structure for table `t_user_work_description`
---
-
-DROP TABLE IF EXISTS `t_user_work_description`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_user_work_description` (
-  `id`          int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
-  `work_id`     int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Work ID',
-  `description` text    COLLATE utf8_unicode_ci NOT NULL COMMENT'Description',
-  `delete_flg`  char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
-  `created_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
-  `updated_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Work Description Table';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
-
-
-
-
 
 
 --
