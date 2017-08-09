@@ -74,11 +74,11 @@ var loginAPITests = []LoginAPITest{
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginHeaders, "", nil}, "", ""},
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginHeaders, "", nil}, "hiro", ""},
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginHeaders, "", nil}, "wrong", "something"},
-	{TableTest{"/api/auth/login", http.StatusNotFound, "GET", loginHeaders, "", nil}, "aaaa1@test.jp", "password"},
-	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", nil, "", nil}, "aaaa1@test.jp", "password"},
-	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginWrongHeaders, "", nil}, "aaaa1@test.jp", "password"},
-	{TableTest{"/api/auth/login", http.StatusUnauthorized, "POST", loginHeaders, "", nil}, "aaaa1@test.jp", "wrongpassword"},
-	{TableTest{"/api/auth/login", http.StatusOK, "POST", loginHeaders, "", nil}, "aaaa1@test.jp", "password"},
+	{TableTest{"/api/auth/login", http.StatusNotFound, "GET", loginHeaders, "", nil}, "hiroki@goa.com", "password"},
+	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", nil, "", nil}, "hiroki@goa.com", "password"},
+	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginWrongHeaders, "", nil}, "hiroki@goa.com", "password"},
+	{TableTest{"/api/auth/login", http.StatusUnauthorized, "POST", loginHeaders, "", nil}, "hiroki@goa.com", "wrongpassword"},
+	{TableTest{"/api/auth/login", http.StatusOK, "POST", loginHeaders, "", nil}, "hiroki@goa.com", "password"},
 }
 
 type UserAPITest struct {

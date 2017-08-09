@@ -49,8 +49,8 @@ CREATE TABLE `t_users` (
 LOCK TABLES `t_users` WRITE;
 /*!40000 ALTER TABLE `t_users` DISABLE KEYS */;
 INSERT INTO `t_users` VALUES
-  (1,'harry1','aaaa1@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (2,'harry2','aaaa2@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (1,'hiroki','hiroki@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (2,'guest','guest@guest.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
   (3,'harry3','aaaa3@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
   (4,'harry4','aaaa4@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
   (5,'harry5','aaaa5@test.jp','02aaa55939a894316cfc3427234bf201','0',now(),now()),
@@ -86,16 +86,12 @@ CREATE TABLE `t_companies` (
 LOCK TABLES `t_companies` WRITE;
 /*!40000 ALTER TABLE `t_companies` DISABLE KEYS */;
 INSERT INTO `t_companies` VALUES
-  (1,'company01','0',now(),now()),
-  (2,'company02','0',now(),now()),
-  (3,'company03','0',now(),now()),
-  (4,'company04','0',now(),now()),
-  (5,'company05','0',now(),now()),
-  (6,'company06','0',now(),now()),
-  (7,'company07','0',now(),now()),
-  (8,'company08','0',now(),now()),
-  (9,'company09','0',now(),now()),
-  (10,'company10','0',now(),now());
+  (1,'Freelancer','0',now(),now()),
+  (2,'Hugo.events','0',now(),now()),
+  (3,'2Gears','0',now(),now()),
+  (4,'J-Stream Inc.','0',now(),now()),
+  (5,'PROTERAS Co., Ltd.','0',now(),now()),
+  (6,'JIP INFO BRIDGE Inc.','0',now(),now());
 /*!40000 ALTER TABLE `t_companies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,28 +117,235 @@ CREATE TABLE `t_company_detail` (
 LOCK TABLES `t_company_detail` WRITE;
 /*!40000 ALTER TABLE `t_company_detail` DISABLE KEYS */;
 INSERT INTO `t_company_detail` VALUES
-  (null,1,'1',110,'1-1-1 Meguro-ku Tokyo','0',now(),now()),
-  (null,1,'0',230,'somewhere','0',now(),now()),
-  (null,1,'0',229,'somewhere','0',now(),now()),
-  (null,2,'1',230,'somewhere','0',now(),now()),
-  (null,2,'0',80,'somewhere','0',now(),now()),
-  (null,3,'1',80,'somewhere','0',now(),now()),
-  (null,3,'0',155,'somewhere','0',now(),now()),
-  (null,4,'1',155,'somewhere','0',now(),now()),
-  (null,4,'0',72,'somewhere','0',now(),now()),
-  (null,4,'0',210,'somewhere','0',now(),now()),
-  (null,5,'1',72,'somewhere','0',now(),now()),
-  (null,5,'0',110,'somewhere','0',now(),now()),
-  (null,6,'1',110,'somewhere','0',now(),now()),
-  (null,6,'0',80,'somewhere','0',now(),now()),
-  (null,7,'1',230,'somewhere','0',now(),now()),
-  (null,7,'0',110,'somewhere','0',now(),now()),
-  (null,7,'0',229,'somewhere','0',now(),now()),
-  (null,8,'1',80,'somewhere','0',now(),now()),
-  (null,9,'1',80,'somewhere','0',now(),now()),
-  (null,10,'1',229,'somewhere','0',now(),now());
+  (null,1,'1',110,'','0',now(),now()),
+  (null,1,'0',155,'','0',now(),now()),
+  (null,1,'0',80,'','0',now(),now()),
+  (null,2,'1',155,'Keienbergweg 97 1101 GG Amsterdam','0',now(),now()),
+  (null,3,'1',128,'17, Boulevard Prince Henri L-1724','0',now(),now()),
+  (null,3,'0',155,'Molslaan 111 NL-2611 RK Delft','0',now(),now()),
+  (null,4,'1',110,'東京都港区芝二丁目5-6 芝256スクエアビル6階','0',now(),now()),
+  (null,5,'1',110,'東京都港区赤坂4-13-13 赤坂ビル4F','0',now(),now()),
+  (null,6,'1',110,'東京都江東区東陽2-4-24','0',now(),now());
 /*!40000 ALTER TABLE `t_company_detail` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+--
+-- Table structure for table `t_techs`
+--
+
+DROP TABLE IF EXISTS `t_techs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_techs` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'Tech ID',
+  `name`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech Name',
+  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tech Table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+LOCK TABLES `t_techs` WRITE;
+/*!40000 ALTER TABLE `t_techs` DISABLE KEYS */;
+INSERT INTO `t_techs` VALUES
+  (1,'Golang','0',now(),now()),
+  (2,'Golang with goa','0',now(),now()),
+  (3,'PHP5','0',now(),now()),
+  (4,'PHP7','0',now(),now()),
+  (5,'PHP7 with Laravel','0',now(),now()),
+  (6,'PHP (HACK)','0',now(),now()),
+  (7,'Node.js','0',now(),now()),
+  (9,'Python2.7','0',now(),now()),
+  (10,'Python','0',now(),now()),
+  (11,'Django','0',now(),now()),
+  (12,'Ruby','0',now(),now()),
+  (13,'C','0',now(),now()),
+  (14,'C++','0',now(),now()),
+  (15,'Cocos-2dx','0',now(),now()),
+  (16,'Flash','0',now(),now()),
+  (17,'Flash(ActionScript)','0',now(),now()),
+  (18,'ActionScript','0',now(),now()),
+  (19,'ActionScript3.0','0',now(),now()),
+  (20,'SilverLight with C#','0',now(),now()),
+  (21,'OpenCV','0',now(),now()),
+  (22,'openFrameworks','0',now(),now()),
+  (23,'Bash','0',now(),now()),
+  (24,'ASP.NET(C#)','0',now(),now()),
+  (25,'Microsoft .NET','0',now(),now()),
+  (26,'VB','0',now(),now()),
+  (27,'Java','0',now(),now()),
+  (30,'Javascript','0',now(),now()),
+  (31,'ES6','0',now(),now()),
+  (32,'React','0',now(),now()),
+  (33,'Riot.js','0',now(),now()),
+  (34,'Ext JS','0',now(),now()),
+  (35,'TypeScript','0',now(),now()),
+  (36,'CoffeeScript','0',now(),now()),
+  (37,'HTML5','0',now(),now()),
+  (38,'HTML5 (Canvas, CSS3)','0',now(),now()),
+  (39,'Semantic UI','0',now(),now()),
+  (50,'MySQL','0',now(),now()),
+  (51,'PostgreSQL','0',now(),now()),
+  (52,'MongoDB','0',now(),now()),
+  (53,'Redis','0',now(),now()),
+  (54,'memcached','0',now(),now()),
+  (55,'SQL Server2005','0',now(),now()),
+  (56,'SQL Server2008','0',now(),now()),
+  (60,'Nginx','0',now(),now()),
+  (61,'Apache','0',now(),now()),
+  (62,'IIS','0',now(),now()),
+  (70,'Docker','0',now(),now()),
+  (71,'Vagrant','0',now(),now()),
+  (72,'Travis-CI','0',now(),now()),
+  (73,'Jenkins','0',now(),now()),
+  (74,'Fabric','0',now(),now()),
+  (80,'HEROKU','0',now(),now()),
+  (81,'GCP','0',now(),now()),
+  (82,'AWS','0',now(),now()),
+  (83,'AWS RDS','0',now(),now()),
+  (84,'AWS SQS','0',now(),now()),
+  (85,'AWS DynamoDB','0',now(),now()),
+  (86,'AWS ElastiCache','0',now(),now()),
+  (87,'AWS lambda','0',now(),now()),
+  (100,'DRM','0',now(),now()),
+  (101,'Microservice architecture','0',now(),now()),
+  (102,'DevOps','0',now(),now()),
+  (110,'JIRA','0',now(),now());
+/*!40000 ALTER TABLE `t_techs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `t_user_like_tech`
+--
+
+DROP TABLE IF EXISTS `t_user_like_techs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_user_like_techs` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
+  `user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
+  `tech_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech ID',
+  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Like Tech Table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+LOCK TABLES `t_user_like_techs` WRITE;
+/*!40000 ALTER TABLE `t_user_like_techs` DISABLE KEYS */;
+INSERT INTO `t_user_like_techs` VALUES
+  (null,1,1,'0',now(),now()),
+  (null,1,10,'0',now(),now()),
+  (null,1,32,'0',now(),now()),
+  (null,1,70,'0',now(),now()),
+  (null,1,101,'0',now(),now()),
+  (null,1,102,'0',now(),now());
+/*!40000 ALTER TABLE `t_user_like_techs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `t_user_dislike_tech`
+--
+
+DROP TABLE IF EXISTS `t_user_dislike_tech`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_user_dislike_tech` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
+  `user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
+  `tech_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech ID',
+  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Dislike Tech Table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+LOCK TABLES `t_user_dislike_tech` WRITE;
+/*!40000 ALTER TABLE `t_user_dislike_tech` DISABLE KEYS */;
+INSERT INTO `t_user_dislike_tech` VALUES
+  (null,1,25,'0',now(),now()),
+  (null,1,12,'0',now(),now()),
+  (null,1,26,'0',now(),now());
+/*!40000 ALTER TABLE `t_user_dislike_tech` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `t_user_work_history`
+--
+
+DROP TABLE IF EXISTS `t_user_work_history`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_user_work_history` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
+  `user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
+  `company_branch_id`  int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company Branch ID',
+  `title`      varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Title',
+  `started_at` date DEFAULT NULL COMMENT'Started Date',
+  `ended_at`   date DEFAULT NULL COMMENT'Ended Date',
+  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Work History Table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+LOCK TABLES `t_user_work_history` WRITE;
+/*!40000 ALTER TABLE `t_user_work_history` DISABLE KEYS */;
+INSERT INTO `t_user_work_history` VALUES
+  (null,1,2,'Developer for this resume site','2017-07-16','2017-08-08','0',now(),now()),
+  (null,1,6,'Full Stack Engineer','2016-12-20','2017-07-15','0',now(),now()),
+  (null,1,4,'Full Stack Engineer','2016-10-19','2017-11-30','0',now(),now()),
+  (null,1,1,'Golang and React(ES6) programmer','2016-07-01','2017-09-30','0',now(),now()),
+  (null,1,1,'Golang and PHP (HACK) programmer','2015-10-01','2016-06-30','0',now(),now()),
+  (null,1,1,'Python programmer','2015-04-01','2015-09-30','0',now(),now()),
+  (null,1,1,'Front-End Engineer','2011-11-01','2013-12-31','0',now(),now()),
+  (null,1,1,'Application Engineer','2010-09-01','2011-10-31','0',now(),now()),
+  (null,1,1,'Application Engineer','2011-02-01','2011-04-30','0',now(),now()),
+  (null,1,1,'PHP Programmer','2010-07-01','2010-08-31','0',now(),now()),
+  (null,1,1,'ActionScript3.0 and PHP Programmer','2010-01-15','2010-06-30','0',now(),now()),
+  (null,1,1,'ASP.NET Programmer','2009-01-01','2009-11-30','0',now(),now()),
+  (null,1,7,'Application Engineer','2007-01-01','2008-12-31','0',now(),now()),
+  (null,1,8,'Application Engineer','2005-04-01','2006-11-30','0',now(),now()),
+  (null,1,9,'Junior Software Engineer','2002-09-01','2005-03-31','0',now(),now());
+/*!40000 ALTER TABLE `t_user_work_history` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `t_user_work_description`
+--
+
+DROP TABLE IF EXISTS `t_user_work_description`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t_user_work_description` (
+  `id`          int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
+  `work_id`     int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Work ID',
+  `description` text    COLLATE utf8_unicode_ci NOT NULL COMMENT'Description',
+  `delete_flg`  char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `created_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+  `updated_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Work Description Table';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+
+
+
 
 
 --
