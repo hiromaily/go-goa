@@ -15,6 +15,7 @@ import (
 	"strings"
 	"testing"
 	"time"
+	"flag"
 
 	"github.com/hiromaily/go-goa/goa/client"
 	lg "github.com/hiromaily/golibs/log"
@@ -22,6 +23,10 @@ import (
 )
 
 const SERVER_HOST = "http://localhost:8080"
+const HEALTH_CHECK = "/api/_ah/health"
+var (
+	health = flag.Int("health", 0, "number of health check")
+)
 
 //These struct were copied from ./goa/app/contexts.go
 type loginAuthPayload struct {
@@ -157,10 +162,16 @@ var companyDetailAPITests = []CompanyDetailAPITest{
 //-----------------------------------------------------------------------------
 // Initialize
 func init() {
+	//command-line
+	flag.Parse()
+
 	lg.InitializeLog(lg.DebugStatus, lg.LogOff, 99, "[GoGOA]", "/var/log/go/test.log")
 }
 
 func setup() {
+	if *health != 0{
+		checkHealth()
+	}
 }
 
 func teardown() {
@@ -193,6 +204,18 @@ func convertJson(model interface{}) ([]byte, error) {
 	//fmt.Println("[Debug] Json Data:", string(data))
 
 	return data, nil
+}
+
+func checkHealth(){
+	for i := 0; i < *health; i++ {
+		_, _, _, err := sendRequest(SERVER_HOST+HEALTH_CHECK, "GET", nil, nil)
+		if err == nil{
+			return
+		}
+		//sleep
+		time.Sleep(2 * time.Second)
+	}
+	panic("Web Server doesn't work yet.")
 }
 
 //-----------------------------------------------------------------------------

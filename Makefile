@@ -189,6 +189,7 @@ clnok:
 gotest:
 	go test -v ext/cmd/*.go
 	#go test -v ext/cmd/*.go -f ${TOMLPATH}
+	#go test -v ext/cmd/main_test.go -health 10
 
 gotest1:
 	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestUserAPIOnTable"
