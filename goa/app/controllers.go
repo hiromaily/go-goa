@@ -656,6 +656,62 @@ func unmarshalUpdateUserHyUserPayload(ctx context.Context, service *goa.Service,
 	return nil
 }
 
+// HyUserWorkHistoryController is the controller interface for the HyUserWorkHistory actions.
+type HyUserWorkHistoryController interface {
+	goa.Muxer
+	GetUserWorkHistory(*GetUserWorkHistoryHyUserWorkHistoryContext) error
+}
+
+// MountHyUserWorkHistoryController "mounts" a HyUserWorkHistory resource controller on the given service.
+func MountHyUserWorkHistoryController(service *goa.Service, ctrl HyUserWorkHistoryController) {
+	initService(service)
+	var h goa.Handler
+	service.Mux.Handle("OPTIONS", "/api/user/:userID/workhistory", ctrl.MuxHandler("preflight", handleHyUserWorkHistoryOrigin(cors.HandlePreflight()), nil))
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		// Check if there was an error loading the request
+		if err := goa.ContextError(ctx); err != nil {
+			return err
+		}
+		// Build the context
+		rctx, err := NewGetUserWorkHistoryHyUserWorkHistoryContext(ctx, req, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.GetUserWorkHistory(rctx)
+	}
+	h = handleSecurity("jwt", h, "api:access")
+	h = handleHyUserWorkHistoryOrigin(h)
+	service.Mux.Handle("GET", "/api/user/:userID/workhistory", ctrl.MuxHandler("GetUserWorkHistory", h, nil))
+	service.LogInfo("mount", "ctrl", "HyUserWorkHistory", "action", "GetUserWorkHistory", "route", "GET /api/user/:userID/workhistory", "security", "jwt")
+}
+
+// handleHyUserWorkHistoryOrigin applies the CORS response headers corresponding to the origin.
+func handleHyUserWorkHistoryOrigin(h goa.Handler) goa.Handler {
+
+	return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		origin := req.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			return h(ctx, rw, req)
+		}
+		if cors.MatchOrigin(origin, "http://swagger.goa.design") {
+			ctx = goa.WithLogContext(ctx, "origin", origin)
+			rw.Header().Set("Access-Control-Allow-Origin", origin)
+			rw.Header().Set("Vary", "Origin")
+			rw.Header().Set("Access-Control-Max-Age", "600")
+			rw.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := req.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				rw.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+			}
+			return h(ctx, rw, req)
+		}
+
+		return h(ctx, rw, req)
+	}
+}
+
 // HyUsertechController is the controller interface for the HyUsertech actions.
 type HyUsertechController interface {
 	goa.Muxer

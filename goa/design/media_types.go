@@ -128,6 +128,57 @@ var UserTech = MediaType("application/vnd.usertech+json", func() {
 })
 
 //-----------------------------------------------------------------------------
+// UserTech is the user tech resource media type.
+//-----------------------------------------------------------------------------
+var UserWorkHistory = MediaType("application/vnd.userworkhistory+json", func() {
+	// Response Description
+	Description("A user information")
+
+	ContentType("application/json")
+
+	// Reference can be used in: MediaType, Type
+	// Though set Reference, Attribute is required
+	Reference(UserWorkHistoryPayload)
+
+	//`id`          int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
+	//`user_id`     int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
+	//`company_branch_id`  int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company Branch ID',
+	//`title`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Title',
+	//`description` json NOT NULL COMMENT'Description',
+	//`started_at`  date DEFAULT NULL COMMENT'Started Date',
+	//`ended_at`    date DEFAULT NULL COMMENT'Ended Date',
+	//`delete_flg`  char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+	//`created_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
+	//`updated_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
+
+	Attributes(func() {
+		Attribute("title")
+		Attribute("company")
+		Attribute("country")
+		Attribute("term")
+		Attribute("description")
+		Attribute("techs")
+
+		//TODO:required value in media_type is given priority over resource...
+		//That means, this part would affect on Action-Payload-Required
+		//when field is zero or empty, data is not return unless it's not set in Required
+		Required("title", "company", "country")
+	})
+
+	//View defines a rendering of the media type
+	//Media types may have multiple views　(it can change response pattern)
+	//View default is for UserList, GetUser,
+	View("default", func() {
+		Attribute("title")
+		Attribute("company")
+		Attribute("country")
+		Attribute("term")
+		Attribute("description")
+		Attribute("techs")
+	})
+})
+
+//-----------------------------------------------------------------------------
 // Company is the company resource media type.
 //-----------------------------------------------------------------------------
 var Company = MediaType("application/vnd.company+json", func() {

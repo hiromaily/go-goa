@@ -191,6 +191,38 @@ var _ = Resource(resourcePrefix+"usertech", func() {
 })
 
 //-----------------------------------------------------------------------------
+// User Tech
+//-----------------------------------------------------------------------------
+var _ = Resource(resourcePrefix+"userWorkHistory", func() {
+
+	DefaultMedia(UserWorkHistory) //Response Media Type
+	BasePath("/user")
+
+	Security(JWT, func() { // Use JWT to auth requests to this endpoint
+		Scope("api:access") // Enforce presence of "api" scope in JWT claims.
+	})
+
+	//
+	Action("GetUserWorkHistory", func() {
+		Routing(
+			GET("/:userID/workhistory"),
+		)
+		Description("Retrieve user's work history.")
+
+		// Params is for get parameter
+		Params(func() {
+			Param("userID", Integer, "User ID", func() {
+				Minimum(1)
+			})
+		})
+		Response(OK, CollectionOf(UserWorkHistory)) //multiple response
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+	})
+
+})
+
+//-----------------------------------------------------------------------------
 // Company
 //-----------------------------------------------------------------------------
 var _ = Resource(resourcePrefix+"company", func() {

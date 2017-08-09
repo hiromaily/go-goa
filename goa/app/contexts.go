@@ -1595,6 +1595,59 @@ func (ctx *UserListHyUserContext) BadRequest(r error) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
 }
 
+// GetUserWorkHistoryHyUserWorkHistoryContext provides the hy_userWorkHistory GetUserWorkHistory action context.
+type GetUserWorkHistoryHyUserWorkHistoryContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	UserID int
+}
+
+// NewGetUserWorkHistoryHyUserWorkHistoryContext parses the incoming request URL and body, performs validations and creates the
+// context used by the hy_userWorkHistory controller GetUserWorkHistory action.
+func NewGetUserWorkHistoryHyUserWorkHistoryContext(ctx context.Context, r *http.Request, service *goa.Service) (*GetUserWorkHistoryHyUserWorkHistoryContext, error) {
+	var err error
+	resp := goa.ContextResponse(ctx)
+	resp.Service = service
+	req := goa.ContextRequest(ctx)
+	req.Request = r
+	rctx := GetUserWorkHistoryHyUserWorkHistoryContext{Context: ctx, ResponseData: resp, RequestData: req}
+	paramUserID := req.Params["userID"]
+	if len(paramUserID) > 0 {
+		rawUserID := paramUserID[0]
+		if userID, err2 := strconv.Atoi(rawUserID); err2 == nil {
+			rctx.UserID = userID
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("userID", rawUserID, "integer"))
+		}
+		if rctx.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`userID`, rctx.UserID, 1, true))
+		}
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *GetUserWorkHistoryHyUserWorkHistoryContext) OK(r UserworkhistoryCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.userworkhistory+json; type=collection")
+	if r == nil {
+		r = UserworkhistoryCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// BadRequest sends a HTTP response with status code 400.
+func (ctx *GetUserWorkHistoryHyUserWorkHistoryContext) BadRequest(r error) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
+	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *GetUserWorkHistoryHyUserWorkHistoryContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
 // GetUserDislikeTechHyUsertechContext provides the hy_usertech GetUserDislikeTech action context.
 type GetUserDislikeTechHyUsertechContext struct {
 	context.Context

@@ -125,6 +125,11 @@ var userTechTests = []TableTest{
 	{"/api/user/1/disliketech", http.StatusUnauthorized, "GET", nil, "", nil},
 }
 
+var userWorkHistoryTests = []TableTest{
+	{"/api/user/1/workhistory", http.StatusOK, "GET", jwtHeaders, "", nil},
+	{"/api/user/999/workhistory", http.StatusNotFound, "GET", jwtHeaders, "", nil},
+	{"/api/user/1/workhistory", http.StatusUnauthorized, "GET", nil, "", nil},
+}
 
 type CompanyAPITest struct {
 	TableTest
@@ -487,6 +492,18 @@ func TestUserAPIOnTable(t *testing.T) {
 
 func TestGetUserTechOnTable(t *testing.T) {
 	for i, tt := range userTechTests {
+		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
+
+		//send request
+		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, nil, tt.headers)
+		checkError(t, err, code, header, tt, i+1)
+
+		fmt.Println("[Debug] body:", string(body))
+	}
+}
+
+func TestGetUserWorkHistoryOnTable(t *testing.T) {
+	for i, tt := range userWorkHistoryTests {
 		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
 
 		//send request

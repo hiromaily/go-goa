@@ -469,3 +469,149 @@ func (ut *UserTechPayload) Validate() (err error) {
 	}
 	return
 }
+
+// userWorkHistoryPayload user type.
+type userWorkHistoryPayload struct {
+	// Company name
+	Company *string `form:"company,omitempty" json:"company,omitempty" xml:"company,omitempty"`
+	// Country code
+	Country *string `form:"country,omitempty" json:"country,omitempty" xml:"country,omitempty"`
+	// job description
+	Description *interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// used techs
+	Techs *interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
+	// worked period
+	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
+	// Job Title
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+}
+
+// Validate validates the userWorkHistoryPayload type instance.
+func (ut *userWorkHistoryPayload) Validate() (err error) {
+	if ut.Company != nil {
+		if utf8.RuneCountInString(*ut.Company) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.company`, *ut.Company, utf8.RuneCountInString(*ut.Company), 2, true))
+		}
+	}
+	if ut.Company != nil {
+		if utf8.RuneCountInString(*ut.Company) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.company`, *ut.Company, utf8.RuneCountInString(*ut.Company), 40, false))
+		}
+	}
+	if ut.Country != nil {
+		if utf8.RuneCountInString(*ut.Country) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.country`, *ut.Country, utf8.RuneCountInString(*ut.Country), 2, true))
+		}
+	}
+	if ut.Country != nil {
+		if utf8.RuneCountInString(*ut.Country) > 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.country`, *ut.Country, utf8.RuneCountInString(*ut.Country), 2, false))
+		}
+	}
+	if ut.Term != nil {
+		if utf8.RuneCountInString(*ut.Term) < 10 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.term`, *ut.Term, utf8.RuneCountInString(*ut.Term), 10, true))
+		}
+	}
+	if ut.Term != nil {
+		if utf8.RuneCountInString(*ut.Term) > 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.term`, *ut.Term, utf8.RuneCountInString(*ut.Term), 20, false))
+		}
+	}
+	if ut.Title != nil {
+		if utf8.RuneCountInString(*ut.Title) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.title`, *ut.Title, utf8.RuneCountInString(*ut.Title), 2, true))
+		}
+	}
+	if ut.Title != nil {
+		if utf8.RuneCountInString(*ut.Title) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`request.title`, *ut.Title, utf8.RuneCountInString(*ut.Title), 40, false))
+		}
+	}
+	return
+}
+
+// Publicize creates UserWorkHistoryPayload from userWorkHistoryPayload
+func (ut *userWorkHistoryPayload) Publicize() *UserWorkHistoryPayload {
+	var pub UserWorkHistoryPayload
+	if ut.Company != nil {
+		pub.Company = ut.Company
+	}
+	if ut.Country != nil {
+		pub.Country = ut.Country
+	}
+	if ut.Description != nil {
+		pub.Description = ut.Description
+	}
+	if ut.Techs != nil {
+		pub.Techs = ut.Techs
+	}
+	if ut.Term != nil {
+		pub.Term = ut.Term
+	}
+	if ut.Title != nil {
+		pub.Title = ut.Title
+	}
+	return &pub
+}
+
+// UserWorkHistoryPayload user type.
+type UserWorkHistoryPayload struct {
+	// Company name
+	Company *string `form:"company,omitempty" json:"company,omitempty" xml:"company,omitempty"`
+	// Country code
+	Country *string `form:"country,omitempty" json:"country,omitempty" xml:"country,omitempty"`
+	// job description
+	Description *interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// used techs
+	Techs *interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
+	// worked period
+	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
+	// Job Title
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+}
+
+// Validate validates the UserWorkHistoryPayload type instance.
+func (ut *UserWorkHistoryPayload) Validate() (err error) {
+	if ut.Company != nil {
+		if utf8.RuneCountInString(*ut.Company) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.company`, *ut.Company, utf8.RuneCountInString(*ut.Company), 2, true))
+		}
+	}
+	if ut.Company != nil {
+		if utf8.RuneCountInString(*ut.Company) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.company`, *ut.Company, utf8.RuneCountInString(*ut.Company), 40, false))
+		}
+	}
+	if ut.Country != nil {
+		if utf8.RuneCountInString(*ut.Country) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.country`, *ut.Country, utf8.RuneCountInString(*ut.Country), 2, true))
+		}
+	}
+	if ut.Country != nil {
+		if utf8.RuneCountInString(*ut.Country) > 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.country`, *ut.Country, utf8.RuneCountInString(*ut.Country), 2, false))
+		}
+	}
+	if ut.Term != nil {
+		if utf8.RuneCountInString(*ut.Term) < 10 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.term`, *ut.Term, utf8.RuneCountInString(*ut.Term), 10, true))
+		}
+	}
+	if ut.Term != nil {
+		if utf8.RuneCountInString(*ut.Term) > 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.term`, *ut.Term, utf8.RuneCountInString(*ut.Term), 20, false))
+		}
+	}
+	if ut.Title != nil {
+		if utf8.RuneCountInString(*ut.Title) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.title`, *ut.Title, utf8.RuneCountInString(*ut.Title), 2, true))
+		}
+	}
+	if ut.Title != nil {
+		if utf8.RuneCountInString(*ut.Title) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`type.title`, *ut.Title, utf8.RuneCountInString(*ut.Title), 40, false))
+		}
+	}
+	return
+}

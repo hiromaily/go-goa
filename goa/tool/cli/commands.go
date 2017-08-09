@@ -143,6 +143,13 @@ type (
 		PrettyPrint bool
 	}
 
+	// GetUserWorkHistoryHyUserWorkHistoryCommand is the command line data structure for the GetUserWorkHistory action of hy_userWorkHistory
+	GetUserWorkHistoryHyUserWorkHistoryCommand struct {
+		// User ID
+		UserID      int
+		PrettyPrint bool
+	}
+
 	// GetUserDislikeTechHyUsertechCommand is the command line data structure for the GetUserDislikeTech action of hy_usertech
 	GetUserDislikeTechHyUsertechCommand struct {
 		// User ID
@@ -362,12 +369,12 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "health",
-		Short: `Perform health check.`,
+		Use:   "get-user-work-history",
+		Short: `Retrieve user's work history.`,
 	}
-	tmp13 := new(HealthHealthCommand)
+	tmp13 := new(GetUserWorkHistoryHyUserWorkHistoryCommand)
 	sub = &cobra.Command{
-		Use:   `health ["/api/_ah/health"]`,
+		Use:   `hy-user-work-history ["/api/user/USERID/workhistory"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp13.Run(c, args) },
 	}
@@ -376,10 +383,24 @@ Payload example:
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
+		Use:   "health",
+		Short: `Perform health check.`,
+	}
+	tmp14 := new(HealthHealthCommand)
+	sub = &cobra.Command{
+		Use:   `health ["/api/_ah/health"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp14.Run(c, args) },
+	}
+	tmp14.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp14.PrettyPrint, "pp", false, "Pretty print response body")
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
 		Use:   "login",
 		Short: `user login`,
 	}
-	tmp14 := new(LoginAuthCommand)
+	tmp15 := new(LoginAuthCommand)
 	sub = &cobra.Command{
 		Use:   `auth ["/api/auth/login"]`,
 		Short: `This resource uses JWT to secure its endpoints`,
@@ -391,17 +412,17 @@ Payload example:
    "email": "hy@gmail.com",
    "password": "xxxxxxxx"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp14.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp15.Run(c, args) },
 	}
-	tmp14.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp14.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp15.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp15.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-company",
 		Short: `Change company properties`,
 	}
-	tmp15 := new(UpdateCompanyHyCompanyCommand)
+	tmp16 := new(UpdateCompanyHyCompanyCommand)
 	sub = &cobra.Command{
 		Use:   `hy-company ["/api/company/COMPANYID"]`,
 		Short: ``,
@@ -414,17 +435,17 @@ Payload example:
    "country_id": 110,
    "name": "Company"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp15.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp16.Run(c, args) },
 	}
-	tmp15.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp15.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp16.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp16.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-company-branch",
 		Short: `Change company branch properties`,
 	}
-	tmp16 := new(UpdateCompanyBranchHyCompanybranchCommand)
+	tmp17 := new(UpdateCompanyBranchHyCompanybranchCommand)
 	sub = &cobra.Command{
 		Use:   `hy-companybranch ["/api/company/branch/ID"]`,
 		Short: ``,
@@ -436,17 +457,17 @@ Payload example:
    "address": "Shinagawa Tokyo",
    "country_id": 110
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp16.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp17.Run(c, args) },
 	}
-	tmp16.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp16.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp17.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp17.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "update-user",
 		Short: `Change user properties`,
 	}
-	tmp17 := new(UpdateUserHyUserCommand)
+	tmp18 := new(UpdateUserHyUserCommand)
 	sub = &cobra.Command{
 		Use:   `hy-user ["/api/user/USERID"]`,
 		Short: ``,
@@ -459,24 +480,24 @@ Payload example:
    "password": "xxxxxxxx",
    "user_name": "Hiroki"
 }`,
-		RunE: func(cmd *cobra.Command, args []string) error { return tmp17.Run(c, args) },
+		RunE: func(cmd *cobra.Command, args []string) error { return tmp18.Run(c, args) },
 	}
-	tmp17.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp17.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp18.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp18.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "user-list",
 		Short: `Retrieve all users.`,
 	}
-	tmp18 := new(UserListHyUserCommand)
+	tmp19 := new(UserListHyUserCommand)
 	sub = &cobra.Command{
 		Use:   `hy-user ["/api/user"]`,
 		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp18.Run(c, args) },
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp19.Run(c, args) },
 	}
-	tmp18.RegisterFlags(sub, c)
-	sub.PersistentFlags().BoolVar(&tmp18.PrettyPrint, "pp", false, "Pretty print response body")
+	tmp19.RegisterFlags(sub, c)
+	sub.PersistentFlags().BoolVar(&tmp19.PrettyPrint, "pp", false, "Pretty print response body")
 	command.AddCommand(sub)
 	app.AddCommand(command)
 
@@ -1167,6 +1188,32 @@ func (cmd *UserListHyUserCommand) Run(c *client.Client, args []string) error {
 
 // RegisterFlags registers the command flags with the command line.
 func (cmd *UserListHyUserCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+}
+
+// Run makes the HTTP request corresponding to the GetUserWorkHistoryHyUserWorkHistoryCommand command.
+func (cmd *GetUserWorkHistoryHyUserWorkHistoryCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/api/user/%v/workhistory", cmd.UserID)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.GetUserWorkHistoryHyUserWorkHistory(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, cmd.PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *GetUserWorkHistoryHyUserWorkHistoryCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var userID int
+	cc.Flags().IntVar(&cmd.UserID, "userID", userID, `User ID`)
 }
 
 // Run makes the HTTP request corresponding to the GetUserDislikeTechHyUsertechCommand command.

@@ -1,9 +1,9 @@
 package models
 
 import (
+	"fmt"
 	"github.com/hiromaily/go-goa/goa/app"
 	"github.com/hiromaily/golibs/db/gorm"
-	"fmt"
 )
 
 // User is user object in Database

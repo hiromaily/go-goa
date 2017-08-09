@@ -68,6 +68,12 @@ definitions:
       hq_flg: Nisi dolorum.
       id: 10
       name: Sunt cum aut blanditiis accusantium.
+    - address: Culpa voluptatem ullam.
+      company_id: 10
+      country_name: Sit dolor neque nulla.
+      hq_flg: Nisi dolorum.
+      id: 10
+      name: Sunt cum aut blanditiis accusantium.
     items:
       $ref: '#/definitions/Company'
     title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
@@ -323,11 +329,83 @@ definitions:
       tech_name: Golang
     - id: 10
       tech_name: Golang
-    - id: 10
-      tech_name: Golang
     items:
       $ref: '#/definitions/Usertech'
     title: 'Mediatype identifier: application/vnd.usertech+json; type=collection;
+      view=default'
+    type: array
+  Userworkhistory:
+    description: A user information (default view)
+    example:
+      company: Company
+      country: nl
+      description: '["Developed resume site for job seeking."]'
+      techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+      term: Jul 2017 - Aug 2017
+      title: Developer
+    properties:
+      company:
+        description: Company name
+        example: Company
+        maxLength: 40
+        minLength: 2
+        type: string
+      country:
+        description: Country code
+        example: nl
+        maxLength: 2
+        minLength: 2
+        type: string
+      description:
+        description: job description
+        example: '["Developed resume site for job seeking."]'
+      techs:
+        description: used techs
+        example: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker",
+          "Travis-CI"]'
+      term:
+        description: worked period
+        example: Jul 2017 - Aug 2017
+        maxLength: 20
+        minLength: 10
+        type: string
+      title:
+        description: Job Title
+        example: Developer
+        maxLength: 40
+        minLength: 2
+        type: string
+    required:
+    - title
+    - company
+    - country
+    title: 'Mediatype identifier: application/vnd.userworkhistory+json; view=default'
+    type: object
+  UserworkhistoryCollection:
+    description: UserworkhistoryCollection is the media type for an array of Userworkhistory
+      (default view)
+    example:
+    - company: Company
+      country: nl
+      description: '["Developed resume site for job seeking."]'
+      techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+      term: Jul 2017 - Aug 2017
+      title: Developer
+    - company: Company
+      country: nl
+      description: '["Developed resume site for job seeking."]'
+      techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+      term: Jul 2017 - Aug 2017
+      title: Developer
+    - company: Company
+      country: nl
+      description: '["Developed resume site for job seeking."]'
+      techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+      term: Jul 2017 - Aug 2017
+      title: Developer
+    items:
+      $ref: '#/definitions/Userworkhistory'
+    title: 'Mediatype identifier: application/vnd.userworkhistory+json; type=collection;
       view=default'
     type: array
   error:
@@ -1027,6 +1105,43 @@ paths:
       summary: GetUserLikeTech hy_usertech
       tags:
       - hy_usertech
+  /api/user/{userID}/workhistory:
+    get:
+      description: |-
+        Retrieve user's work history.
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_userWorkHistory#GetUserWorkHistory
+      parameters:
+      - description: User ID
+        in: path
+        minimum: 1
+        name: userID
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.userworkhistory+json; type=collection
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/UserworkhistoryCollection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: GetUserWorkHistory hy_userWorkHistory
+      tags:
+      - hy_userWorkHistory
   /swagger-ui/{filepath}:
     get:
       operationId: public#/swagger-ui/*filepath

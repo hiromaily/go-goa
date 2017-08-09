@@ -125,6 +125,8 @@ aftergen:
 	mv -f ./resources/tmp/tmp.go ./goa/hy_companybranch.go
 	sed -e "1s/main/goa/" ./goa/hy_usertech.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/hy_usertech.go
+	sed -e "1s/main/goa/" ./goa/hy_user_work_history.go >> ./resources/tmp/tmp.go
+	mv -f ./resources/tmp/tmp.go ./goa/hy_user_work_history.go
 
 genfull: gencln aftergen
 
@@ -204,6 +206,9 @@ gotest3:
 
 gotest4:
 	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestGetUserTechOnTable"
+
+gotest5:
+	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestGetUserWorkHistoryOnTable"
 
 ###############################################################################
 # httpie

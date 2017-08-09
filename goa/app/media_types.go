@@ -378,3 +378,80 @@ func (mt UsertechTechCollection) Validate() (err error) {
 	}
 	return
 }
+
+// A user information (default view)
+//
+// Identifier: application/vnd.userworkhistory+json; view=default
+type Userworkhistory struct {
+	// Company name
+	Company string `form:"company" json:"company" xml:"company"`
+	// Country code
+	Country string `form:"country" json:"country" xml:"country"`
+	// job description
+	Description *interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	// used techs
+	Techs *interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
+	// worked period
+	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
+	// Job Title
+	Title string `form:"title" json:"title" xml:"title"`
+}
+
+// Validate validates the Userworkhistory media type instance.
+func (mt *Userworkhistory) Validate() (err error) {
+	if mt.Title == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "title"))
+	}
+	if mt.Company == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "company"))
+	}
+	if mt.Country == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "country"))
+	}
+	if utf8.RuneCountInString(mt.Company) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.company`, mt.Company, utf8.RuneCountInString(mt.Company), 2, true))
+	}
+	if utf8.RuneCountInString(mt.Company) > 40 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.company`, mt.Company, utf8.RuneCountInString(mt.Company), 40, false))
+	}
+	if utf8.RuneCountInString(mt.Country) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.country`, mt.Country, utf8.RuneCountInString(mt.Country), 2, true))
+	}
+	if utf8.RuneCountInString(mt.Country) > 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.country`, mt.Country, utf8.RuneCountInString(mt.Country), 2, false))
+	}
+	if mt.Term != nil {
+		if utf8.RuneCountInString(*mt.Term) < 10 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.term`, *mt.Term, utf8.RuneCountInString(*mt.Term), 10, true))
+		}
+	}
+	if mt.Term != nil {
+		if utf8.RuneCountInString(*mt.Term) > 20 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError(`response.term`, *mt.Term, utf8.RuneCountInString(*mt.Term), 20, false))
+		}
+	}
+	if utf8.RuneCountInString(mt.Title) < 2 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.title`, mt.Title, utf8.RuneCountInString(mt.Title), 2, true))
+	}
+	if utf8.RuneCountInString(mt.Title) > 40 {
+		err = goa.MergeErrors(err, goa.InvalidLengthError(`response.title`, mt.Title, utf8.RuneCountInString(mt.Title), 40, false))
+	}
+	return
+}
+
+// UserworkhistoryCollection is the media type for an array of Userworkhistory (default view)
+//
+// Identifier: application/vnd.userworkhistory+json; type=collection; view=default
+type UserworkhistoryCollection []*Userworkhistory
+
+// Validate validates the UserworkhistoryCollection media type instance.
+func (mt UserworkhistoryCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
