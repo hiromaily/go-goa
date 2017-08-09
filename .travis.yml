@@ -15,7 +15,7 @@ before_install:
   #- go get golang.org/x/tools/cmd/cover
 
 before_script:
-  - sleep 10
+  - sleep 20
 
 script:
   - docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
