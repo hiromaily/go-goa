@@ -1,57 +1,12 @@
 ###############################################################################
-# MySQL
+# From Base
 ###############################################################################
-FROM mysql:5.7
-
-COPY ./docker/mysql/conf.d /etc/mysql/conf.d
-COPY ./docker/mysql/init.d /docker-entrypoint-initdb.d
-
-ENV MYSQL_ROOT_PASSWORD=root
-ENV MYSQL_DATABASE=hiromaily
-ENV MYSQL_USER=hiromaily
-ENV MYSQL_PASSWORD=12345678
-
-VOLUME /var/lib/mysql
-
-###############################################################################
-# Golang
-###############################################################################
-# gcc for cgo
-RUN apt-get update && apt-get install -y --no-install-recommends \
-		g++ \
-		gcc \
-		libc6-dev \
-		make \
-		pkg-config \
-		wget \
-		git \
-		ca-certificates \
-	&& rm -rf /var/lib/apt/lists/*
-
-ENV GOLANG_VERSION 1.8.3
-
-# Golang
-COPY ./docker/golang/go1.8.3.linux-amd64.tar.gz /tmp
-WORKDIR /tmp
-RUN tar xvf go1.8.3.linux-amd64.tar.gz && mv go /usr/local
-
-
-RUN	export PATH="/usr/local/go/bin:$PATH"; \
-go version
-
-
-ENV GOPATH /go
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-
-RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" "$GOPATH/src/github.com/hiromaily" && chmod -R 777 "$GOPATH"
-WORKDIR $GOPATH
+FROM hirokiy/goapack:latest
 
 
 ###############################################################################
 ## Goa framework
 ###############################################################################
-RUN git config --global http.sslVerify false
-#RUN git config --system --unset http.proxy
 
 RUN go get -u github.com/hiromaily/go-goa/...
 

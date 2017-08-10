@@ -267,7 +267,11 @@ heroku_remove:
 ###############################################################################
 # Build Image for Heroku
 ###############################################################################
-heroku_build_docker:
+heroku_build_docker1:
+	docker build -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
+	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
+
+heroku_build_docker2:
 	docker build -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
 	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
 
