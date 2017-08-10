@@ -308,7 +308,7 @@ LOCK TABLES `t_user_work_history` WRITE;
 INSERT INTO `t_user_work_history` VALUES
   (null,1,2,'Developer for this resume site',
    '["Developed resume site for job seeking."]',
-   '[2,33,39,50,70]',
+   '[2,33,39,50,70,80]',
    '2017-07-16','2017-08-08','0',now(),now()),
   (null,1,6,'Full Stack Engineer',
    '["Developed event management web application both front-end and back-end.","Setting <a>Docker</a> configuration."]',
