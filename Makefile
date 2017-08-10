@@ -210,6 +210,26 @@ gotest4:
 gotest5:
 	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestGetUserWorkHistoryOnTable"
 
+
+###############################################################################
+# Heroku
+###############################################################################
+heroku_init:
+    heroku plugins:install heroku-container-registry
+    heroku container:login
+    heroku create
+    heroku container:push web
+    heroku open
+    cd docker/mysql;heroku container:push mysql
+
+heroku_settings
+    heroku apps
+    #goa-web
+
+heroku_open:
+    open -a goa-web
+    #https://goa-web.herokuapp.com/
+
 ###############################################################################
 # httpie
 ###############################################################################
