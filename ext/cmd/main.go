@@ -23,7 +23,7 @@ import (
 
 var (
 	tomlPath  = flag.String("f", "", "Toml file path")
-	portNum   = flag.Int("P", 0, "Port of server")
+	portNum   = flag.String("P", "8080", "Port of server")
 	waitCount = flag.Int("wc", 5, "wait count before starting")
 )
 
@@ -47,6 +47,11 @@ func main() {
 		//timer
 		lg.Debug("waiting...")
 		time.Sleep(time.Duration(*waitCount) * time.Second)
+		if os.Getenv("PORT") != ""{
+			*portNum = os.Getenv("PORT")
+			lg.Debug("exported Port is %s", *portNum)
+		}
+
 	}
 
 	// Create service
@@ -54,7 +59,7 @@ func main() {
 	service := newAPI(ctx)
 
 	// Start service
-	if err := service.ListenAndServe(":8080"); err != nil {
+	if err := service.ListenAndServe(fmt.Sprintf(":%s", *portNum)); err != nil {
 		service.LogError("startup", "err", err)
 	}
 }
