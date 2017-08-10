@@ -265,10 +265,11 @@ heroku_remove:
 
 heroku_build_docker:
 	docker build -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
-    #docker run hirokiy/goapack:latest
-    docker run hirokiy/goapack:latest　bash -c "mysqld && go-goa -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
-    #docker run hirokiy/goapack:latest --name goa_with_db bash /go/src/github.com/hiromaily/go-goa/docker-entrypoint.sh
+	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
 
+heroku_exec_docker:
+    docker run hirokiy/goapack:latest
+    docker run hirokiy/goapack:latest -P 8080
 
 ###############################################################################
 # httpie

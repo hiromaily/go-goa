@@ -22,8 +22,9 @@ import (
 )
 
 var (
-	tomlPath = flag.String("f", "", "Toml file path")
-	portNum  = flag.Int("P", 0, "Port of server")
+	tomlPath  = flag.String("f", "", "Toml file path")
+	portNum   = flag.Int("P", 0, "Port of server")
+	waitCount = flag.Int("wc", 5, "wait count before starting")
 )
 
 func init() {
@@ -45,7 +46,7 @@ func main() {
 	if cnf.Environment == "heroku" {
 		//timer
 		lg.Debug("waiting...")
-		time.Sleep(30 * time.Second)
+		time.Sleep(time.Duration(*waitCount) * time.Second)
 	}
 
 	// Create service
