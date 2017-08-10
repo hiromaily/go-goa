@@ -27,13 +27,14 @@ dcup:
 ```
 
 ## Directory structure
-| Directory NAME  | Description                        |
-|:----------------|:-----------------------------------|
-| docker          | docker resources                   |
-| ext             | extension source code for logic    |
-| goa             | generated files by goa             |
-| public          | static files                       |
-| resources       | swagger-ui, toml files and so on   |
+| Directory NAME      | Description                               |
+|:--------------------|:------------------------------------------|
+| docker              | docker resources                          |
+| ext                 | extension source code for logic           |
+| goa                 | generated files by goa                    |
+| public              | static files                              |
+| resources           | swagger-ui, toml files and so on          |
+| frontend-workspace  | developemental environment for front-end  |
 
 
 
@@ -55,8 +56,20 @@ gotest:
 
 ```
 
+
+## Example Page
+It works on Docker container on Heroku.  
+[Here](https://goa-web.herokuapp.com/ "go-goa") 
+
+Docker related functionalities are poor in Heroku yet.
+- docker-compose can not work on Heroku.
+- Though multiple containers can run, mutual communication (i.e link) can't work. 
+- So if you want to use multiple container and link is required among containers, Dockerfile that includes all functionalities have to be prepared.
+- MySQL is used on this example with json type that's available on MySQL version 5.7 or upper. However Heroku's MySQL(ClearDB) is version 5.6 yet.
+
+
 ## How to return dynamic html??
-I guess, goa framework can't treat `text/html` Content-type.
+I guess, goa framework can't treat `text/html` Content-type except static files.
 So, dynamic data can be fetched by Ajax from front side as JSON.
 
 
