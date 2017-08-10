@@ -219,8 +219,10 @@ heroku_init:
 	heroku container:login
 	heroku create goa-web
 	heroku container:push web
-	cd docker/mysql;heroku container:push mysql
+	#cd docker/mysql;heroku container:push mysql
 
+heroku_update:
+    docker tag hirokiy/go-goa:1.0 registry.heroku.com/goa-web/web
 
 heroku_after_change_app_name:
     #git remote remove heroku [Important!!]
@@ -234,6 +236,22 @@ heroku_after_change_app_name:
 	docker push registry.heroku.com/goa-web/web
 	docker push registry.heroku.com/goa-web/mysql
 
+heroku_update:
+    #make dcbld
+    docker tag hirokiy/go-goa:1.0 registry.heroku.com/goa-web/web
+	docker push registry.heroku.com/goa-web/web
+
+heroku_mysql:
+    heroku addons:create cleardb:ignite
+    heroku config | grep CLEARDB_DATABASE_URL
+    #mysql://bfb52adedf8ba0:2fba2543@us-cdbr-iron-east-05.cleardb.net/heroku_ec4be49f8b3ff12?reconnect=true
+    #user: bfb52adedf8ba0
+    #pass: 2fba2543
+    #host: us-cdbr-iron-east-05.cleardb.net
+    #port: 3306
+    #dbname: heroku_ec4be49f8b3ff12
+
+
 heroku_settings:
 	heroku apps
 	#goa-web
@@ -244,6 +262,13 @@ heroku_open:
 
 heroku_remove:
     heroku apps:destroy
+
+heroku_build_docker:
+	docker build -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
+    #docker run hirokiy/goapack:latest
+    docker run hirokiy/goapack:latest　bash -c "mysqld && go-goa -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
+    #docker run hirokiy/goapack:latest --name goa_with_db bash /go/src/github.com/hiromaily/go-goa/docker-entrypoint.sh
+
 
 ###############################################################################
 # httpie
