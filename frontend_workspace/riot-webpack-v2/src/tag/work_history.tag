@@ -30,8 +30,8 @@
             </div>
         </div>
         <div class="extra content" style="background:rgb(243, 244, 245);">
-            <div each="{ tech in techs }" class="ui black basic button">
-              { tech }
+            <div each="{ techs }" class="ui black basic button">
+              { name }
             </div>
         </div>
     </div>

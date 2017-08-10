@@ -1,11 +1,13 @@
-{
-  "items":
-    [
-      { "tech" : "Golang"},
-      { "tech" : "Python"},
-      { "tech" : "React"},
-      { "tech" : "Microservice architecture"},
-      { "tech" : "Docker"},
-      { "tech" : "DevOps"}
-    ]
-}
+[{
+  "tech_name": "Golang"
+}, {
+  "tech_name": "Python"
+}, {
+  "tech_name": "React"
+}, {
+  "tech_name": "Docker"
+}, {
+  "tech_name": "Microservice architecture"
+}, {
+  "tech_name": "DevOps"
+}]

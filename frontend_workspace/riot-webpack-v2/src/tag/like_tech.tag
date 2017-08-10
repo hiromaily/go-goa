@@ -5,7 +5,7 @@
         </div>
         <div class="ui segments">
             <div each="{ opts.items }" class="ui segment">
-                <p>{ tech }</p>
+                <p>{ tech_name }</p>
             </div>
         </div>
     </div>

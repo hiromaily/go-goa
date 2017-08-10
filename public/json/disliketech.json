@@ -1,8 +1,5 @@
-{
-  "items":
-  [
-    { "tech" : "Microsoft .NET"},
-    { "tech" : "Ruby"},
-    { "tech" : "Java"}
-  ]
-}
+[
+  {"tech_name":"Microsoft .NET"},
+  {"tech_name":"Ruby"},
+  {"tech_name":"VB"}
+]
