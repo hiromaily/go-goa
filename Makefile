@@ -215,20 +215,35 @@ gotest5:
 # Heroku
 ###############################################################################
 heroku_init:
-    heroku plugins:install heroku-container-registry
-    heroku container:login
-    heroku create
-    heroku container:push web
-    heroku open
-    cd docker/mysql;heroku container:push mysql
+	heroku plugins:install heroku-container-registry
+	heroku container:login
+	heroku create goa-web
+	heroku container:push web
+	cd docker/mysql;heroku container:push mysql
 
-heroku_settings
-    heroku apps
-    #goa-web
+
+heroku_after_change_app_name:
+    #git remote remove heroku [Important!!]
+	#registry.heroku.com/go-goa/web
+    docker build -t hirokiy/go-goa:1.0 -f ./Dockerfile .
+	docker build -t hirokiy/goa-mysql:1.0 -f ./docker/mysql/Dockerfile .
+
+	#docker tag hirokiy/go-goa:1.0 registry.heroku.com/goa-web/web
+	#docker tag registry.heroku.com/safe-inlet-49884/mysql registry.heroku.com/goa-web/mysql
+
+	docker push registry.heroku.com/goa-web/web
+	docker push registry.heroku.com/goa-web/mysql
+
+heroku_settings:
+	heroku apps
+	#goa-web
 
 heroku_open:
-    open -a goa-web
-    #https://goa-web.herokuapp.com/
+	open -a goa-web
+	#https://goa-web.herokuapp.com/
+
+heroku_remove:
+    heroku apps:destroy
 
 ###############################################################################
 # httpie

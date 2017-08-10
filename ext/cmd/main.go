@@ -18,6 +18,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"time"
 )
 
 var (
@@ -39,6 +40,13 @@ func init() {
 func main() {
 	//config
 	cnf := conf.New(*tomlPath)
+
+	//wait until mysql run
+	if cnf.Environment == "heroku" {
+		//timer
+		lg.Debug("waiting...")
+		time.Sleep(30 * time.Second)
+	}
 
 	// Create service
 	ctx := c.SetupContext(cnf)
