@@ -69,7 +69,7 @@ Docker related functionalities are poor in Heroku and Travis-CI yet.
 - MySQL is used on this example with json type that's available on MySQL version 5.7 or upper. However Heroku's MySQL(ClearDB) is version 5.6 yet.
 
 **Travis-CI**
-- Test often failed because of Docker. It's not stable.
+- Be careful to connect database. [Read it](https://docs.docker.com/compose/startup-order/)
 
 
 ## How to return dynamic html??
