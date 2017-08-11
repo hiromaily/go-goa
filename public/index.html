@@ -1,12 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>go-goa TOP</title>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Site Properties -->
+    <title>goa-web</title>
+    <link rel="stylesheet" type="text/css" href="css/semantic.css">
+    <style>
+        .last.container {
+            margin-bottom: 300px !important;
+        }
+        h1.ui.center.header {
+            margin-top: 3em;
+        }
+        h2.ui.center.header {
+            margin: 4em 0em 2em;
+        }
+        h3.ui.center.header {
+            margin-top: 2em;
+            padding: 2em 0em;
+        }
+    </style>
 </head>
-
 <body>
-Welcome to go-goa!!
-</body>
 
+
+<h2 class="ui center aligned header">goa-web</h2>
+
+
+<div class="ui container">
+    <h3 class="ui header">list</h3>
+    <div class="ui ordered list">
+        <a class="item" href="/">Top Page</a>
+        <a class="item" here="/login.html">Login page (hiroki@goa.com /  password)</a>
+        <a class="item" href="/resume.html">Resume page</a>
+        <a class="item" href="/swagger-ui/">Swagger / API List</a>
+        <div class="item">
+            <a>Semanctic UI Sample</a>
+            <div class="list">
+                <a class="item" href="/attached.html">Attached Content</a>
+                <a class="item" href="/bootstrap.html">Bootstrap Migration</a>
+                <a class="item" href="/fixed.html">Semantic UI Fixed Template</a>
+                <a class="item" href="/grid.html">Using Grids</a>
+                <a class="item" href="/homepage.html">Imagine-a-Company</a>
+                <a class="item" href="/responsive.html">Responsive UI Examples</a>
+                <a class="item" href="/sticky.html">Sticky Example</a>
+                <a class="item" href="/theming.html">Theming Examples</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h3 class="ui center aligned header">About goa-web</h3>
+
+<div class="ui container">
+    <div class="ui segments">
+        <div class="ui segment">This site is developed by Golang with goa framework, Riot.js, Semantic UI and working on Docker.</div>
+        <div class="ui segment">Content</div>
+        <div class="ui segment">Content</div>
+    </div>
+</div>
+
+<script src="assets/library/jquery.min.js"></script>
+<script src="js/semantic.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        var
+            $headers     = $('body > h3'),
+            $header      = $headers.first(),
+            ignoreScroll = false,
+            timer
+        ;
+
+        // Preserve example in viewport when resizing browser
+        $(window)
+            .on('resize', function() {
+                // ignore callbacks from scroll change
+                clearTimeout(timer);
+                $headers.visibility('disable callbacks');
+
+                // preserve position
+                $(document).scrollTop( $header.offset().top );
+
+                // allow callbacks in 500ms
+                timer = setTimeout(function() {
+                    $headers.visibility('enable callbacks');
+                }, 500);
+            })
+        ;
+        $headers
+            .visibility({
+                // fire once each time passed
+                once: false,
+
+                // don't refresh position on resize
+                checkOnRefresh: true,
+
+                // lock to this element on resize
+                onTopPassed: function() {
+                    $header = $(this);
+                },
+                onTopPassedReverse: function() {
+                    $header = $(this);
+                }
+            })
+        ;
+    });
+</script>
+
+</body>
 </html>
