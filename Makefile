@@ -238,12 +238,6 @@ heroku_update:
 	docker tag hirokiy/go-goa:1.0 registry.heroku.com/goa-web/web
 	docker push registry.heroku.com/goa-web/web
 
-heroku_update2:
-	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
-	docker tag hirokiy/goapack:latest registry.heroku.com/goa-web/web
-	docker push registry.heroku.com/goa-web/web
-
-
 heroku_mysql:
 	heroku addons:create cleardb:ignite
 	heroku config | grep CLEARDB_DATABASE_URL
@@ -253,7 +247,6 @@ heroku_mysql:
 	#host: us-cdbr-iron-east-05.cleardb.net
 	#port: 3306
 	#dbname: heroku_ec4be49f8b3ff12
-
 
 heroku_settings:
 	heroku apps
@@ -271,16 +264,21 @@ heroku_remove:
 # Build Image for Heroku
 ###############################################################################
 heroku_build_docker1:
-	docker build -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
 	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
+	docker push hirokiy/goapack_base:latest
 
 heroku_build_docker2:
-	docker build -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
 	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
 
 heroku_exec_docker:
 	docker run -p 8080:8080 --name goapack hirokiy/goapack:latest
 	docker stop goapack
+
+heroku_updfull:
+	#docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
+	#docker tag hirokiy/goapack:latest registry.heroku.com/goa-web/web
+	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.heroku .
+	docker push registry.heroku.com/goa-web/web
 
 ###############################################################################
 # httpie

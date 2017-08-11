@@ -40,6 +40,11 @@
       max-width: 450px;
     }
   </style>
+  <script>
+      if(sessionStorage.getItem('jwt')){
+          location.href = '/resume.html';
+      }
+  </script>
 </head>
 <body>
 
