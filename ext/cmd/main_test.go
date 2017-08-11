@@ -119,16 +119,16 @@ var userAPITests = []UserAPITest{
 
 var userTechTests = []TableTest{
 	{"/api/user/1/liketech", http.StatusOK, "GET", jwtHeaders, "", nil},
-	{"/api/user/999/liketech", http.StatusNotFound, "GET", jwtHeaders, "", nil},
+	{"/api/user/999/liketech", http.StatusUnauthorized, "GET", jwtHeaders, "", nil},
 	{"/api/user/1/liketech", http.StatusUnauthorized, "GET", nil, "", nil},
 	{"/api/user/1/disliketech", http.StatusOK, "GET", jwtHeaders, "", nil},
-	{"/api/user/999/disliketech", http.StatusNotFound, "GET", jwtHeaders, "", nil},
+	{"/api/user/999/disliketech", http.StatusUnauthorized, "GET", jwtHeaders, "", nil},
 	{"/api/user/1/disliketech", http.StatusUnauthorized, "GET", nil, "", nil},
 }
 
 var userWorkHistoryTests = []TableTest{
 	{"/api/user/1/workhistory", http.StatusOK, "GET", jwtHeaders, "", nil},
-	{"/api/user/999/workhistory", http.StatusNotFound, "GET", jwtHeaders, "", nil},
+	{"/api/user/999/workhistory", http.StatusUnauthorized, "GET", jwtHeaders, "", nil},
 	{"/api/user/1/workhistory", http.StatusUnauthorized, "GET", nil, "", nil},
 }
 
