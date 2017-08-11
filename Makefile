@@ -261,7 +261,7 @@ heroku_exec_docker:
 	docker run -p 8080:8080 --name goapack hirokiy/goapack:latest
 	docker stop goapack
 
-heroku_updf:
+heroku_upd:
 	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.heroku .
 	docker push registry.heroku.com/goa-web/web
 
