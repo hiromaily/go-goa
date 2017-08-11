@@ -165,8 +165,9 @@ bldlinux:
 clibld:
 	go build -i -v -o ${GOPATH}/bin/go-goa-cli ./goa/tool/api-cli/*.go
 
+# test shoud be executed in docker-compose.yml for docker environment
 prod:
-    docker-compose -f docker-compose.yml up
+	docker-compose -f docker-compose.yml up
 
 
 ###############################################################################

@@ -22,9 +22,9 @@ import (
 )
 
 var (
-	tomlPath  = flag.String("f", "", "Toml file path")
-	portNum   = flag.String("P", "8080", "Port of server")
-	waitCount = flag.Int("wc", 5, "wait count before starting")
+	tomlPath   = flag.String("f", "", "Toml file path")
+	portNum    = flag.String("P", "8080", "Port of server")
+	retryCount = flag.Int("rc", 5, "retry count before starting")
 )
 
 func init() {
@@ -45,17 +45,29 @@ func main() {
 	//wait until mysql run
 	if cnf.Environment == "heroku" {
 		//timer
-		lg.Debug("waiting...")
-		time.Sleep(time.Duration(*waitCount) * time.Second)
-		if os.Getenv("PORT") != ""{
+		if os.Getenv("PORT") != "" {
 			*portNum = os.Getenv("PORT")
 			lg.Debug("exported Port is %s", *portNum)
 		}
-
 	}
 
 	// Create service
-	ctx := c.SetupContext(cnf)
+	var ctx *c.Ctx
+	var err error
+	for i := 0; i < *retryCount; i++ {
+		lg.Info("connecting to db server ...")
+		ctx, err = c.SetupContext(cnf)
+		if err != nil {
+			lg.Errorf("db connection failed. %v", err)
+			time.Sleep(3 * time.Second)
+			continue
+		}
+		break
+	}
+	if ctx == nil {
+		panic("database can not be connected.")
+	}
+
 	service := newAPI(ctx)
 
 	// Start service

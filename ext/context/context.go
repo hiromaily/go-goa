@@ -11,16 +11,21 @@ type Ctx struct {
 	Db   *gorm.GR
 }
 
-func (c *Ctx) initDB() {
+func (c *Ctx) initDB() error {
 	dbInfo := conf.GetConf().MySQL
-	gorm.New(dbInfo.Host, dbInfo.DbName, dbInfo.User, dbInfo.Pass, dbInfo.Port)
+	err := gorm.New(dbInfo.Host, dbInfo.DbName, dbInfo.User, dbInfo.Pass, dbInfo.Port)
+	if err != nil {
+		return err
+	}
+
 	c.Db = gorm.GetDB()
+	return nil
 }
 
 // SetupContext is to setup context
-func SetupContext(c *conf.Config) *Ctx {
+func SetupContext(c *conf.Config) (*Ctx, error) {
 	ctx := &Ctx{Conf: c}
-	ctx.initDB()
+	err := ctx.initDB()
 
-	return ctx
+	return ctx, err
 }
