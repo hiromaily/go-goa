@@ -278,7 +278,7 @@ LOCK TABLES `t_user_dislike_techs` WRITE;
 INSERT INTO `t_user_dislike_techs` VALUES
   (null,1,25,'0',now(),now()),
   (null,1,12,'0',now(),now()),
-  (null,1,26,'0',now(),now());
+  (null,1,27,'0',now(),now());
 /*!40000 ALTER TABLE `t_user_dislike_techs` ENABLE KEYS */;
 UNLOCK TABLES;
 
