@@ -19,6 +19,8 @@ import (
 //
 // Identifier: application/vnd.authorized+json; view=default
 type Authorized struct {
+	// ID
+	ID int `form:"id" json:"id" xml:"id"`
 	// JWT token
 	Token string `form:"token" json:"token" xml:"token"`
 }
@@ -27,6 +29,10 @@ type Authorized struct {
 func (mt *Authorized) Validate() (err error) {
 	if mt.Token == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "token"))
+	}
+
+	if mt.ID < 1 {
+		err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, mt.ID, 1, true))
 	}
 	return
 }

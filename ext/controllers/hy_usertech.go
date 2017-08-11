@@ -6,6 +6,7 @@ import (
 	c "github.com/hiromaily/go-goa/ext/context"
 	m "github.com/hiromaily/go-goa/ext/models"
 	"github.com/hiromaily/go-goa/goa/app"
+	u "github.com/hiromaily/golibs/utils"
 )
 
 // HyUsertechController implements the hy_usertech resource.
@@ -25,6 +26,13 @@ func NewHyUsertechController(service *goa.Service, ctx *c.Ctx) *HyUsertechContro
 // GetUserLikeTech runs the GetUserLikeTech action.
 func (c *HyUsertechController) GetUserLikeTech(ctx *app.GetUserLikeTechHyUsertechContext) error {
 	fmt.Println("[hy_usertech][GetUserLikeTech]")
+
+	//TODO:check user ID and this part should be set in middleware.
+	//fmt.Println("[user id]:", ctx.Value("user.jwt"))
+	if ctx.Value("user.jwt") == nil || u.Itoi(ctx.Value("user.jwt")) == 0 ||
+		u.Itoi(ctx.Value("user.jwt")) != ctx.UserID {
+		return ctx.Unauthorized()
+	}
 
 	const TableTechLike = "t_user_like_techs"
 
@@ -52,6 +60,13 @@ func (c *HyUsertechController) GetUserLikeTech(ctx *app.GetUserLikeTechHyUsertec
 // GetUserDislikeTech runs the GetUserDislikeTech action.
 func (c *HyUsertechController) GetUserDislikeTech(ctx *app.GetUserDislikeTechHyUsertechContext) error {
 	fmt.Println("[hy_usertech][GetUserDislikeTech]")
+
+	//TODO:check user ID and this part should be set in middleware.
+	//fmt.Println("[user id]:", ctx.Value("user.jwt"))
+	if ctx.Value("user.jwt") == nil || u.Itoi(ctx.Value("user.jwt")) == 0 ||
+		u.Itoi(ctx.Value("user.jwt")) != ctx.UserID {
+		return ctx.Unauthorized()
+	}
 
 	const TableTechDislike = "t_user_dislike_techs"
 

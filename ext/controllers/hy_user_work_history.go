@@ -6,6 +6,7 @@ import (
 	c "github.com/hiromaily/go-goa/ext/context"
 	m "github.com/hiromaily/go-goa/ext/models"
 	"github.com/hiromaily/go-goa/goa/app"
+	u "github.com/hiromaily/golibs/utils"
 )
 
 // HyUserWorkHistoryController implements the hy_userWorkHistory resource.
@@ -26,20 +27,13 @@ func NewHyUserWorkHistoryController(service *goa.Service, ctx *c.Ctx) *HyUserWor
 func (c *HyUserWorkHistoryController) GetUserWorkHistory(ctx *app.GetUserWorkHistoryHyUserWorkHistoryContext) error {
 	fmt.Println("[hy_user_work_history][GetUserWorkHistory]")
 
-	//type Userworkhistory struct {
-	//	// Job Title
-	//	Title string `form:"title" json:"title" xml:"title"`
-	//	// Company name
-	//	Company string `form:"company" json:"company" xml:"company"`
-	//	// Country code
-	//	Country string `form:"country" json:"country" xml:"country"`
-	//	// worked period
-	//	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
-	//	// job description
-	//	Description *interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
-	//	// used techs
-	//	Techs *interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
-	//}
+	//TODO:check user ID and this part should be set in middleware.
+	//fmt.Println("[user id]:", ctx.Value("user.jwt"))
+	if ctx.Value("user.jwt") == nil || u.Itoi(ctx.Value("user.jwt")) == 0 ||
+		u.Itoi(ctx.Value("user.jwt")) != ctx.UserID {
+		return ctx.Unauthorized()
+	}
+
 	var userWorks []*app.Userworkhistory
 
 	svc := &m.UserWorkHistory{Db: c.ctx.Db}

@@ -23,12 +23,14 @@ var Authorized = MediaType("application/vnd.authorized+json", func() {
 		Attribute("token", String, "JWT token", func() {
 			Example("token.string")
 		})
-		Required("token")
+		Attribute("id", Integer, "User ID", fieldID)
+		Required("token", "id")
 	})
 
 	//default MediaType
 	View("default", func() {
 		Attribute("token")
+		Attribute("id")
 	})
 })
 

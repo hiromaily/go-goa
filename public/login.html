@@ -170,6 +170,7 @@ function login() {
 
             //save jwt into sessionStrage
             sessionStorage.setItem('jwt', json.token);
+            sessionStorage.setItem('id', json.id);
             //console.log(sessionStorage.getItem('jwt'));
 
             //redirect

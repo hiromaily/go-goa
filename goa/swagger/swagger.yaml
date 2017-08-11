@@ -5,14 +5,21 @@ definitions:
   Authorized:
     description: An authorized response (default view)
     example:
+      id: 10
       token: token.string
     properties:
+      id:
+        description: ID
+        example: 10
+        minimum: 1
+        type: integer
       token:
         description: JWT token
         example: token.string
         type: string
     required:
     - token
+    - id
     title: 'Mediatype identifier: application/vnd.authorized+json; view=default'
     type: object
   Company:
@@ -1058,6 +1065,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
       schemes:
@@ -1095,6 +1104,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
       schemes:
@@ -1132,6 +1143,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/error'
+        "401":
+          description: Unauthorized
         "404":
           description: Not Found
       schemes:

@@ -1642,6 +1642,12 @@ func (ctx *GetUserWorkHistoryHyUserWorkHistoryContext) BadRequest(r error) error
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
 }
 
+// Unauthorized sends a HTTP response with status code 401.
+func (ctx *GetUserWorkHistoryHyUserWorkHistoryContext) Unauthorized() error {
+	ctx.ResponseData.WriteHeader(401)
+	return nil
+}
+
 // NotFound sends a HTTP response with status code 404.
 func (ctx *GetUserWorkHistoryHyUserWorkHistoryContext) NotFound() error {
 	ctx.ResponseData.WriteHeader(404)
@@ -1704,6 +1710,12 @@ func (ctx *GetUserDislikeTechHyUsertechContext) BadRequest(r error) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
 }
 
+// Unauthorized sends a HTTP response with status code 401.
+func (ctx *GetUserDislikeTechHyUsertechContext) Unauthorized() error {
+	ctx.ResponseData.WriteHeader(401)
+	return nil
+}
+
 // NotFound sends a HTTP response with status code 404.
 func (ctx *GetUserDislikeTechHyUsertechContext) NotFound() error {
 	ctx.ResponseData.WriteHeader(404)
@@ -1764,6 +1776,12 @@ func (ctx *GetUserLikeTechHyUsertechContext) OKTech(r UsertechTechCollection) er
 func (ctx *GetUserLikeTechHyUsertechContext) BadRequest(r error) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
 	return ctx.ResponseData.Service.Send(ctx.Context, 400, r)
+}
+
+// Unauthorized sends a HTTP response with status code 401.
+func (ctx *GetUserLikeTechHyUsertechContext) Unauthorized() error {
+	ctx.ResponseData.WriteHeader(401)
+	return nil
 }
 
 // NotFound sends a HTTP response with status code 404.

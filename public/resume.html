@@ -24,7 +24,7 @@
     </style>
 
 <script>
-if(!sessionStorage.getItem('jwt')){
+if(!sessionStorage.getItem('jwt') || !sessionStorage.getItem('id')){
     location.href = '/login.html';
 }
 </script>

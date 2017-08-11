@@ -46,6 +46,6 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 
 	// Send response
 	// AuthController_Login: end_implement
-	res := &app.Authorized{Token: signedToken}
+	res := &app.Authorized{Token: signedToken, ID: id}
 	return ctx.OK(res)
 }

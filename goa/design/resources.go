@@ -165,6 +165,7 @@ var _ = Resource(resourcePrefix+"usertech", func() {
 			})
 		})
 		Response(OK, CollectionOf(UserTech)) //multiple response
+		Response(Unauthorized)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
@@ -184,6 +185,7 @@ var _ = Resource(resourcePrefix+"usertech", func() {
 		})
 
 		Response(OK, CollectionOf(UserTech)) //multiple response
+		Response(Unauthorized)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
@@ -191,7 +193,7 @@ var _ = Resource(resourcePrefix+"usertech", func() {
 })
 
 //-----------------------------------------------------------------------------
-// User Tech
+// User Work History
 //-----------------------------------------------------------------------------
 var _ = Resource(resourcePrefix+"userWorkHistory", func() {
 
@@ -216,6 +218,7 @@ var _ = Resource(resourcePrefix+"userWorkHistory", func() {
 			})
 		})
 		Response(OK, CollectionOf(UserWorkHistory)) //multiple response
+		Response(Unauthorized)
 		Response(NotFound)
 		Response(BadRequest, ErrorMedia)
 	})
