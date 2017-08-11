@@ -1,5 +1,6 @@
 language: go
 sudo: required
+dist: trusty
 go:
   - tip
 
@@ -15,11 +16,15 @@ before_install:
   #- go get golang.org/x/tools/cmd/cover
 
 before_script:
-  - sleep 20
+  - sleep 30
+  - docker-compose logs
 
 script:
-  - docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/main_test.go -health 100"
+  - docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/main_test.go -health 10"
   #- go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml
+
+after_script:
+  - docker-compose down
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";

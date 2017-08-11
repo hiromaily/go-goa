@@ -230,7 +230,8 @@ func checkHealth() {
 			return
 		}
 		//sleep
-		time.Sleep(2 * time.Second)
+		fmt.Println("[HealthCheckError]", err)
+		time.Sleep(5 * time.Second)
 	}
 	panic("Web Server doesn't work yet.")
 }

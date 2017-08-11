@@ -165,6 +165,9 @@ bldlinux:
 clibld:
 	go build -i -v -o ${GOPATH}/bin/go-goa-cli ./goa/tool/api-cli/*.go
 
+prod:
+    docker-compose -f docker-compose.yml up
+
 
 ###############################################################################
 # Execution for local

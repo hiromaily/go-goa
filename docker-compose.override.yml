@@ -1,6 +1,10 @@
 version: "3.0"
 
 services:
+  mysql:
+    ports:
+      - "${MYSQL_PORT:-3307}:3306"
+
   webserver:
     ports:
       - "${API_PORT:-8080}:8080"
