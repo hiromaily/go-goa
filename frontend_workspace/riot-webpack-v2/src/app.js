@@ -7,7 +7,7 @@ require('./tag/raw.tag');
 //Ajax
 function callAPI(obj) {
     let key = sessionStorage.getItem('jwt');
-    //like-tech
+    //fetch
     fetch(obj.url, {
         headers: {
             'Authorization': 'Bearer '+key,
@@ -16,6 +16,12 @@ function callAPI(obj) {
     }).then(function(response) {
         return response.json();
     }).then(function(json) {
+        if(json.status && json.status != 200){
+            sessionStorage.removeItem('jwt');
+            location.href = '/resume.html';
+            return;
+        }
+        //Success
         riot.mount(obj.element, {
             //items : json.items
             items : json
