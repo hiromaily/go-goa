@@ -41,7 +41,8 @@ CREATE TABLE `t_users` (
   `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX login (`email`, `password`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Users Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -109,7 +110,8 @@ CREATE TABLE `t_company_detail` (
   `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX company_id (`company_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Company Detail Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -232,7 +234,8 @@ CREATE TABLE `t_user_like_techs` (
   `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX user_id (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Like Tech Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -264,7 +267,8 @@ CREATE TABLE `t_user_dislike_techs` (
   `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX user_id (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Dislike Tech Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -298,7 +302,9 @@ CREATE TABLE `t_user_work_history` (
   `delete_flg`  char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
   `created_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX user_id (`user_id`),
+  INDEX started_at (`started_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Work History Table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
