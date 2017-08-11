@@ -61,11 +61,15 @@ gotest:
 It works on Docker container on Heroku.  
 [Here](https://goa-web.herokuapp.com/ "go-goa") 
 
-Docker related functionalities are poor in Heroku yet.
+Docker related functionalities are poor in Heroku and Travis-CI yet.
+**Heroku**
 - docker-compose can not work on Heroku.
 - Though multiple containers can run, mutual communication (i.e link) can't work. 
 - So if you want to use multiple container and link is required among containers, Dockerfile that includes all functionalities have to be prepared.
 - MySQL is used on this example with json type that's available on MySQL version 5.7 or upper. However Heroku's MySQL(ClearDB) is version 5.6 yet.
+
+**Travis-CI**
+- Test often failed because of Docker. It's not stable.
 
 
 ## How to return dynamic html??
