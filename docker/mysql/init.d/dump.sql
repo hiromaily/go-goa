@@ -215,7 +215,10 @@ INSERT INTO `t_techs` VALUES
   (100,'DRM','0',now(),now()),
   (101,'Microservice architecture','0',now(),now()),
   (102,'DevOps','0',now(),now()),
-  (110,'JIRA','0',now(),now());
+  (110,'JIRA','0',now(),now()),
+  (120,'Selenium','0',now(),now()),
+  (121,'PhantomJS','0',now(),now()),
+  (122,'Jasmine','0',now(),now());
 /*!40000 ALTER TABLE `t_techs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -317,12 +320,12 @@ INSERT INTO `t_user_work_history` VALUES
    '[2,33,39,50,70,80]',
    '2017-07-16','2017-08-08','0',now(),now()),
   (null,1,6,'Full Stack Engineer',
-   '["Developed event management web application both front-end and back-end.","Setting <a>Docker</a> configuration."]',
-   '[7,31,34,70,51,110]',
+   '["Developed <a>fin-tech</a> related resources management web application both front-end and back-end.","Setting <a>Docker</a> configuration."]',
+   '[7,31,34,70,60,51,110]',
    '2016-12-20','2017-07-15','0',now(),now()),
   (null,1,4,'Full Stack Engineer',
    '["Developed event management web application both front-end and back-end.",["API Server was developed by <a>Golang</a> with GOA framework"],"Setting <a>Docker</a> configuration."]',
-   '[1,5,7,31,70,50,110]',
+   '[1,5,7,31,70,60,50,110]',
    '2016-10-19','2017-11-30','0',now(),now()),
   (null,1,1,'Golang and React(ES6) programmer',
    '["Developed web-server (framework) and reverse proxy and <a>JWT</a> based API and login with <a>OAuth2</a> as authentication plus various libraries using <a>Golang</a>.", "Developed worker program to scrape news information to set into <a>MongoDB</a>.", "eveloped front-end using <a>React</a> plus <a>ES6</a> and setup script for environment.", "Setting <a>Docker</a> configuration."]',
@@ -330,11 +333,11 @@ INSERT INTO `t_user_work_history` VALUES
    '2016-07-01','2017-09-30','0',now(),now()),
   (null,1,1,'Golang and PHP (HACK) programmer',
    '["Developed advertisement distribution system on back-end for messaging application called <a>LINE</a> using <a>Golang</a>.", ["<a href=\\"https://line.me/en/\\">LINE</a> is popular messaging application like WhatsApp.","Number of monthly active LINE users in 2016 was more than <a>217 million</a> monthly active users."],"Built CI (<a>Jenkins</a>) Environment"]',
-   '[1,6,12,83,84,85,86,73,74,71]',
+   '[1,6,12,83,84,85,86,73,74,71,60]',
    '2015-10-01','2016-06-30','0',now(),now()),
   (null,1,1,'Python programmer',
    '["Developed education system so-called <a>MOOC</a> using edx open source project.", "Built videos distribution environment on AWS S3 and 3rd party CDN and developed various batch program using <a>AWS boto(Python)</a>."]',
-   '[9,11,30,87,83,86,73]',
+   '[9,11,30,60,87,83,86,73,120,121,122]',
    '2015-04-01','2015-09-30','0',now(),now()),
   (null,1,1,'Front-End Engineer',
    '["Developed iPhone and Android game apps.", "Developed auto-generator for View template in MVC from mock designed HTML and runtime library in Javascript.</a>.", "Strategized developing process for Smartphone application."]',
