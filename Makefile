@@ -12,6 +12,9 @@ init_local:
 	git submodule add https://github.com/swagger-api/swagger-ui.git resources/swagger-ui
 	#after this, `make genfull`
 
+	#
+	cd resources/swagger-ui/dist/;sed -e "s|http://petstore.swagger.io/v2/swagger.json|/swagger.json|g" index.html > goa.html
+
 ###############################################################################
 # Docker
 ###############################################################################

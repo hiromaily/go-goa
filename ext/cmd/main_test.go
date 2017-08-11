@@ -62,6 +62,7 @@ var getTests = []TableTest{
 	{"/", http.StatusOK, "GET", nil, "", nil},
 	{"/swagger.json", http.StatusOK, "GET", nil, "", nil},
 	{"/swagger-ui/", http.StatusOK, "GET", nil, "", nil},
+	{"/swagger-ui/goa.html", http.StatusOK, "GET", nil, "", nil},
 	{"/api/_ah/health", http.StatusOK, "GET", nil, "", nil},
 }
 

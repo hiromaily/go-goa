@@ -8,7 +8,7 @@ services:
       - ./ext:/go/src/github.com/hiromaily/go-goa/ext
       - ./goa:/go/src/github.com/hiromaily/go-goa/goa
       - ./public:/go/src/github.com/hiromaily/go-goa/public
-      - ./resources:/go/src/github.com/hiromaily/go-goa/resources
+      - ./resources/tomls:/go/src/github.com/hiromaily/go-goa/resources/tomls
       - ./runner.conf:/go/src/github.com/hiromaily/go-goa/runner.conf
     stdin_open: true
     tty: true

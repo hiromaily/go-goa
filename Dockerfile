@@ -19,6 +19,8 @@ RUN go get -u github.com/hiromaily/go-goa/...
 WORKDIR /go/src/github.com/hiromaily/go-goa/resources/swagger-ui
 RUN git submodule init && git submodule update
 
+WORKDIR /go/src/github.com/hiromaily/go-goa/resources/swagger-ui/dist
+RUN sed -e "s|http://petstore.swagger.io/v2/swagger.json|/swagger.json|g" index.html > goa.html
 
 RUN mkdir -p /go/src/github.com/hiromaily/go-goa/tmp/log && mkdir -p /var/log/go
 #RUN mkdir -p /go/src/github.com/hiromaily/go-goa/ext && \
