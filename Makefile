@@ -15,30 +15,6 @@ init_local:
 	#
 	cd resources/swagger-ui/dist/;sed -e "s|http://petstore.swagger.io/v2/swagger.json|/swagger.json|g" index.html > goa.html
 
-###############################################################################
-# Docker
-###############################################################################
-dcgobld:
-	#goplus:1.8
-	docker build -t hirokiy/goplus:1.8 -f ./docker/golang/Dockerfile .
-	docker push hirokiy/goplus:1.8
-
-dcup:
-	docker-compose build
-	docker-compose up
-
-dcbld:
-	docker-compose build --no-cache
-
-dcins:
-	docker exec -it gogoa_webserver_1 bash
-
-dctest:
-	docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go
-	#docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
-
-dcpush:
-	docker push hirokiy/go-goa:1.0
 
 ###############################################################################
 # PKG Dependencies
@@ -54,8 +30,7 @@ update:
 	go get -u github.com/alecthomas/gometalinter
 	#gometalinter --install
 
-	# this doesn't work
-	#go get -d -v ./ext/cmd/
+	go get -u -d -v ./...
 
 # dep is dependencies tools
 depinit:
@@ -148,19 +123,45 @@ updall: updgoa gencln aftergen
 
 
 ###############################################################################
+# Docker
+###############################################################################
+dcgobld:
+	#goplus:1.8
+	docker build -t hirokiy/goplus:1.8 -f ./docker/golang/Dockerfile .
+	docker push hirokiy/goplus:1.8
+
+dcup:
+	docker-compose build
+	docker-compose up
+
+dcbld:
+	docker-compose build
+
+dcbldn:
+	docker-compose build --no-cache
+
+dcins:
+	docker exec -it gogoa_webserver_1 bash
+
+dctest:
+	docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go
+	#docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
+
+dcpush:
+	docker push hirokiy/go-goa:1.0
+
+
+###############################################################################
 # Build for local
 ###############################################################################
 run:
 	go run ext/cmd/main.go
-	#go run goa/*.go
 
 bld:
 	go build -i -v -o ${GOPATH}/bin/go-goa ./ext/cmd/
-	#go build -i -v -o ${GOPATH}/bin/go-goa ./goa/
 
 bldlinux:
 	GOOS=linux GOARCH=amd64 go build -v -o ${GOPATH}/bin/linux_amd64/$1 ./ext/cmd/
-	#GOOS=linux GOARCH=amd64 go build -v -o ${GOPATH}/bin/linux_amd64/$1 ./goa/
 
 clibld:
 	go build -i -v -o ${GOPATH}/bin/go-goa-cli ./goa/tool/api-cli/*.go
@@ -269,6 +270,7 @@ heroku_updfull:
 	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
 	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.heroku .
 	docker push registry.heroku.com/goa-web/web
+
 
 ###############################################################################
 # httpie
