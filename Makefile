@@ -254,6 +254,10 @@ heroku_build_docker1:
 heroku_build_docker2:
 	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
 
+heroku_build_multistage:
+    #It works!
+	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.multistage.heroku .
+
 heroku_bldfull:
 	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
 	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .

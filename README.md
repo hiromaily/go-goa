@@ -14,10 +14,10 @@ It works on Docker container on Heroku. You can check it [here](https://goa-web.
 
 Docker related functionalities are poor in Heroku and Travis-CI yet.
 **Heroku**
-- docker-compose can not work on Heroku.
-- Though multiple containers can run, mutual communication (i.e link) can't work. 
+- docker-compose can not work on Heroku. Though multiple containers can run, mutual communication (i.e link) can't work. 
 - So if you want to use multiple container and link is required among containers, Dockerfile that includes all functionalities have to be prepared.
-- MySQL is used on this example with json type that's available on MySQL version 5.7 or upper. However Heroku's MySQL(ClearDB) is version 5.6 yet.
+- In this case, Docker's [multiple-stage build](https://docs.docker.com/engine/userguide/eng-image/multistage-build/) is useful. 
+- MySQL is used on this example with json type that's available on MySQL version 5.7 or upper. However Heroku's MySQL(ClearDB) is version 5.6 yet. That's why entire docker system should be required to work on Heroku.
 
 **Travis-CI**
 - Be careful to connect database. [Read it](https://docs.docker.com/compose/startup-order/)

@@ -1,0 +1,50 @@
+###############################################################################
+# Golang and goa
+###############################################################################
+FROM hirokiy/goplus:1.8
+
+RUN go get -u github.com/hiromaily/go-goa/...
+
+WORKDIR /go/src/github.com/hiromaily/go-goa/resources/swagger-ui
+RUN git submodule init && git submodule update
+
+WORKDIR /go/src/github.com/hiromaily/go-goa/resources/swagger-ui/dist
+RUN sed -e "s|http://petstore.swagger.io/v2/swagger.json|/swagger.json|g" index.html > goa.html
+
+RUN mkdir -p /go/src/github.com/hiromaily/go-goa/tmp/log && mkdir -p /var/log/go
+
+WORKDIR /go/src/github.com/hiromaily/go-goa
+RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/go-goa ./ext/cmd/main.go
+
+
+###############################################################################
+# MySQL
+###############################################################################
+FROM mysql:5.7
+
+COPY ./docker/mysql/conf.d /etc/mysql/conf.d
+COPY ./docker/mysql/init.d /docker-entrypoint-initdb.d
+
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=hiromaily
+ENV MYSQL_USER=hiromaily
+ENV MYSQL_PASSWORD=12345678
+
+VOLUME /var/lib/mysql
+
+
+###############################################################################
+# Combined
+###############################################################################
+RUN mkdir -p /go/src/github.com/hiromaily/go-goa/tmp/log && \
+mkdir -p /var/log/go && \
+mkdir -p /go/bin
+COPY ./docker/docker-entrypoint.sh /usr/local/bin/
+
+WORKDIR /go/src/github.com/hiromaily/go-goa
+COPY --from=0 /go/bin/go-goa /go/bin/go-goa
+COPY --from=0 /go/src/github.com/hiromaily/go-goa/public ./public
+COPY --from=0 /go/src/github.com/hiromaily/go-goa/resources ./resources
+
+
+CMD ["mysqld"]
