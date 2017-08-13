@@ -6,7 +6,22 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f207ca57e48e456389341fc41bb06951)](https://www.codacy.com/app/hiromaily2/go-goa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiromaily/go-goa&amp;utm_campaign=Badge_Grade)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/hiromaily/go-goa/master/LICENSE)
 
-go-goa is sameple for how to use goa framework
+go-goa is sameple for how to use goa framework.  
+
+
+## Example Page
+It works on Docker container on Heroku. You can check it [here](https://goa-web.herokuapp.com/).
+
+Docker related functionalities are poor in Heroku and Travis-CI yet.
+**Heroku**
+- docker-compose can not work on Heroku.
+- Though multiple containers can run, mutual communication (i.e link) can't work. 
+- So if you want to use multiple container and link is required among containers, Dockerfile that includes all functionalities have to be prepared.
+- MySQL is used on this example with json type that's available on MySQL version 5.7 or upper. However Heroku's MySQL(ClearDB) is version 5.6 yet.
+
+**Travis-CI**
+- Be careful to connect database. [Read it](https://docs.docker.com/compose/startup-order/)
+
 
 ## About goa framework
 * [goa](https://goa.design/)
@@ -55,21 +70,6 @@ gotest:
 	go test -v ext/cmd/*.go
 
 ```
-
-
-## Example Page
-It works on Docker container on Heroku.  
-[Here](https://goa-web.herokuapp.com/ "go-goa") 
-
-Docker related functionalities are poor in Heroku and Travis-CI yet.
-**Heroku**
-- docker-compose can not work on Heroku.
-- Though multiple containers can run, mutual communication (i.e link) can't work. 
-- So if you want to use multiple container and link is required among containers, Dockerfile that includes all functionalities have to be prepared.
-- MySQL is used on this example with json type that's available on MySQL version 5.7 or upper. However Heroku's MySQL(ClearDB) is version 5.6 yet.
-
-**Travis-CI**
-- Be careful to connect database. [Read it](https://docs.docker.com/compose/startup-order/)
 
 
 ## How to return dynamic html??
