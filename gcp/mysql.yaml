@@ -1,55 +1,49 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: mysql
+  name: sfg-dev-mysql-db
   labels:
-    app: mysql
+    app: sfg-dev-mysql
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: mysql
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        app: mysql
+        app: sfg-dev-mysql
+        tier: db
     spec:
       containers:
-        - image: hirokiy/go-goa-mysql:latest
+      - image: mysql:8.0.2
+        name: mysql
+        env:
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: db
+              key: mysql-database
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-root-password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: mysql-password
+        ports:
+        - containerPort: 3306
           name: mysql
-          command: ["mysqld", "--user=root", "--initialize"]
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: "root"
-            - name: MYSQL_DATABASE
-              value: "hiromaily"
-            - name: MYSQL_USER
-              value: "hiromaily"
-            - name: MYSQL_PASSWORD
-              value: "12345678"
-          #env:
-          #  - name: MYSQL_ROOT_PASSWORD
-          #    valueFrom:
-          #      secretKeyRef:
-          #        name: mysql
-          #        key: rootpass
-          #  - name: MYSQL_DATABASE
-          #    value: "hiromaily"
-          #  - name: MYSQL_USER
-          #    value: "hiromaily"
-          #  - name: MYSQL_PASSWORD
-          #    valueFrom:
-          #      secretKeyRef:
-          #        name: mysql2
-          #        key: pass
-          ports:
-            - containerPort: 3306
-              name: mysql
-          #volumeMounts:
-          #  - name: mysql-storage
-          #    mountPath: /var/lib/mysql
-      #volumes:
-      #  - name: mysql-storage
-      #    gcePersistentDisk:
-      #      pdName: mysql-disk
-      #      fsType: ext4
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: sfg-dev-mysql-pv-claim

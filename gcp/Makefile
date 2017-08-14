@@ -63,6 +63,7 @@ deploy_web:
 
 deploy_all: deploy_mysql deploy_web
 
+
 ###############################################################################
 # Delete
 ###############################################################################
@@ -129,5 +130,31 @@ check_web:
 #	@echo $(ID)
 #	#$(ID)
 
+mys:
+	kubectl get pod -l app=mysql
+
 logm:
 	$(SHELL) -c './mysqlog.sh'
+
+
+###############################################################################
+# New
+###############################################################################
+create_new:
+    kubectl create -f pv.yaml
+    kubectl create -f pvc.yaml
+
+    kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
+    kubectl create configmap db --from-literal=mysql-database=hiromaily
+
+    kubectl get pod -l app=sfg-dev-mysql
+    #kubectl logs sfg-dev-mysql-db-463083459-2b7jg
+
+create_new_after_running:
+	kubectl create -f mysql-service.yaml
+
+	kubectl create -f web.yaml
+	kubectl create -f web-service.yaml
+
+    #kubectl get service sfg-dev-mysql-db
+    #kubectl get svc -l app=web

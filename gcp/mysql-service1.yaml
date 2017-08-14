@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sfg-dev-mysql-db
+  name: mysql
   labels:
-    app: sfg-dev-mysql
+    app: mysql
 spec:
   type: ClusterIP
   ports:
     - port: 3306
   selector:
-    app: sfg-dev-mysql
+    app: mysql
