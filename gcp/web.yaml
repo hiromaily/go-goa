@@ -17,14 +17,7 @@ spec:
       containers:
         - image: hirokiy/go-goa:1.0
           name: web
+          command: ["/go/bin/go-goa", "-f", "/go/src/github.com/hiromaily/go-goa/resources/tomls/kubernetes.toml"]
           ports:
             - containerPort: 8080
               name: web
-          #volumeMounts:
-          #  - name: web-storage
-          #    mountPath: /go/src/github.com/hiromaily/go-goa
-      #volumes:
-      #  - name: web-storage
-      #    gcePersistentDisk:
-      #      pdName: web-disk
-      #      fsType: ext4

@@ -153,11 +153,10 @@ logm:
 # New
 ###############################################################################
 create_new:
+	gcloud container clusters create go-goa --num-nodes=3
 	#gcloud compute disks create --size 1GB mysql-disk
 
 	kubectl create -f pv.yaml
-	#kubectl create -f pv1.yaml
-	#kubectl create -f pv2.yaml
 
 	kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
 	kubectl create configmap db --from-literal=mysql-database=hiromaily
@@ -185,24 +184,38 @@ check_new:
 	kubectl logs mysql-3449492693-6dg8w
 	kubectl describe pod mysql-3449492693-6dg8w
 
-    kubectl logs web-899485354-b3v9z
+	kubectl logs web-899485354-b3v9z
 
 delete_new:
+	kubectl delete -f web.yaml
 	kubectl delete -f mysql.yaml
-	#kubectl delete -f pv1.yaml
-	kubectl delete -f pv2.yaml
+	kubectl delete -f pv.yaml
 
-	gcloud compute disks delete mysql-disk
+	#gcloud compute disks delete mysql-disk
+
+	gcloud container clusters delete go-goa
 
 
-restart_new:
-	kubectl delete -f pv1.yaml
-	kubectl delete -f pv2.yaml
-	kubectl delete -f mysql.yaml
-	kubectl create -f pv1.yaml
-	kubectl create -f pv2.yaml
-	kubectl create -f mysql.yaml
-	kubectl get pod
+mysql:
+	kubectl port-forward mysql-4197980765-57rmp 3307:3306
+	mysql -u root -P 3307
+
+
+
+mysql_fix:
+    #brew services start mysql
+
+	#mysql -u root -D hiromaily -p
+	#ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock'
+
+	#mysqld stop
+
+	#sudo chown -R _mysql:_mysql /usr/local/var/mysql
+	#sudo chmod -R o+rwx /usr/local/var/mysql
+
+    #mysql.server start
+    #sudo mysql.server start
+
 
 
 
