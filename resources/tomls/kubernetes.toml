@@ -1,0 +1,13 @@
+#local, heroku, docker, staging, production
+environment = "kubernetes"
+
+[jwt]
+key = "keys"
+
+[mysql]
+encrypted = false
+host = "mysql"
+port = 3306
+dbname = "hiromaily"
+user = "hiromaily"
+pass = "12345678"
