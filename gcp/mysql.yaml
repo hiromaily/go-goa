@@ -14,7 +14,8 @@ spec:
         tier: db
     spec:
       containers:
-      - image: mysql:8.0.2
+      - image: hirokiy/go-goa-mysql:latest
+      #- image: mysql:8.0.2
         name: mysql-server
         env:
         - name: MYSQL_DATABASE
