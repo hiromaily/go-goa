@@ -42,8 +42,16 @@ spec:
           name: mysql
         volumeMounts:
         - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
+          #mountPath: /var/lib/mysql
+          mountPath: /docker-entrypoint-initdb.d
+        #- name: data-init
+        #  mountPath: /docker-entrypoint-initdb.d
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: sfg-dev-mysql-pv-claim
+      #- name: data-init
+      #  hostPath:
+      #    # directory location on host
+      #    #path: ./mysql
+      #    path: /Users/hy/work/go/src/github.com/hiromaily/go-goa/docker/mysql/init.d

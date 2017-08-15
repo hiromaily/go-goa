@@ -11,4 +11,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/tmp/data"
+    path: "/Users/hy/work/go/src/github.com/hiromaily/go-goa/docker/mysql/init.d"

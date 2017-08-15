@@ -141,14 +141,14 @@ logm:
 # New
 ###############################################################################
 create_new:
-    kubectl create -f pv.yaml
-    kubectl create -f pvc.yaml
+	kubectl create -f pv.yaml
+	kubectl create -f pvc.yaml
 
-    kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
-    kubectl create configmap db --from-literal=mysql-database=hiromaily
+	kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
+	kubectl create configmap db --from-literal=mysql-database=hiromaily
 
-    kubectl get pod -l app=sfg-dev-mysql
-    #kubectl logs sfg-dev-mysql-db-463083459-2b7jg
+	#kubectl get pod -l app=sfg-dev-mysql
+	#kubectl logs sfg-dev-mysql-db-1949506793-1z7ks
 
 create_new_after_running:
 	kubectl create -f mysql-service.yaml
@@ -156,5 +156,11 @@ create_new_after_running:
 	kubectl create -f web.yaml
 	kubectl create -f web-service.yaml
 
-    #kubectl get service sfg-dev-mysql-db
-    #kubectl get svc -l app=web
+check_new:
+    #kubectl get pod -l app=sfg-dev-mysql
+	#kubectl get service sfg-dev-mysql-db
+	#kubectl get svc -l app=web
+
+restart_new:
+	kubectl delete pod -l app=sfg-dev-mysql
+	kubectl apply -f mysql.yaml
