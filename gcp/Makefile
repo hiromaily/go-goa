@@ -71,9 +71,21 @@ delete_mysql:
 	kubectl delete pod -l app=mysql
 	kubectl delete service mysql
 
+	#OR
+
+	kubectl delete -f mysql.yaml
+	kubectl delete -f mysql-service.yaml
+
+
 delete_web:
 	kubectl delete pod -l app=web
 	kubectl delete service web
+
+	#OR
+
+	kubectl delete -f web.yaml
+	kubectl delete -f web-service.yaml
+
 
 delete_all: delete_web delete_mysql
 
@@ -141,14 +153,18 @@ logm:
 # New
 ###############################################################################
 create_new:
+	#gcloud compute disks create --size 1GB mysql-disk
+
 	kubectl create -f pv.yaml
-	kubectl create -f pvc.yaml
+	#kubectl create -f pv1.yaml
+	#kubectl create -f pv2.yaml
 
 	kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
 	kubectl create configmap db --from-literal=mysql-database=hiromaily
 
-	#kubectl get pod -l app=sfg-dev-mysql
-	#kubectl logs sfg-dev-mysql-db-1949506793-1z7ks
+	kubectl create -f mysql.yaml
+
+	kubectl get pod
 
 create_new_after_running:
 	kubectl create -f mysql-service.yaml
@@ -156,11 +172,41 @@ create_new_after_running:
 	kubectl create -f web.yaml
 	kubectl create -f web-service.yaml
 
+	kubectl get svc -l app=web
+
+
 check_new:
-    #kubectl get pod -l app=sfg-dev-mysql
-	#kubectl get service sfg-dev-mysql-db
+	#kubectl get pod
+
+	#kubectl get pod -l mysql-server
+	#kubectl get service mysql-server
 	#kubectl get svc -l app=web
 
+	kubectl logs mysql-3449492693-6dg8w
+	kubectl describe pod mysql-3449492693-6dg8w
+
+    kubectl logs web-899485354-b3v9z
+
+delete_new:
+	kubectl delete -f mysql.yaml
+	#kubectl delete -f pv1.yaml
+	kubectl delete -f pv2.yaml
+
+	gcloud compute disks delete mysql-disk
+
+
 restart_new:
-	kubectl delete pod -l app=sfg-dev-mysql
-	kubectl apply -f mysql.yaml
+	kubectl delete -f pv1.yaml
+	kubectl delete -f pv2.yaml
+	kubectl delete -f mysql.yaml
+	kubectl create -f pv1.yaml
+	kubectl create -f pv2.yaml
+	kubectl create -f mysql.yaml
+	kubectl get pod
+
+
+
+get_all_pod:
+	kubectl get pod
+	kubectl get rc
+	kubectl get svc

@@ -1,7 +1,7 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: mysql-pv-volume
+  name: mysql-init-pv-volume
   labels:
     type: local
 spec:
@@ -11,12 +11,13 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/tmp/data"
+    #path: "/Users/hy/work/go/src/github.com/hiromaily/go-goa/docker/mysql/init.d"
+    path: "/gcptmp"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: mysql-pv-claim
+  name: mysql-init-pv-claim
 spec:
   storageClassName: manual
   accessModes:

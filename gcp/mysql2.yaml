@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - image: mysql:8.0.2
-        name: mysql-server
+        name: mysql
         env:
         - name: MYSQL_DATABASE
           valueFrom:
@@ -39,11 +39,16 @@ spec:
               key: mysql-password
         ports:
         - containerPort: 3306
-          name: mysql-server
+          name: mysql
         volumeMounts:
+        #- name: mysql-init-storage
+        #  mountPath: /docker-entrypoint-initdb.d
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
       volumes:
+      #- name: mysql-init-storage
+      #  persistentVolumeClaim:
+      #    claimName: mysql-init-pv-claim
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim

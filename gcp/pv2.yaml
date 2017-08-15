@@ -10,8 +10,9 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  hostPath:
-    path: "/tmp/data"
+  gcePersistentDisk:
+    pdName: mysql-disk
+    fsType: ext4
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
