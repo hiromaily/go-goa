@@ -64,7 +64,7 @@ func main() {
 		}
 		break
 	}
-	if ctx == nil {
+	if err != nil {
 		panic("database can not be connected.")
 	}
 
