@@ -66,6 +66,8 @@ func main() {
 	}
 	if err != nil {
 		panic("database can not be connected.")
+	}else{
+		lg.Info("connected!!")
 	}
 
 	service := newAPI(ctx)

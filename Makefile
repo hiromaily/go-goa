@@ -281,11 +281,11 @@ heroku_updfull:
 ###############################################################################
 dcp_build:
 	docker-compose build --no-cache webserver
-	docker build --no-cache -t hirokiy/go-goa-mysql:latest -f ./docker/mysql/Dockerfile .
+	#docker build --no-cache -t hirokiy/go-goa-mysql:latest -f ./docker/mysql/Dockerfile .
 
 dcp_push:
     docker push hirokiy/go-goa:1.0
-    docker push hirokiy/go-goa-mysql:latest
+    #docker push hirokiy/go-goa-mysql:latest
 
 
 ###############################################################################

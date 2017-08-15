@@ -32,7 +32,8 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 	svc := &m.User{Db: c.ctx.Db}
 	id, err := svc.Login(ctx.Payload.Email, ctx.Payload.Password)
 	if err != nil {
-		return ctx.Unauthorized()
+		//return ctx.Unauthorized()
+		return err
 	}
 
 	// Generate JWT
