@@ -47,14 +47,15 @@ dcup:
 ```
 
 ## Directory structure
-| Directory NAME      | Description                               |
-|:--------------------|:------------------------------------------|
-| docker              | docker resources                          |
-| ext                 | extension source code for logic           |
-| goa                 | generated files by goa                    |
-| public              | static files                              |
-| resources           | swagger-ui, toml files and so on          |
-| frontend-workspace  | developemental environment for front-end  |
+| Directory NAME      | Description                                    |
+|:--------------------|:-----------------------------------------------|
+| docker              | docker resources                               |
+| ext                 | extension source code for logic                |
+| goa                 | generated files by goa                         |
+| public              | static files                                   |
+| resources           | swagger-ui, toml files and so on               |
+| frontend-workspace  | developemental environment for front-end       |
+| gcp                 | configuration files for GCP mainly Kubertentes |
 
 
 
