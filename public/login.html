@@ -157,9 +157,9 @@ function login() {
         return response.json();
     }).then(function(json) {
         console.log("res:", json);
-        if (json.status && json.status != 200){
+        if ((json.status && json.status != 200) || !json.id) {
             //error
-            console.log("login error");
+            console.log("login error: ", json);
 
             $('.ui.form').form('add prompt', 'email');
             $('.ui.form .error.message').html('Please enter a valid email and password').show();
