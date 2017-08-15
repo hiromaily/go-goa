@@ -50,4 +50,4 @@ RUN	rm -rf frontend_workspace
 RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/go-goa ./ext/cmd/main.go
 
 #EXPOSE 80
-CMD ["/go/bin/go-goa", "-f", "/go/src/github.com/hiromaily/go-goa/resources/tomls/heroku.toml"]
+CMD ["/go/bin/go-goa", "-f", "/go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"]

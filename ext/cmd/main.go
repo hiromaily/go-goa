@@ -66,7 +66,7 @@ func main() {
 	}
 	if err != nil {
 		panic("database can not be connected.")
-	}else{
+	} else {
 		lg.Info("connected!!")
 	}
 

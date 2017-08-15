@@ -34,6 +34,8 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 	if err != nil {
 		//return ctx.Unauthorized()
 		return err
+	} else if id == 0 {
+		return ctx.Unauthorized()
 	}
 
 	// Generate JWT

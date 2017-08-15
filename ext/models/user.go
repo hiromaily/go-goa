@@ -49,7 +49,7 @@ func (m *User) Login(email, password string) (int, error) {
 	}
 
 	if len(users) == 0 || users[0].ID == 0 {
-		return 0, errors.New("invalid input.")
+		return 0, nil
 	} else if len(users) > 1 {
 		return 0, errors.New("data in database would be broken.")
 	}
