@@ -15,8 +15,9 @@ spec:
         app: web
     spec:
       containers:
-        - image: hirokiy/go-goa:1.0
-          name: web
+        - name: web
+          image: hirokiy/go-goa:1.0
+          imagePullPolicy: Always
           command: ["/go/bin/go-goa", "-f", "/go/src/github.com/hiromaily/go-goa/resources/tomls/kubernetes.toml"]
           ports:
             - containerPort: 8080

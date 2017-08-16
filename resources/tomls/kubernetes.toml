@@ -6,7 +6,7 @@ key = "keys"
 
 [mysql]
 encrypted = false
-host = "mysql"
+host = "mysql-server"
 port = 3306
 dbname = "hiromaily"
 user = "hiromaily"

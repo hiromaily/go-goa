@@ -1,22 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: mysql
+  name: mysql-server
   labels:
-    app: mysql-server
+    app: mysql
 spec:
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: mysql-server
+        app: mysql
         tier: db
     spec:
       containers:
-      - image: hirokiy/go-goa-mysql:latest
-      #- image: mysql:8.0.2
-        name: mysql-server
+      - name: mysql
+        image: hirokiy/go-goa-mysql:latest
+        imagePullPolicy: Always
         env:
         - name: MYSQL_DATABASE
           valueFrom:
@@ -40,7 +40,7 @@ spec:
               key: mysql-password
         ports:
         - containerPort: 3306
-          name: mysql-server
+          name: mysql
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
