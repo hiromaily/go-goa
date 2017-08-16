@@ -105,6 +105,12 @@ create_key:
 	kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
 	kubectl create configmap db --from-literal=mysql-database=hiromaily
 
+create_map:
+	#kubectl create configmap my-config --from-file=key1=/path/to/bar/file1.txt --from-file=key2=/path/to/bar/file2.txt
+	kubectl create configmap mysql-initdb-config \
+	--from-file=user.sql=/Users/hy/work/go/src/github.com/hiromaily/go-goa/docker/mysql/init.d/user.sql \
+	--from-file=dump.sql=/Users/hy/work/go/src/github.com/hiromaily/go-goa/docker/mysql/init.d/dump.sql
+
 deploy_mysql:
 	kubectl create -f mysql.yaml
 	kubectl create -f mysql-service.yaml
@@ -122,6 +128,9 @@ deploy:
 
 	kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
 	kubectl create configmap db --from-literal=mysql-database=hiromaily
+	kubectl create configmap mysql-initdb-config \
+	--from-file=user.sql=/Users/hy/work/go/src/github.com/hiromaily/go-goa/docker/mysql/init.d/user.sql \
+	--from-file=dump.sql=/Users/hy/work/go/src/github.com/hiromaily/go-goa/docker/mysql/init.d/dump.sql
 
 	kubectl create -f mysql.yaml
 
@@ -136,6 +145,15 @@ deploy2:
 
 	kubectl get svc -l app=web
 	#kubectl get pod -l app=web
+
+	minikube service web --url
+
+restart:
+	kubectl delete -f web-service.yaml
+	kubectl delete -f web.yaml
+	kubectl delete -f mysql-service.yaml
+	kubectl delete -f mysql.yaml
+	kubectl delete -f pv.yaml
 
 
 ###############################################################################
