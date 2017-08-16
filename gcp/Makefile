@@ -9,6 +9,10 @@ gcp_init:
 gcp_sdk_reset:
 	gcloud init
 
+container_engine_init:
+	#https://cloud.google.com/container-engine/docs/tutorials/persistent-disk?hl=ja
+	gcloud components update kubectl
+
 
 ###############################################################################
 # Projects
@@ -25,13 +29,6 @@ proj_check:
 ###############################################################################
 # Container Engine
 ###############################################################################
-#https://console.cloud.google.com/kubernetes/list?project=go-goa&hl=ja
-
-container_engine_init:
-	#https://cloud.google.com/container-engine/docs/tutorials/persistent-disk?hl=ja
-	gcloud components update kubectl
-
-
 create_cluster:
 	gcloud container clusters create go-goa --num-nodes=3
 
@@ -50,8 +47,8 @@ create_disk:
 	#mysql-disk  europe-west1-c  1        pd-standard  READY
 
 create_key:
-	kubectl create secret generic mysql --from-literal=rootpass=root
-	kubectl create secret generic mysql2 --from-literal=pass=12345678
+	kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
+	kubectl create configmap db --from-literal=mysql-database=hiromaily
 
 deploy_mysql:
 	kubectl create -f mysql.yaml
@@ -61,38 +58,50 @@ deploy_web:
 	kubectl create -f web.yaml
 	kubectl create -f web-service.yaml
 
-deploy_all: deploy_mysql deploy_web
+
+deploy:
+	gcloud container clusters create go-goa --num-nodes=3
+	#gcloud compute disks create --size 1GB mysql-disk
+
+	kubectl create -f pv.yaml
+
+	kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
+	kubectl create configmap db --from-literal=mysql-database=hiromaily
+
+	kubectl create -f mysql.yaml
+
+	kubectl get pod
+
+deploy2:
+	kubectl create -f mysql-service.yaml
+
+	kubectl create -f web.yaml
+	kubectl create -f web-service.yaml
+
+	kubectl get svc -l app=web
 
 
 ###############################################################################
 # Delete
 ###############################################################################
 delete_mysql:
-	kubectl delete pod -l app=mysql
-	kubectl delete service mysql
-
-	#OR
-
-	kubectl delete -f mysql.yaml
 	kubectl delete -f mysql-service.yaml
-
+	kubectl delete -f mysql.yaml
+	#kubectl delete pod -l app=mysql
+	#kubectl delete service mysql
 
 delete_web:
-	kubectl delete pod -l app=web
-	kubectl delete service web
-
-	#OR
-
-	kubectl delete -f web.yaml
 	kubectl delete -f web-service.yaml
-
-
-delete_all: delete_web delete_mysql
+	kubectl delete -f web.yaml
+	#kubectl delete pod -l app=web
+	#kubectl delete service web
 
 cleanup: delete_all
-	gcloud compute forwarding-rules list
+	#gcloud compute forwarding-rules list
+	kubectl delete -f pv.yaml
+
 	gcloud container clusters delete go-goa
-	gcloud compute disks delete mysql-disk
+	#gcloud compute disks delete mysql-disk
 
 
 ###############################################################################
@@ -118,6 +127,11 @@ resetm:
 ###############################################################################
 # Check
 ###############################################################################
+check:
+	kubectl get pod
+	#kubectl get rc
+	kubectl get svc
+
 check_mysql:
 	kubectl get pod -l app=mysql
 	kubectl get service mysql
@@ -125,85 +139,24 @@ check_mysql:
 	#kubectl describe pod mysql-3804075166-8fzbp
 	#kubectl logs mysql-3804075166-8fzbp
 
-	#NAME      CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
-	#mysql     10.59.245.61   <none>        3306/TCP   25s
-
 check_web:
 	kubectl get pod -l app=web
 	kubectl get svc -l app=web
 
-	#NAME      CLUSTER-IP      EXTERNAL-IP      PORT(S)        AGE
-	#web       10.59.253.208   35.195.138.190   80:31205/TCP   2m
+logm:
+	$(SHELL) -c './mysqlog.sh'
 
-	# http://35.195.135.47/
-
-#getm:
+#getid:
 #	$(eval ID := $(shell kubectl get pod -l app=mysql | tail -n 1 | awk '{print $1}'))
 #	@echo $(ID)
 #	#$(ID)
 
-mys:
-	kubectl get pod -l app=mysql
-
-logm:
-	$(SHELL) -c './mysqlog.sh'
-
 
 ###############################################################################
-# New
+# MySQL
 ###############################################################################
-create_new:
-	gcloud container clusters create go-goa --num-nodes=3
-	#gcloud compute disks create --size 1GB mysql-disk
-
-	kubectl create -f pv.yaml
-
-	kubectl create secret generic mysql-secret --from-literal=mysql-root-password=root --from-literal=mysql-user=hiromaily --from-literal=mysql-password=12345678
-	kubectl create configmap db --from-literal=mysql-database=hiromaily
-
-	kubectl create -f mysql.yaml
-
-	kubectl get pod
-
-create_new_after_running:
-	kubectl create -f mysql-service.yaml
-
-	kubectl create -f web.yaml
-	kubectl create -f web-service.yaml
-
-	kubectl get svc -l app=web
-
-
-check_new:
-	#kubectl get pod
-
-	#kubectl get pod -l mysql-server
-	#kubectl get service mysql-server
-	#kubectl get svc -l app=web
-
-	kubectl logs mysql-3449492693-6dg8w
-	kubectl describe pod mysql-3449492693-6dg8w
-
-	kubectl logs web-899485354-b3v9z
-
-delete_new:
-	kubectl delete -f web.yaml
-	kubectl delete -f mysql.yaml
-	kubectl delete -f pv.yaml
-
-	#gcloud compute disks delete mysql-disk
-
-	gcloud container clusters delete go-goa
-
-
-mysql:
-	kubectl port-forward mysql-4197980765-57rmp 3307:3306
-	mysql -u root -P 3307
-
-
-
-mysql_fix:
-    #brew services start mysql
+local_settings:
+	#brew services start mysql
 
 	#mysql -u root -D hiromaily -p
 	#ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock'
@@ -213,13 +166,10 @@ mysql_fix:
 	#sudo chown -R _mysql:_mysql /usr/local/var/mysql
 	#sudo chmod -R o+rwx /usr/local/var/mysql
 
-    #mysql.server start
-    #sudo mysql.server start
+	#mysql.server start
+	#sudo mysql.server start
 
+mysql:
+	kubectl port-forward mysql-4197980765-57rmp 3307:3306
+	mysql -u root -P 3307
 
-
-
-get_all_pod:
-	kubectl get pod
-	kubectl get rc
-	kubectl get svc
