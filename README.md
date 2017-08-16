@@ -13,7 +13,7 @@ go-goa is sameple for how to use goa framework.
 It works on Docker container on Heroku and GKE(Google CONTAINER ENGINE). You can check these respectively.  
  
 **Google Container Engine**
-- [Site on GKE](http://35.195.210.71/) (This URL would be changeable).  
+- [Site on GKE](http://35.195.210.71/) (For now, it's disable because development is still ongoing.).  
 
 
 **Heroku**

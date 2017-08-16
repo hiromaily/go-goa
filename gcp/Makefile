@@ -14,6 +14,21 @@ container_engine_init:
 	gcloud components update kubectl
 
 
+###############################################################################
+# minikube
+###############################################################################
+minikube_init:
+    brew install docker-machine-driver-xhyve
+
+    # docker-machine-driver-xhyve need root owner and uid
+    sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+    sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+
+    brew cask install minikube
+
+mini:
+    minikube start
+
 
 ###############################################################################
 # Projects
@@ -97,7 +112,7 @@ delete_web:
 	#kubectl delete pod -l app=web
 	#kubectl delete service web
 
-cleanup: delete_all
+cleanup:
 	#gcloud compute forwarding-rules list
 	kubectl delete -f pv.yaml
 
