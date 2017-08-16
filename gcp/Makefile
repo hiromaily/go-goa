@@ -16,18 +16,57 @@ container_engine_init:
 
 ###############################################################################
 # minikube
+#  https://kubernetes.io/docs/tutorials/stateless-application/hello-minikube/
 ###############################################################################
 minikube_init:
-    brew install docker-machine-driver-xhyve
+	brew install docker-machine-driver-xhyve
 
-    # docker-machine-driver-xhyve need root owner and uid
-    sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
-    sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+	# docker-machine-driver-xhyve need root owner and uid
+	sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+	sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
 
-    brew cask install minikube
+	brew cask install minikube
 
 mini:
-    minikube start
+	minikube start --vm-driver=xhyve
+	#minikube start
+
+	#kubectl cluster-info
+
+	#kubectl proxy
+
+ministop:
+	minikube stop
+
+
+#minikube service mysql-server --url
+# => http://192.168.99.100:32741
+#    $ mysql -uroot -p -h 192.168.99.100 --port 32741
+
+#minikube service web --url
+# => http://192.168.99.100:31983
+
+
+#minikube Commands:
+#  addons           Modify minikube's kubernetes addons
+#  completion       Outputs minikube shell completion for the given shell (bash)
+#  config           Modify minikube config
+#  dashboard        Opens/displays the kubernetes dashboard URL for your local cluster
+#  delete           Deletes a local kubernetes cluster
+#  docker-env       Sets up docker env variables; similar to '$(docker-machine env)'
+#  get-k8s-versions Gets the list of available kubernetes versions available for minikube
+#  ip               Retrieves the IP address of the running cluster
+#  logs             Gets the logs of the running localkube instance, used for debugging minikube, not user code
+#  mount            Mounts the specified directory into minikube
+#  profile          Profile sets the current minikube profile
+#  service          Gets the kubernetes URL(s) for the specified service in your local cluster
+#  ssh              Log into or run a command on a machine with SSH; similar to 'docker-machine ssh'
+#  ssh-key          Retrieve the ssh identity key path of the specified cluster
+#  start            Starts a local kubernetes cluster
+#  status           Gets the status of a local kubernetes cluster
+#  stop             Stops a running local kubernetes cluster
+#  update-context   Verify the IP address of the running cluster in kubeconfig.
+#  version          Print the version of minikube
 
 
 ###############################################################################
@@ -76,7 +115,7 @@ deploy_web:
 
 
 deploy:
-	gcloud container clusters create go-goa --num-nodes=3
+	#gcloud container clusters create go-goa --num-nodes=3
 	#gcloud compute disks create --size 1GB mysql-disk
 
 	kubectl create -f pv.yaml
@@ -87,6 +126,7 @@ deploy:
 	kubectl create -f mysql.yaml
 
 	kubectl get pod
+	#kubectl get pod -l app=mysql
 
 deploy2:
 	kubectl create -f mysql-service.yaml
@@ -95,6 +135,7 @@ deploy2:
 	kubectl create -f web-service.yaml
 
 	kubectl get svc -l app=web
+	#kubectl get pod -l app=web
 
 
 ###############################################################################
@@ -147,6 +188,9 @@ check:
 	kubectl get pod
 	#kubectl get rc
 	kubectl get svc
+	kubectl get events
+
+	kubectl config view
 
 check_mysql:
 	kubectl get pod -l app=mysql
@@ -161,6 +205,9 @@ check_web:
 
 logm:
 	$(SHELL) -c './mysqlog.sh'
+
+logw:
+	$(SHELL) -c './weblog.sh'
 
 #getid:
 #	$(eval ID := $(shell kubectl get pod -l app=mysql | tail -n 1 | awk '{print $1}'))

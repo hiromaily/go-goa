@@ -8,5 +8,8 @@ spec:
   type: ClusterIP
   ports:
     - port: 3306
+      targetPort: 3306
+      protocol: TCP
+  type: LoadBalancer
   selector:
     app: mysql
