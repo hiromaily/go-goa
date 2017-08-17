@@ -196,6 +196,7 @@ INSERT INTO `t_techs` VALUES
   (54,'memcached','0',now(),now()),
   (55,'SQL Server2005','0',now(),now()),
   (56,'SQL Server2008','0',now(),now()),
+  (57,'Oracle','0',now(),now()),
   (60,'Nginx','0',now(),now()),
   (61,'Apache','0',now(),now()),
   (62,'IIS','0',now(),now()),
@@ -374,7 +375,7 @@ INSERT INTO `t_user_work_history` VALUES
    '2005-04-01','2006-11-30','0',now(),now()),
   (null,1,9,'Junior Software Engineer',
    '["Developed car auction system using VB, C, Java."]',
-   '[26,27,13]',
+   '[26,27,13,57]',
    '2002-09-01','2005-03-31','0',now(),now());
 /*!40000 ALTER TABLE `t_user_work_history` ENABLE KEYS */;
 UNLOCK TABLES;
