@@ -18,6 +18,7 @@ after_script:
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
   - docker push hirokiy/go-goa:1.0;
+  - docker login -u="$HEROKU_USERNAME" -p="$HEROKU_PASSWORD" registry.heroku.com;
   - docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.multistage.heroku .
   - docker push registry.heroku.com/goa-web/web
 
