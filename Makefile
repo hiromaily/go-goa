@@ -255,7 +255,7 @@ heroku_build_docker2:
 	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
 
 heroku_build_multistage:
-    #It works!
+	#It works!
 	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.multistage.heroku .
 
 heroku_bldfull:
@@ -280,10 +280,10 @@ heroku_updfull:
 # Deploy Heroku on Travis
 ###############################################################################
 travis_init:
-    gem install travis
+	gem install travis
 
 travis_enc:
-    travis encrypt $(heroku auth:token) --add deploy.api_key
+	travis encrypt $(heroku auth:token) --add deploy.api_key
 
 ###############################################################################
 # Build Image for GCP Kubernetes
@@ -293,8 +293,8 @@ dcp_build:
 	#docker build --no-cache -t hirokiy/go-goa-mysql:latest -f ./docker/mysql/Dockerfile .
 
 dcp_push:
-    docker push hirokiy/go-goa:1.0
-    #docker push hirokiy/go-goa-mysql:latest
+	docker push hirokiy/go-goa:1.0
+	#docker push hirokiy/go-goa-mysql:latest
 
 
 ###############################################################################
