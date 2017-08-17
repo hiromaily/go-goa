@@ -6,6 +6,8 @@ go:
 services:
   - docker
 before_install:
+  #- sudo apt-get update
+  #- sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
   - docker-compose build
   - docker-compose up -d
 before_script:
@@ -18,22 +20,15 @@ after_script:
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
   - docker push hirokiy/go-goa:1.0;
-  - docker login -e="$HEROKU_USERNAME" -u="$HEROKU_USERNAME" -p="$HEROKU_PASSWORD" registry.heroku.com;
+  - docker login -u="$HEROKU_USERNAME" -p="$HEROKU_PASSWORD" registry.heroku.com;
   #- docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.multistage.heroku .
   - docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
   - docker push hirokiy/goapack_base:latest;
   - docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
   - docker push hirokiy/goapack:latest;
-  - docker tag registry.heroku.com/goa-web/web hirokiy/goapack:latest
+  - docker tag hirokiy/goapack:latest registry.heroku.com/goa-web/web
   - docker push registry.heroku.com/goa-web/web;
 
 branches:
   only:
     - master
-
-#before_deploy:
-# - docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.multistage.heroku .
-
-#deploy:
-#  api_key:
-#    secure: TicBGbgPfIWEuV8t8gF0OucxbIlS/3QZYHUczYeV76A+GlHZAPyT1CzVI3rE8+4IwT+rWBu94jaYJv/AbeYYfcx49NpIm4Suk5pRZBM7LxEyQJi389QUQatzd+MMfTY4W6iC1PFW06pzxUIyjwHy04UPlP3DXi36Twpxoq780skMr97P4Lp5n/EfddmuRjE2ciyTupUCQkDqgwJFwFtRWK2R05JaijxUCBRTr93JCNQemr4wNb4NUqt3wU11hWB2n7T9cGrwtdGir1M3FRnD4moiPbsjzl2q/qqICiYqjc8oKqjNIR1f63F4VdB2PUdWkVVw9TUT7eri41l7UNwqdXHwqv9F+cboimutI+RP9EFT8x9hvnzxSuU4iURhZu4ddkN3LM/vJk2B7VfqTVbbdGeyHKu3jP5SSyIYc+H4EyfFJNnVpIei1DadDCYAx3JYij07IB5ItTGUE3F/Cdnt958PdSx50nkmfD6jaiQE1IFXLmEOy9TXlFwl/N2IlzqOe6Sll/82De4uOF2MrT09Wuz672Gh7d0qj1xGHlMsvsvnC1+Oto7k+xt6IP7hCBTKsVrlaKaYoyCVGglWufcWJMIm2Vd5SGLQCdx0Xe4PSoSI/g/bPfxNa7IgI1GMFgR5LqMxyvnQn77Td72wQgXfBhS5Te7RzvQ0KDq+6L8NKl8=
