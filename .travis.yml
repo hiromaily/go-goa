@@ -20,7 +20,7 @@ after_success:
   - docker push hirokiy/go-goa:1.0;
   - docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.multistage.heroku .
   - docker push registry.heroku.com/goa-web/web
-  
+
 branches:
   only:
     - master

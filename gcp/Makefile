@@ -146,7 +146,7 @@ deploy2:
 	kubectl get svc -l app=web
 	#kubectl get pod -l app=web
 
-	minikube service web --url
+	#minikube service web --url
 
 restart:
 	kubectl delete -f web-service.yaml
