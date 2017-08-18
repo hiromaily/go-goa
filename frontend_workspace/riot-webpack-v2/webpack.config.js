@@ -2,10 +2,13 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-    entry: './src/app.js',
+    entry: {
+        resume: './src/resume.js',
+        admin: './src/admin.js'
+    },
     output: {
-        path: __dirname + '/public/js/',
-        filename: 'bundle.js'
+        path: __dirname + '/public/',
+        filename: '[name].bundle.js'
     },
     module: {
         rules: [
@@ -47,6 +50,9 @@ module.exports = {
         inline: true
     },
     plugins: [
-        new webpack.ProvidePlugin({ riot: 'riot' })
+        new webpack.ProvidePlugin({
+            riot: 'riot',
+            route: 'riot-route'
+        })
     ]
 };

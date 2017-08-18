@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <!-- Standard Meta -->
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
-    <!-- Site Properties -->
-    <title>goa-web | Admin</title>
-    <link rel="stylesheet" type="text/css" href="/css/semantic.css">
-    <style>
-        .last.container {
-            margin-bottom: 300px !important;
-        }
-        h1.ui.center.header {
-            margin-top: 3em;
-        }
-        h2.ui.center.header {
-            margin: 4em 0em 2em;
-        }
-        h3.ui.center.header {
-            margin-top: 2em;
-            padding: 2em 0em;
-        }
-    </style>
-</head>
-<body>
-
-
-<h2 class="ui center aligned header">Admin</h2>
-
-
+<user>
 <div class="ui container" style="margin-bottom: 50px;">
     <h3 class="ui header">User Model</h3>
 
@@ -137,55 +105,4 @@
         </form>
     </div>
 </div>
-
-
-<script src="/assets/library/jquery.min.js"></script>
-<script src="/js/semantic.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-
-        var
-            $headers     = $('body > h3'),
-            $header      = $headers.first(),
-            ignoreScroll = false,
-            timer
-        ;
-
-        // Preserve example in viewport when resizing browser
-        $(window)
-            .on('resize', function() {
-                // ignore callbacks from scroll change
-                clearTimeout(timer);
-                $headers.visibility('disable callbacks');
-
-                // preserve position
-                $(document).scrollTop( $header.offset().top );
-
-                // allow callbacks in 500ms
-                timer = setTimeout(function() {
-                    $headers.visibility('enable callbacks');
-                }, 500);
-            })
-        ;
-        $headers
-            .visibility({
-                // fire once each time passed
-                once: false,
-
-                // don't refresh position on resize
-                checkOnRefresh: true,
-
-                // lock to this element on resize
-                onTopPassed: function() {
-                    $header = $(this);
-                },
-                onTopPassedReverse: function() {
-                    $header = $(this);
-                }
-            })
-        ;
-    });
-</script>
-
-</body>
-</html>
+</user>

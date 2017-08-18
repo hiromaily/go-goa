@@ -1,7 +1,7 @@
-require('./tag/like_tech.tag');
-require('./tag/dislike_tech.tag');
-require('./tag/work_history.tag');
-require('./tag/raw.tag');
+require('./tag/resume/like_tech.tag');
+require('./tag/resume/dislike_tech.tag');
+require('./tag/resume/work_history.tag');
+require('./tag/common/raw.tag');
 
 
 //Ajax

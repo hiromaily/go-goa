@@ -8,6 +8,13 @@ init:
 	mkdir -p src/tag public
 	touch .babelrc webpack.config.js
 
+initlink:
+	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/assets ./public/assets
+	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/components ./public/components
+	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/css ./public/css
+	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/img ./public/img
+	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/js ./public/js
+	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/json ./public/json
 
 ###############################################################################
 # Operation
@@ -22,10 +29,8 @@ open:
 	http://localhost:3000/
 
 deployjs:
-	cp public/js/bundle.js ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/js/resume.js
-	cp public/json/liketech.json ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/json/
-	cp public/json/disliketech.json ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/json/
-	cp public/json/workhistory.json ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/json/
+	cp public/resume.bundle.js ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/js/resume.js
+	cp public/admin.bundle.js ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/js/admin.js
 
 
 ###############################################################################

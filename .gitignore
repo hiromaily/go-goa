@@ -8,3 +8,10 @@ resources/tmp/*
 #resources/swagger-ui/*
 #!resources/swagger-ui/dist/*
 public/swagger
+
+frontend_workspace/riot-webpack-v2/public/assets
+frontend_workspace/riot-webpack-v2/public/components
+frontend_workspace/riot-webpack-v2/public/css
+frontend_workspace/riot-webpack-v2/public/img
+frontend_workspace/riot-webpack-v2/public/js
+frontend_workspace/riot-webpack-v2/public/json

@@ -3023,7 +3023,7 @@ data.forEach(function (obj) {
 
 
 var riot = __webpack_require__(0);
-//src: src/tag/like_tech.tag
+//src: src/tag/resume/like_tech.tag
 riot.tag2('like-tech', '<div class="ui segments"> <div class="ui segment"> <p>Like</p> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {});
 
 /***/ }),
@@ -3034,7 +3034,7 @@ riot.tag2('like-tech', '<div class="ui segments"> <div class="ui segment"> <p>Li
 
 
 var riot = __webpack_require__(0);
-//src: src/tag/dislike_tech.tag
+//src: src/tag/resume/dislike_tech.tag
 riot.tag2('dislike-tech', '<div class="ui segments"> <div class="ui segment"> <p>Dislike</p> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {});
 
 /***/ }),
@@ -3045,7 +3045,7 @@ riot.tag2('dislike-tech', '<div class="ui segments"> <div class="ui segment"> <p
 
 
 var riot = __webpack_require__(0);
-//src: src/tag/work_history.tag
+//src: src/tag/resume/work_history.tag
 riot.tag2('work-history', '<virtual each="{opts.items}"> <div class="ui card"> <div class="content" style="background: #787878;"> <div class="header" style="color: #FFFFFF;"> <virtual if="{company==\'Freelancer\'}">{title} as {company}</virtual> <virtual if="{company!=\'Freelancer\'}">{title} at {company}</virtual> <i class="{country} flag" style="padding-left:10px;"></i> </div> </div> <div class="content"> <h4 class="ui sub header">{term}</h4> <div class="ui small feed"> <div class="event"> <div class="content"> <div class="summary"> <ul class="ui list"> <virtual each="{desc in description}"> <li if="{isString(desc)}"><raw content="{desc}"></raw></li> <ul if="{isArray(desc)}"> <li each="{v in desc}"> <raw content="{v}"></raw> </li> </ul> </virtual> </ul> </div> </div> </div> </div> </div> <div class="extra content" style="background:rgb(243, 244, 245);"> <div each="{techs}" class="ui black basic button"> {name} </div> </div> </div> <div class="ui section divider"></div> </virtual>', '', '', function (opts) {
     this.isArray = function (obj) {
         return riot.util.check.isArray(obj);
@@ -3063,7 +3063,7 @@ riot.tag2('work-history', '<virtual each="{opts.items}"> <div class="ui card"> <
 
 
 var riot = __webpack_require__(0);
-//src: src/tag/raw.tag
+//src: src/tag/common/raw.tag
 riot.tag2('raw', '<span></span>', '', '', function (opts) {
   this.root.innerHTML = opts.content;
 });
