@@ -1,26 +1,97 @@
 <!DOCTYPE html>
 <html>
-  <head>
-	<meta charset="utf-8">
-	<title>sample</title>
-  </head>
-  <body>
-    <h2>like-tech</h2>
-    <like-tech></like-tech>
+<head>
+  <!-- Standard Meta -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-    <h2>dislike-tech</h2>
-    <dislike-tech></dislike-tech>
+  <!-- Site Properties -->
+  <title>Resume</title>
+  <link rel="stylesheet" type="text/css" href="css/semantic.css">
 
-    <h2>work-history</h2>
-    <work-history></work-history>
+  <style type="text/css">
+    h1 {
+      margin: 2px 0px 6px;
+    }
+    .ui.container {
+      padding-top: 5em;
+      padding-bottom: 5em;
+    }
+    .spaced > .button {
+      margin-bottom: 1em;
+    }
+  </style>
 
-    <script>
-        var debugMode=1;
-    </script>
-    <script
-            src="http://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous"></script>
-    <script src="resume.bundle.js"></script>
-  </body>
+  <script>
+      //TODO: commented out for development
+      //if(!sessionStorage.getItem('jwt') || !sessionStorage.getItem('id')){
+      //    location.href = '/login.html';
+      //}
+  </script>
+
+</head>
+<body>
+
+<div class="ui container">
+
+  <h1 class="ui header" style="padding-bottom: 20px">Resume</h1>
+
+  <h3 class="ui header">
+    <img src="/img/hy.png" class="ui circular image">
+    <a href="https://hiromaily.github.io/" style="color:#333333;">Hiroki Yasui</a>
+  </h3>
+  <div style="padding-bottom: 30px; padding-left: 30px">
+    <p>I'm working as software engineer for 14 years and came from Japan to join multinational environment in Oct 2016.</p>
+    <p>And I am looking for job which requires Golang. However I always have to require working VISA because of my nationality. Thank you.</p>
+  </div>
+
+  <div class="ui two column grid">
+
+    <!-- start left column -->
+    <div class="four wide column">
+      <like-tech></like-tech>
+
+      <br/>
+
+      <dislike-tech></dislike-tech>
+
+      <br/>
+
+      <div class="ui segments">
+        <a href="https://github.com/hiromaily"><img src="/img/github.png" class="ui circular image"></a>
+      </div>
+
+      <div class="ui segments">
+        <a href="https://stackshare.io/hiromaily/my-stack"><img src="/img/stackshare.png" class="ui circular image"></a>
+      </div>
+
+      <button class="ui linkedin button" onclick="location.href='https://www.linkedin.com/in/hiroki-yasui-b4b6089b/';">
+        <i class="linkedin icon"></i>
+        LinkedIn
+      </button>
+
+    </div>
+    <!-- end left column -->
+
+    <!-- start right column-->
+    <div class="twelve wide column">
+
+      <work-history></work-history>
+
+    </div>
+    <!-- end right column -->
+
+  </div>
+</div>
+
+
+<script src="assets/library/jquery.min.js"></script>
+<script src="js/semantic.js"></script>
+<script>
+    var debugMode=1;
+</script>
+<script src="resume.bundle.js"></script>
+</body>
+
 </html>

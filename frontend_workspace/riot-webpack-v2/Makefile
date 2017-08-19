@@ -15,6 +15,7 @@ initlink:
 	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/img ./public/img
 	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/js ./public/js
 	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/json ./public/json
+	ln -s ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/themes ./public/themes
 
 ###############################################################################
 # Operation
@@ -25,12 +26,14 @@ build:
 server:
 	npm run start
 
+start: build server
+
 open:
 	http://localhost:3000/
 
 deployjs:
-	cp public/resume.bundle.js ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/js/resume.js
-	cp public/admin.bundle.js ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/js/admin.js
+	cp public/resume.bundle.js ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/js/
+	cp public/admin.bundle.js ${HOME}/work/go/src/github.com/hiromaily/go-goa/public/js/
 
 
 ###############################################################################

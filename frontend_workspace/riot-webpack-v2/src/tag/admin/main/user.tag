@@ -12,18 +12,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>Hiroki Yasui</td>
-            <td>hiroki@goa.com</td>
-            <td class="collapsing">
-                <button class="ui button">Delete</button>
-            </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Hiroki Yasui</td>
-            <td>hiroki@goa.com</td>
+        <tr each="{ this.parent.items }">
+            <td>{ id }</td>
+            <td>{ user_name }</td>
+            <td>{ email }</td>
             <td class="collapsing">
                 <button class="ui button">Delete</button>
             </td>
@@ -42,12 +34,15 @@
                 </div>
             </th>
             <th colspan="2">
-                <a href="adduser.html">
-                    <div class="ui right floated small primary labeled icon button">
-                        <i class="user icon"></i> Add User
-                    </div>
-                </a>
+                <button class="ui blue active button" onclick="{ addUser }">
+                  <i class="user icon"></i>
+                  Add User
+                </button>
+
                 <!--
+                <div id="add_user" class="ui right floated small primary labeled icon button">
+                    <i class="user icon"></i> Add User
+                </div>
                 <div class="ui small button">
                     Approve
                 </div>
@@ -63,7 +58,7 @@
 </div>
 
 <div class="hidden ui container" style="margin-bottom: 100px;">
-    <div class="ui"> <!-- style="display: none;" -->
+    <div id="userform" class="ui hid">
         <h3 class="ui header">Add User</h3>
 
         <form class="ui fluid form">
@@ -98,6 +93,9 @@
                                 <i class="lock icon"></i>
                             </div>
                         </div>
+                        <button class="ui blue active button" onclick="{ saveUser }">
+                          Save
+                        </button>
                         <div class="ui blue submit button">Save</div>
                     </div>
                 </div>
@@ -105,4 +103,25 @@
         </form>
     </div>
 </div>
+
+<script>
+  console.log("user.tag")
+
+  self = this
+  let count = 0
+
+  addUser(e) {
+     count += 1
+     console.log(`count: ${count}`)
+     //$('#userform').hide();
+     $('#userform').removeClass('hid');
+  }
+
+  saveUser(e) {
+    console.log("save user")
+
+  }
+
+</script>
+
 </user>

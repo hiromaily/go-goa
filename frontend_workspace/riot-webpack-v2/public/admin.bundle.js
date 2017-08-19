@@ -2991,6 +2991,11 @@ __webpack_require__(15);
 // route('/contact', () => riot.mount('main', 'contact'))
 
 riot.mount('*');
+//riot.mount('navi')
+//riot.mount('header')
+//riot.mount('main')
+//riot.mount('admin')
+
 riot.route.start(true);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
@@ -3551,24 +3556,55 @@ riot.tag2('header', '<h2 class="ui center aligned header">{header}</h2>', '', ''
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main.tag
 riot.tag2('main', '<user if="{tag===\'user\'}"></user> <company if="{tag===\'company\'}"></company> <tech if="{tag===\'tech\'}"></tech> <admin if="{tag===\'admin\'}"></admin>', '', '', function (opts) {
-  var self = this;
-  self.data = {
-    user: "User",
-    company: "Company",
-    tech: "Tech"
-  };
+    var self = this;
+    self.data = {
+        user: { element: 'user', url: '/api/user' },
+        company: { element: 'company', url: '/api/company' },
+        tech: { element: 'tech', url: '/api/company' }
+    };
+    if (window.debugMode == 1) {
+        self.data.user.url = '/json/userlist.json';
+        self.data.company.url = '/json/companylist.json';
+        self.data.tech.url = '/json/techlist.json';
+    }
 
-  var r = riot.route.create();
-  r('*', function (id) {
-    console.log("id:", id);
-    self.tag = id;
-    self.update();
-  });
-  r(function () {
+    var r = riot.route.create();
+    r('*', function (id) {
 
-    self.tag = "admin";
-    self.update();
-  });
+        self.tag = id;
+
+        self.callAPI(self.data[id]);
+    });
+    r(function () {
+
+        self.tag = "admin";
+        self.update();
+    });
+
+    self.callAPI = function (obj) {
+        var key = sessionStorage.getItem('jwt');
+
+        fetch(obj.url, {
+            headers: {
+                'Authorization': 'Bearer ' + key,
+                "Content-Type": "application/json"
+            }
+        }).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            if (json.status && json.status != 200) {
+                sessionStorage.removeItem('jwt');
+                sessionStorage.removeItem('id');
+                location.href = '/admin.html';
+                return;
+            }
+
+            console.log("OK:", json);
+            self.items = json;
+
+            self.update();
+        });
+    };
 });
 
 /***/ }),
@@ -3580,7 +3616,7 @@ riot.tag2('main', '<user if="{tag===\'user\'}"></user> <company if="{tag===\'com
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main/admin.tag
-riot.tag2('admin', '<div class="ui container"> <h3 class="ui header">Model List</h3> <div class="ui middle aligned selection list"> <div class="item"> <img class="ui avatar image" src="/assets/images/avatar/nan.jpg"> <div class="content"> <div class="header"><a class="item" href="/admin/user/">User</a></div> </div> </div> <div class="item"> <img class="ui avatar image" src="/assets/images/avatar/tom.jpg"> <div class="content"> <div class="header"><a class="item" href="/admin/company/">Company</a></div> </div> </div> <div class="item"> <img class="ui avatar image" src="/assets/images/avatar/christian.jpg"> <div class="content"> <div class="header"><a class="item" href="/admin/tech/">Tech</a></div> </div> </div> </div> </div>', '', '', function (opts) {});
+riot.tag2('admin', '<div class="ui container"> <h3 class="ui header">Model List</h3> <div class="ui middle aligned selection list"> <div class="item"> <img class="ui avatar image" src="/assets/images/avatar/nan.jpg"> <div class="content"> <div class="header"><a class="item" href="#user">User</a></div> </div> </div> <div class="item"> <img class="ui avatar image" src="/assets/images/avatar/tom.jpg"> <div class="content"> <div class="header"><a class="item" href="#company">Company</a></div> </div> </div> <div class="item"> <img class="ui avatar image" src="/assets/images/avatar/christian.jpg"> <div class="content"> <div class="header"><a class="item" href="#tech">Tech</a></div> </div> </div> </div> <h3 class="ui header">Personal List</h3> <div class="ui middle aligned selection list"> <div class="item"> <img class="ui avatar image" src="/assets/images/avatar/veronika.jpg"> <div class="content"> <div class="header"><a class="item" href="/resume.html">Resume</a></div> </div> </div> </div> </div>', '', '', function (opts) {});
 
 /***/ }),
 /* 13 */
@@ -3613,7 +3649,19 @@ riot.tag2('tech', '<div> tech </div>', '', '', function (opts) {});
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main/user.tag
-riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header">User Model</h3> <table class="ui celled striped table"> <thead> <tr> <th>ID</th> <th>Name</th> <th>E-mail address</th> <th>Delete</th> </tr> </thead> <tbody> <tr> <td>1</td> <td>Hiroki Yasui</td> <td>hiroki@goa.com</td> <td class="collapsing"> <button class="ui button">Delete</button> </td> </tr> <tr> <td>2</td> <td>Hiroki Yasui</td> <td>hiroki@goa.com</td> <td class="collapsing"> <button class="ui button">Delete</button> </td> </tr> </tbody> <tfoot class="full-width"> <tr> <th></th> <th> <div class="ui pagination menu"> <a class="item">1</a> <div class="disabled item">...</div> <a class="item active">10</a> <a class="item">11</a> <a class="item">12</a> </div> </th> <th colspan="2"> <a href="adduser.html"> <div class="ui right floated small primary labeled icon button"> <i class="user icon"></i> Add User </div> </a> </th> </tr> </tfoot> </table> </div> <div class="hidden ui container" style="margin-bottom: 100px;"> <div class="ui"> <h3 class="ui header">Add User</h3> <form class="ui fluid form"> <div class="ui two column middle aligned very relaxed stackable grid"> <div class="column"> <div class="ui form"> <div class="field"> <label>Username</label> <div class="ui left icon input"> <input type="text" placeholder="Username"> <i class="user icon"></i> </div> </div> <div class="field"> <label>Email</label> <div class="ui left icon input"> <input type="text" placeholder="Email"> <i class="mail icon"></i> </div> </div> <div class="field"> <label>Password</label> <div class="ui left icon input"> <input type="text" placeholder="Password"> <i class="lock icon"></i> </div> </div> <div class="ui blue submit button">Save</div> </div> </div> </div> </form> </div> </div>', '', '', function (opts) {});
+riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header">User Model</h3> <table class="ui celled striped table"> <thead> <tr> <th>ID</th> <th>Name</th> <th>E-mail address</th> <th>Delete</th> </tr> </thead> <tbody> <tr each="{this.parent.items}"> <td>{id}</td> <td>{user_name}</td> <td>{email}</td> <td class="collapsing"> <button class="ui button">Delete</button> </td> </tr> </tbody> <tfoot class="full-width"> <tr> <th></th> <th> <div class="ui pagination menu"> <a class="item">1</a> <div class="disabled item">...</div> <a class="item active">10</a> <a class="item">11</a> <a class="item">12</a> </div> </th> <th colspan="2"> <button class="ui blue active button" onclick="{addUser}"> <i class="user icon"></i> Add User </button> </th> </tr> </tfoot> </table> </div> <div class="hidden ui container" style="margin-bottom: 100px;"> <div id="userform" class="ui hid"> <h3 class="ui header">Add User</h3> <form class="ui fluid form"> <div class="ui two column middle aligned very relaxed stackable grid"> <div class="column"> <div class="ui form"> <div class="field"> <label>Username</label> <div class="ui left icon input"> <input type="text" placeholder="Username"> <i class="user icon"></i> </div> </div> <div class="field"> <label>Email</label> <div class="ui left icon input"> <input type="text" placeholder="Email"> <i class="mail icon"></i> </div> </div> <div class="field"> <label>Password</label> <div class="ui left icon input"> <input type="text" placeholder="Password"> <i class="lock icon"></i> </div> </div> <div class="ui blue submit button">Save</div> </div> </div> </div> </form> </div> </div>', '', '', function (opts) {
+  console.log("user.tag");
+
+  self = this;
+  var count = 0;
+
+  this.addUser = function (e) {
+    count += 1;
+    console.log('count: ' + count);
+
+    $('#userform').removeClass('hid');
+  }.bind(this);
+});
 
 /***/ })
 /******/ ]);

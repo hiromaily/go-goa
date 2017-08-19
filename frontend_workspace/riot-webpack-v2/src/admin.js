@@ -14,4 +14,9 @@ require('./tag/admin/main/user.tag');
 // route('/contact', () => riot.mount('main', 'contact'))
 
 riot.mount('*')
+//riot.mount('navi')
+//riot.mount('header')
+//riot.mount('main')
+//riot.mount('admin')
+
 riot.route.start(true)
