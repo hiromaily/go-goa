@@ -90,8 +90,11 @@ func (m *User) InsertUser(user *app.CreateUserHyUserPayload) (int, error) {
 }
 
 func (m *User) UpdateUser(userID int, user *app.UpdateUserHyUserPayload) error {
-	//m.Db.DB.Exec("INSERT INTO t_users (user_name, email, password) VALUES (?, ?, ?)", user.UserName, user.Email, user.Password)
-	updUser := ParamUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
+	//updUser := ParamUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
+	updUser := ParamUser{UserName: user.UserName, Email: user.Email}
+	if user.Password != "**********" {
+		updUser.Password = user.Password
+	}
 	if err := m.Db.DB.Table(TableUser).Where("id = ?", userID).Update(&updUser).Error; err != nil {
 		return err
 	}

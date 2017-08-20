@@ -112,9 +112,15 @@ var userAPITests = []UserAPITest{
 		"testtest03",
 		"testuser03",
 	},
+	{TableTest{"/api/user/%d", http.StatusOK, "GET", jwtHeaders, "setID", nil}, "", "", ""},
 	//{TableTest{"/api/user/%d", http.StatusOK, "GET", userHeaders, "", nil}, "", "", ""},
 	{TableTest{"/api/user/%d", http.StatusOK, "DELETE", jwtHeaders, "setID", nil}, "", "", ""},
 	{TableTest{"/api/user/%d", http.StatusNotFound, "GET", jwtHeaders, "", nil}, "", "", ""},
+	//{TableTest{"/api/user/13", http.StatusOK, "PUT", jwtJsonHeaders, "", nil},
+	//	"updatedUser99@test.com",
+	//	"**********",
+	//	"testuser99",
+	//},
 }
 
 var userTechTests = []TableTest{
