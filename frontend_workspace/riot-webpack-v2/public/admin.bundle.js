@@ -3649,18 +3649,112 @@ riot.tag2('tech', '<div> tech </div>', '', '', function (opts) {});
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main/user.tag
-riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header">User Model</h3> <table class="ui celled striped table"> <thead> <tr> <th>ID</th> <th>Name</th> <th>E-mail address</th> <th>Delete</th> </tr> </thead> <tbody> <tr each="{this.parent.items}"> <td>{id}</td> <td>{user_name}</td> <td>{email}</td> <td class="collapsing"> <button class="ui button">Delete</button> </td> </tr> </tbody> <tfoot class="full-width"> <tr> <th></th> <th> <div class="ui pagination menu"> <a class="item">1</a> <div class="disabled item">...</div> <a class="item active">10</a> <a class="item">11</a> <a class="item">12</a> </div> </th> <th colspan="2"> <button class="ui blue active button" onclick="{addUser}"> <i class="user icon"></i> Add User </button> </th> </tr> </tfoot> </table> </div> <div class="hidden ui container" style="margin-bottom: 100px;"> <div id="userform" class="ui hid"> <h3 class="ui header">Add User</h3> <form class="ui fluid form"> <div class="ui two column middle aligned very relaxed stackable grid"> <div class="column"> <div class="ui form"> <div class="field"> <label>Username</label> <div class="ui left icon input"> <input type="text" placeholder="Username"> <i class="user icon"></i> </div> </div> <div class="field"> <label>Email</label> <div class="ui left icon input"> <input type="text" placeholder="Email"> <i class="mail icon"></i> </div> </div> <div class="field"> <label>Password</label> <div class="ui left icon input"> <input type="text" placeholder="Password"> <i class="lock icon"></i> </div> </div> <div class="ui blue submit button">Save</div> </div> </div> </div> </form> </div> </div>', '', '', function (opts) {
-  console.log("user.tag");
+riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header">User Model</h3> <table class="ui celled striped table"> <thead> <tr> <th>ID</th> <th>Name</th> <th>E-mail address</th> <th>Delete</th> </tr> </thead> <tbody> <tr each="{this.parent.items}"> <td>{id}</td> <td>{user_name}</td> <td>{email}</td> <td class="collapsing"> <button class="ui button">Delete</button> </td> </tr> </tbody> <tfoot class="full-width"> <tr> <th></th> <th> <div class="ui pagination menu"> <a class="item">1</a> <div class="disabled item">...</div> <a class="item active">10</a> <a class="item">11</a> <a class="item">12</a> </div> </th> <th colspan="2"> <button class="ui blue active button" onclick="{addUser}"> <i class="user icon"></i> Add User </button> </th> </tr> </tfoot> </table> </div> <div class="ui modal adduser"> <div class="header">Add User</div> <div class="content"> <form class="ui fluid form"> <div class="ui two column middle aligned very relaxed stackable grid"> <div class="column"> <div class="field"> <label>Username</label> <div class="ui left icon input"> <input name="username" type="text" placeholder="Username"> <i class="user icon"></i> </div> </div> <div class="field"> <label>Email</label> <div class="ui left icon input"> <input name="email" type="text" placeholder="Email"> <i class="mail icon"></i> </div> </div> <div class="field"> <label>Password</label> <div class="ui left icon input"> <input name="password" type="text" placeholder="Password"> <i class="lock icon"></i> </div> </div> <button class="ui blue active button" onclick="{saveUser}"> Save </button> <div class="ui error message"></div> </div> </div> </form> </div> </div>', '', '', function (opts) {
+    console.log("[user.tag]");
 
-  self = this;
-  var count = 0;
+    this.on('mount', function () {
 
-  this.addUser = function (e) {
-    count += 1;
-    console.log('count: ' + count);
+        $('.ui.form').form({
+            fields: {
+                username: {
+                    identifier: 'username',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter your username'
+                    }, {
+                        type: 'minLength[4]',
+                        prompt: 'Your username must be at least 4 characters'
+                    }, {
+                        type: 'maxLength[20]',
+                        prompt: 'Your username must be at most 20 characters'
+                    }]
+                },
+                email: {
+                    identifier: 'email',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter your e-mail'
+                    }, {
+                        type: 'email',
+                        prompt: 'Please enter a valid e-mail'
+                    }, {
+                        type: 'maxLength[50]',
+                        prompt: 'Your e-mail must be at most 50 characters'
+                    }]
+                },
+                password: {
+                    identifier: 'password',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter your password'
+                    }, {
+                        type: 'minLength[6]',
+                        prompt: 'Your password must be at least 6 characters'
+                    }, {
+                        type: 'maxLength[20]',
+                        prompt: 'Your password must be at most 20 characters'
+                    }]
+                }
+            },
+            onSuccess: function onSuccess(event, fields) {
+                console.log('success');
+                event.preventDefault();
+            }
+        });
+    });
 
-    $('#userform').removeClass('hid');
-  }.bind(this);
+    self = this;
+
+    this.addUser = function (e) {
+
+        $('.ui.modal').modal('show');
+    }.bind(this);
+
+    this.saveUser = function (e) {
+        if ($('.ui.form').form('is valid')) {
+            self.callAPI();
+        } else {
+            $('.ui.form').form('validate form');
+        }
+    }.bind(this);
+
+    self.callAPI = function () {
+        console.log('call API');
+
+        var key = sessionStorage.getItem('jwt');
+        var url = '/api/user';
+        var payload = {
+            username: $('input[name="username"]').val(),
+            email: $('input[name="email"]').val(),
+            password: $('input[name="password"]').val()
+        };
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + key,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        }).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            console.log("res:", json);
+            if (json.status && json.status != 200 || !json.id) {
+
+                console.log("error: ", json);
+
+                $('.ui.form').form('add prompt', 'usrname');
+                $('.ui.form .error.message').html('Please enter a valid value').show();
+            } else {
+
+                console.log("add OK");
+                $('.ui.form .error.message').hide();
+            }
+        });
+
+        return;
+    };
 });
 
 /***/ })
