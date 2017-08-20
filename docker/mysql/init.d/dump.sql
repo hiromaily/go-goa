@@ -37,7 +37,7 @@ CREATE TABLE `t_users` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT'User ID',
   `user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT'User Name',
   `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'E-Mail Address',
-  `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'Password',
+  `password` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'Password',
   `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
