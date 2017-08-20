@@ -50,7 +50,7 @@ CREATE TABLE `t_users` (
 LOCK TABLES `t_users` WRITE;
 /*!40000 ALTER TABLE `t_users` DISABLE KEYS */;
 INSERT INTO `t_users` VALUES
-  (1,'hiroki','hiroki@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
+  (1,'Hiroki Yasui','hiroki@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
   (2,'guest','guest@guest.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
   (3,'harry3','aaaa3@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
   (4,'harry4','aaaa4@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
