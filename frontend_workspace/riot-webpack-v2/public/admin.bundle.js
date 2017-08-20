@@ -3506,15 +3506,15 @@ var riot = __webpack_require__(0);
 riot.tag2('navi', '<div class="ui fixed inverted menu"> <div class="ui container"> <a each="{links}" href="#{url}" class="{header: name === ⁗Admin⁗, selected: parent.selectedId === url, item: true}"> <img if="{name===\'Admin\'}" class="logo" src="/img/hy.png"> {name} </a> </div> </div>', '', '', function (opts) {
   var self = this;
 
-  this.links = [{ name: "Admin", url: "" }, { name: "User", url: "user" }, { name: "Company", url: "company" }, { name: "Tech", url: "tech" }];
+  self.links = [{ name: "Admin", url: "" }, { name: "User", url: "user" }, { name: "Company", url: "company" }, { name: "Tech", url: "tech" }];
 
   var r = riot.route.create();
-  r(highlightCurrent);
+  r(self.highlightCurrent);
 
-  function highlightCurrent(id) {
+  self.highlightCurrent = function (id) {
     self.selectedId = id;
     self.update();
-  }
+  };
 });
 
 /***/ }),
@@ -3570,7 +3570,6 @@ riot.tag2('main', '<user if="{tag===\'user\'}"></user> <company if="{tag===\'com
 
     var r = riot.route.create();
     r('*', function (id) {
-
         self.tag = id;
 
         self.callAPI(self.data[id]);
@@ -3599,7 +3598,6 @@ riot.tag2('main', '<user if="{tag===\'user\'}"></user> <company if="{tag===\'com
                 return;
             }
 
-            console.log("OK:", json);
             self.items = json;
 
             self.update();
@@ -3649,15 +3647,14 @@ riot.tag2('tech', '<div> tech </div>', '', '', function (opts) {});
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main/user.tag
-riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header">User Model</h3> <table class="ui celled striped table"> <thead> <tr> <th>ID</th> <th>Name</th> <th>E-mail address</th> <th>Delete</th> </tr> </thead> <tbody> <tr each="{this.parent.items}"> <td>{id}</td> <td>{user_name}</td> <td>{email}</td> <td class="collapsing"> <button class="ui button">Delete</button> </td> </tr> </tbody> <tfoot class="full-width"> <tr> <th></th> <th> <div class="ui pagination menu"> <a class="item">1</a> <div class="disabled item">...</div> <a class="item active">10</a> <a class="item">11</a> <a class="item">12</a> </div> </th> <th colspan="2"> <button class="ui blue active button" onclick="{addUser}"> <i class="user icon"></i> Add User </button> </th> </tr> </tfoot> </table> </div> <div class="ui modal adduser"> <div class="header">Add User</div> <div class="content"> <form class="ui fluid form"> <div class="ui two column middle aligned very relaxed stackable grid"> <div class="column"> <div class="field"> <label>Username</label> <div class="ui left icon input"> <input name="username" type="text" placeholder="Username"> <i class="user icon"></i> </div> </div> <div class="field"> <label>Email</label> <div class="ui left icon input"> <input name="email" type="text" placeholder="Email"> <i class="mail icon"></i> </div> </div> <div class="field"> <label>Password</label> <div class="ui left icon input"> <input name="password" type="text" placeholder="Password"> <i class="lock icon"></i> </div> </div> <button class="ui blue active button" onclick="{saveUser}"> Save </button> <div class="ui error message"></div> </div> </div> </form> </div> </div>', '', '', function (opts) {
-    console.log("[user.tag]");
+riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header">User Model</h3> <table class="ui celled striped table"> <thead> <tr> <th>ID</th> <th>Name</th> <th>E-mail address</th> <th>Update</th> <th>Delete</th> </tr> </thead> <tbody> <tr each="{this.parent.items}"> <td>{id}</td> <td>{user_name}</td> <td>{email}</td> <td class="collapsing"> <button class="ui teal button" onclick="{updateUser}">Update</button> </td> <td class="collapsing"> <button class="ui red button" onclick="{deleteUser}">Delete</button> </td> </tr> </tbody> <tfoot class="full-width"> <tr> <th></th> <th colspan="2"> <div class="ui pagination menu"> <a class="item">1</a> <div class="disabled item">...</div> <a class="item active">10</a> <a class="item">11</a> <a class="item">12</a> </div> </th> <th colspan="2"> <button class="ui blue active button" onclick="{addUser}"> <i class="user icon"></i> Add User </button> </th> </tr> </tfoot> </table> </div> <div class="ui modal"> <div id="modal_header" class="header">Add User</div> <div class="content"> <form class="ui fluid form"> <div class="ui column middle aligned very relaxed stackable grid"> <div class="column"> <div class="field"> <label>Username</label> <div class="ui left icon input"> <input name="user_name" type="text" placeholder="Username"> <i class="user icon"></i> </div> </div> <div class="field"> <label>Email</label> <div class="ui left icon input"> <input name="email" type="text" placeholder="Email"> <i class="mail icon"></i> </div> </div> <div class="field"> <label>Password</label> <div class="ui left icon input"> <input name="password" type="text" placeholder="Password"> <i class="lock icon"></i> </div> </div> <button id="save_btn" class="ui blue active button" data-id="0" data-mode="add" onclick="{saveUser}"> Save </button> <div class="ui error message"></div> </div> </div> </form> </div> </div>', '', '', function (opts) {
 
     this.on('mount', function () {
 
         $('.ui.form').form({
             fields: {
-                username: {
-                    identifier: 'username',
+                user_name: {
+                    identifier: 'user_name',
                     rules: [{
                         type: 'empty',
                         prompt: 'Please enter your username'
@@ -3705,32 +3702,121 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
 
     self = this;
 
+    this.deleteUser = function (e) {
+        var res = confirm('Are you sure to delete this user?');
+        if (!res) return;
+
+        var url = '/api/user/' + e.item.id;
+        var payload = {};
+        var fn = function fn(json) {
+            if (json.status && json.status != 200 || !json.id) {
+
+                console.log("error: ", json);
+                alert("error:", json);
+            } else {
+
+                console.log("delete OK");
+                alert("deleted!");
+
+                self.parent.callAPI({ element: 'user', url: '/api/user' });
+            }
+        };
+        self.callAPI(url, payload, 'DELETE', fn);
+    }.bind(this);
+
+    this.updateUser = function (e) {
+
+        $('input[name="user_name"]').val(e.item.user_name);
+        $('input[name="email"]').val(e.item.email);
+        $('input[name="password"]').val('**********');
+        $('#modal_header').html('Update User');
+
+        $('#save_btn').attr("data-mode", "update");
+        $('#save_btn').attr("data-id", e.item.id);
+
+        $('.ui.modal').modal('show');
+    }.bind(this);
+
     this.addUser = function (e) {
+        $('input[name="user_name"]').val('');
+        $('input[name="email"]').val('');
+        $('input[name="password"]').val('');
+        $('#modal_header').html('Add User');
+
+        $('#save_btn').attr("data-mode", "add");
 
         $('.ui.modal').modal('show');
     }.bind(this);
 
     this.saveUser = function (e) {
-        if ($('.ui.form').form('is valid')) {
-            self.callAPI();
-        } else {
+
+        if (!$('.ui.form').form('is valid')) {
             $('.ui.form').form('validate form');
+            return;
+        }
+
+        if (e.target.dataset.mode == "add") {
+
+            var url = '/api/user';
+            var payload = {
+                user_name: $('input[name="user_name"]').val(),
+                email: $('input[name="email"]').val(),
+                password: $('input[name="password"]').val()
+            };
+            var fn = function fn(json) {
+                if (json.status && json.status != 200 || !json.id) {
+
+                    console.log("error: ", json);
+
+                    $('.ui.form').form('add prompt', 'user_name');
+                    $('.ui.form .error.message').html('Please enter a valid value').show();
+                } else {
+
+                    console.log("add OK");
+                    $('.ui.form .error.message').hide();
+                    alert("added!");
+                    $('.ui.modal').modal('hide');
+
+                    self.parent.callAPI({ element: 'user', url: '/api/user' });
+                }
+            };
+
+            self.callAPI(url, payload, 'POST', fn);
+        } else {
+
+            var _url = '/api/user/' + e.target.dataset.id;
+            var _payload = {
+                user_name: $('input[name="user_name"]').val(),
+                email: $('input[name="email"]').val(),
+                password: $('input[name="password"]').val()
+            };
+            var _fn = function _fn(json) {
+                if (json.status && json.status != 200 || !json.id) {
+
+                    console.log("error: ", json);
+
+                    $('.ui.form').form('add prompt', 'user_name');
+                    $('.ui.form .error.message').html('Please enter a valid value').show();
+                } else {
+
+                    console.log("add OK");
+                    $('.ui.form .error.message').hide();
+                    alert("updated!");
+                    $('.ui.modal').modal('hide');
+
+                    self.parent.callAPI({ element: 'user', url: '/api/user' });
+                }
+            };
+
+            self.callAPI(_url, _payload, 'PUT', _fn);
         }
     }.bind(this);
 
-    self.callAPI = function () {
-        console.log('call API');
-
+    self.callAPI = function (url, payload, mtd, fn) {
         var key = sessionStorage.getItem('jwt');
-        var url = '/api/user';
-        var payload = {
-            username: $('input[name="username"]').val(),
-            email: $('input[name="email"]').val(),
-            password: $('input[name="password"]').val()
-        };
 
         fetch(url, {
-            method: 'POST',
+            method: mtd,
             headers: {
                 'Authorization': 'Bearer ' + key,
                 "Content-Type": "application/json"
@@ -3740,17 +3826,7 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
             return response.json();
         }).then(function (json) {
             console.log("res:", json);
-            if (json.status && json.status != 200 || !json.id) {
-
-                console.log("error: ", json);
-
-                $('.ui.form').form('add prompt', 'usrname');
-                $('.ui.form .error.message').html('Please enter a valid value').show();
-            } else {
-
-                console.log("add OK");
-                $('.ui.form .error.message').hide();
-            }
+            fn(json);
         });
 
         return;

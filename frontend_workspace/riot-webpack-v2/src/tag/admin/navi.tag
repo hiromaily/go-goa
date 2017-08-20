@@ -11,7 +11,7 @@
   <script>
     var self = this
 
-    this.links = [
+    self.links = [
       { name: "Admin", url: "" },
       { name: "User", url: "user" },
       { name: "Company", url: "company" },
@@ -19,9 +19,9 @@
     ]
 
     let r = riot.route.create()
-    r(highlightCurrent)
+    r(self.highlightCurrent)
 
-    function highlightCurrent(id) {
+    self.highlightCurrent = (id) => {
       self.selectedId = id
       self.update()
     }

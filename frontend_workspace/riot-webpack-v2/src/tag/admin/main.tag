@@ -18,20 +18,18 @@
     }
 
     var r = riot.route.create()
-    r('*', function(id) {
-      //console.log("id:",id)
+    r('*', (id) => {
       self.tag = id
 
-      //TODO:Ajax
       self.callAPI(self.data[id])
     })
-    r(function() {
+    r(() => {
       //default
       self.tag = "admin"
       self.update()
     })
 
-    self.callAPI = function(obj) {
+    self.callAPI = (obj) => {
         let key = sessionStorage.getItem('jwt');
         //fetch
         fetch(obj.url, {
@@ -39,9 +37,9 @@
                 'Authorization': 'Bearer '+key,
                 "Content-Type": "application/json"
             }
-        }).then(function(response) {
+        }).then((response) => {
             return response.json();
-        }).then(function(json) {
+        }).then((json) => {
             if(json.status && json.status != 200){
                 sessionStorage.removeItem('jwt');
                 sessionStorage.removeItem('id');
@@ -50,7 +48,7 @@
             }
 
             //Success
-            console.log("OK:", json)
+            //console.log("OK:", json)
             self.items = json
 
             self.update()

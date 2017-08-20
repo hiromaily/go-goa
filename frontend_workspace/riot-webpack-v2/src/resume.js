@@ -13,9 +13,9 @@ function callAPI(obj) {
             'Authorization': 'Bearer '+key,
             "Content-Type": "application/json"
         }
-    }).then(function(response) {
+    }).then((response) => {
         return response.json();
-    }).then(function(json) {
+    }).then((json) => {
         if(json.status && json.status != 200){
             sessionStorage.removeItem('jwt');
             sessionStorage.removeItem('id');
@@ -43,6 +43,6 @@ if (window.debugMode == 1){
 }
 
 //loop
-data.forEach(function(obj){
+data.forEach((obj) => {
     callAPI(obj);
 });
