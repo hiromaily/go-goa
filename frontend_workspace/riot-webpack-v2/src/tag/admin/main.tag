@@ -43,7 +43,7 @@
             if(json.status && json.status != 200){
                 sessionStorage.removeItem('jwt');
                 sessionStorage.removeItem('id');
-                location.href = '/admin.html';
+                location.href = '/admin/';
                 return;
             }
 
