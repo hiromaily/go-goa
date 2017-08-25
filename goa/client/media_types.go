@@ -291,9 +291,34 @@ func (mt *Tech) Validate() (err error) {
 	return
 }
 
+// A tech information (id view)
+//
+// Identifier: application/vnd.tech+json; view=id
+type TechID struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+}
+
+// Validate validates the TechID media type instance.
+func (mt *TechID) Validate() (err error) {
+	if mt.ID != nil {
+		if *mt.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, *mt.ID, 1, true))
+		}
+	}
+	return
+}
+
 // DecodeTech decodes the Tech instance encoded in resp body.
 func (c *Client) DecodeTech(resp *http.Response) (*Tech, error) {
 	var decoded Tech
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return &decoded, err
+}
+
+// DecodeTechID decodes the TechID instance encoded in resp body.
+func (c *Client) DecodeTechID(resp *http.Response) (*TechID, error) {
+	var decoded TechID
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return &decoded, err
 }
@@ -315,9 +340,33 @@ func (mt TechCollection) Validate() (err error) {
 	return
 }
 
+// TechCollection is the media type for an array of Tech (id view)
+//
+// Identifier: application/vnd.tech+json; type=collection; view=id
+type TechIDCollection []*TechID
+
+// Validate validates the TechIDCollection media type instance.
+func (mt TechIDCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
 // DecodeTechCollection decodes the TechCollection instance encoded in resp body.
 func (c *Client) DecodeTechCollection(resp *http.Response) (TechCollection, error) {
 	var decoded TechCollection
+	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
+	return decoded, err
+}
+
+// DecodeTechIDCollection decodes the TechIDCollection instance encoded in resp body.
+func (c *Client) DecodeTechIDCollection(resp *http.Response) (TechIDCollection, error) {
+	var decoded TechIDCollection
 	err := c.Decoder.Decode(&decoded, resp.Body, resp.Header.Get("Content-Type"))
 	return decoded, err
 }

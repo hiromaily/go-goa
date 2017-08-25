@@ -1212,6 +1212,12 @@ func (ctx *CreateTechHyTechContext) OK(r *Tech) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
+// OKId sends a HTTP response with status code 200.
+func (ctx *CreateTechHyTechContext) OKId(r *TechID) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
 // Created sends a HTTP response with status code 201.
 func (ctx *CreateTechHyTechContext) Created() error {
 	ctx.ResponseData.WriteHeader(201)
@@ -1255,6 +1261,12 @@ func NewDeleteTechHyTechContext(ctx context.Context, r *http.Request, service *g
 
 // OK sends a HTTP response with status code 200.
 func (ctx *DeleteTechHyTechContext) OK(r *Tech) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKId sends a HTTP response with status code 200.
+func (ctx *DeleteTechHyTechContext) OKId(r *TechID) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -1306,6 +1318,12 @@ func (ctx *GetTechHyTechContext) OK(r *Tech) error {
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
 
+// OKId sends a HTTP response with status code 200.
+func (ctx *GetTechHyTechContext) OKId(r *TechID) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
 // BadRequest sends a HTTP response with status code 400.
 func (ctx *GetTechHyTechContext) BadRequest(r error) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.goa.error")
@@ -1342,6 +1360,15 @@ func (ctx *TechListHyTechContext) OK(r TechCollection) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.tech+json; type=collection")
 	if r == nil {
 		r = TechCollection{}
+	}
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKId sends a HTTP response with status code 200.
+func (ctx *TechListHyTechContext) OKId(r TechIDCollection) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.tech+json; type=collection")
+	if r == nil {
+		r = TechIDCollection{}
 	}
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }
@@ -1443,6 +1470,12 @@ func (payload *UpdateTechHyTechPayload) Validate() (err error) {
 
 // OK sends a HTTP response with status code 200.
 func (ctx *UpdateTechHyTechContext) OK(r *Tech) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
+}
+
+// OKId sends a HTTP response with status code 200.
+func (ctx *UpdateTechHyTechContext) OKId(r *TechID) error {
 	ctx.ResponseData.Header().Set("Content-Type", "application/json")
 	return ctx.ResponseData.Service.Send(ctx.Context, 200, r)
 }

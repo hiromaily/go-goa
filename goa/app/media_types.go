@@ -220,6 +220,24 @@ func (mt *Tech) Validate() (err error) {
 	return
 }
 
+// A tech information (id view)
+//
+// Identifier: application/vnd.tech+json; view=id
+type TechID struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+}
+
+// Validate validates the TechID media type instance.
+func (mt *TechID) Validate() (err error) {
+	if mt.ID != nil {
+		if *mt.ID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError(`response.id`, *mt.ID, 1, true))
+		}
+	}
+	return
+}
+
 // TechCollection is the media type for an array of Tech (default view)
 //
 // Identifier: application/vnd.tech+json; type=collection; view=default
@@ -227,6 +245,23 @@ type TechCollection []*Tech
 
 // Validate validates the TechCollection media type instance.
 func (mt TechCollection) Validate() (err error) {
+	for _, e := range mt {
+		if e != nil {
+			if err2 := e.Validate(); err2 != nil {
+				err = goa.MergeErrors(err, err2)
+			}
+		}
+	}
+	return
+}
+
+// TechCollection is the media type for an array of Tech (id view)
+//
+// Identifier: application/vnd.tech+json; type=collection; view=id
+type TechIDCollection []*TechID
+
+// Validate validates the TechIDCollection media type instance.
+func (mt TechIDCollection) Validate() (err error) {
 	for _, e := range mt {
 		if e != nil {
 			if err2 := e.Validate(); err2 != nil {

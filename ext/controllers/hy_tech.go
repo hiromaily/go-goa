@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"github.com/goadesign/goa"
-	"github.com/hiromaily/go-goa/goa/app"
 	c "github.com/hiromaily/go-goa/ext/context"
-	//m "github.com/hiromaily/go-goa/ext/models"
+	m "github.com/hiromaily/go-goa/ext/models"
+	"github.com/hiromaily/go-goa/goa/app"
 )
 
 // HyTechController implements the hy_tech resource.
@@ -21,57 +21,74 @@ func NewHyTechController(service *goa.Service, ctx *c.Ctx) *HyTechController {
 	}
 }
 
-// CreateTech runs the CreateTech action.
-func (c *HyTechController) CreateTech(ctx *app.CreateTechHyTechContext) error {
-	// HyTechController_CreateTech: start_implement
-
-	// Put your logic here
-
-	// HyTechController_CreateTech: end_implement
-	res := &app.Tech{}
-	return ctx.OK(res)
-}
-
-// DeleteTech runs the DeleteTech action.
-func (c *HyTechController) DeleteTech(ctx *app.DeleteTechHyTechContext) error {
-	// HyTechController_DeleteTech: start_implement
-
-	// Put your logic here
-
-	// HyTechController_DeleteTech: end_implement
-	res := &app.Tech{}
-	return ctx.OK(res)
-}
-
 // GetTech runs the GetTech action.
 func (c *HyTechController) GetTech(ctx *app.GetTechHyTechContext) error {
-	// HyTechController_GetTech: start_implement
+	tech := &app.Tech{}
 
-	// Put your logic here
+	svc := &m.Tech{Db: c.ctx.Db}
+	err := svc.GetTech(ctx.TechID, tech)
+	if err != nil {
+		return err
+	}
 
-	// HyTechController_GetTech: end_implement
-	res := &app.Tech{}
-	return ctx.OK(res)
+	if tech.ID == nil {
+		//404
+		return ctx.NotFound()
+	}
+
+	return ctx.OK(tech)
 }
 
 // TechList runs the TechList action.
 func (c *HyTechController) TechList(ctx *app.TechListHyTechContext) error {
-	// HyTechController_TechList: start_implement
+	var techs []*app.Tech
 
-	// Put your logic here
+	svc := &m.Tech{Db: c.ctx.Db}
+	err := svc.TechList(&techs)
+	if err != nil {
+		return err
+	}
 
-	// HyTechController_TechList: end_implement
-	res := app.TechCollection{}
+	if len(techs) == 0 {
+		return ctx.NoContent()
+	}
+
+	res := app.TechCollection(techs)
 	return ctx.OK(res)
+}
+
+// CreateTech runs the CreateTech action.
+func (c *HyTechController) CreateTech(ctx *app.CreateTechHyTechContext) error {
+	svc := &m.Tech{Db: c.ctx.Db}
+	techID, err := svc.InsertTech(ctx.Payload)
+	if err != nil {
+		return err
+	}
+
+	res := &app.TechID{ID: &techID}
+	return ctx.OKId(res)
 }
 
 // UpdateTech runs the UpdateTech action.
 func (c *HyTechController) UpdateTech(ctx *app.UpdateTechHyTechContext) error {
-	// HyTechController_UpdateTech: start_implement
+	svc := &m.Tech{Db: c.ctx.Db}
+	err := svc.UpdateTech(ctx.TechID, ctx.Payload)
+	if err != nil {
+		return err
+	}
 
-	// Put your logic here
+	res := &app.TechID{ID: &ctx.TechID}
+	return ctx.OKId(res)
+}
 
-	// HyTechController_UpdateTech: end_implement
-	res := &app.Tech{}
-	return ctx.OK(res)
+// DeleteTech runs the DeleteTech action.
+func (c *HyTechController) DeleteTech(ctx *app.DeleteTechHyTechContext) error {
+	svc := &m.Tech{Db: c.ctx.Db}
+	err := svc.DeleteTech(ctx.TechID)
+	if err != nil {
+		return err
+	}
+
+	res := &app.TechID{ID: &ctx.TechID}
+	return ctx.OKId(res)
 }

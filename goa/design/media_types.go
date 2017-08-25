@@ -79,9 +79,8 @@ var User = MediaType("application/vnd.user+json", func() {
 		Attribute("email")
 	})
 
-	//View id is for UserList, GetUser,
 	View("id", func() {
-		Description("id is the view used to id list")
+		Description("id is the view used for C U D")
 		Attribute("id")
 	})
 })
@@ -122,9 +121,8 @@ var UserTech = MediaType("application/vnd.usertech+json", func() {
 		Attribute("tech_name")
 	})
 
-	//View id is for UserList, GetUser,
 	View("tech", func() {
-		Description("id is the view used to id list")
+		Description("id is the view used for C U D")
 		Attribute("tech_name")
 	})
 })
@@ -208,6 +206,11 @@ var Tech = MediaType("application/vnd.tech+json", func() {
 	View("default", func() {
 		Attribute("id")
 		Attribute("name")
+	})
+
+	View("id", func() {
+		Description("id is the view used for C U D")
+		Attribute("id")
 	})
 })
 
