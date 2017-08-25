@@ -13,7 +13,7 @@
         </thead>
         <tbody>
         <tr each="{ this.parent.items }">
-            <td>{ id }</td>
+            <td>{ company_id }</td>
             <td>{ name }</td>
             <td class="collapsing">
                 <button class="ui teal button" onclick="{ updateCompany }">Update</button>
