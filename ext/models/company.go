@@ -34,7 +34,7 @@ type ParamCompanyDetailTiny struct {
 }
 
 func (m *Company) CompanyList(companies *[]*app.CompanyIdname) error {
-	if err := m.Db.DB.Raw("SELECT id, name FROM t_companies WHERE delete_flg=?", "0").Scan(companies).Error; err != nil {
+	if err := m.Db.DB.Raw("SELECT id as company_id, name FROM t_companies WHERE delete_flg=?", "0").Scan(companies).Error; err != nil {
 		return err
 	}
 	return nil

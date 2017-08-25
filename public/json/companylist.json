@@ -1,13 +1,19 @@
 [{
+  "company_id": 1,
   "name": "Freelancer"
 }, {
+  "company_id": 2,
   "name": "Hugo.events"
 }, {
+  "company_id": 3,
   "name": "2Gears"
 }, {
+  "company_id": 4,
   "name": "J-Stream Inc."
 }, {
+  "company_id": 5,
   "name": "PROTERAS Co., Ltd."
 }, {
+  "company_id": 6,
   "name": "JIP INFO BRIDGE Inc."
 }]
