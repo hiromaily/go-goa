@@ -6,14 +6,14 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f207ca57e48e456389341fc41bb06951)](https://www.codacy.com/app/hiromaily2/go-goa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiromaily/go-goa&amp;utm_campaign=Badge_Grade)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/hiromaily/go-goa/master/LICENSE)
 
-go-goa is sameple for how to use goa framework.  
+go-goa is sample for how to use goa framework.  
 
 
 ## Example Page
 It works on Docker container on Heroku and GKE(Google CONTAINER ENGINE). You can check these respectively.  
  
 **Google Container Engine**
-- [Site on GKE](http://35.195.210.71/) (For now, it's disable because development is still ongoing.).  
+- [Site on GKE](http://35.195.210.71/) (For now, it's disabled because development is still ongoing.).  
 
 
 **Heroku**
@@ -76,6 +76,11 @@ gotest:
 	go test -v ext/cmd/*.go
 
 ```
+
+## How to add new API??
+1. add new file `ext_xxx_payloads.go` in goa/design/ as needed.  
+2. add new MediaType for response data in goa/design/media_types.go.  
+3. add new Resource in goa/design/resource.go.  
 
 
 ## How to return dynamic html??
