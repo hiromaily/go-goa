@@ -95,8 +95,8 @@
                             prompt : 'Tech name must be at least 1 characters'
                         },
                         {
-                            type   : 'maxLength[20]',
-                            prompt : 'Tech name must be at most 20 characters'
+                            type   : 'maxLength[40]',
+                            prompt : 'Tech name must be at most 40 characters'
                         }
                     ]
                 }
