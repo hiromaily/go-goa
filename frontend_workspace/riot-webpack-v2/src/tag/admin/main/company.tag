@@ -96,7 +96,7 @@
                         },
                         {
                             type   : 'maxLength[40]',
-                            prompt : 'Comany name must be at most 40 characters'
+                            prompt : 'Company name must be at most 40 characters'
                         }
                     ]
                 }
@@ -159,7 +159,7 @@
   }
 
   //call company api (POST or PUT)
-  saveComany(e) {
+  saveCompany(e) {
     //validate
     if(!$('.ui.form').form('is valid')){
       $('.ui.form').form('validate form')

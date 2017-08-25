@@ -3641,7 +3641,7 @@ riot.tag2('company', '<div class="ui container" style="margin-bottom: 50px;"> <h
                         prompt: 'Company name must be at least 1 characters'
                     }, {
                         type: 'maxLength[40]',
-                        prompt: 'Comany name must be at most 40 characters'
+                        prompt: 'Company name must be at most 40 characters'
                     }]
                 }
             },
@@ -3695,7 +3695,7 @@ riot.tag2('company', '<div class="ui container" style="margin-bottom: 50px;"> <h
         $('.ui.modal').modal('show');
     }.bind(this);
 
-    this.saveComany = function (e) {
+    this.saveCompany = function (e) {
 
         if (!$('.ui.form').form('is valid')) {
             $('.ui.form').form('validate form');
