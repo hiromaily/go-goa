@@ -229,6 +229,9 @@ gotest4:
 gotest5:
 	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestGetUserWorkHistoryOnTable"
 
+gotest6:
+	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestTechAPIOnTable"
+
 
 ###############################################################################
 # Heroku

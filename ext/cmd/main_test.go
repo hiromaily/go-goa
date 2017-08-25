@@ -138,6 +138,24 @@ var userWorkHistoryTests = []TableTest{
 	{"/api/user/1/workhistory", http.StatusUnauthorized, "GET", nil, "", nil},
 }
 
+type TechAPITest struct {
+	TableTest
+	name string
+}
+
+var techAPITests = []TechAPITest{
+	{TableTest{"/api/tech", http.StatusOK, "GET", jwtHeaders, "", nil}, ""},
+	{TableTest{"/api/tech/999", http.StatusNotFound, "GET", jwtHeaders, "", nil}, ""},
+	{TableTest{"/api/tech/1", http.StatusOK, "GET", jwtHeaders, "", nil}, ""},
+	{TableTest{"/api/tech", http.StatusBadRequest, "POST", jwtJsonHeaders, "", nil}, ""},
+	{TableTest{"/api/tech", http.StatusOK, "POST", jwtJsonHeaders, "saveID", nil}, "newTech01"},
+	{TableTest{"/api/tech/%d", http.StatusOK, "GET", jwtHeaders, "setID", nil}, ""},
+	{TableTest{"/api/tech/%d", http.StatusOK, "PUT", jwtJsonHeaders, "setID", nil}, "newTech02"},
+	{TableTest{"/api/tech/%d", http.StatusOK, "GET", jwtHeaders, "setID", nil}, ""},
+	{TableTest{"/api/tech/%d", http.StatusOK, "DELETE", jwtHeaders, "setID", nil}, ""},
+	{TableTest{"/api/tech/%d", http.StatusNotFound, "GET", jwtHeaders, "", nil}, ""},
+}
+
 type CompanyAPITest struct {
 	TableTest
 	//companyID int
@@ -517,6 +535,46 @@ func TestGetUserWorkHistoryOnTable(t *testing.T) {
 		//send request
 		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, nil, tt.headers)
 		checkError(t, err, code, header, tt, i+1)
+
+		fmt.Println("[Debug] body:", string(body))
+	}
+}
+
+func TestTechAPIOnTable(t *testing.T) {
+
+	//techAPITests
+	var ioReader io.Reader
+	var saveID int
+
+	for i, tt := range techAPITests {
+		fmt.Printf("%d [%s] %s\n", i+1, tt.method, SERVER_HOST+tt.url)
+		//send request
+		ioReader = nil
+		if tt.method == "POST" || tt.method == "PUT" {
+			//json
+			data := client.CreateTechHyTechPayload{}
+
+			data.Name = tt.name
+			jsonByte, err := convertJson(&data)
+			if err != nil {
+				t.Fatalf("[%s] json data for request is invalid.", tt.url)
+			}
+			ioReader = bytes.NewReader(jsonByte)
+		}
+
+		body, code, header, err := sendRequest(SERVER_HOST+tt.url, tt.method, ioReader, tt.headers)
+		checkError(t, err, code, header, tt.TableTest, i+1)
+
+		if tt.nextPage == "saveID" {
+			saveID, err = getID(body, "id")
+			if err != nil {
+				t.Fatalf("[%s] ID could not be retrieved from body.", tt.url)
+				return
+			}
+			techAPITests[i+1].url = fmt.Sprintf(techAPITests[i+1].url, saveID)
+		} else if tt.nextPage == "setID" {
+			techAPITests[i+1].url = fmt.Sprintf(techAPITests[i+1].url, saveID)
+		}
 
 		fmt.Println("[Debug] body:", string(body))
 	}
