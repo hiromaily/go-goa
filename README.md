@@ -81,6 +81,16 @@ gotest:
 1. add new file `ext_xxx_payloads.go` in goa/design/ as needed.  
 2. add new MediaType for response data in goa/design/media_types.go.  
 3. add new Resource in goa/design/resource.go.  
+4. add command in Makefile.  
+```
+aftergen:
+	sed -e "1s/main/goa/" ./goa/hy_tech.go >> ./resources/tmp/tmp.go
+	mv -f ./resources/tmp/tmp.go ./goa/hy_tech.go
+```
+5. execute `make genfull`  
+6. execute `cp ./goa/hy_xxxx.go ./ext/controllers/`  
+7. modify ./ext/cmd/main.go in `newAPI` func.
+8. modify ./ext/controllers/hy_xxxx.go  
 
 
 ## How to return dynamic html??

@@ -181,6 +181,37 @@ var UserWorkHistory = MediaType("application/vnd.userworkhistory+json", func() {
 })
 
 //-----------------------------------------------------------------------------
+// Tech is the tech resource media type.
+//-----------------------------------------------------------------------------
+var Tech = MediaType("application/vnd.tech+json", func() {
+	Description("A tech information")
+
+	ContentType("application/json")
+
+	Reference(TechPayload)
+	Reference(CommonResponse)
+
+	Attributes(func() {
+		Attribute("id", Integer, "Tech ID", fieldID)
+		Attribute("name")
+		Attribute("created_at")
+		Attribute("updated_at")
+
+		//TODO:required value in media_type is given priority over resource...
+		//That means, this part would affect on Action-Payload-Required
+		//when field is zero or empty, data is not return unless it's not set in Required
+		Required("name")
+	})
+
+	//View defines a rendering of the media type
+	//Media types may have multiple views　(it can change response pattern)
+	View("default", func() {
+		Attribute("id")
+		Attribute("name")
+	})
+})
+
+//-----------------------------------------------------------------------------
 // Company is the company resource media type.
 //-----------------------------------------------------------------------------
 var Company = MediaType("application/vnd.company+json", func() {

@@ -226,6 +226,98 @@ var _ = Resource(resourcePrefix+"userWorkHistory", func() {
 })
 
 //-----------------------------------------------------------------------------
+// Tech
+//-----------------------------------------------------------------------------
+var _ = Resource(resourcePrefix+"tech", func() {
+
+	DefaultMedia(Tech)
+	BasePath("/tech")
+
+	Security(JWT, func() { // Use JWT to auth requests to this endpoint
+		Scope("api:access") // Enforce presence of "api" scope in JWT claims.
+	})
+
+	// Parent sets the resource parent
+	//Parent("tech")  //TODO: how does it work??
+
+	Action("TechList", func() {
+		Routing(
+			GET(""),
+		)
+		Description("List all techs")
+		//NoSecurity()
+
+		Response(OK, CollectionOf(Tech)) //multiple response
+		Response(NoContent)
+		Response(BadRequest, ErrorMedia)
+	})
+
+	Action("GetTech", func() {
+		Routing(
+			GET("/:techID"),
+		)
+		Description("Retrieve tech with given tech id")
+		Params(func() {
+			Param("techID", Integer, "Tech ID")
+		})
+		Response(OK)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+	})
+
+	Action("CreateTech", func() {
+		Routing(
+			POST(""),
+		)
+		Description("Create new tech")
+		Payload(TechPayload, func() {
+			//TODO:required value in media_type is given priority over this part...
+			Required("name")
+		})
+
+		//no response template named "Created" in resource "hy_tech" action "CreateTech"
+		//=>it should be defined in api_definition.go
+		//Response(Created, "^/tech/[0-9]+$")
+		Response(OK)
+		Response(Created)
+		Response(BadRequest, ErrorMedia)
+	})
+
+	Action("UpdateTech", func() {
+		Routing(
+			PUT("/:techID"),
+		)
+		Description("Change tech properties")
+
+		Params(func() {
+			Param("techID", Integer, "Tech ID")
+		})
+		Payload(TechPayload, func() {
+			Required("name")
+		})
+
+		Response(OK)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+	})
+
+	Action("DeleteTech", func() {
+		Routing(
+			DELETE("/:techID"),
+		)
+		Description("Delete tech")
+
+		Params(func() {
+			Param("techID", Integer, "Tech ID")
+		})
+
+		Response(OK)
+		Response(NotFound)
+		Response(BadRequest, ErrorMedia)
+	})
+})
+
+//-----------------------------------------------------------------------------
 // Company
 //-----------------------------------------------------------------------------
 var _ = Resource(resourcePrefix+"company", func() {

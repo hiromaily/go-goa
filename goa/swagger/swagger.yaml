@@ -137,6 +137,20 @@ definitions:
     - address
     title: CreateCompanyHyCompanyPayload
     type: object
+  CreateTechHyTechPayload:
+    example:
+      name: Golang
+    properties:
+      name:
+        description: Tech name
+        example: Golang
+        maxLength: 40
+        minLength: 1
+        type: string
+    required:
+    - name
+    title: CreateTechHyTechPayload
+    type: object
   CreateUserHyUserPayload:
     example:
       email: hy@gmail.com
@@ -187,6 +201,37 @@ definitions:
     - password
     title: LoginAuthPayload
     type: object
+  Tech:
+    description: A tech information (default view)
+    example:
+      id: 10
+      name: Aut tempora et beatae sapiente.
+    properties:
+      id:
+        description: ID
+        example: 10
+        minimum: 1
+        type: integer
+      name:
+        example: Aut tempora et beatae sapiente.
+        type: string
+    required:
+    - name
+    title: 'Mediatype identifier: application/vnd.tech+json; view=default'
+    type: object
+  TechCollection:
+    description: TechCollection is the media type for an array of Tech (default view)
+    example:
+    - id: 10
+      name: Aut tempora et beatae sapiente.
+    - id: 10
+      name: Aut tempora et beatae sapiente.
+    - id: 10
+      name: Aut tempora et beatae sapiente.
+    items:
+      $ref: '#/definitions/Tech'
+    title: 'Mediatype identifier: application/vnd.tech+json; type=collection; view=default'
+    type: array
   UpdateCompanyBranchHyCompanybranchPayload:
     example:
       address: Shinagawa Tokyo
@@ -239,6 +284,20 @@ definitions:
     - address
     title: UpdateCompanyHyCompanyPayload
     type: object
+  UpdateTechHyTechPayload:
+    example:
+      name: Golang
+    properties:
+      name:
+        description: Tech name
+        example: Golang
+        maxLength: 40
+        minLength: 1
+        type: string
+    required:
+    - name
+    title: UpdateTechHyTechPayload
+    type: object
   UpdateUserHyUserPayload:
     example:
       email: hy@gmail.com
@@ -271,12 +330,12 @@ definitions:
   User:
     description: A user information (default view)
     example:
-      email: Aut tempora et beatae sapiente.
+      email: Quo alias aut quo aut.
       id: 10
-      user_name: Eveniet vel nesciunt omnis est ducimus est.
+      user_name: Ducimus est.
     properties:
       email:
-        example: Aut tempora et beatae sapiente.
+        example: Quo alias aut quo aut.
         type: string
       id:
         description: ID
@@ -284,7 +343,7 @@ definitions:
         minimum: 1
         type: integer
       user_name:
-        example: Eveniet vel nesciunt omnis est ducimus est.
+        example: Ducimus est.
         type: string
     required:
     - user_name
@@ -294,15 +353,15 @@ definitions:
   UserCollection:
     description: UserCollection is the media type for an array of User (default view)
     example:
-    - email: Aut tempora et beatae sapiente.
+    - email: Quo alias aut quo aut.
       id: 10
-      user_name: Eveniet vel nesciunt omnis est ducimus est.
-    - email: Aut tempora et beatae sapiente.
+      user_name: Ducimus est.
+    - email: Quo alias aut quo aut.
       id: 10
-      user_name: Eveniet vel nesciunt omnis est ducimus est.
-    - email: Aut tempora et beatae sapiente.
+      user_name: Ducimus est.
+    - email: Quo alias aut quo aut.
       id: 10
-      user_name: Eveniet vel nesciunt omnis est ducimus est.
+      user_name: Ducimus est.
     items:
       $ref: '#/definitions/User'
     title: 'Mediatype identifier: application/vnd.user+json; type=collection; view=default'
@@ -322,7 +381,7 @@ definitions:
         description: Tech name
         example: Golang
         maxLength: 40
-        minLength: 2
+        minLength: 1
         type: string
     required:
     - tech_name
@@ -332,8 +391,6 @@ definitions:
     description: UsertechCollection is the media type for an array of Usertech (default
       view)
     example:
-    - id: 10
-      tech_name: Golang
     - id: 10
       tech_name: Golang
     items:
@@ -392,12 +449,6 @@ definitions:
     description: UserworkhistoryCollection is the media type for an array of Userworkhistory
       (default view)
     example:
-    - company: Company
-      country: nl
-      description: '["Developed resume site for job seeking."]'
-      techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
-      term: Jul 2017 - Aug 2017
-      title: Developer
     - company: Company
       country: nl
       description: '["Developed resume site for job seeking."]'
@@ -865,6 +916,182 @@ paths:
       summary: UpdateCompanyBranch hy_companybranch
       tags:
       - hy_companybranch
+  /api/tech:
+    get:
+      description: |-
+        List all techs
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_tech#TechList
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.tech+json; type=collection
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/TechCollection'
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: TechList hy_tech
+      tags:
+      - hy_tech
+    post:
+      description: |-
+        Create new tech
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_tech#CreateTech
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreateTechHyTechPayload'
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.tech+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Tech'
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: CreateTech hy_tech
+      tags:
+      - hy_tech
+  /api/tech/{techID}:
+    delete:
+      description: |-
+        Delete tech
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_tech#DeleteTech
+      parameters:
+      - description: Tech ID
+        in: path
+        name: techID
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.tech+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Tech'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: DeleteTech hy_tech
+      tags:
+      - hy_tech
+    get:
+      description: |-
+        Retrieve tech with given tech id
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_tech#GetTech
+      parameters:
+      - description: Tech ID
+        in: path
+        name: techID
+        required: true
+        type: integer
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.tech+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Tech'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: GetTech hy_tech
+      tags:
+      - hy_tech
+    put:
+      description: |-
+        Change tech properties
+
+        Required security scopes:
+          * `api:access`
+      operationId: hy_tech#UpdateTech
+      parameters:
+      - description: Tech ID
+        in: path
+        name: techID
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateTechHyTechPayload'
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.tech+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Tech'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+      security:
+      - jwt:
+        - api:access
+      summary: UpdateTech hy_tech
+      tags:
+      - hy_tech
   /api/user:
     get:
       description: |-

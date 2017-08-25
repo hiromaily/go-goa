@@ -89,20 +89,31 @@ gencln:
 aftergen:
 	# rewrite package name
 	rm -f goa/main.go
+
 	sed -e "1s/main/goa/" ./goa/auth.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/auth.go
+
 	sed -e "1s/main/goa/" ./goa/health.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/health.go
+
 	sed -e "1s/main/goa/" ./goa/public.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/public.go
+
 	sed -e "1s/main/goa/" ./goa/hy_user.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/hy_user.go
+
+	sed -e "1s/main/goa/" ./goa/hy_tech.go >> ./resources/tmp/tmp.go
+	mv -f ./resources/tmp/tmp.go ./goa/hy_tech.go
+
 	sed -e "1s/main/goa/" ./goa/hy_company.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/hy_company.go
+
 	sed -e "1s/main/goa/" ./goa/hy_companybranch.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/hy_companybranch.go
+
 	sed -e "1s/main/goa/" ./goa/hy_usertech.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/hy_usertech.go
+
 	sed -e "1s/main/goa/" ./goa/hy_user_work_history.go >> ./resources/tmp/tmp.go
 	mv -f ./resources/tmp/tmp.go ./goa/hy_user_work_history.go
 

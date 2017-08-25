@@ -8,13 +8,6 @@ import (
 //-----------------------------------------------------------------------------
 // Define fields
 //-----------------------------------------------------------------------------
-// UserTech
-var fieldTechName = func() {
-	Description("Tech name")
-	MinLength(2)
-	MaxLength(40)
-	Example("Golang")
-}
 
 //-----------------------------------------------------------------------------
 // UserPayload defines the data structure used in the create user request body.
