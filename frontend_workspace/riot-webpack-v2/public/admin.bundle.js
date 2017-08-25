@@ -3560,7 +3560,7 @@ riot.tag2('main', '<user if="{tag===\'user\'}"></user> <company if="{tag===\'com
     self.data = {
         user: { element: 'user', url: '/api/user' },
         company: { element: 'company', url: '/api/company' },
-        tech: { element: 'tech', url: '/api/company' }
+        tech: { element: 'tech', url: '/api/tech' }
     };
     if (window.debugMode == 1) {
         self.data.user.url = '/json/userlist.json';
@@ -3625,7 +3625,156 @@ riot.tag2('admin', '<div class="ui container"> <h3 class="ui header">Model List<
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main/company.tag
-riot.tag2('company', '<div> company </div>', '', '', function (opts) {});
+riot.tag2('company', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header">Company Model</h3> <table class="ui celled striped table"> <thead> <tr> <th>ID</th> <th>Name</th> <th>Update</th> <th>Delete</th> </tr> </thead> <tbody> <tr each="{this.parent.items}"> <td>{id}</td> <td>{name}</td> <td class="collapsing"> <button class="ui teal button" onclick="{updateCompany}">Update</button> </td> <td class="collapsing"> <button class="ui red button" onclick="{deleteCompany}">Delete</button> </td> </tr> </tbody> <tfoot class="full-width"> <tr> <th></th> <th> <div class="ui pagination menu"> <a class="item">1</a> <div class="disabled item">...</div> <a class="item active">10</a> <a class="item">11</a> <a class="item">12</a> </div> </th> <th colspan="2"> <button class="ui blue active button" onclick="{addCompany}"> <i class="laptop icon"></i> Add Company </button> </th> </tr> </tfoot> </table> </div> <div class="ui modal"> <div id="modal_header" class="header">Add Company</div> <div class="content"> <form class="ui fluid form"> <div class="ui column middle aligned very relaxed stackable grid"> <div class="column"> <div class="field"> <label>Name</label> <div class="ui left icon input"> <input name="name" type="text" placeholder="Name"> <i class="laptop icon"></i> </div> </div> <button id="save_btn" class="ui blue active button" data-id="0" data-mode="add" onclick="{saveCompany}"> Save </button> <div class="ui error message"></div> </div> </div> </form> </div> </div>', '', '', function (opts) {
+
+    this.on('mount', function () {
+
+        $('.ui.form').form({
+            fields: {
+                name: {
+                    identifier: 'name',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Please enter company name'
+                    }, {
+                        type: 'minLength[1]',
+                        prompt: 'Company name must be at least 1 characters'
+                    }, {
+                        type: 'maxLength[40]',
+                        prompt: 'Comany name must be at most 40 characters'
+                    }]
+                }
+            },
+            onSuccess: function onSuccess(event, fields) {
+                console.log('success');
+                event.preventDefault();
+            }
+        });
+    });
+
+    self = this;
+
+    this.deleteCompany = function (e) {
+        var res = confirm('Are you sure to delete this company?');
+        if (!res) return;
+
+        var url = '/api/company/' + e.item.id;
+        var payload = {};
+        var fn = function fn(json) {
+            if (json.status && json.status != 200 || !json.id) {
+
+                console.log("error: ", json);
+                alert("error:", json);
+            } else {
+
+                console.log("delete OK");
+                alert("deleted!");
+
+                self.parent.callAPI({ element: 'company', url: '/api/company' });
+            }
+        };
+        self.callAPI(url, payload, 'DELETE', fn);
+    }.bind(this);
+
+    this.updateCompany = function (e) {
+
+        $('input[name="name"]').val(e.item.name);
+        $('#modal_header').html('Update Company');
+
+        $('#save_btn').attr("data-mode", "update");
+        $('#save_btn').attr("data-id", e.item.id);
+
+        $('.ui.modal').modal('show');
+    }.bind(this);
+
+    this.addCompany = function (e) {
+        $('input[name="name"]').val('');
+        $('#modal_header').html('Add Company');
+        $('#save_btn').attr("data-mode", "add");
+
+        $('.ui.modal').modal('show');
+    }.bind(this);
+
+    this.saveComany = function (e) {
+
+        if (!$('.ui.form').form('is valid')) {
+            $('.ui.form').form('validate form');
+            return;
+        }
+
+        if (e.target.dataset.mode == "add") {
+
+            var url = '/api/company';
+            var payload = {
+                name: $('input[name="name"]').val()
+            };
+            var fn = function fn(json) {
+                if (json.status && json.status != 200 || !json.id) {
+
+                    console.log("error: ", json);
+
+                    $('.ui.form').form('add prompt', 'name');
+                    $('.ui.form .error.message').html('Please enter a valid value').show();
+                } else {
+
+                    console.log("add OK");
+                    $('.ui.form .error.message').hide();
+                    alert("added!");
+                    $('.ui.modal').modal('hide');
+
+                    self.parent.callAPI({ element: 'company', url: '/api/company' });
+                }
+            };
+
+            self.callAPI(url, payload, 'POST', fn);
+        } else {
+
+            var _url = '/api/company/' + e.target.dataset.id;
+            var _payload = {
+                name: $('input[name="name"]').val()
+            };
+            var _fn = function _fn(json) {
+                if (json.status && json.status != 200 || !json.id) {
+
+                    console.log("error: ", json);
+
+                    $('.ui.form').form('add prompt', 'name');
+                    $('.ui.form .error.message').html('Please enter a valid value').show();
+                } else {
+
+                    console.log("add OK");
+                    $('.ui.form .error.message').hide();
+                    alert("updated!");
+                    $('.ui.modal').modal('hide');
+
+                    self.parent.callAPI({ element: 'company', url: '/api/company' });
+                }
+            };
+
+            self.callAPI(_url, _payload, 'PUT', _fn);
+        }
+    }.bind(this);
+
+    self.callAPI = function (url, payload, mtd, fn) {
+        var key = sessionStorage.getItem('jwt');
+
+        fetch(url, {
+            method: mtd,
+            headers: {
+                'Authorization': 'Bearer ' + key,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        }).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            console.log("res:", json);
+            fn(json);
+        });
+
+        return;
+    };
+});
 
 /***/ }),
 /* 14 */

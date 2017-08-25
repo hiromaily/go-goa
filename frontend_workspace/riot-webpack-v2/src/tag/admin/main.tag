@@ -9,7 +9,7 @@
     self.data = {
       user: {element:'user', url:'/api/user'},
       company: {element:'company', url:'/api/company'},
-      tech: {element:'tech', url:'/api/company'}
+      tech: {element:'tech', url:'/api/tech'}
     }
     if (window.debugMode == 1){
         self.data.user.url='/json/userlist.json';
