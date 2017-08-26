@@ -3625,9 +3625,10 @@ riot.tag2('main', '<admin if="{tag===\'admin\'}"></admin> <user if="{tag===\'use
         console.log("collection:", collection);
         console.log("id:", id);
         self.tag = collection + '_detail';
+        self.user_id = id;
 
         if (window.debugMode != 1) {
-            self.data[self.tag].url += id;
+            self.data[self.tag].url = '/api/user/' + id;
         }
 
         self.callAPI(self.data[self.tag]);
@@ -4139,9 +4140,12 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main/user_detail.tag
-riot.tag2('user_detail', '<div class="ui container" style="margin-bottom: 50px;"> <div class="ui two column grid"> <div class="four wide column"> <like-tech></like-tech> <br> <dislike-tech></dislike-tech> <br> <div class="ui segments"> <a href="https://github.com/hiromaily"><img src="/img/github.png" class="ui circular image"></a> </div> <div class="ui segments"> <a href="https://stackshare.io/hiromaily/my-stack"><img src="/img/stackshare.png" class="ui circular image"></a> </div> <button class="ui linkedin button" onclick="location.href=\'https://www.linkedin.com/in/hiroki-yasui-b4b6089b/\';"> <i class="linkedin icon"></i> LinkedIn </button> </div> <div class="twelve wide column"> <work-history></work-history> </div> </div> </div>', '', '', function (opts) {
+riot.tag2('user_detail', '<div class="ui container" style="margin-bottom: 50px;"> <div class="ui two column grid"> <div class="four wide column"> <like-tech></like-tech> <br> <dislike-tech></dislike-tech> </div> <div class="twelve wide column"> <work-history></work-history> </div> </div> </div>', '', '', function (opts) {
 
   self = this;
+
+  console.log('this.parent.user_id:', this.parent.user_id);
+  rg.setResume(riot, this.parent.user_id);
 });
 
 /***/ })

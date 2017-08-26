@@ -32,9 +32,10 @@
       console.log("collection:", collection)
       console.log("id:", id)
       self.tag = `${collection}_detail`
+      self.user_id = id
 
       if (window.debugMode != 1){
-        self.data[self.tag].url += id
+        self.data[self.tag].url = '/api/user/'+id
       }
 
       self.callAPI(self.data[self.tag])
