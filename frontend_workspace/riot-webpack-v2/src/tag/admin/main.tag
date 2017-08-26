@@ -1,28 +1,41 @@
 <main>
+  <admin if={ tag==='admin' } />
   <user if={ tag==='user' } />
+  <user_detail if={ tag==='user_detail' } />
   <company if={ tag==='company' } />
   <tech if={ tag==='tech' } />
-  <admin if={ tag==='admin' } />
+
 
   <script>
     var self = this
     self.data = {
       user: {element:'user', url:'/api/user'},
+      user_detail: {element:'user_detail', url:'/api/user/'},
       company: {element:'company', url:'/api/company'},
       tech: {element:'tech', url:'/api/tech'}
     }
     if (window.debugMode == 1){
         self.data.user.url='/json/userlist.json';
+        self.data.user_detail.url='/json/userdetail.json';
         self.data.company.url='/json/companylist.json';
         self.data.tech.url='/json/techlist.json';
     }
 
     var r = riot.route.create()
-    r('*', (id) => {
-      self.tag = id
+    r('*', (collection) => {
+      console.log("collection:", collection)
+      self.tag = collection
 
-      self.callAPI(self.data[id])
+      self.callAPI(self.data[collection])
     })
+    r('*/*', (collection, id) => {
+      console.log("collection:", collection)
+      console.log("id:", id)
+      self.tag = `${collection}_detail`
+
+      self.callAPI(self.data[self.tag])
+    })
+
     r(() => {
       //default
       self.tag = "admin"

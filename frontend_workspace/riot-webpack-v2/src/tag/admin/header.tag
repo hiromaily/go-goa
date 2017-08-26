@@ -10,10 +10,15 @@
     }
 
     var r = riot.route.create()
-    r('*', (id) => {
-      self.header = self.data[id] || 'Admin'
+    r('*', (collection) => {
+      self.header = self.data[collection] || 'Admin'
       self.update()
     })
+    r('*/*', (collection, id) => {
+      self.header = self.data[collection] || 'Admin'
+      self.update()
+    })
+
     r(() => {
       //default
       self.header = "Admin"

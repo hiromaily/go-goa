@@ -18,6 +18,7 @@
       { name: "Tech", url: "tech" }
     ]
 
+    /*
     let r = riot.route.create()
     r(self.highlightCurrent)
 
@@ -25,5 +26,6 @@
       self.selectedId = id
       self.update()
     }
+    */
   </script>
 </navi>

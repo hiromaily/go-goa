@@ -9,6 +9,8 @@ require('./tag/admin/main/company.tag');
 require('./tag/admin/main/tech.tag');
 require('./tag/admin/main/user.tag');
 
+require('./tag/admin/main/user_detail.tag');
+
 // route('/', () => riot.mount('main', 'home'))
 // route('/about', () => riot.mount('main', 'about'))
 // route('/contact', () => riot.mount('main', 'contact'))

@@ -2986,6 +2986,8 @@ __webpack_require__(13);
 __webpack_require__(14);
 __webpack_require__(15);
 
+__webpack_require__(16);
+
 // route('/', () => riot.mount('main', 'home'))
 // route('/about', () => riot.mount('main', 'about'))
 // route('/contact', () => riot.mount('main', 'contact'))
@@ -3507,14 +3509,6 @@ riot.tag2('navi', '<div class="ui fixed inverted menu"> <div class="ui container
   var self = this;
 
   self.links = [{ name: "Admin", url: "" }, { name: "User", url: "user" }, { name: "Company", url: "company" }, { name: "Tech", url: "tech" }];
-
-  var r = riot.route.create();
-  r(self.highlightCurrent);
-
-  self.highlightCurrent = function (id) {
-    self.selectedId = id;
-    self.update();
-  };
 });
 
 /***/ }),
@@ -3535,10 +3529,15 @@ riot.tag2('header', '<h2 class="ui center aligned header">{header}</h2>', '', ''
   };
 
   var r = riot.route.create();
-  r('*', function (id) {
-    self.header = self.data[id] || 'Admin';
+  r('*', function (collection) {
+    self.header = self.data[collection] || 'Admin';
     self.update();
   });
+  r('*/*', function (collection, id) {
+    self.header = self.data[collection] || 'Admin';
+    self.update();
+  });
+
   r(function () {
 
     self.header = "Admin";
@@ -3555,25 +3554,36 @@ riot.tag2('header', '<h2 class="ui center aligned header">{header}</h2>', '', ''
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main.tag
-riot.tag2('main', '<user if="{tag===\'user\'}"></user> <company if="{tag===\'company\'}"></company> <tech if="{tag===\'tech\'}"></tech> <admin if="{tag===\'admin\'}"></admin>', '', '', function (opts) {
+riot.tag2('main', '<admin if="{tag===\'admin\'}"></admin> <user if="{tag===\'user\'}"></user> <user_detail if="{tag===\'user_detail\'}"></user_detail> <company if="{tag===\'company\'}"></company> <tech if="{tag===\'tech\'}"></tech>', '', '', function (opts) {
     var self = this;
     self.data = {
         user: { element: 'user', url: '/api/user' },
+        user_detail: { element: 'user_detail', url: '/api/user/' },
         company: { element: 'company', url: '/api/company' },
         tech: { element: 'tech', url: '/api/tech' }
     };
     if (window.debugMode == 1) {
         self.data.user.url = '/json/userlist.json';
+        self.data.user_detail.url = '/json/userdetail.json';
         self.data.company.url = '/json/companylist.json';
         self.data.tech.url = '/json/techlist.json';
     }
 
     var r = riot.route.create();
-    r('*', function (id) {
-        self.tag = id;
+    r('*', function (collection) {
+        console.log("collection:", collection);
+        self.tag = collection;
 
-        self.callAPI(self.data[id]);
+        self.callAPI(self.data[collection]);
     });
+    r('*/*', function (collection, id) {
+        console.log("collection:", collection);
+        console.log("id:", id);
+        self.tag = collection + '_detail';
+
+        self.callAPI(self.data[self.tag]);
+    });
+
     r(function () {
 
         self.tag = "admin";
@@ -3945,7 +3955,7 @@ riot.tag2('tech', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main/user.tag
-riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header">User Model</h3> <table class="ui celled striped table"> <thead> <tr> <th>ID</th> <th>Name</th> <th>E-mail address</th> <th>Update</th> <th>Delete</th> </tr> </thead> <tbody> <tr each="{this.parent.items}"> <td>{id}</td> <td>{user_name}</td> <td>{email}</td> <td class="collapsing"> <button class="ui teal button" onclick="{updateUser}">Update</button> </td> <td class="collapsing"> <button class="ui red button" onclick="{deleteUser}">Delete</button> </td> </tr> </tbody> <tfoot class="full-width"> <tr> <th></th> <th colspan="2"> <div class="ui pagination menu"> <a class="item">1</a> <div class="disabled item">...</div> <a class="item active">10</a> <a class="item">11</a> <a class="item">12</a> </div> </th> <th colspan="2"> <button class="ui blue active button" onclick="{addUser}"> <i class="user icon"></i> Add User </button> </th> </tr> </tfoot> </table> </div> <div class="ui modal"> <div id="modal_header" class="header">Add User</div> <div class="content"> <form class="ui fluid form"> <div class="ui column middle aligned very relaxed stackable grid"> <div class="column"> <div class="field"> <label>Username</label> <div class="ui left icon input"> <input name="user_name" type="text" placeholder="Username"> <i class="user icon"></i> </div> </div> <div class="field"> <label>Email</label> <div class="ui left icon input"> <input name="email" type="text" placeholder="Email"> <i class="mail icon"></i> </div> </div> <div class="field"> <label>Password</label> <div class="ui left icon input"> <input name="password" type="text" placeholder="Password"> <i class="lock icon"></i> </div> </div> <button id="save_btn" class="ui blue active button" data-id="0" data-mode="add" onclick="{saveUser}"> Save </button> <div class="ui error message"></div> </div> </div> </form> </div> </div>', '', '', function (opts) {
+riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header">User Model</h3> <table class="ui celled striped table"> <thead> <tr> <th>ID</th> <th>Name</th> <th>E-mail address</th> <th>Update</th> <th>Delete</th> </tr> </thead> <tbody> <tr each="{this.parent.items}"> <td><a href="#user/{id}">{id}</a></td> <td>{user_name}</td> <td>{email}</td> <td class="collapsing"> <button class="ui teal button" onclick="{updateUser}">Update</button> </td> <td class="collapsing"> <button class="ui red button" onclick="{deleteUser}">Delete</button> </td> </tr> </tbody> <tfoot class="full-width"> <tr> <th></th> <th colspan="2"> <div class="ui pagination menu"> <a class="item">1</a> <div class="disabled item">...</div> <a class="item active">10</a> <a class="item">11</a> <a class="item">12</a> </div> </th> <th colspan="2"> <button class="ui blue active button" onclick="{addUser}"> <i class="user icon"></i> Add User </button> </th> </tr> </tfoot> </table> </div> <div class="ui modal"> <div id="modal_header" class="header">Add User</div> <div class="content"> <form class="ui fluid form"> <div class="ui column middle aligned very relaxed stackable grid"> <div class="column"> <div class="field"> <label>Username</label> <div class="ui left icon input"> <input name="user_name" type="text" placeholder="Username"> <i class="user icon"></i> </div> </div> <div class="field"> <label>Email</label> <div class="ui left icon input"> <input name="email" type="text" placeholder="Email"> <i class="mail icon"></i> </div> </div> <div class="field"> <label>Password</label> <div class="ui left icon input"> <input name="password" type="text" placeholder="Password"> <i class="lock icon"></i> </div> </div> <button id="save_btn" class="ui blue active button" data-id="0" data-mode="add" onclick="{saveUser}"> Save </button> <div class="ui error message"></div> </div> </div> </form> </div> </div>', '', '', function (opts) {
 
     this.on('mount', function () {
 
@@ -4130,6 +4140,17 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
         return;
     };
 });
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var riot = __webpack_require__(0);
+//src: src/tag/admin/main/user_detail.tag
+riot.tag2('user_detail', '<p>user detail</p>', '', '', function (opts) {});
 
 /***/ })
 /******/ ]);

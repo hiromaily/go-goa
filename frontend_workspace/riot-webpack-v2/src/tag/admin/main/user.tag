@@ -14,7 +14,7 @@
         </thead>
         <tbody>
         <tr each="{ this.parent.items }">
-            <td>{ id }</td>
+            <td><a href="#user/{ id }">{ id }</a></td>
             <td>{ user_name }</td>
             <td>{ email }</td>
             <td class="collapsing">
