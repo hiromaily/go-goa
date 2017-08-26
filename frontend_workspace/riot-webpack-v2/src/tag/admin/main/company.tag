@@ -134,7 +134,7 @@
             self.parent.callAPI({element:'company', url:'/api/company'})
         }
     }
-    self.callAPI(url, payload, 'DELETE', fn)
+    rg.callAPI(url, payload, 'DELETE', fn, null)
   }
 
   //show modal for update company
@@ -190,7 +190,7 @@
         }
       }
 
-      self.callAPI(url, payload, 'POST', fn)
+      rg.callAPI(url, payload, 'POST', fn, null)
     }else{
       //update
       let url = `/api/company/${e.target.dataset.id}`
@@ -215,30 +215,9 @@
         }
       }
 
-      self.callAPI(url, payload, 'PUT', fn)
+      rg.callAPI(url, payload, 'PUT', fn, null)
     }
 
-  }
-
-  //common fetch API function
-  self.callAPI = (url, payload, mtd, fn) => {
-    let key = sessionStorage.getItem('jwt')
-
-    fetch(url, {
-        method: mtd,
-        headers: {
-            'Authorization': 'Bearer '+key,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    }).then((response) => {
-        return response.json()
-    }).then((json) => {
-        console.log("res:", json)
-        fn(json)
-    });
-
-    return
   }
 
 </script>

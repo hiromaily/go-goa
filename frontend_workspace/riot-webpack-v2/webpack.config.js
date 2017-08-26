@@ -7,7 +7,7 @@ module.exports = {
         admin: './src/admin.js'
     },
     output: {
-        path: __dirname + '/public/',
+        path: __dirname + '/public/js/',
         filename: '[name].bundle.js'
     },
     module: {

@@ -2959,10 +2959,59 @@ Object.defineProperty(exports, '__esModule', { value: true });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */,
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var riot = __webpack_require__(0);
+//src: src/tag/resume/like_tech.tag
+riot.tag2('like-tech', '<div class="ui segments"> <div class="ui segment"> <p>Like</p> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {});
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var riot = __webpack_require__(0);
+//src: src/tag/resume/dislike_tech.tag
+riot.tag2('dislike-tech', '<div class="ui segments"> <div class="ui segment"> <p>Dislike</p> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {});
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var riot = __webpack_require__(0);
+//src: src/tag/resume/work_history.tag
+riot.tag2('work-history', '<virtual each="{opts.items}"> <div class="ui card"> <div class="content" style="background: #787878;"> <div class="header" style="color: #FFFFFF;"> <virtual if="{company==\'Freelancer\'}">{title} as {company}</virtual> <virtual if="{company!=\'Freelancer\'}">{title} at {company}</virtual> <i class="{country} flag" style="padding-left:10px;"></i> </div> </div> <div class="content"> <h4 class="ui sub header">{term}</h4> <div class="ui small feed"> <div class="event"> <div class="content"> <div class="summary"> <ul class="ui list"> <virtual each="{desc in description}"> <li if="{isString(desc)}"><raw content="{desc}"></raw></li> <ul if="{isArray(desc)}"> <li each="{v in desc}"> <raw content="{v}"></raw> </li> </ul> </virtual> </ul> </div> </div> </div> </div> </div> <div class="extra content" style="background:rgb(243, 244, 245);"> <div each="{techs}" class="ui black basic button"> {name} </div> </div> </div> <div class="ui section divider"></div> </virtual>', '', '', function (opts) {
+    this.isArray = function (obj) {
+        return riot.util.check.isArray(obj);
+    }.bind(this);
+    this.isString = function (obj) {
+        return riot.util.check.isString(obj);
+    }.bind(this);
+});
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var riot = __webpack_require__(0);
+//src: src/tag/common/raw.tag
+riot.tag2('raw', '<span></span>', '', '', function (opts) {
+  this.root.innerHTML = opts.content;
+});
+
+/***/ }),
 /* 5 */,
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2988,16 +3037,12 @@ __webpack_require__(15);
 
 __webpack_require__(16);
 
-// route('/', () => riot.mount('main', 'home'))
-// route('/about', () => riot.mount('main', 'about'))
-// route('/contact', () => riot.mount('main', 'contact'))
+__webpack_require__(1);
+__webpack_require__(2);
+__webpack_require__(3);
+__webpack_require__(4);
 
 riot.mount('*');
-//riot.mount('navi')
-//riot.mount('header')
-//riot.mount('main')
-//riot.mount('admin')
-
 riot.route.start(true);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
@@ -3581,6 +3626,10 @@ riot.tag2('main', '<admin if="{tag===\'admin\'}"></admin> <user if="{tag===\'use
         console.log("id:", id);
         self.tag = collection + '_detail';
 
+        if (window.debugMode != 1) {
+            self.data[self.tag].url += id;
+        }
+
         self.callAPI(self.data[self.tag]);
     });
 
@@ -3683,7 +3732,7 @@ riot.tag2('company', '<div class="ui container" style="margin-bottom: 50px;"> <h
                 self.parent.callAPI({ element: 'company', url: '/api/company' });
             }
         };
-        self.callAPI(url, payload, 'DELETE', fn);
+        rg.callAPI(url, payload, 'DELETE', fn, null);
     }.bind(this);
 
     this.updateCompany = function (e) {
@@ -3736,7 +3785,7 @@ riot.tag2('company', '<div class="ui container" style="margin-bottom: 50px;"> <h
                 }
             };
 
-            self.callAPI(url, payload, 'POST', fn);
+            rg.callAPI(url, payload, 'POST', fn, null);
         } else {
 
             var _url = '/api/company/' + e.target.dataset.id;
@@ -3761,29 +3810,9 @@ riot.tag2('company', '<div class="ui container" style="margin-bottom: 50px;"> <h
                 }
             };
 
-            self.callAPI(_url, _payload, 'PUT', _fn);
+            rg.callAPI(_url, _payload, 'PUT', _fn, null);
         }
     }.bind(this);
-
-    self.callAPI = function (url, payload, mtd, fn) {
-        var key = sessionStorage.getItem('jwt');
-
-        fetch(url, {
-            method: mtd,
-            headers: {
-                'Authorization': 'Bearer ' + key,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        }).then(function (response) {
-            return response.json();
-        }).then(function (json) {
-            console.log("res:", json);
-            fn(json);
-        });
-
-        return;
-    };
 });
 
 /***/ }),
@@ -3843,7 +3872,7 @@ riot.tag2('tech', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
                 self.parent.callAPI({ element: 'tech', url: '/api/tech' });
             }
         };
-        self.callAPI(url, payload, 'DELETE', fn);
+        rg.callAPI(url, payload, 'DELETE', fn, null);
     }.bind(this);
 
     this.updateTech = function (e) {
@@ -3896,7 +3925,7 @@ riot.tag2('tech', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
                 }
             };
 
-            self.callAPI(url, payload, 'POST', fn);
+            rg.callAPI(url, payload, 'POST', fn, null);
         } else {
 
             var _url = '/api/tech/' + e.target.dataset.id;
@@ -3921,29 +3950,9 @@ riot.tag2('tech', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
                 }
             };
 
-            self.callAPI(_url, _payload, 'PUT', _fn);
+            rg.callAPI(_url, _payload, 'PUT', _fn, null);
         }
     }.bind(this);
-
-    self.callAPI = function (url, payload, mtd, fn) {
-        var key = sessionStorage.getItem('jwt');
-
-        fetch(url, {
-            method: mtd,
-            headers: {
-                'Authorization': 'Bearer ' + key,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        }).then(function (response) {
-            return response.json();
-        }).then(function (json) {
-            console.log("res:", json);
-            fn(json);
-        });
-
-        return;
-    };
 });
 
 /***/ }),
@@ -4016,7 +4025,7 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
 
         var url = '/api/user/' + e.item.id;
         var payload = {};
-        var fn = function fn(json) {
+        var fn = function fn(json, obj) {
             if (json.status && json.status != 200 || !json.id) {
 
                 console.log("error: ", json);
@@ -4029,7 +4038,7 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
                 self.parent.callAPI({ element: 'user', url: '/api/user' });
             }
         };
-        self.callAPI(url, payload, 'DELETE', fn);
+        rg.callAPI(url, payload, 'DELETE', fn, null);
     }.bind(this);
 
     this.updateUser = function (e) {
@@ -4071,7 +4080,7 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
                 email: $('input[name="email"]').val(),
                 password: $('input[name="password"]').val()
             };
-            var fn = function fn(json) {
+            var fn = function fn(json, obj) {
                 if (json.status && json.status != 200 || !json.id) {
 
                     console.log("error: ", json);
@@ -4089,7 +4098,7 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
                 }
             };
 
-            self.callAPI(url, payload, 'POST', fn);
+            rg.callAPI(url, payload, 'POST', fn, null);
         } else {
 
             var _url = '/api/user/' + e.target.dataset.id;
@@ -4098,7 +4107,7 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
                 email: $('input[name="email"]').val(),
                 password: $('input[name="password"]').val()
             };
-            var _fn = function _fn(json) {
+            var _fn = function _fn(json, obj) {
                 if (json.status && json.status != 200 || !json.id) {
 
                     console.log("error: ", json);
@@ -4116,29 +4125,9 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
                 }
             };
 
-            self.callAPI(_url, _payload, 'PUT', _fn);
+            rg.callAPI(_url, _payload, 'PUT', _fn, null);
         }
     }.bind(this);
-
-    self.callAPI = function (url, payload, mtd, fn) {
-        var key = sessionStorage.getItem('jwt');
-
-        fetch(url, {
-            method: mtd,
-            headers: {
-                'Authorization': 'Bearer ' + key,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        }).then(function (response) {
-            return response.json();
-        }).then(function (json) {
-            console.log("res:", json);
-            fn(json);
-        });
-
-        return;
-    };
 });
 
 /***/ }),
@@ -4150,7 +4139,10 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main/user_detail.tag
-riot.tag2('user_detail', '<p>user detail</p>', '', '', function (opts) {});
+riot.tag2('user_detail', '<div class="ui container" style="margin-bottom: 50px;"> <div class="ui two column grid"> <div class="four wide column"> <like-tech></like-tech> <br> <dislike-tech></dislike-tech> <br> <div class="ui segments"> <a href="https://github.com/hiromaily"><img src="/img/github.png" class="ui circular image"></a> </div> <div class="ui segments"> <a href="https://stackshare.io/hiromaily/my-stack"><img src="/img/stackshare.png" class="ui circular image"></a> </div> <button class="ui linkedin button" onclick="location.href=\'https://www.linkedin.com/in/hiroki-yasui-b4b6089b/\';"> <i class="linkedin icon"></i> LinkedIn </button> </div> <div class="twelve wide column"> <work-history></work-history> </div> </div> </div>', '', '', function (opts) {
+
+  self = this;
+});
 
 /***/ })
 /******/ ]);

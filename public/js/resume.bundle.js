@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2963,58 +2963,6 @@ Object.defineProperty(exports, '__esModule', { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(riot) {
-
-__webpack_require__(2);
-__webpack_require__(3);
-__webpack_require__(4);
-__webpack_require__(5);
-
-//Ajax
-function callAPI(obj) {
-    var key = sessionStorage.getItem('jwt');
-    //fetch
-    fetch(obj.url, {
-        headers: {
-            'Authorization': 'Bearer ' + key,
-            "Content-Type": "application/json"
-        }
-    }).then(function (response) {
-        return response.json();
-    }).then(function (json) {
-        if (json.status && json.status != 200) {
-            sessionStorage.removeItem('jwt');
-            sessionStorage.removeItem('id');
-            location.href = '/login.html';
-            return;
-        }
-        //Success
-        riot.mount(obj.element, {
-            //items : json.items
-            items: json
-        });
-    });
-}
-
-// data definition
-var data = [{ url: '/api/user/' + sessionStorage.getItem('id') + '/liketech', element: 'like-tech' }, { url: '/api/user/' + sessionStorage.getItem('id') + '/disliketech', element: 'dislike-tech' }, { url: '/api/user/' + sessionStorage.getItem('id') + '/workhistory', element: 'work-history' }];
-if (window.debugMode == 1) {
-    data[0].url = '/json/liketech.json';
-    data[1].url = '/json/disliketech.json';
-    data[2].url = '/json/workhistory.json';
-}
-
-//loop
-data.forEach(function (obj) {
-    callAPI(obj);
-});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 
 
 var riot = __webpack_require__(0);
@@ -3022,7 +2970,7 @@ var riot = __webpack_require__(0);
 riot.tag2('like-tech', '<div class="ui segments"> <div class="ui segment"> <p>Like</p> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {});
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3033,7 +2981,7 @@ var riot = __webpack_require__(0);
 riot.tag2('dislike-tech', '<div class="ui segments"> <div class="ui segment"> <p>Dislike</p> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {});
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3051,7 +2999,7 @@ riot.tag2('work-history', '<virtual each="{opts.items}"> <div class="ui card"> <
 });
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3062,6 +3010,49 @@ var riot = __webpack_require__(0);
 riot.tag2('raw', '<span></span>', '', '', function (opts) {
   this.root.innerHTML = opts.content;
 });
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(riot) {
+
+__webpack_require__(1);
+__webpack_require__(2);
+__webpack_require__(3);
+__webpack_require__(4);
+
+function setResume() {
+    // data definition
+    var data = [{ url: '/api/user/' + sessionStorage.getItem('id') + '/liketech', element: 'like-tech' }, { url: '/api/user/' + sessionStorage.getItem('id') + '/disliketech', element: 'dislike-tech' }, { url: '/api/user/' + sessionStorage.getItem('id') + '/workhistory', element: 'work-history' }];
+    if (window.debugMode == 1) {
+        data[0].url = '/json/liketech.json';
+        data[1].url = '/json/disliketech.json';
+        data[2].url = '/json/workhistory.json';
+    }
+
+    //loop
+    data.forEach(function (obj) {
+        var fn = function fn(json, element) {
+            if (json.status && json.status != 200) {
+                sessionStorage.removeItem('jwt');
+                sessionStorage.removeItem('id');
+                location.href = '/login.html';
+                return;
+            }
+            //Success
+            riot.mount(element, {
+                items: json
+            });
+        };
+
+        rg.callAPI(obj.url, {}, 'GET', fn, obj.element);
+    });
+}
+
+setResume();
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ })
 /******/ ]);

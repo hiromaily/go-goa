@@ -33,6 +33,10 @@
       console.log("id:", id)
       self.tag = `${collection}_detail`
 
+      if (window.debugMode != 1){
+        self.data[self.tag].url += id
+      }
+
       self.callAPI(self.data[self.tag])
     })
 

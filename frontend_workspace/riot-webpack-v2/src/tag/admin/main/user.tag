@@ -177,7 +177,7 @@
 
     let url = `/api/user/${e.item.id}`
     let payload = {}
-    let fn = (json) => {
+    let fn = (json, obj) => {
         if ((json.status && json.status != 200) || !json.id) {
             //error
             console.log("error: ", json)
@@ -190,7 +190,7 @@
             self.parent.callAPI({element:'user', url:'/api/user'})
         }
     }
-    self.callAPI(url, payload, 'DELETE', fn)
+    rg.callAPI(url, payload, 'DELETE', fn, null)
   }
 
   //show modal for update user
@@ -236,7 +236,7 @@
         email: $('input[name="email"]').val(),
         password: $('input[name="password"]').val()
       };
-      let fn = (json) => {
+      let fn = (json, obj) => {
         if ((json.status && json.status != 200) || !json.id) {
             //error
             console.log("error: ", json)
@@ -254,7 +254,7 @@
         }
       }
 
-      self.callAPI(url, payload, 'POST', fn)
+      rg.callAPI(url, payload, 'POST', fn, null)
     }else{
       //update
       let url = `/api/user/${e.target.dataset.id}`
@@ -263,7 +263,7 @@
         email: $('input[name="email"]').val(),
         password: $('input[name="password"]').val()
       };
-      let fn = (json) => {
+      let fn = (json, obj) => {
         if ((json.status && json.status != 200) || !json.id) {
             //error
             console.log("error: ", json)
@@ -281,30 +281,9 @@
         }
       }
 
-      self.callAPI(url, payload, 'PUT', fn)
+      rg.callAPI(url, payload, 'PUT', fn, null)
     }
 
-  }
-
-  //common fetch API function
-  self.callAPI = (url, payload, mtd, fn) => {
-    let key = sessionStorage.getItem('jwt')
-
-    fetch(url, {
-        method: mtd,
-        headers: {
-            'Authorization': 'Bearer '+key,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    }).then((response) => {
-        return response.json()
-    }).then((json) => {
-        console.log("res:", json)
-        fn(json)
-    });
-
-    return
   }
 
 </script>

@@ -11,14 +11,11 @@ require('./tag/admin/main/user.tag');
 
 require('./tag/admin/main/user_detail.tag');
 
-// route('/', () => riot.mount('main', 'home'))
-// route('/about', () => riot.mount('main', 'about'))
-// route('/contact', () => riot.mount('main', 'contact'))
+require('./tag/resume/like_tech.tag');
+require('./tag/resume/dislike_tech.tag');
+require('./tag/resume/work_history.tag');
+require('./tag/common/raw.tag');
+
 
 riot.mount('*')
-//riot.mount('navi')
-//riot.mount('header')
-//riot.mount('main')
-//riot.mount('admin')
-
 riot.route.start(true)
