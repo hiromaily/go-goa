@@ -33,6 +33,7 @@
       console.log("id:", id)
       self.tag = `${collection}_detail`
       self.user_id = id
+      self.edit = true
 
       if (window.debugMode != 1){
         self.data[self.tag].url = '/api/user/'+id

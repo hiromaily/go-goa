@@ -2967,7 +2967,14 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var riot = __webpack_require__(0);
 //src: src/tag/resume/like_tech.tag
-riot.tag2('like-tech', '<div class="ui segments"> <div class="ui segment"> <p>Like</p> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {});
+riot.tag2('like-tech', '<div class="ui segments"> <div class="ui segment"> Like <i if="{this.edit}" class="edit icon" style="padding-left:10px;"></i> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {
+  self = this;
+
+  self.edit = false;
+  if (location.pathname.match(/admin/)) {
+    self.edit = true;
+  }
+});
 
 /***/ }),
 /* 2 */
@@ -2978,7 +2985,13 @@ riot.tag2('like-tech', '<div class="ui segments"> <div class="ui segment"> <p>Li
 
 var riot = __webpack_require__(0);
 //src: src/tag/resume/dislike_tech.tag
-riot.tag2('dislike-tech', '<div class="ui segments"> <div class="ui segment"> <p>Dislike</p> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {});
+riot.tag2('dislike-tech', '<div class="ui segments"> <div class="ui segment"> Dislike <i if="{this.edit}" class="edit icon" style="padding-left:10px;"></i> </div> <div class="ui segments"> <div each="{opts.items}" class="ui segment"> <p>{tech_name}</p> </div> </div> </div>', '', '', function (opts) {
+  self = this;
+  self.edit = false;
+  if (location.pathname.match(/admin/)) {
+    self.edit = true;
+  }
+});
 
 /***/ }),
 /* 3 */
@@ -2989,13 +3002,19 @@ riot.tag2('dislike-tech', '<div class="ui segments"> <div class="ui segment"> <p
 
 var riot = __webpack_require__(0);
 //src: src/tag/resume/work_history.tag
-riot.tag2('work-history', '<virtual each="{opts.items}"> <div class="ui card"> <div class="content" style="background: #787878;"> <div class="header" style="color: #FFFFFF;"> <virtual if="{company==\'Freelancer\'}">{title} as {company}</virtual> <virtual if="{company!=\'Freelancer\'}">{title} at {company}</virtual> <i class="{country} flag" style="padding-left:10px;"></i> </div> </div> <div class="content"> <h4 class="ui sub header">{term}</h4> <div class="ui small feed"> <div class="event"> <div class="content"> <div class="summary"> <ul class="ui list"> <virtual each="{desc in description}"> <li if="{isString(desc)}"><raw content="{desc}"></raw></li> <ul if="{isArray(desc)}"> <li each="{v in desc}"> <raw content="{v}"></raw> </li> </ul> </virtual> </ul> </div> </div> </div> </div> </div> <div class="extra content" style="background:rgb(243, 244, 245);"> <div each="{techs}" class="ui black basic button"> {name} </div> </div> </div> <div class="ui section divider"></div> </virtual>', '', '', function (opts) {
-    this.isArray = function (obj) {
-        return riot.util.check.isArray(obj);
-    }.bind(this);
-    this.isString = function (obj) {
-        return riot.util.check.isString(obj);
-    }.bind(this);
+riot.tag2('work-history', '<virtual each="{opts.items}"> <div class="ui card"> <div class="content" style="background: #787878;"> <div class="header" style="color: #FFFFFF;"> <virtual if="{company==\'Freelancer\'}">{title} as {company}</virtual> <virtual if="{company!=\'Freelancer\'}">{title} at {company}</virtual> <i class="{country} flag" style="padding-left:10px;"></i> <i if="{this.edit}" class="edit icon" style="padding-left:10px;"></i> </div> </div> <div class="content"> <h4 class="ui sub header">{term}</h4> <div class="ui small feed"> <div class="event"> <div class="content"> <div class="summary"> <ul class="ui list"> <virtual each="{desc in description}"> <li if="{isString(desc)}"><raw content="{desc}"></raw></li> <ul if="{isArray(desc)}"> <li each="{v in desc}"> <raw content="{v}"></raw> </li> </ul> </virtual> </ul> </div> </div> </div> </div> </div> <div class="extra content" style="background:rgb(243, 244, 245);"> <div each="{techs}" class="ui black basic button"> {name} </div> </div> </div> <div class="ui section divider"></div> </virtual>', '', '', function (opts) {
+  self = this;
+  self.edit = false;
+  if (location.pathname.match(/admin/)) {
+    self.edit = true;
+  }
+
+  this.isArray = function (obj) {
+    return riot.util.check.isArray(obj);
+  }.bind(this);
+  this.isString = function (obj) {
+    return riot.util.check.isString(obj);
+  }.bind(this);
 });
 
 /***/ }),
@@ -3626,6 +3645,7 @@ riot.tag2('main', '<admin if="{tag===\'admin\'}"></admin> <user if="{tag===\'use
         console.log("id:", id);
         self.tag = collection + '_detail';
         self.user_id = id;
+        self.edit = true;
 
         if (window.debugMode != 1) {
             self.data[self.tag].url = '/api/user/' + id;
@@ -4140,11 +4160,10 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
 
 var riot = __webpack_require__(0);
 //src: src/tag/admin/main/user_detail.tag
-riot.tag2('user_detail', '<div class="ui container" style="margin-bottom: 50px;"> <div class="ui two column grid"> <div class="four wide column"> <like-tech></like-tech> <br> <dislike-tech></dislike-tech> </div> <div class="twelve wide column"> <work-history></work-history> </div> </div> </div>', '', '', function (opts) {
+riot.tag2('user_detail', '<div class="ui container" style="margin-bottom: 50px;"> <h3 class="ui header"> <img src="/img/hy.png" class="ui circular image"> <a href="https://hiromaily.github.io/" style="color:#333333;">{this.parent.items.user_name}</a> </h3> <div style="padding-bottom: 30px; padding-left: 30px"> <p>I\'m working as software engineer for 14 years and came from Japan to join multinational environment in Oct 2016.</p> <p>And I am looking for job which requires Golang. However I always have to require working VISA because of my nationality. Thank you.</p> </div> <div class="ui two column grid"> <div class="four wide column"> <like-tech if="{this.parent.tag===\'user_detail\'}"></like-tech> <br> <dislike-tech if="{this.parent.tag===\'user_detail\'}"></dislike-tech> </div> <div class="twelve wide column"> <work-history if="{this.parent.tag===\'user_detail\'}"></work-history> </div> </div> </div>', '', '', function (opts) {
 
   self = this;
 
-  console.log('this.parent.user_id:', this.parent.user_id);
   rg.setResume(riot, this.parent.user_id);
 });
 

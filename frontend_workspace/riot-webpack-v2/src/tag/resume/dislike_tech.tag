@@ -1,7 +1,7 @@
 <dislike-tech>
     <div class="ui segments">
         <div class="ui segment">
-            <p>Dislike</p>
+            Dislike <i if={this.edit} class="edit icon" style="padding-left:10px;"></i>
         </div>
         <div class="ui segments">
             <div each="{ opts.items }" class="ui segment">
@@ -9,4 +9,13 @@
             </div>
         </div>
     </div>
+
+<script>
+self = this
+self.edit = false
+if (location.pathname.match(/admin/)){
+  self.edit = true
+}
+</script>
+
 </dislike-tech>

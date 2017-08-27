@@ -6,6 +6,8 @@
                 <virtual if={company=='Freelancer'}>{ title } as { company }</virtual>
                 <virtual if={company!='Freelancer'}>{ title } at { company }</virtual>
                 <i class="{ country} flag" style="padding-left:10px;"></i>
+                <i if={this.edit} class="edit icon" style="padding-left:10px;"></i>
+
             </div>
         </div>
         <div class="content">
@@ -41,18 +43,26 @@
 
 
 <script>
-    isArray(obj) {
-        return riot.util.check.isArray(obj)
-    }
-    isString(obj) {
-        return riot.util.check.isString(obj)
-    }
+self = this
+self.edit = false
+if (location.pathname.match(/admin/)){
+  self.edit = true
+}
 
-    //this.on('mount', () => {
-        //console.log('finished');
-        //remove parents
-        //$(this).unwrap();
-    //})
+isArray(obj) {
+  return riot.util.check.isArray(obj)
+}
+isString(obj) {
+  return riot.util.check.isString(obj)
+}
+
+/*
+this.on('mount', () => {
+  console.log('finished');
+  remove parents
+  $(this).unwrap();
+})
+*/
 
 </script>
 
