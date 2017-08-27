@@ -77,7 +77,7 @@ gotest:
 
 ```
 
-## How to add new API??
+## How to add new API
 1. add new file `ext_xxx_payloads.go` in goa/design/ as needed.  
 2. add new MediaType for response data in goa/design/media_types.go.  
 3. add new Resource in goa/design/resource.go.  
@@ -92,8 +92,10 @@ aftergen:
 7. modify ./ext/cmd/main.go in `newAPI` func.
 8. modify ./ext/controllers/hy_xxxx.go  
 
+TODO: above flow should be automated.
 
-## How to return dynamic html??
+
+## How to return dynamic html
 I guess, goa framework can't treat `text/html` Content-type except static files.
 So, dynamic data can be fetched by Ajax from front side as JSON.
 
