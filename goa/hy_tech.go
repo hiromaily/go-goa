@@ -21,9 +21,9 @@ func (c *HyTechController) CreateTech(ctx *app.CreateTechHyTechContext) error {
 
 	// Put your logic here
 
-	// HyTechController_CreateTech: end_implement
 	res := &app.Tech{}
 	return ctx.OK(res)
+	// HyTechController_CreateTech: end_implement
 }
 
 // DeleteTech runs the DeleteTech action.
@@ -32,9 +32,9 @@ func (c *HyTechController) DeleteTech(ctx *app.DeleteTechHyTechContext) error {
 
 	// Put your logic here
 
-	// HyTechController_DeleteTech: end_implement
 	res := &app.Tech{}
 	return ctx.OK(res)
+	// HyTechController_DeleteTech: end_implement
 }
 
 // GetTech runs the GetTech action.
@@ -43,9 +43,9 @@ func (c *HyTechController) GetTech(ctx *app.GetTechHyTechContext) error {
 
 	// Put your logic here
 
-	// HyTechController_GetTech: end_implement
 	res := &app.Tech{}
 	return ctx.OK(res)
+	// HyTechController_GetTech: end_implement
 }
 
 // TechList runs the TechList action.
@@ -54,9 +54,9 @@ func (c *HyTechController) TechList(ctx *app.TechListHyTechContext) error {
 
 	// Put your logic here
 
-	// HyTechController_TechList: end_implement
 	res := app.TechCollection{}
 	return ctx.OK(res)
+	// HyTechController_TechList: end_implement
 }
 
 // UpdateTech runs the UpdateTech action.
@@ -65,7 +65,7 @@ func (c *HyTechController) UpdateTech(ctx *app.UpdateTechHyTechContext) error {
 
 	// Put your logic here
 
-	// HyTechController_UpdateTech: end_implement
 	res := &app.Tech{}
 	return ctx.OK(res)
+	// HyTechController_UpdateTech: end_implement
 }

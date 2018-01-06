@@ -21,9 +21,9 @@ func (c *HyUsertechController) GetUserDislikeTech(ctx *app.GetUserDislikeTechHyU
 
 	// Put your logic here
 
-	// HyUsertechController_GetUserDislikeTech: end_implement
 	res := app.UsertechCollection{}
 	return ctx.OK(res)
+	// HyUsertechController_GetUserDislikeTech: end_implement
 }
 
 // GetUserLikeTech runs the GetUserLikeTech action.
@@ -32,7 +32,7 @@ func (c *HyUsertechController) GetUserLikeTech(ctx *app.GetUserLikeTechHyUsertec
 
 	// Put your logic here
 
-	// HyUsertechController_GetUserLikeTech: end_implement
 	res := app.UsertechCollection{}
 	return ctx.OK(res)
+	// HyUsertechController_GetUserLikeTech: end_implement
 }

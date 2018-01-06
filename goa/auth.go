@@ -21,7 +21,7 @@ func (c *AuthController) Login(ctx *app.LoginAuthContext) error {
 
 	// Put your logic here
 
-	// AuthController_Login: end_implement
 	res := &app.Authorized{}
 	return ctx.OK(res)
+	// AuthController_Login: end_implement
 }

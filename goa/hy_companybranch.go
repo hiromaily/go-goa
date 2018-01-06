@@ -21,9 +21,9 @@ func (c *HyCompanybranchController) CreateCompanyBranch(ctx *app.CreateCompanyBr
 
 	// Put your logic here
 
-	// HyCompanybranchController_CreateCompanyBranch: end_implement
 	res := &app.Company{}
 	return ctx.OK(res)
+	// HyCompanybranchController_CreateCompanyBranch: end_implement
 }
 
 // DeleteCompanyBranch runs the DeleteCompanyBranch action.
@@ -32,9 +32,9 @@ func (c *HyCompanybranchController) DeleteCompanyBranch(ctx *app.DeleteCompanyBr
 
 	// Put your logic here
 
-	// HyCompanybranchController_DeleteCompanyBranch: end_implement
 	res := &app.Company{}
 	return ctx.OK(res)
+	// HyCompanybranchController_DeleteCompanyBranch: end_implement
 }
 
 // GetCompanyBranch runs the GetCompanyBranch action.
@@ -43,9 +43,9 @@ func (c *HyCompanybranchController) GetCompanyBranch(ctx *app.GetCompanyBranchHy
 
 	// Put your logic here
 
-	// HyCompanybranchController_GetCompanyBranch: end_implement
 	res := &app.Company{}
 	return ctx.OK(res)
+	// HyCompanybranchController_GetCompanyBranch: end_implement
 }
 
 // UpdateCompanyBranch runs the UpdateCompanyBranch action.
@@ -54,7 +54,7 @@ func (c *HyCompanybranchController) UpdateCompanyBranch(ctx *app.UpdateCompanyBr
 
 	// Put your logic here
 
-	// HyCompanybranchController_UpdateCompanyBranch: end_implement
 	res := &app.Company{}
 	return ctx.OK(res)
+	// HyCompanybranchController_UpdateCompanyBranch: end_implement
 }

@@ -166,16 +166,16 @@ dcpush:
 # Build for local
 ###############################################################################
 run:
-	go run ext/cmd/main.go
+	go run -race ext/cmd/main.go
 
 bld:
-	go build -i -v -o ${GOPATH}/bin/go-goa ./ext/cmd/
+	go build -i -race -v -o ${GOPATH}/bin/go-goa ./ext/cmd/
 
 bldlinux:
-	GOOS=linux GOARCH=amd64 go build -v -o ${GOPATH}/bin/linux_amd64/$1 ./ext/cmd/
+	GOOS=linux GOARCH=amd64 go build -race -v -o ${GOPATH}/bin/linux_amd64/$1 ./ext/cmd/
 
 clibld:
-	go build -i -v -o ${GOPATH}/bin/go-goa-cli ./goa/tool/api-cli/*.go
+	go build -i -race -v -o ${GOPATH}/bin/go-goa-cli ./goa/tool/api-cli/*.go
 
 # test shoud be executed in docker-compose.yml for docker environment
 prod:

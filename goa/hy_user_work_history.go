@@ -21,7 +21,7 @@ func (c *HyUserWorkHistoryController) GetUserWorkHistory(ctx *app.GetUserWorkHis
 
 	// Put your logic here
 
-	// HyUserWorkHistoryController_GetUserWorkHistory: end_implement
 	res := app.UserworkhistoryCollection{}
 	return ctx.OK(res)
+	// HyUserWorkHistoryController_GetUserWorkHistory: end_implement
 }

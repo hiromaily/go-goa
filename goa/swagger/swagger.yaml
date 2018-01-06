@@ -591,8 +591,8 @@ paths:
           * `api:access`
       operationId: hy_company#CompanyList
       produces:
-      - application/vnd.goa.error
       - application/vnd.company+json; type=collection
+      - application/vnd.goa.error
       responses:
         "200":
           description: OK
@@ -626,8 +626,8 @@ paths:
         schema:
           $ref: '#/definitions/CreateCompanyHyCompanyPayload'
       produces:
-      - application/vnd.goa.error
       - application/vnd.company+json
+      - application/vnd.goa.error
       responses:
         "200":
           description: OK
@@ -662,8 +662,8 @@ paths:
         required: true
         type: integer
       produces:
-      - application/vnd.goa.error
       - application/vnd.company+json
+      - application/vnd.goa.error
       responses:
         "200":
           description: OK
@@ -704,8 +704,8 @@ paths:
         required: false
         type: string
       produces:
-      - application/vnd.goa.error
       - application/vnd.company+json; type=collection
+      - application/vnd.goa.error
       responses:
         "200":
           description: OK
@@ -744,8 +744,8 @@ paths:
         schema:
           $ref: '#/definitions/UpdateCompanyHyCompanyPayload'
       produces:
-      - application/vnd.goa.error
       - application/vnd.company+json
+      - application/vnd.goa.error
       responses:
         "200":
           description: OK
@@ -780,8 +780,8 @@ paths:
         required: true
         type: integer
       produces:
-      - application/vnd.goa.error
       - application/vnd.company+json
+      - application/vnd.goa.error
       responses:
         "200":
           description: OK
@@ -815,8 +815,8 @@ paths:
         required: true
         type: integer
       produces:
-      - application/vnd.goa.error
       - application/vnd.company+json
+      - application/vnd.goa.error
       responses:
         "200":
           description: OK
@@ -855,8 +855,8 @@ paths:
         schema:
           $ref: '#/definitions/CreateCompanyBranchHyCompanybranchPayload'
       produces:
-      - application/vnd.goa.error
       - application/vnd.company+json
+      - application/vnd.goa.error
       responses:
         "200":
           description: OK
@@ -895,8 +895,8 @@ paths:
         schema:
           $ref: '#/definitions/UpdateCompanyBranchHyCompanybranchPayload'
       produces:
-      - application/vnd.goa.error
       - application/vnd.company+json
+      - application/vnd.goa.error
       responses:
         "200":
           description: OK

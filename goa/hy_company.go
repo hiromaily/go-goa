@@ -21,9 +21,9 @@ func (c *HyCompanyController) CompanyList(ctx *app.CompanyListHyCompanyContext) 
 
 	// Put your logic here
 
-	// HyCompanyController_CompanyList: end_implement
 	res := app.CompanyCollection{}
 	return ctx.OK(res)
+	// HyCompanyController_CompanyList: end_implement
 }
 
 // CreateCompany runs the CreateCompany action.
@@ -32,9 +32,9 @@ func (c *HyCompanyController) CreateCompany(ctx *app.CreateCompanyHyCompanyConte
 
 	// Put your logic here
 
-	// HyCompanyController_CreateCompany: end_implement
 	res := &app.Company{}
 	return ctx.OK(res)
+	// HyCompanyController_CreateCompany: end_implement
 }
 
 // DeleteCompany runs the DeleteCompany action.
@@ -43,9 +43,9 @@ func (c *HyCompanyController) DeleteCompany(ctx *app.DeleteCompanyHyCompanyConte
 
 	// Put your logic here
 
-	// HyCompanyController_DeleteCompany: end_implement
 	res := &app.Company{}
 	return ctx.OK(res)
+	// HyCompanyController_DeleteCompany: end_implement
 }
 
 // GetCompanyGroup runs the GetCompanyGroup action.
@@ -54,9 +54,9 @@ func (c *HyCompanyController) GetCompanyGroup(ctx *app.GetCompanyGroupHyCompanyC
 
 	// Put your logic here
 
-	// HyCompanyController_GetCompanyGroup: end_implement
 	res := app.CompanyCollection{}
 	return ctx.OK(res)
+	// HyCompanyController_GetCompanyGroup: end_implement
 }
 
 // UpdateCompany runs the UpdateCompany action.
@@ -65,7 +65,7 @@ func (c *HyCompanyController) UpdateCompany(ctx *app.UpdateCompanyHyCompanyConte
 
 	// Put your logic here
 
-	// HyCompanyController_UpdateCompany: end_implement
 	res := &app.Company{}
 	return ctx.OK(res)
+	// HyCompanyController_UpdateCompany: end_implement
 }

@@ -21,6 +21,6 @@ func (c *HealthController) Health(ctx *app.HealthHealthContext) error {
 
 	// Put your logic here
 
-	// HealthController_Health: end_implement
 	return nil
+	// HealthController_Health: end_implement
 }
