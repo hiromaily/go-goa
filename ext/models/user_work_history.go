@@ -120,16 +120,20 @@ func (m *UserWorkHistory) GetUserWorks(userID int, userWorks *[]*app.Userworkhis
 	for i, v := range *userWorks {
 		//1.description
 		var descriptions []interface{}
-		json.Unmarshal(u.ItoByte(*v.Description), &descriptions)
+		//json.Unmarshal(u.ItoByte(*v.Description), &descriptions)
+		json.Unmarshal(u.ItoByte(v.Description), &descriptions)
 		//fmt.Println(descriptions)
 		// *[]*app.Userworkhistory
-		*(*userWorks)[i].Description = descriptions
+		//*(*userWorks)[i].Description = descriptions
+		(*userWorks)[i].Description = descriptions
 
 		//2.techs
 		var techs []interface{}
-		json.Unmarshal(u.ItoByte(*v.Techs), &techs)
+		//json.Unmarshal(u.ItoByte(*v.Techs), &techs)
+		json.Unmarshal(u.ItoByte(v.Techs), &techs)
 		//fmt.Println(techs)
-		*(*userWorks)[i].Techs = techs
+		//*(*userWorks)[i].Techs = techs
+		(*userWorks)[i].Techs = techs
 	}
 
 	return nil

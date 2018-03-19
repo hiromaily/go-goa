@@ -6,6 +6,6 @@
 // $ goagen
 // --design=github.com/hiromaily/go-goa/goa/design
 // --out=$(GOPATH)/src/github.com/hiromaily/go-goa/goa
-// --version=v1.3.0
+// --version=v1.3.1
 
 package app

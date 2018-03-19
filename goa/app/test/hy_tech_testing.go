@@ -6,7 +6,7 @@
 // $ goagen
 // --design=github.com/hiromaily/go-goa/goa/design
 // --out=$(GOPATH)/src/github.com/hiromaily/go-goa/goa
-// --version=v1.3.0
+// --version=v1.3.1
 
 package test
 
@@ -111,9 +111,8 @@ func CreateTechHyTechCreated(t goatest.TInterface, ctx context.Context, service 
 	// Setup service
 	var (
 		logBuf bytes.Buffer
-		resp   interface{}
 
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) {}
 	)
 	if service == nil {
 		service = goatest.Service(&logBuf, respSetter)
@@ -423,9 +422,8 @@ func DeleteTechHyTechNotFound(t goatest.TInterface, ctx context.Context, service
 	// Setup service
 	var (
 		logBuf bytes.Buffer
-		resp   interface{}
 
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) {}
 	)
 	if service == nil {
 		service = goatest.Service(&logBuf, respSetter)
@@ -702,9 +700,8 @@ func GetTechHyTechNotFound(t goatest.TInterface, ctx context.Context, service *g
 	// Setup service
 	var (
 		logBuf bytes.Buffer
-		resp   interface{}
 
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) {}
 	)
 	if service == nil {
 		service = goatest.Service(&logBuf, respSetter)
@@ -980,9 +977,8 @@ func TechListHyTechNoContent(t goatest.TInterface, ctx context.Context, service 
 	// Setup service
 	var (
 		logBuf bytes.Buffer
-		resp   interface{}
 
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) {}
 	)
 	if service == nil {
 		service = goatest.Service(&logBuf, respSetter)
@@ -1267,9 +1263,8 @@ func UpdateTechHyTechNotFound(t goatest.TInterface, ctx context.Context, service
 	// Setup service
 	var (
 		logBuf bytes.Buffer
-		resp   interface{}
 
-		respSetter goatest.ResponseSetterFunc = func(r interface{}) { resp = r }
+		respSetter goatest.ResponseSetterFunc = func(r interface{}) {}
 	)
 	if service == nil {
 		service = goatest.Service(&logBuf, respSetter)

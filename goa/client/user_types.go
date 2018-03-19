@@ -6,7 +6,7 @@
 // $ goagen
 // --design=github.com/hiromaily/go-goa/goa/design
 // --out=$(GOPATH)/src/github.com/hiromaily/go-goa/goa
-// --version=v1.3.0
+// --version=v1.3.1
 
 package client
 
@@ -613,9 +613,9 @@ type UserWorkHistoryPayload struct {
 	// Country code
 	Country *string `form:"country,omitempty" json:"country,omitempty" xml:"country,omitempty"`
 	// job description
-	Description *interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	Description interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
 	// used techs
-	Techs *interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
+	Techs interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
 	// worked period
 	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
 	// Job Title
