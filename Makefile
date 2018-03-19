@@ -137,9 +137,9 @@ updall: updgoa gencln aftergen
 # Docker
 ###############################################################################
 dcgobld:
-	#goplus:1.8
-	docker build -t hirokiy/goplus:1.8 -f ./docker/golang/Dockerfile .
-	docker push hirokiy/goplus:1.8
+	#goplus:1.10
+	docker build -t hirokiy/goplus:1.10 -f ./docker/golang/Dockerfile .
+	docker push hirokiy/goplus:1.10
 
 dcup:
 	docker-compose build

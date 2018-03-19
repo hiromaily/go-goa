@@ -28,12 +28,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		ca-certificates \
 	&& rm -rf /var/lib/apt/lists/*
 
-ENV GOLANG_VERSION 1.8.3
+ENV GOLANG_VERSION 1.10
 
 # Golang
-COPY ./docker/golang/go1.8.3.linux-amd64.tar.gz /tmp
+COPY ./docker/golang/go1.10.linux-amd64.tar.gz /tmp
 WORKDIR /tmp
-RUN tar xvf go1.8.3.linux-amd64.tar.gz && mv go /usr/local
+RUN tar xvf go1.10.linux-amd64.tar.gz && mv go /usr/local
 
 
 RUN	export PATH="/usr/local/go/bin:$PATH"; \
