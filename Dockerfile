@@ -1,4 +1,4 @@
-FROM hirokiy/goplus:1.8
+FROM hirokiy/goplus:1.10
 #FROM golang:1.8
 
 #RUN echo $GOPATH => /go
