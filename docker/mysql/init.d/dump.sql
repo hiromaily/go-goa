@@ -92,7 +92,8 @@ INSERT INTO `t_companies` VALUES
   (3,'2Gears','0',now(),now()),
   (4,'J-Stream Inc.','0',now(),now()),
   (5,'PROTERAS Co., Ltd.','0',now(),now()),
-  (6,'JIP INFO BRIDGE Inc.','0',now(),now());
+  (6,'JIP INFO BRIDGE Inc.','0',now(),now()),
+  (7,'BookerZzz','0',now(),now());
 /*!40000 ALTER TABLE `t_companies` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,7 +128,8 @@ INSERT INTO `t_company_detail` VALUES
   (null,3,'0',155,'Molslaan 111 NL-2611 RK Delft','0',now(),now()),
   (null,4,'1',110,'東京都港区芝二丁目5-6 芝256スクエアビル6階','0',now(),now()),
   (null,5,'1',110,'東京都港区赤坂4-13-13 赤坂ビル4F','0',now(),now()),
-  (null,6,'1',110,'東京都江東区東陽2-4-24','0',now(),now());
+  (null,6,'1',110,'東京都江東区東陽2-4-24','0',now(),now()),
+  (null,7,'1',155,'Stationsplein 92, 2011 LM Haarlem','0',now(),now());
 /*!40000 ALTER TABLE `t_company_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,6 +214,7 @@ INSERT INTO `t_techs` VALUES
   (85,'AWS DynamoDB','0',now(),now()),
   (86,'AWS ElastiCache','0',now(),now()),
   (87,'AWS lambda','0',now(),now()),
+  (88,'AWS ECS','0',now(),now()),
   (90,'GCP','0',now(),now()),
   (91,'Kubernetes','0',now(),now()),
   (100,'DRM','0',now(),now()),
@@ -317,6 +320,10 @@ CREATE TABLE `t_user_work_history` (
 LOCK TABLES `t_user_work_history` WRITE;
 /*!40000 ALTER TABLE `t_user_work_history` DISABLE KEYS */;
 INSERT INTO `t_user_work_history` VALUES
+  (null,1,10,'Golang Developer',
+        '["Developping hotel booking web service."]',
+        '[1,30,83,84,88]',
+        '2017-12-10','2018-06-30','0',now(),now()),
   (null,1,2,'Developer for this resume site',
    '["Developed resume site for job seeking."]',
    '[2,33,39,50,70,72,90,91,80]',
