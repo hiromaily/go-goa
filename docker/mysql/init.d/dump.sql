@@ -223,7 +223,9 @@ INSERT INTO `t_techs` VALUES
   (110,'JIRA','0',now(),now()),
   (120,'Selenium','0',now(),now()),
   (121,'PhantomJS','0',now(),now()),
-  (122,'Jasmine','0',now(),now());
+  (122,'Jasmine','0',now(),now()),
+  (131,'gRPC','0',now(),now()),
+  (132,'Microservice Architecture','0',now(),now());
 /*!40000 ALTER TABLE `t_techs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -321,9 +323,9 @@ LOCK TABLES `t_user_work_history` WRITE;
 /*!40000 ALTER TABLE `t_user_work_history` DISABLE KEYS */;
 INSERT INTO `t_user_work_history` VALUES
   (null,1,10,'Golang Developer',
-        '["Developping hotel booking web service."]',
-        '[1,30,83,84,88]',
-        '2017-12-10','2018-06-30','0',now(),now()),
+   '["Developping hotel booking web service on <a>Microservice Architecture</a> communicating by <a>gRPC</a>."]',
+   '[1,30,83,84,88,131,132]',
+   '2017-12-10','2018-06-30','0',now(),now()),
   (null,1,2,'Developer for this resume site',
    '["Developed resume site for job seeking."]',
    '[2,33,39,50,70,72,90,91,80]',
