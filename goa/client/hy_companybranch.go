@@ -22,9 +22,9 @@ import (
 // CreateCompanyBranchHyCompanybranchPayload is the hy_companybranch CreateCompanyBranch action payload.
 type CreateCompanyBranchHyCompanybranchPayload struct {
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
+	Address string `form:"address" json:"address" yaml:"address" xml:"address"`
 	// Country ID
-	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" yaml:"country_id" xml:"country_id"`
 }
 
 // CreateCompanyBranchHyCompanybranchPath computes a request path to the CreateCompanyBranch action of hy_companybranch.
@@ -149,9 +149,9 @@ func (c *Client) NewGetCompanyBranchHyCompanybranchRequest(ctx context.Context, 
 // UpdateCompanyBranchHyCompanybranchPayload is the hy_companybranch UpdateCompanyBranch action payload.
 type UpdateCompanyBranchHyCompanybranchPayload struct {
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
+	Address string `form:"address" json:"address" yaml:"address" xml:"address"`
 	// Country ID
-	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" yaml:"country_id" xml:"country_id"`
 }
 
 // UpdateCompanyBranchHyCompanybranchPath computes a request path to the UpdateCompanyBranch action of hy_companybranch.

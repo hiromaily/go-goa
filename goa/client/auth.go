@@ -21,9 +21,9 @@ import (
 // LoginAuthPayload is the auth Login action payload.
 type LoginAuthPayload struct {
 	// E-mail of user
-	Email string `form:"email" json:"email" xml:"email"`
+	Email string `form:"email" json:"email" yaml:"email" xml:"email"`
 	// Password
-	Password string `form:"password" json:"password" xml:"password"`
+	Password string `form:"password" json:"password" yaml:"password" xml:"password"`
 }
 
 // LoginAuthPath computes a request path to the Login action of auth.

@@ -22,7 +22,7 @@ import (
 // CreateTechHyTechPayload is the hy_tech CreateTech action payload.
 type CreateTechHyTechPayload struct {
 	// Tech name
-	Name string `form:"name" json:"name" xml:"name"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // CreateTechHyTechPath computes a request path to the CreateTech action of hy_tech.
@@ -180,7 +180,7 @@ func (c *Client) NewTechListHyTechRequest(ctx context.Context, path string) (*ht
 // UpdateTechHyTechPayload is the hy_tech UpdateTech action payload.
 type UpdateTechHyTechPayload struct {
 	// Tech name
-	Name string `form:"name" json:"name" xml:"name"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // UpdateTechHyTechPath computes a request path to the UpdateTech action of hy_tech.

@@ -41,9 +41,9 @@ func NewLoginAuthContext(ctx context.Context, r *http.Request, service *goa.Serv
 // loginAuthPayload is the auth Login action payload.
 type loginAuthPayload struct {
 	// E-mail of user
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	Email *string `form:"email,omitempty" json:"email,omitempty" yaml:"email,omitempty" xml:"email,omitempty"`
 	// Password
-	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	Password *string `form:"password,omitempty" json:"password,omitempty" yaml:"password,omitempty" xml:"password,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -87,9 +87,9 @@ func (payload *loginAuthPayload) Publicize() *LoginAuthPayload {
 // LoginAuthPayload is the auth Login action payload.
 type LoginAuthPayload struct {
 	// E-mail of user
-	Email string `form:"email" json:"email" xml:"email"`
+	Email string `form:"email" json:"email" yaml:"email" xml:"email"`
 	// Password
-	Password string `form:"password" json:"password" xml:"password"`
+	Password string `form:"password" json:"password" yaml:"password" xml:"password"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -255,11 +255,11 @@ func NewCreateCompanyHyCompanyContext(ctx context.Context, r *http.Request, serv
 // createCompanyHyCompanyPayload is the hy_company CreateCompany action payload.
 type createCompanyHyCompanyPayload struct {
 	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty" xml:"address,omitempty"`
 	// Country ID
-	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" yaml:"country_id,omitempty" xml:"country_id,omitempty"`
 	// Company name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -324,11 +324,11 @@ func (payload *createCompanyHyCompanyPayload) Publicize() *CreateCompanyHyCompan
 // CreateCompanyHyCompanyPayload is the hy_company CreateCompany action payload.
 type CreateCompanyHyCompanyPayload struct {
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
+	Address string `form:"address" json:"address" yaml:"address" xml:"address"`
 	// Country ID
-	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" yaml:"country_id" xml:"country_id"`
 	// Company name
-	Name string `form:"name" json:"name" xml:"name"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -613,11 +613,11 @@ func NewUpdateCompanyHyCompanyContext(ctx context.Context, r *http.Request, serv
 // updateCompanyHyCompanyPayload is the hy_company UpdateCompany action payload.
 type updateCompanyHyCompanyPayload struct {
 	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty" xml:"address,omitempty"`
 	// Country ID
-	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" yaml:"country_id,omitempty" xml:"country_id,omitempty"`
 	// Company name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -682,11 +682,11 @@ func (payload *updateCompanyHyCompanyPayload) Publicize() *UpdateCompanyHyCompan
 // UpdateCompanyHyCompanyPayload is the hy_company UpdateCompany action payload.
 type UpdateCompanyHyCompanyPayload struct {
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
+	Address string `form:"address" json:"address" yaml:"address" xml:"address"`
 	// Country ID
-	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" yaml:"country_id" xml:"country_id"`
 	// Company name
-	Name string `form:"name" json:"name" xml:"name"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -798,9 +798,9 @@ func NewCreateCompanyBranchHyCompanybranchContext(ctx context.Context, r *http.R
 // createCompanyBranchHyCompanybranchPayload is the hy_companybranch CreateCompanyBranch action payload.
 type createCompanyBranchHyCompanybranchPayload struct {
 	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty" xml:"address,omitempty"`
 	// Country ID
-	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" yaml:"country_id,omitempty" xml:"country_id,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -849,9 +849,9 @@ func (payload *createCompanyBranchHyCompanybranchPayload) Publicize() *CreateCom
 // CreateCompanyBranchHyCompanybranchPayload is the hy_companybranch CreateCompanyBranch action payload.
 type CreateCompanyBranchHyCompanybranchPayload struct {
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
+	Address string `form:"address" json:"address" yaml:"address" xml:"address"`
 	// Country ID
-	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" yaml:"country_id" xml:"country_id"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1104,9 +1104,9 @@ func NewUpdateCompanyBranchHyCompanybranchContext(ctx context.Context, r *http.R
 // updateCompanyBranchHyCompanybranchPayload is the hy_companybranch UpdateCompanyBranch action payload.
 type updateCompanyBranchHyCompanybranchPayload struct {
 	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty" xml:"address,omitempty"`
 	// Country ID
-	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" yaml:"country_id,omitempty" xml:"country_id,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1155,9 +1155,9 @@ func (payload *updateCompanyBranchHyCompanybranchPayload) Publicize() *UpdateCom
 // UpdateCompanyBranchHyCompanybranchPayload is the hy_companybranch UpdateCompanyBranch action payload.
 type UpdateCompanyBranchHyCompanybranchPayload struct {
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
+	Address string `form:"address" json:"address" yaml:"address" xml:"address"`
 	// Country ID
-	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" yaml:"country_id" xml:"country_id"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1250,7 +1250,7 @@ func NewCreateTechHyTechContext(ctx context.Context, r *http.Request, service *g
 // createTechHyTechPayload is the hy_tech CreateTech action payload.
 type createTechHyTechPayload struct {
 	// Tech name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1283,7 +1283,7 @@ func (payload *createTechHyTechPayload) Publicize() *CreateTechHyTechPayload {
 // CreateTechHyTechPayload is the hy_tech CreateTech action payload.
 type CreateTechHyTechPayload struct {
 	// Tech name
-	Name string `form:"name" json:"name" xml:"name"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1536,7 +1536,7 @@ func NewUpdateTechHyTechContext(ctx context.Context, r *http.Request, service *g
 // updateTechHyTechPayload is the hy_tech UpdateTech action payload.
 type updateTechHyTechPayload struct {
 	// Tech name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1569,7 +1569,7 @@ func (payload *updateTechHyTechPayload) Publicize() *UpdateTechHyTechPayload {
 // UpdateTechHyTechPayload is the hy_tech UpdateTech action payload.
 type UpdateTechHyTechPayload struct {
 	// Tech name
-	Name string `form:"name" json:"name" xml:"name"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1639,11 +1639,11 @@ func NewCreateUserHyUserContext(ctx context.Context, r *http.Request, service *g
 // createUserHyUserPayload is the hy_user CreateUser action payload.
 type createUserHyUserPayload struct {
 	// E-mail of user
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	Email *string `form:"email,omitempty" json:"email,omitempty" yaml:"email,omitempty" xml:"email,omitempty"`
 	// Password
-	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	Password *string `form:"password,omitempty" json:"password,omitempty" yaml:"password,omitempty" xml:"password,omitempty"`
 	// User name
-	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" yaml:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1703,11 +1703,11 @@ func (payload *createUserHyUserPayload) Publicize() *CreateUserHyUserPayload {
 // CreateUserHyUserPayload is the hy_user CreateUser action payload.
 type CreateUserHyUserPayload struct {
 	// E-mail of user
-	Email string `form:"email" json:"email" xml:"email"`
+	Email string `form:"email" json:"email" yaml:"email" xml:"email"`
 	// Password
-	Password string `form:"password" json:"password" xml:"password"`
+	Password string `form:"password" json:"password" yaml:"password" xml:"password"`
 	// User name
-	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
+	UserName string `form:"user_name" json:"user_name" yaml:"user_name" xml:"user_name"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1923,11 +1923,11 @@ func NewUpdateUserHyUserContext(ctx context.Context, r *http.Request, service *g
 // updateUserHyUserPayload is the hy_user UpdateUser action payload.
 type updateUserHyUserPayload struct {
 	// E-mail of user
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	Email *string `form:"email,omitempty" json:"email,omitempty" yaml:"email,omitempty" xml:"email,omitempty"`
 	// Password
-	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	Password *string `form:"password,omitempty" json:"password,omitempty" yaml:"password,omitempty" xml:"password,omitempty"`
 	// User name
-	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" yaml:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // Validate runs the validation rules defined in the design.
@@ -1987,11 +1987,11 @@ func (payload *updateUserHyUserPayload) Publicize() *UpdateUserHyUserPayload {
 // UpdateUserHyUserPayload is the hy_user UpdateUser action payload.
 type UpdateUserHyUserPayload struct {
 	// E-mail of user
-	Email string `form:"email" json:"email" xml:"email"`
+	Email string `form:"email" json:"email" yaml:"email" xml:"email"`
 	// Password
-	Password string `form:"password" json:"password" xml:"password"`
+	Password string `form:"password" json:"password" yaml:"password" xml:"password"`
 	// User name
-	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
+	UserName string `form:"user_name" json:"user_name" yaml:"user_name" xml:"user_name"`
 }
 
 // Validate runs the validation rules defined in the design.

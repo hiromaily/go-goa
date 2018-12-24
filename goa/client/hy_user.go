@@ -22,11 +22,11 @@ import (
 // CreateUserHyUserPayload is the hy_user CreateUser action payload.
 type CreateUserHyUserPayload struct {
 	// E-mail of user
-	Email string `form:"email" json:"email" xml:"email"`
+	Email string `form:"email" json:"email" yaml:"email" xml:"email"`
 	// Password
-	Password string `form:"password" json:"password" xml:"password"`
+	Password string `form:"password" json:"password" yaml:"password" xml:"password"`
 	// User name
-	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
+	UserName string `form:"user_name" json:"user_name" yaml:"user_name" xml:"user_name"`
 }
 
 // CreateUserHyUserPath computes a request path to the CreateUser action of hy_user.
@@ -150,11 +150,11 @@ func (c *Client) NewGetUserHyUserRequest(ctx context.Context, path string) (*htt
 // UpdateUserHyUserPayload is the hy_user UpdateUser action payload.
 type UpdateUserHyUserPayload struct {
 	// E-mail of user
-	Email string `form:"email" json:"email" xml:"email"`
+	Email string `form:"email" json:"email" yaml:"email" xml:"email"`
 	// Password
-	Password string `form:"password" json:"password" xml:"password"`
+	Password string `form:"password" json:"password" yaml:"password" xml:"password"`
 	// User name
-	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
+	UserName string `form:"user_name" json:"user_name" yaml:"user_name" xml:"user_name"`
 }
 
 // UpdateUserHyUserPath computes a request path to the UpdateUser action of hy_user.

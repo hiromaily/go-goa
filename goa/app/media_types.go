@@ -20,9 +20,9 @@ import (
 // Identifier: application/vnd.authorized+json; view=default
 type Authorized struct {
 	// ID
-	ID int `form:"id" json:"id" xml:"id"`
+	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
 	// JWT token
-	Token string `form:"token" json:"token" xml:"token"`
+	Token string `form:"token" json:"token" yaml:"token" xml:"token"`
 }
 
 // Validate validates the Authorized media type instance.
@@ -41,14 +41,14 @@ func (mt *Authorized) Validate() (err error) {
 //
 // Identifier: application/vnd.company+json; view=default
 type Company struct {
-	Address string `form:"address" json:"address" xml:"address"`
+	Address string `form:"address" json:"address" yaml:"address" xml:"address"`
 	// ID
-	CompanyID   *int    `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
-	HqFlg       *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+	CompanyID   *int    `form:"company_id,omitempty" json:"company_id,omitempty" yaml:"company_id,omitempty" xml:"company_id,omitempty"`
+	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" yaml:"country_name,omitempty" xml:"country_name,omitempty"`
+	HqFlg       *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" yaml:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
 	// ID
-	ID   *int   `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	Name string `form:"name" json:"name" xml:"name"`
+	ID   *int   `form:"id,omitempty" json:"id,omitempty" yaml:"id,omitempty" xml:"id,omitempty"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // Validate validates the Company media type instance.
@@ -77,7 +77,7 @@ func (mt *Company) Validate() (err error) {
 // Identifier: application/vnd.company+json; view=detailid
 type CompanyDetailid struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID *int `form:"id,omitempty" json:"id,omitempty" yaml:"id,omitempty" xml:"id,omitempty"`
 }
 
 // Validate validates the CompanyDetailid media type instance.
@@ -95,7 +95,7 @@ func (mt *CompanyDetailid) Validate() (err error) {
 // Identifier: application/vnd.company+json; view=id
 type CompanyID struct {
 	// ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" yaml:"company_id,omitempty" xml:"company_id,omitempty"`
 }
 
 // Validate validates the CompanyID media type instance.
@@ -113,8 +113,8 @@ func (mt *CompanyID) Validate() (err error) {
 // Identifier: application/vnd.company+json; view=idname
 type CompanyIdname struct {
 	// ID
-	CompanyID *int   `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	Name      string `form:"name" json:"name" xml:"name"`
+	CompanyID *int   `form:"company_id,omitempty" json:"company_id,omitempty" yaml:"company_id,omitempty" xml:"company_id,omitempty"`
+	Name      string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // Validate validates the CompanyIdname media type instance.
@@ -203,8 +203,8 @@ func (mt CompanyIdnameCollection) Validate() (err error) {
 // Identifier: application/vnd.tech+json; view=default
 type Tech struct {
 	// ID
-	ID   *int   `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	Name string `form:"name" json:"name" xml:"name"`
+	ID   *int   `form:"id,omitempty" json:"id,omitempty" yaml:"id,omitempty" xml:"id,omitempty"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // Validate validates the Tech media type instance.
@@ -225,7 +225,7 @@ func (mt *Tech) Validate() (err error) {
 // Identifier: application/vnd.tech+json; view=id
 type TechID struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID *int `form:"id,omitempty" json:"id,omitempty" yaml:"id,omitempty" xml:"id,omitempty"`
 }
 
 // Validate validates the TechID media type instance.
@@ -276,10 +276,10 @@ func (mt TechIDCollection) Validate() (err error) {
 //
 // Identifier: application/vnd.user+json; view=default
 type User struct {
-	Email string `form:"email" json:"email" xml:"email"`
+	Email string `form:"email" json:"email" yaml:"email" xml:"email"`
 	// ID
-	ID       *int   `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
+	ID       *int   `form:"id,omitempty" json:"id,omitempty" yaml:"id,omitempty" xml:"id,omitempty"`
+	UserName string `form:"user_name" json:"user_name" yaml:"user_name" xml:"user_name"`
 }
 
 // Validate validates the User media type instance.
@@ -303,7 +303,7 @@ func (mt *User) Validate() (err error) {
 // Identifier: application/vnd.user+json; view=id
 type UserID struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID *int `form:"id,omitempty" json:"id,omitempty" yaml:"id,omitempty" xml:"id,omitempty"`
 }
 
 // Validate validates the UserID media type instance.
@@ -355,13 +355,13 @@ func (mt UserIDCollection) Validate() (err error) {
 // Identifier: application/vnd.usercomany+json; view=default
 type Usercomany struct {
 	// ID of user id
-	CompanyID int `form:"company_id" json:"company_id" xml:"company_id"`
+	CompanyID int `form:"company_id" json:"company_id" yaml:"company_id" xml:"company_id"`
 	// API href of bottle
-	Href string `form:"href" json:"href" xml:"href"`
+	Href string `form:"href" json:"href" yaml:"href" xml:"href"`
 	// ID of user company
-	ID int `form:"id" json:"id" xml:"id"`
+	ID int `form:"id" json:"id" yaml:"id" xml:"id"`
 	// ID of user id
-	UserID int `form:"user_id" json:"user_id" xml:"user_id"`
+	UserID int `form:"user_id" json:"user_id" yaml:"user_id" xml:"user_id"`
 }
 
 // Validate validates the Usercomany media type instance.
@@ -379,9 +379,9 @@ func (mt *Usercomany) Validate() (err error) {
 // Identifier: application/vnd.usertech+json; view=default
 type Usertech struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	ID *int `form:"id,omitempty" json:"id,omitempty" yaml:"id,omitempty" xml:"id,omitempty"`
 	// Tech name
-	TechName string `form:"tech_name" json:"tech_name" xml:"tech_name"`
+	TechName string `form:"tech_name" json:"tech_name" yaml:"tech_name" xml:"tech_name"`
 }
 
 // Validate validates the Usertech media type instance.
@@ -408,7 +408,7 @@ func (mt *Usertech) Validate() (err error) {
 // Identifier: application/vnd.usertech+json; view=tech
 type UsertechTech struct {
 	// Tech name
-	TechName string `form:"tech_name" json:"tech_name" xml:"tech_name"`
+	TechName string `form:"tech_name" json:"tech_name" yaml:"tech_name" xml:"tech_name"`
 }
 
 // Validate validates the UsertechTech media type instance.
@@ -464,17 +464,17 @@ func (mt UsertechTechCollection) Validate() (err error) {
 // Identifier: application/vnd.userworkhistory+json; view=default
 type Userworkhistory struct {
 	// Company name
-	Company string `form:"company" json:"company" xml:"company"`
+	Company string `form:"company" json:"company" yaml:"company" xml:"company"`
 	// Country code
-	Country string `form:"country" json:"country" xml:"country"`
+	Country string `form:"country" json:"country" yaml:"country" xml:"country"`
 	// job description
-	Description interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	Description interface{} `form:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty" xml:"description,omitempty"`
 	// used techs
-	Techs interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
+	Techs interface{} `form:"techs,omitempty" json:"techs,omitempty" yaml:"techs,omitempty" xml:"techs,omitempty"`
 	// worked period
-	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
+	Term *string `form:"term,omitempty" json:"term,omitempty" yaml:"term,omitempty" xml:"term,omitempty"`
 	// Job Title
-	Title string `form:"title" json:"title" xml:"title"`
+	Title string `form:"title" json:"title" yaml:"title" xml:"title"`
 }
 
 // Validate validates the Userworkhistory media type instance.

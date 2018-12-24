@@ -56,11 +56,11 @@ func (c *Client) NewCompanyListHyCompanyRequest(ctx context.Context, path string
 // CreateCompanyHyCompanyPayload is the hy_company CreateCompany action payload.
 type CreateCompanyHyCompanyPayload struct {
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
+	Address string `form:"address" json:"address" yaml:"address" xml:"address"`
 	// Country ID
-	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" yaml:"country_id" xml:"country_id"`
 	// Company name
-	Name string `form:"name" json:"name" xml:"name"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // CreateCompanyHyCompanyPath computes a request path to the CreateCompany action of hy_company.
@@ -189,11 +189,11 @@ func (c *Client) NewGetCompanyGroupHyCompanyRequest(ctx context.Context, path st
 // UpdateCompanyHyCompanyPayload is the hy_company UpdateCompany action payload.
 type UpdateCompanyHyCompanyPayload struct {
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
+	Address string `form:"address" json:"address" yaml:"address" xml:"address"`
 	// Country ID
-	CountryID int `form:"country_id" json:"country_id" xml:"country_id"`
+	CountryID int `form:"country_id" json:"country_id" yaml:"country_id" xml:"country_id"`
 	// Company name
-	Name string `form:"name" json:"name" xml:"name"`
+	Name string `form:"name" json:"name" yaml:"name" xml:"name"`
 }
 
 // UpdateCompanyHyCompanyPath computes a request path to the UpdateCompany action of hy_company.

@@ -80,8 +80,8 @@ func main() {
 
 // log settings
 func initLog() {
-	lg.InitializeLog(lg.DebugStatus, lg.LogOff, 99,
-		"[go-goa]", "/var/log/go/go-goa.log")
+	lg.InitializeLog(lg.DebugStatus, lg.TimeShortFile,
+		"[go-goa]", "", "hiromaily")
 }
 
 // version

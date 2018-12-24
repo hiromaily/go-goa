@@ -18,9 +18,9 @@ import (
 // commonResponse user type.
 type commonResponse struct {
 	// Datetime
-	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" yaml:"created_at,omitempty" xml:"created_at,omitempty"`
 	// Datetime
-	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" yaml:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
 // Validate validates the commonResponse type instance.
@@ -53,9 +53,9 @@ func (ut *commonResponse) Publicize() *CommonResponse {
 // CommonResponse user type.
 type CommonResponse struct {
 	// Datetime
-	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" yaml:"created_at,omitempty" xml:"created_at,omitempty"`
 	// Datetime
-	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" yaml:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
 // Validate validates the CommonResponse type instance.
@@ -76,11 +76,11 @@ func (ut *CommonResponse) Validate() (err error) {
 // companyPayload user type.
 type companyPayload struct {
 	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty" xml:"address,omitempty"`
 	// Country ID
-	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" yaml:"country_id,omitempty" xml:"country_id,omitempty"`
 	// Company name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
 // Validate validates the companyPayload type instance.
@@ -136,11 +136,11 @@ func (ut *companyPayload) Publicize() *CompanyPayload {
 // CompanyPayload user type.
 type CompanyPayload struct {
 	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty" xml:"address,omitempty"`
 	// Country ID
-	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" yaml:"country_id,omitempty" xml:"country_id,omitempty"`
 	// Company name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
 // Validate validates the CompanyPayload type instance.
@@ -181,9 +181,9 @@ func (ut *CompanyPayload) Validate() (err error) {
 // companyTinyPayload user type.
 type companyTinyPayload struct {
 	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty" xml:"address,omitempty"`
 	// Country ID
-	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" yaml:"country_id,omitempty" xml:"country_id,omitempty"`
 }
 
 // Validate validates the companyTinyPayload type instance.
@@ -226,9 +226,9 @@ func (ut *companyTinyPayload) Publicize() *CompanyTinyPayload {
 // CompanyTinyPayload user type.
 type CompanyTinyPayload struct {
 	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" yaml:"address,omitempty" xml:"address,omitempty"`
 	// Country ID
-	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" yaml:"country_id,omitempty" xml:"country_id,omitempty"`
 }
 
 // Validate validates the CompanyTinyPayload type instance.
@@ -259,9 +259,9 @@ func (ut *CompanyTinyPayload) Validate() (err error) {
 // loginPayload user type.
 type loginPayload struct {
 	// E-mail of user
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	Email *string `form:"email,omitempty" json:"email,omitempty" yaml:"email,omitempty" xml:"email,omitempty"`
 	// Password
-	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	Password *string `form:"password,omitempty" json:"password,omitempty" yaml:"password,omitempty" xml:"password,omitempty"`
 }
 
 // Validate validates the loginPayload type instance.
@@ -299,9 +299,9 @@ func (ut *loginPayload) Publicize() *LoginPayload {
 // LoginPayload user type.
 type LoginPayload struct {
 	// E-mail of user
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	Email *string `form:"email,omitempty" json:"email,omitempty" yaml:"email,omitempty" xml:"email,omitempty"`
 	// Password
-	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	Password *string `form:"password,omitempty" json:"password,omitempty" yaml:"password,omitempty" xml:"password,omitempty"`
 }
 
 // Validate validates the LoginPayload type instance.
@@ -327,7 +327,7 @@ func (ut *LoginPayload) Validate() (err error) {
 // techPayload user type.
 type techPayload struct {
 	// Tech name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
 // Validate validates the techPayload type instance.
@@ -357,7 +357,7 @@ func (ut *techPayload) Publicize() *TechPayload {
 // TechPayload user type.
 type TechPayload struct {
 	// Tech name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	Name *string `form:"name,omitempty" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 }
 
 // Validate validates the TechPayload type instance.
@@ -378,11 +378,11 @@ func (ut *TechPayload) Validate() (err error) {
 // userPayload user type.
 type userPayload struct {
 	// E-mail of user
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	Email *string `form:"email,omitempty" json:"email,omitempty" yaml:"email,omitempty" xml:"email,omitempty"`
 	// Password
-	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	Password *string `form:"password,omitempty" json:"password,omitempty" yaml:"password,omitempty" xml:"password,omitempty"`
 	// User name
-	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" yaml:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // Validate validates the userPayload type instance.
@@ -433,11 +433,11 @@ func (ut *userPayload) Publicize() *UserPayload {
 // UserPayload user type.
 type UserPayload struct {
 	// E-mail of user
-	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	Email *string `form:"email,omitempty" json:"email,omitempty" yaml:"email,omitempty" xml:"email,omitempty"`
 	// Password
-	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	Password *string `form:"password,omitempty" json:"password,omitempty" yaml:"password,omitempty" xml:"password,omitempty"`
 	// User name
-	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" yaml:"user_name,omitempty" xml:"user_name,omitempty"`
 }
 
 // Validate validates the UserPayload type instance.
@@ -473,7 +473,7 @@ func (ut *UserPayload) Validate() (err error) {
 // userTechPayload user type.
 type userTechPayload struct {
 	// Tech name
-	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" yaml:"tech_name,omitempty" xml:"tech_name,omitempty"`
 }
 
 // Validate validates the userTechPayload type instance.
@@ -503,7 +503,7 @@ func (ut *userTechPayload) Publicize() *UserTechPayload {
 // UserTechPayload user type.
 type UserTechPayload struct {
 	// Tech name
-	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" yaml:"tech_name,omitempty" xml:"tech_name,omitempty"`
 }
 
 // Validate validates the UserTechPayload type instance.
@@ -524,17 +524,17 @@ func (ut *UserTechPayload) Validate() (err error) {
 // userWorkHistoryPayload user type.
 type userWorkHistoryPayload struct {
 	// Company name
-	Company *string `form:"company,omitempty" json:"company,omitempty" xml:"company,omitempty"`
+	Company *string `form:"company,omitempty" json:"company,omitempty" yaml:"company,omitempty" xml:"company,omitempty"`
 	// Country code
-	Country *string `form:"country,omitempty" json:"country,omitempty" xml:"country,omitempty"`
+	Country *string `form:"country,omitempty" json:"country,omitempty" yaml:"country,omitempty" xml:"country,omitempty"`
 	// job description
-	Description *interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	Description interface{} `form:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty" xml:"description,omitempty"`
 	// used techs
-	Techs *interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
+	Techs interface{} `form:"techs,omitempty" json:"techs,omitempty" yaml:"techs,omitempty" xml:"techs,omitempty"`
 	// worked period
-	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
+	Term *string `form:"term,omitempty" json:"term,omitempty" yaml:"term,omitempty" xml:"term,omitempty"`
 	// Job Title
-	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	Title *string `form:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty" xml:"title,omitempty"`
 }
 
 // Validate validates the userWorkHistoryPayload type instance.
@@ -609,17 +609,17 @@ func (ut *userWorkHistoryPayload) Publicize() *UserWorkHistoryPayload {
 // UserWorkHistoryPayload user type.
 type UserWorkHistoryPayload struct {
 	// Company name
-	Company *string `form:"company,omitempty" json:"company,omitempty" xml:"company,omitempty"`
+	Company *string `form:"company,omitempty" json:"company,omitempty" yaml:"company,omitempty" xml:"company,omitempty"`
 	// Country code
-	Country *string `form:"country,omitempty" json:"country,omitempty" xml:"country,omitempty"`
+	Country *string `form:"country,omitempty" json:"country,omitempty" yaml:"country,omitempty" xml:"country,omitempty"`
 	// job description
-	Description interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
+	Description interface{} `form:"description,omitempty" json:"description,omitempty" yaml:"description,omitempty" xml:"description,omitempty"`
 	// used techs
-	Techs interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
+	Techs interface{} `form:"techs,omitempty" json:"techs,omitempty" yaml:"techs,omitempty" xml:"techs,omitempty"`
 	// worked period
-	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
+	Term *string `form:"term,omitempty" json:"term,omitempty" yaml:"term,omitempty" xml:"term,omitempty"`
 	// Job Title
-	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
+	Title *string `form:"title,omitempty" json:"title,omitempty" yaml:"title,omitempty" xml:"title,omitempty"`
 }
 
 // Validate validates the UserWorkHistoryPayload type instance.
