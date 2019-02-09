@@ -19,3 +19,4 @@ services:
     restart: always
     command: fresh -c /go/src/github.com/hiromaily/go-goa/runner.conf
     #command: fresh
+    #command: ["./wait-for-db.sh", "mysql-server", "go-goa", "-f", "/go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"]
