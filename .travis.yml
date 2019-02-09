@@ -10,7 +10,9 @@ before_install:
   #- sudo apt-get update
   #- sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
   - docker-compose build
-  - docker-compose up -d
+  - docker-compose up -d mysql
+  - sleep 15
+  - docker-compose up -d webserver
 
 #install:
 #  - $GOPATH/bin/dep ensure

@@ -72,6 +72,11 @@ type LoginAPITest struct {
 	password string
 }
 
+//var (
+//	loginAddress  = "hiroki@goa.com"
+//	loginPassword = "password"
+//)
+
 var loginAPITests = []LoginAPITest{
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginHeaders, "", nil}, "", ""},
 	{TableTest{"/api/auth/login", http.StatusBadRequest, "POST", loginHeaders, "", nil}, "hiro", ""},

@@ -136,9 +136,9 @@ updall: updgoa gencln aftergen
 # Docker
 ###############################################################################
 dcgobld:
-	#goplus:1.10
-	docker build -t hirokiy/goplus:1.10 -f ./docker/golang/Dockerfile .
-	docker push hirokiy/goplus:1.10
+	#goplus:1.11.5
+	docker build -t hirokiy/goplus:1.11.5 -f ./docker/golang/Dockerfile .
+	docker push hirokiy/goplus:1.11.5
 
 dcup:
 	docker-compose build
@@ -324,10 +324,10 @@ http:
 	http localhost:8080/api/_ah/health
 
 	# Login
-	#http POST http://localhost:8080/api/auth/login email=aaaa@test.jp password=password
-	http --body POST http://localhost:8080/api/auth/login email=aaaa@test.jp password=password
+	#http POST http://localhost:8080/api/auth/login email=hiroki@goa.com password=password
+	http --body POST http://localhost:8080/api/auth/login email=hiroki@goa.com password=password
 
-	$(eval TOKEN := $(shell http --body POST http://localhost:8080/api/auth/login email=aaaa@test.jp password=password | jq '.token' | sed 's/"//g'))
+	$(eval TOKEN := $(shell http --body POST http://localhost:8080/api/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g'))
 
 	# User
 	http localhost:8080/api/user 'Authorization: Bearer $(TOKEN)'
