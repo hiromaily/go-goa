@@ -21,7 +21,7 @@ init_local:
 ###############################################################################
 update:
 	go get -u github.com/goadesign/goa/...
-	go get -u github.com/golang/dep/...
+	go get -u github.com/golang/dep/cmd/dep
 	go get -u github.com/rakyll/hey
 	go get -u github.com/davecheney/httpstat
 	go get -u github.com/client9/misspell/cmd/misspell
@@ -33,19 +33,18 @@ update:
 	go get -u -d -v ./...
 
 # dep is dependencies tools
+# Note: for not, dep can not be used with goa because of errors when generating code by command
+#  `goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/`
+# error message is
+# `missing API definition, make sure design is properly initialized`
 depinit:
-	cd ext/cmd/;dep init
+	dep init
 
 dep:
-	cd ext/cmd/;dep ensure -update
+	dep ensure
 
 depcln:
-	cd ext/cmd/;rm -rf vendor lock.json manifest.json
-
-#godep:
-#	rm -rf Godeps
-#	rm -rf ./vendor
-#	godep save ./...
+	rm -rf vendor Gopkg.lock Gopkg.toml
 
 
 ###############################################################################

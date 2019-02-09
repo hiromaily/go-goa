@@ -206,7 +206,7 @@ func init() {
 	//command-line
 	flag.Parse()
 
-	lg.InitializeLog(lg.DebugStatus, lg.LogOff, 99, "[GoGOA]", "/var/log/go/test.log")
+	lg.InitializeLog(lg.DebugStatus, lg.TimeShortFile, "[GoGOA]", "", "hiromaily")
 }
 
 func setup() {

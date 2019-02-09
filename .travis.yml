@@ -6,17 +6,25 @@ go:
 services:
   - docker
 before_install:
+  #- go get -u github.com/golang/dep/cmd/dep
   #- sudo apt-get update
   #- sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
   - docker-compose build
   - docker-compose up -d
+
+#install:
+#  - $GOPATH/bin/dep ensure
+
 before_script:
   - sleep 30
   - docker-compose logs
+
 script:
   - docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/main_test.go -health 10"
+
 after_script:
   - docker-compose down
+
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
   - docker push hirokiy/go-goa:1.0;
