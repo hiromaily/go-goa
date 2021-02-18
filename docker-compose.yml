@@ -29,7 +29,7 @@ services:
   webserver:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: build/Dockerfile
     image: 'hirokiy/go-goa:${IMAGE_TAG:-1.0}'
     links:
       - mysql:mysql-server
