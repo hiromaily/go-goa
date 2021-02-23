@@ -1,0 +1,44 @@
+# FIXME: WIP
+settings:
+  legacy:
+    force: false
+    interval: 100ms
+schema:
+  - name: resume-api
+    path: cmd/resume
+    commands:
+      #install:
+      #  status: true
+      build:
+        status: true
+        method: go build
+        args:
+          - -i
+          - -v
+          - -o
+          - /bin/resume-api
+      run:
+        status: true
+        method: /bin/resume-api
+        #args: #this code doesn't work
+        #  - -f
+        #  - ./configs/docker.toml
+        #  - -crypto
+    args:
+      - -f=./configs/docker.toml
+      - -crypto
+    watcher:
+      extensions:
+        - go
+      paths:
+        - ./
+      ignored_paths:
+        - .git
+        - .realize
+        - build
+        - scripts
+      scripts:
+        - type: before
+          command: echo before global, this is run before build
+          global: true
+          output: true

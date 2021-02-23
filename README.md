@@ -14,6 +14,7 @@ Now it's under `refactoring`.
 ## Refactoring
 - [ ] migrating from v1 to v3
 - [ ] clean up everything
+- [ ] fix travisci.yml
 
 ## Example Page
 It works on Docker container on Heroku and GKE(Google CONTAINER ENGINE). You can check these respectively.  
