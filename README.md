@@ -6,8 +6,14 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f207ca57e48e456389341fc41bb06951)](https://www.codacy.com/app/hiromaily2/go-goa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiromaily/go-goa&amp;utm_campaign=Badge_Grade)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/hiromaily/go-goa/master/LICENSE)
 
-go-goa is sample for how to use goa framework.  
+go-goa is sample of [goa](https://github.com/goadesign/goa) framework.  
 
+This project has started since 2017 to study Golang and code is quite messy.
+Now it's under `refactoring`.
+
+## Refactoring
+- [ ] migrating from v1 to v3
+- [ ] clean up everything
 
 ## Example Page
 It works on Docker container on Heroku and GKE(Google CONTAINER ENGINE). You can check these respectively.  

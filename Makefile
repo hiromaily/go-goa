@@ -7,7 +7,8 @@ TOMLPATH2=${PROJECT_ROOT}/resources/tomls/docker.toml
 ###############################################################################
 # Initialization
 ###############################################################################
-init_local:
+.PHONY: setup-swagger
+setup-swagger:
 	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
 	git submodule add https://github.com/swagger-api/swagger-ui.git resources/swagger-ui
 	#after this, `make genfull`
@@ -15,77 +16,55 @@ init_local:
 	#
 	cd resources/swagger-ui/dist/;sed -e "s|http://petstore.swagger.io/v2/swagger.json|/swagger.json|g" index.html > goa.html
 
+.PHONY: setup-tools
+setup-tools:
+	go get -u github.com/rakyll/hey
+	go get -u github.com/davecheney/httpstat
+	go get -u goa.design/goa/v3/...@v3
+	go get -u goa.design/plugins/v3/cors/dsl
+
+.PHONY: setup-resume-service
+setup-resume-service:
+	cd internal/goa/service/resume && \
+	go mod init resume && \
+	go get -u goa.design/goa/v3/...@v3 && \
+	go get -u goa.design/plugins/v3/cors/dsl
 
 ###############################################################################
 # PKG Dependencies
 ###############################################################################
-update:
-	go get -u github.com/goadesign/goa/...
-	go get -u github.com/golang/dep/cmd/dep
-	go get -u github.com/rakyll/hey
-	go get -u github.com/davecheney/httpstat
-	go get -u github.com/client9/misspell/cmd/misspell
-	go get -u github.com/gordonklaus/ineffassign
-	go get -u github.com/pilu/fresh
-	go get -u github.com/alecthomas/gometalinter
-	#gometalinter --install
-
+.PHONY: update-service
+update-service:
+	cd pkg/goa/design/resume && \
 	go get -u -d -v ./...
 
-# dep is dependencies tools
-# Note: for not, dep can not be used with goa because of errors when generating code by command
-#  `goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/`
-# error message is
-# `missing API definition, make sure design is properly initialized`
-depinit:
-	dep init
 
-dep:
-	dep ensure
+###############################################################################
+# Goa generation
+###############################################################################
+.PHONY: gen-design
+gen-design:
+	cd internal/goa/service/resume && goa gen resume/design
 
-depcln:
-	rm -rf vendor Gopkg.lock Gopkg.toml
+.PHONY: gen-example
+gen-example:
+	cd internal/goa/service/resume && goa example resume/design -o ./example
 
 
 ###############################################################################
-# Golang formatter and detection
+# Goa generation (It's better to exexute `make genfull` regularly (old style)
 ###############################################################################
-fmt:
-	go fmt `go list ./... | grep -v '/vendor/'`
-
-vet:
-	go vet `go list ./... | grep -v '/vendor/'`
-
-fix:
-	go fix `go list ./... | grep -v '/vendor/'`
-
-lint:
-	golint ./... | grep -v '^goa\/' || true
-	#golint ./... | grep -v '^vendor\/' || true
-
-chk:
-	go fmt `go list ./... | grep -v '/vendor/'`
-	go vet `go list ./... | grep -v '/vendor/'`
-	go fix `go list ./... | grep -v '/vendor/'`
-	golint ./... | grep -v '^vendor\/' || true
-	misspell `find . -name "*.go" | grep -v '/vendor/'`
-	ineffassign .
-
-
-###############################################################################
-# Goa generation (It's better to exexute `make genfull` regularly
-###############################################################################
-gen:
+gen-old:
 	#goagen won’t be re-generated (by default) if already present
 	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
 
-gencln:
+gencln-old:
 	rm -f goa/*.go
 	#rm -f goa/hy_*.go goa/{public,swagger,health}.go
 	rm -rf goa/app/ goa/client/ goa/swagger/ goa/tool/
 	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
 
-aftergen:
+aftergen-old:
 	# rewrite package name
 	rm -f goa/main.go
 
@@ -154,7 +133,7 @@ dcins:
 	docker exec -it gogoa_webserver_1 bash
 
 dctest:
-	docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go
+	docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go"
 	#docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
 
 dcpush:

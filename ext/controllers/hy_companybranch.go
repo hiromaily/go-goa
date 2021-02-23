@@ -1,86 +1,87 @@
 package controllers
 
-import (
-	"fmt"
-	"github.com/goadesign/goa"
-	c "github.com/hiromaily/go-goa/ext/context"
-	m "github.com/hiromaily/go-goa/ext/models"
-	"github.com/hiromaily/go-goa/goa/app"
-)
-
-// HyCompanybranchController implements the hy_companybranch resource.
-type HyCompanybranchController struct {
-	*goa.Controller
-	ctx *c.Ctx
-}
-
-// NewHyCompanybranchController creates a hy_companybranch controller.
-func NewHyCompanybranchController(service *goa.Service, ctx *c.Ctx) *HyCompanybranchController {
-	return &HyCompanybranchController{
-		Controller: service.NewController("HyCompanybranchController"),
-		ctx:        ctx,
-	}
-}
-
-// GetCompanyBranch runs the GetCompanyBranch action.
-func (c *HyCompanybranchController) GetCompanyBranch(ctx *app.GetCompanyBranchHyCompanybranchContext) error {
-	fmt.Println("[hy_companybranch][GetCompanyBranch]")
-
-	//var companies []*app.Company
-	company := &app.Company{}
-
-	svc := &m.Company{Db: c.ctx.Db}
-	err := svc.GetCompanyBranch(ctx.ID, company)
-	if err != nil {
-		return err
-	}
-
-	if company.ID == nil {
-		return ctx.NotFound()
-	}
-
-	//res := &app.Company{}
-	return ctx.OK(company)
-}
-
-// CreateCompanyBranch runs the CreateCompanyBranch action.
-func (c *HyCompanybranchController) CreateCompanyBranch(ctx *app.CreateCompanyBranchHyCompanybranchContext) error {
-	fmt.Println("[hy_companybranch][CreateCompanyBranch]")
-
-	svc := &m.Company{Db: c.ctx.Db}
-	ID, err := svc.InsertCompanyBranch(ctx.ID, ctx.Payload)
-	if err != nil {
-		return err
-	}
-
-	res := &app.CompanyDetailid{ID: &ID}
-	return ctx.OKDetailid(res)
-}
-
-// UpdateCompanyBranch runs the UpdateCompanyBranch action.
-func (c *HyCompanybranchController) UpdateCompanyBranch(ctx *app.UpdateCompanyBranchHyCompanybranchContext) error {
-	fmt.Println("[hy_companybranch][UpdateCompanyBranch]")
-
-	svc := &m.Company{Db: c.ctx.Db}
-	err := svc.UpdateCompanyBranch(ctx.ID, ctx.Payload)
-	if err != nil {
-		return err
-	}
-
-	res := &app.CompanyDetailid{ID: &ctx.ID}
-	return ctx.OKDetailid(res)
-}
-
-// DeleteCompanyBranch runs the DeleteCompanyBranch action.
-func (c *HyCompanybranchController) DeleteCompanyBranch(ctx *app.DeleteCompanyBranchHyCompanybranchContext) error {
-	fmt.Println("[hy_companybranch][DeleteCompanyBranch]")
-
-	svc := &m.Company{Db: c.ctx.Db}
-	err := svc.DeleteCompanyBranch(ctx.ID)
-	if err != nil {
-		return err
-	}
-
-	res := &app.CompanyDetailid{ID: &ctx.ID}
-	return ctx.OKDetailid(res)
-}
+//
+//import (
+//	"fmt"
+//	goa "goa.design/goa/v3/pkg"
+//	c "github.com/hiromaily/go-goa/ext/context"
+//	m "github.com/hiromaily/go-goa/ext/models"
+//	"github.com/hiromaily/go-goa/goa/app"
+//)
+//
+//// HyCompanybranchController implements the hy_companybranch resource.
+//type HyCompanybranchController struct {
+//	*goa.Controller
+//	ctx *c.Ctx
+//}
+//
+//// NewHyCompanybranchController creates a hy_companybranch controller.
+//func NewHyCompanybranchController(service *goa.Service, ctx *c.Ctx) *HyCompanybranchController {
+//	return &HyCompanybranchController{
+//		Controller: service.NewController("HyCompanybranchController"),
+//		ctx:        ctx,
+//	}
+//}
+//
+//// GetCompanyBranch runs the GetCompanyBranch action.
+//func (c *HyCompanybranchController) GetCompanyBranch(ctx *app.GetCompanyBranchHyCompanybranchContext) error {
+//	fmt.Println("[hy_companybranch][GetCompanyBranch]")
+//
+//	//var companies []*app.Company
+//	company := &app.Company{}
+//
+//	svc := &m.Company{Db: c.ctx.Db}
+//	err := svc.GetCompanyBranch(ctx.ID, company)
+//	if err != nil {
+//		return err
+//	}
+//
+//	if company.ID == nil {
+//		return ctx.NotFound()
+//	}
+//
+//	//res := &app.Company{}
+//	return ctx.OK(company)
+//}
+//
+//// CreateCompanyBranch runs the CreateCompanyBranch action.
+//func (c *HyCompanybranchController) CreateCompanyBranch(ctx *app.CreateCompanyBranchHyCompanybranchContext) error {
+//	fmt.Println("[hy_companybranch][CreateCompanyBranch]")
+//
+//	svc := &m.Company{Db: c.ctx.Db}
+//	ID, err := svc.InsertCompanyBranch(ctx.ID, ctx.Payload)
+//	if err != nil {
+//		return err
+//	}
+//
+//	res := &app.CompanyDetailid{ID: &ID}
+//	return ctx.OKDetailid(res)
+//}
+//
+//// UpdateCompanyBranch runs the UpdateCompanyBranch action.
+//func (c *HyCompanybranchController) UpdateCompanyBranch(ctx *app.UpdateCompanyBranchHyCompanybranchContext) error {
+//	fmt.Println("[hy_companybranch][UpdateCompanyBranch]")
+//
+//	svc := &m.Company{Db: c.ctx.Db}
+//	err := svc.UpdateCompanyBranch(ctx.ID, ctx.Payload)
+//	if err != nil {
+//		return err
+//	}
+//
+//	res := &app.CompanyDetailid{ID: &ctx.ID}
+//	return ctx.OKDetailid(res)
+//}
+//
+//// DeleteCompanyBranch runs the DeleteCompanyBranch action.
+//func (c *HyCompanybranchController) DeleteCompanyBranch(ctx *app.DeleteCompanyBranchHyCompanybranchContext) error {
+//	fmt.Println("[hy_companybranch][DeleteCompanyBranch]")
+//
+//	svc := &m.Company{Db: c.ctx.Db}
+//	err := svc.DeleteCompanyBranch(ctx.ID)
+//	if err != nil {
+//		return err
+//	}
+//
+//	res := &app.CompanyDetailid{ID: &ctx.ID}
+//	return ctx.OKDetailid(res)
+//}
