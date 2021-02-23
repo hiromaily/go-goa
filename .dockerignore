@@ -6,4 +6,3 @@
 !public/
 !resources/swagger-ui/dist/
 !Makefile
-!runner.conf
