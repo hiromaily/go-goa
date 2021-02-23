@@ -16,7 +16,7 @@ Now it's under `refactoring`.
 - [ ] clean up everything
 - [ ] fix travisci.yml
 
-## Example Page
+## Example Page (Outdated)
 It works on Docker container on Heroku and GKE(Google CONTAINER ENGINE). You can check these respectively.  
  
 **Google Container Engine**
@@ -35,15 +35,16 @@ It works on Docker container on Heroku and GKE(Google CONTAINER ENGINE). You can
 - Be careful to connect database. [Read it](https://docs.docker.com/compose/startup-order/)
 
 
-## About goa framework
-* [goa](https://goa.design/)
-* [Getting Started with goa](https://goa.design/learn/guide/)
-* [The goa API Design Language](https://goa.design/design/overview/)
-* [github.com/goadesign/goa/design](https://goa.design/reference/goa/design/)
-* [github.com/goadesign/goa/design/apidsl](https://goa.design/reference/goa/design/apidsl/)
+## Documents about goa framework
+* [goa github](https://github.com/goadesign/goa)
+* [goa v3 docs](https://pkg.go.dev/goa.design/goa/v3)
+* [goa v3 dsl docs](https://pkg.go.dev/goa.design/goa/v3/dsl)
+* [Upgrading from Goa v1 or Goa v2 to v3](https://goa.design/learn/upgrading/)
+* [goa docs (Japanese)](https://goa.design/ja/learn/introduction/)
+* [API Development in Go Using Goa](https://www.toptal.com/go/goa-api-development)  
 
 
-## Install
+## Install (old version)
 First, please check Makefile.
 
 ```bash
@@ -53,7 +54,7 @@ dcup:
 	docker-compose up
 ```
 
-## Directory structure
+## Directory structure (old version)
 | Directory NAME      | Description                                    |
 |:--------------------|:-----------------------------------------------|
 | docker              | docker resources                               |
@@ -66,7 +67,7 @@ dcup:
 
 
 
-## Usage
+## Usage (old version)
 Please check Makefile.
 
 ```bash
@@ -84,7 +85,7 @@ gotest:
 
 ```
 
-## How to add new API
+## How to add new API (old version)
 1. add new file `ext_xxx_payloads.go` in goa/design/ as needed.  
 2. add new MediaType for response data in goa/design/media_types.go.  
 3. add new Resource in goa/design/resource.go.  
@@ -105,15 +106,6 @@ TODO: above flow should be automated.
 ## How to return dynamic html
 I guess, goa framework can't treat `text/html` Content-type except static files.
 So, dynamic data can be fetched by Ajax from front side as JSON.
-
-
-## dependency management tool
-[dep](https://github.com/golang/dep)
-
-#### related files
-* lock.json
-* manifest.json
-* vendor/
 
 
 ## API List
@@ -166,5 +158,4 @@ Status code distribution:
 [MIT](https://github.com/hiromaily/go-goa/blob/master/LICENSE)
 
 ## Author
-
 [hiromaily](https://github.com/hiromaily)
