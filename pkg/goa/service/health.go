@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"log"
+
 	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/health"
 )
 

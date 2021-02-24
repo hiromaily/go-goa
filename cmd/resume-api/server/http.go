@@ -6,6 +6,13 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"sync"
+	"time"
+
+	goahttp "goa.design/goa/v3/http"
+	httpmdlwr "goa.design/goa/v3/http/middleware"
+	"goa.design/goa/v3/middleware"
+
 	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/auth"
 	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/health"
 	authsvr "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/auth/server"
@@ -22,12 +29,6 @@ import (
 	hyuser "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user"
 	hyuserworkhistory "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user_work_history"
 	hyusertech "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_usertech"
-	"sync"
-	"time"
-
-	goahttp "goa.design/goa/v3/http"
-	httpmdlwr "goa.design/goa/v3/http/middleware"
-	"goa.design/goa/v3/middleware"
 )
 
 // replace

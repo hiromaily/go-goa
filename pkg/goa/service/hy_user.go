@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
-	hyuser "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user"
 
 	"goa.design/goa/v3/security"
+
+	hyuser "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user"
 )
 
 // hy_user service example implementation.

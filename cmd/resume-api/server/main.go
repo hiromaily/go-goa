@@ -9,7 +9,10 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
-	"github.com/hiromaily/go-goa/pkg/goa/service"
+	"sync"
+	"syscall"
+
+	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/auth"
 	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/health"
 	hycompany "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_company"
 	hycompanybranch "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_companybranch"
@@ -17,9 +20,7 @@ import (
 	hyuser "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user"
 	hyuserworkhistory "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user_work_history"
 	hyusertech "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_usertech"
-	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/auth"
-	"sync"
-	"syscall"
+	"github.com/hiromaily/go-goa/pkg/goa/service"
 )
 
 // replace

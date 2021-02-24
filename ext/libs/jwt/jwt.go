@@ -2,10 +2,12 @@ package jwt
 
 import (
 	"fmt"
+	"time"
+
 	jwtgo "github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
+
 	c "github.com/hiromaily/go-goa/ext/context"
-	"time"
 )
 
 // GenerateToken is to generate token

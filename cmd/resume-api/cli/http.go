@@ -2,12 +2,12 @@ package main
 
 import (
 	"net/http"
-	cli "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/cli/resume_api_server"
-
 	"time"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
+
+	cli "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/cli/resume_api_server"
 )
 
 // replace

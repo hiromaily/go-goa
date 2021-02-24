@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
-	hyuserworkhistory "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user_work_history"
 
 	"goa.design/goa/v3/security"
+
+	hyuserworkhistory "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user_work_history"
 )
 
 // hy_userWorkHistory service example implementation.

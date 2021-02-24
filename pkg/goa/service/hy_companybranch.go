@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
-	hycompanybranch "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_companybranch"
 
 	"goa.design/goa/v3/security"
+
+	hycompanybranch "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_companybranch"
 )
 
 // hy_companybranch service example implementation.

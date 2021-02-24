@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
-	hyusertech "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_usertech"
 
 	"goa.design/goa/v3/security"
+
+	hyusertech "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_usertech"
 )
 
 // hy_usertech service example implementation.

@@ -3,10 +3,12 @@ package configs
 import (
 	"errors"
 	"fmt"
-	"github.com/BurntSushi/toml"
-	u "github.com/hiromaily/golibs/utils"
 	"io/ioutil"
 	"os"
+
+	"github.com/BurntSushi/toml"
+
+	u "github.com/hiromaily/golibs/utils"
 )
 
 /* singleton */

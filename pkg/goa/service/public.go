@@ -2,6 +2,7 @@ package service
 
 import (
 	"log"
+
 	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/public"
 )
 
