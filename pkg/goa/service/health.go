@@ -1,9 +1,9 @@
-package resumeapi
+package service
 
 import (
 	"context"
 	"log"
-	health "resume/example/gen/health"
+	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/health"
 )
 
 // health service example implementation.

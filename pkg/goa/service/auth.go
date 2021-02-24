@@ -1,9 +1,9 @@
-package resumeapi
+package service
 
 import (
 	"context"
 	"log"
-	auth "resume/example/gen/auth"
+	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/auth"
 )
 
 // auth service example implementation.

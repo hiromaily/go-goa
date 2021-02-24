@@ -1,8 +1,8 @@
-package resumeapi
+package service
 
 import (
 	"log"
-	public "resume/example/gen/public"
+	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/public"
 )
 
 // public service example implementation.

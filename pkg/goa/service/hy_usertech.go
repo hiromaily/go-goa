@@ -1,10 +1,10 @@
-package resumeapi
+package service
 
 import (
 	"context"
 	"fmt"
 	"log"
-	hyusertech "resume/example/gen/hy_usertech"
+	hyusertech "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_usertech"
 
 	"goa.design/goa/v3/security"
 )

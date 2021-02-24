@@ -2,12 +2,17 @@ package main
 
 import (
 	"net/http"
-	cli "resume/example/gen/http/cli/apisvc"
+	cli "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/cli/resume_api_server"
+
 	"time"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
 )
+
+// replace
+// resume/example to
+// github.com/hiromaily/go-goa/internal/goa/service/resume
 
 func doHTTP(scheme, host string, timeout int, debug bool) (goa.Endpoint, interface{}, error) {
 	var (

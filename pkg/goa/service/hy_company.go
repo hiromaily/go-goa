@@ -1,10 +1,10 @@
-package resumeapi
+package service
 
 import (
 	"context"
 	"fmt"
 	"log"
-	hycompany "resume/example/gen/hy_company"
+	hycompany "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_company"
 
 	"goa.design/goa/v3/security"
 )

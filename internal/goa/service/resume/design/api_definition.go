@@ -50,7 +50,7 @@ var _ = API("resume-api", func() {
 	// server that exposes all of the services defined in the design in a single
 	// host listening on "locahost" and using port 80 for HTTP endpoints and 8080
 	// for GRPC endpoints.
-	Server("apisvc", func() {
+	Server("resume-api-server", func() {
 		Host("localhost", func() {
 			URI("http://localhost:8080/api")
 			URI("grpc://localhost:9090")

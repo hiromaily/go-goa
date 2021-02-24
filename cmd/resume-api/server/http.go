@@ -6,22 +6,22 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	auth "resume/example/gen/auth"
-	health "resume/example/gen/health"
-	authsvr "resume/example/gen/http/auth/server"
-	healthsvr "resume/example/gen/http/health/server"
-	hycompanysvr "resume/example/gen/http/hy_company/server"
-	hycompanybranchsvr "resume/example/gen/http/hy_companybranch/server"
-	hytechsvr "resume/example/gen/http/hy_tech/server"
-	hyusersvr "resume/example/gen/http/hy_user/server"
-	hyuserworkhistorysvr "resume/example/gen/http/hy_user_work_history/server"
-	hyusertechsvr "resume/example/gen/http/hy_usertech/server"
-	hycompany "resume/example/gen/hy_company"
-	hycompanybranch "resume/example/gen/hy_companybranch"
-	hytech "resume/example/gen/hy_tech"
-	hyuser "resume/example/gen/hy_user"
-	hyuserworkhistory "resume/example/gen/hy_user_work_history"
-	hyusertech "resume/example/gen/hy_usertech"
+	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/auth"
+	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/health"
+	authsvr "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/auth/server"
+	healthsvr "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/health/server"
+	hycompanysvr "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/hy_company/server"
+	hycompanybranchsvr "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/hy_companybranch/server"
+	hytechsvr "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/hy_tech/server"
+	hyusersvr "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/hy_user/server"
+	hyuserworkhistorysvr "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/hy_user_work_history/server"
+	hyusertechsvr "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/http/hy_usertech/server"
+	hycompany "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_company"
+	hycompanybranch "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_companybranch"
+	hytech "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_tech"
+	hyuser "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user"
+	hyuserworkhistory "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user_work_history"
+	hyusertech "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_usertech"
 	"sync"
 	"time"
 
@@ -29,6 +29,10 @@ import (
 	httpmdlwr "goa.design/goa/v3/http/middleware"
 	"goa.design/goa/v3/middleware"
 )
+
+// replace
+// resume/example to
+// github.com/hiromaily/go-goa/internal/goa/service/resume
 
 // handleHTTPServer starts configures and starts a HTTP server on the given
 // URL. It shuts down the server if any error is received in the error channel.
