@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
-	resumeapi "resume"
+	resumeapi "github.com/hiromaily/go-goa/pkg/goa/service/resume"
 	auth "resume/gen/auth"
 	health "resume/gen/health"
 	hycompany "resume/gen/hy_company"

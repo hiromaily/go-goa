@@ -22,6 +22,11 @@ rm -rf cmd
 
 cd ${GOPATH}/src/github.com/hiromaily/go-goa
 
+#replace `resumeapi "resume"`
+#     to `github.com/hiromaily/go-goa/pkg/goa/service/resume`
+#in main.go
+
+
 #sed -e "1s/main/goa/" ./internal/goa/service/resume/design/example/cmd/resume_api_server/http.go >> ./tmp/tmp.go
 #mv -f ./tmp/tmp.go ./cmd/resume-api/server/http.go
 
