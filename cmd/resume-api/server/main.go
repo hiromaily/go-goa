@@ -9,7 +9,6 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
-	resumeapi "github.com/hiromaily/go-goa/pkg/goa/service/resume"
 	auth "resume/gen/auth"
 	health "resume/gen/health"
 	hycompany "resume/gen/hy_company"
@@ -20,6 +19,8 @@ import (
 	hyusertech "resume/gen/hy_usertech"
 	"sync"
 	"syscall"
+
+	resumeapi "github.com/hiromaily/go-goa/pkg/goa/service/resume"
 )
 
 func main() {
