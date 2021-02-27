@@ -1,21 +1,11 @@
-# Note: tabs by space can't not used for Makefile!
 
 PROJECT_ROOT=${GOPATH}/src/github.com/hiromaily/go-goa
-TOMLPATH=${PROJECT_ROOT}/resources/tomls/settings.toml
-TOMLPATH2=${PROJECT_ROOT}/resources/tomls/docker.toml
+TOMLPATH=${PROJECT_ROOT}/configs/settings.toml
+TOMLPATH2=${PROJECT_ROOT}/configs/docker.toml
 
 ###############################################################################
 # Initialization
 ###############################################################################
-.PHONY: setup-swagger
-setup-swagger:
-	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
-	git submodule add https://github.com/swagger-api/swagger-ui.git resources/swagger-ui
-	#after this, `make genfull`
-
-	#
-	cd resources/swagger-ui/dist/;sed -e "s|http://petstore.swagger.io/v2/swagger.json|/swagger.json|g" index.html > goa.html
-
 .PHONY: setup-tools
 setup-tools:
 	go get -u github.com/rakyll/hey
@@ -29,6 +19,15 @@ setup-resume-service:
 	go mod init resume && \
 	go get -u goa.design/goa/v3/...@v3 && \
 	go get -u goa.design/plugins/v3/cors/dsl
+
+#.PHONY: setup-swagger
+#setup-swagger:
+#	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
+#	git submodule add https://github.com/swagger-api/swagger-ui.git resources/swagger-ui
+#	#after this, `make genfull`
+#
+#	#
+#	cd resources/swagger-ui/dist/;sed -e "s|http://petstore.swagger.io/v2/swagger.json|/swagger.json|g" index.html > goa.html
 
 ###############################################################################
 # PKG Dependencies
@@ -90,64 +89,75 @@ move-example:
 .PHONY: gen-all
 gen-all: gen-design gen-example replace-example move-example
 
+
+###############################################################################
+# Build on local
+###############################################################################
+run-server:
+	go run -race ./cmd/resume-api/server/...
+
+bld-server:
+	go build -race -v -o ${GOPATH}/bin/goa-server ./cmd/resume-api/server/...
+
+#bldlinux:
+#	GOOS=linux GOARCH=amd64 go build -race -v -o ${GOPATH}/bin/linux_amd64/$1 ./ext/cmd/
+
+
 ###############################################################################
 # Goa generation (It's better to exexute `make genfull` regularly (old style)
 ###############################################################################
-gen-old:
-	#goagen won’t be re-generated (by default) if already present
-	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
+#gen-old:
+#	#goagen won’t be re-generated (by default) if already present
+#	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
+#
+#gencln-old:
+#	rm -f goa/*.go
+#	#rm -f goa/hy_*.go goa/{public,swagger,health}.go
+#	rm -rf goa/app/ goa/client/ goa/swagger/ goa/tool/
+#	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
+#
+#aftergen-old:
+#	# rewrite package name
+#	rm -f goa/main.go
+#
+#	sed -e "1s/main/goa/" ./goa/auth.go >> ./resources/tmp/tmp.go
+#	mv -f ./resources/tmp/tmp.go ./goa/auth.go
+#
+#	sed -e "1s/main/goa/" ./goa/health.go >> ./resources/tmp/tmp.go
+#	mv -f ./resources/tmp/tmp.go ./goa/health.go
+#
+#	sed -e "1s/main/goa/" ./goa/public.go >> ./resources/tmp/tmp.go
+#	mv -f ./resources/tmp/tmp.go ./goa/public.go
+#
+#	sed -e "1s/main/goa/" ./goa/hy_user.go >> ./resources/tmp/tmp.go
+#	mv -f ./resources/tmp/tmp.go ./goa/hy_user.go
+#
+#	sed -e "1s/main/goa/" ./goa/hy_tech.go >> ./resources/tmp/tmp.go
+#	mv -f ./resources/tmp/tmp.go ./goa/hy_tech.go
+#
+#	sed -e "1s/main/goa/" ./goa/hy_company.go >> ./resources/tmp/tmp.go
+#	mv -f ./resources/tmp/tmp.go ./goa/hy_company.go
+#
+#	sed -e "1s/main/goa/" ./goa/hy_companybranch.go >> ./resources/tmp/tmp.go
+#	mv -f ./resources/tmp/tmp.go ./goa/hy_companybranch.go
+#
+#	sed -e "1s/main/goa/" ./goa/hy_usertech.go >> ./resources/tmp/tmp.go
+#	mv -f ./resources/tmp/tmp.go ./goa/hy_usertech.go
+#
+#	sed -e "1s/main/goa/" ./goa/hy_user_work_history.go >> ./resources/tmp/tmp.go
+#	mv -f ./resources/tmp/tmp.go ./goa/hy_user_work_history.go
+#
+#genfull: gencln aftergen
+#
+#genctl:
+#	goagen controller -d github.com/hiromaily/go-goa/goa/design -o goa/
 
-gencln-old:
-	rm -f goa/*.go
-	#rm -f goa/hy_*.go goa/{public,swagger,health}.go
-	rm -rf goa/app/ goa/client/ goa/swagger/ goa/tool/
-	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
-
-aftergen-old:
-	# rewrite package name
-	rm -f goa/main.go
-
-	sed -e "1s/main/goa/" ./goa/auth.go >> ./resources/tmp/tmp.go
-	mv -f ./resources/tmp/tmp.go ./goa/auth.go
-
-	sed -e "1s/main/goa/" ./goa/health.go >> ./resources/tmp/tmp.go
-	mv -f ./resources/tmp/tmp.go ./goa/health.go
-
-	sed -e "1s/main/goa/" ./goa/public.go >> ./resources/tmp/tmp.go
-	mv -f ./resources/tmp/tmp.go ./goa/public.go
-
-	sed -e "1s/main/goa/" ./goa/hy_user.go >> ./resources/tmp/tmp.go
-	mv -f ./resources/tmp/tmp.go ./goa/hy_user.go
-
-	sed -e "1s/main/goa/" ./goa/hy_tech.go >> ./resources/tmp/tmp.go
-	mv -f ./resources/tmp/tmp.go ./goa/hy_tech.go
-
-	sed -e "1s/main/goa/" ./goa/hy_company.go >> ./resources/tmp/tmp.go
-	mv -f ./resources/tmp/tmp.go ./goa/hy_company.go
-
-	sed -e "1s/main/goa/" ./goa/hy_companybranch.go >> ./resources/tmp/tmp.go
-	mv -f ./resources/tmp/tmp.go ./goa/hy_companybranch.go
-
-	sed -e "1s/main/goa/" ./goa/hy_usertech.go >> ./resources/tmp/tmp.go
-	mv -f ./resources/tmp/tmp.go ./goa/hy_usertech.go
-
-	sed -e "1s/main/goa/" ./goa/hy_user_work_history.go >> ./resources/tmp/tmp.go
-	mv -f ./resources/tmp/tmp.go ./goa/hy_user_work_history.go
-
-genfull: gencln aftergen
-
-genctl:
-	goagen controller -d github.com/hiromaily/go-goa/goa/design -o goa/
-
-
-updgoa:
-	go get -u github.com/goadesign/goa/...
+# this command should be executed regularly
+#updall: updgoa gencln aftergen
 
 #link_swagger:
 #	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
 
-# this command should be executed regularly
-updall: updgoa gencln aftergen
 
 
 ###############################################################################
@@ -177,26 +187,6 @@ dctest:
 
 dcpush:
 	docker push hirokiy/go-goa:1.0
-
-
-###############################################################################
-# Build for local
-###############################################################################
-run:
-	go run -race ext/cmd/main.go
-
-bld:
-	go build -i -race -v -o ${GOPATH}/bin/go-goa ./ext/cmd/
-
-bldlinux:
-	GOOS=linux GOARCH=amd64 go build -race -v -o ${GOPATH}/bin/linux_amd64/$1 ./ext/cmd/
-
-clibld:
-	go build -i -race -v -o ${GOPATH}/bin/go-goa-cli ./goa/tool/api-cli/*.go
-
-# test shoud be executed in docker-compose.yml for docker environment
-prod:
-	docker-compose -f docker-compose.yml up
 
 
 ###############################################################################
