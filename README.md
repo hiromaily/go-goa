@@ -44,6 +44,32 @@ It works on Docker container on Heroku and GKE(Google CONTAINER ENGINE). You can
 * [API Development in Go Using Goa](https://www.toptal.com/go/goa-api-development)  
 
 
+## How to setup service
+1. create design directory in ./internal/goa/service/resume/
+2. cd ./internal/goa/srvice/resume/
+3. run `go mod init resume`
+4. run `go get -u goa.design/goa/v3/...@v3`
+5. run `go get -u goa.design/plugins/v3/cors/dsl`
+6. edit design go file in design drectory
+7. run `goa gen resume/design` in resume directory
+8. run `goa example resume/design` in resume directory
+9. root go mod should be modified
+    ```
+    module github.com/hiromaily/go-goa
+    
+    go 1.15
+    
+    replace resume => ./internal/goa/service/resume
+    // resume is module name
+    // path `./internal/goa/service/resume` need to include go.mod
+    
+    require (
+        ...
+        resume v0.0.0
+    )
+    ```
+
+
 ## Install (old version)
 First, please check Makefile.
 
