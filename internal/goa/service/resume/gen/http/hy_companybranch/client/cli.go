@@ -19,15 +19,15 @@ import (
 
 // BuildGetCompanyBranchPayload builds the payload for the hy_companybranch
 // getCompanyBranch endpoint from CLI flags.
-func BuildGetCompanyBranchPayload(hyCompanybranchGetCompanyBranchCompanyDetailID string, hyCompanybranchGetCompanyBranchToken string) (*hycompanybranch.GetCompanyBranchPayload, error) {
+func BuildGetCompanyBranchPayload(hyCompanybranchGetCompanyBranchCompanyBranchID string, hyCompanybranchGetCompanyBranchToken string) (*hycompanybranch.GetCompanyBranchPayload, error) {
 	var err error
-	var companyDetailID int
+	var companyBranchID int
 	{
 		var v int64
-		v, err = strconv.ParseInt(hyCompanybranchGetCompanyBranchCompanyDetailID, 10, 64)
-		companyDetailID = int(v)
+		v, err = strconv.ParseInt(hyCompanybranchGetCompanyBranchCompanyBranchID, 10, 64)
+		companyBranchID = int(v)
 		if err != nil {
-			return nil, fmt.Errorf("invalid value for companyDetailID, must be INT")
+			return nil, fmt.Errorf("invalid value for companyBranchID, must be INT")
 		}
 	}
 	var token *string
@@ -37,7 +37,7 @@ func BuildGetCompanyBranchPayload(hyCompanybranchGetCompanyBranchCompanyDetailID
 		}
 	}
 	v := &hycompanybranch.GetCompanyBranchPayload{}
-	v.CompanyDetailID = &companyDetailID
+	v.CompanyBranchID = &companyBranchID
 	v.Token = token
 
 	return v, nil
@@ -96,7 +96,7 @@ func BuildCreateCompanyBranchPayload(hyCompanybranchCreateCompanyBranchBody stri
 
 // BuildUpdateCompanyBranchPayload builds the payload for the hy_companybranch
 // updateCompanyBranch endpoint from CLI flags.
-func BuildUpdateCompanyBranchPayload(hyCompanybranchUpdateCompanyBranchBody string, hyCompanybranchUpdateCompanyBranchCompanyDetailID string, hyCompanybranchUpdateCompanyBranchToken string) (*hycompanybranch.UpdateCompanyBranchPayload, error) {
+func BuildUpdateCompanyBranchPayload(hyCompanybranchUpdateCompanyBranchBody string, hyCompanybranchUpdateCompanyBranchCompanyBranchID string, hyCompanybranchUpdateCompanyBranchToken string) (*hycompanybranch.UpdateCompanyBranchPayload, error) {
 	var err error
 	var body UpdateCompanyBranchRequestBody
 	{
@@ -120,13 +120,13 @@ func BuildUpdateCompanyBranchPayload(hyCompanybranchUpdateCompanyBranchBody stri
 			return nil, err
 		}
 	}
-	var companyDetailID int
+	var companyBranchID int
 	{
 		var v int64
-		v, err = strconv.ParseInt(hyCompanybranchUpdateCompanyBranchCompanyDetailID, 10, 64)
-		companyDetailID = int(v)
+		v, err = strconv.ParseInt(hyCompanybranchUpdateCompanyBranchCompanyBranchID, 10, 64)
+		companyBranchID = int(v)
 		if err != nil {
-			return nil, fmt.Errorf("invalid value for companyDetailID, must be INT")
+			return nil, fmt.Errorf("invalid value for companyBranchID, must be INT")
 		}
 	}
 	var token *string
@@ -139,7 +139,7 @@ func BuildUpdateCompanyBranchPayload(hyCompanybranchUpdateCompanyBranchBody stri
 		CountryID: body.CountryID,
 		Address:   body.Address,
 	}
-	v.CompanyDetailID = &companyDetailID
+	v.CompanyBranchID = &companyBranchID
 	v.Token = token
 
 	return v, nil
@@ -147,15 +147,15 @@ func BuildUpdateCompanyBranchPayload(hyCompanybranchUpdateCompanyBranchBody stri
 
 // BuildDeleteCompanyBranchPayload builds the payload for the hy_companybranch
 // deleteCompanyBranch endpoint from CLI flags.
-func BuildDeleteCompanyBranchPayload(hyCompanybranchDeleteCompanyBranchCompanyDetailID string, hyCompanybranchDeleteCompanyBranchToken string) (*hycompanybranch.DeleteCompanyBranchPayload, error) {
+func BuildDeleteCompanyBranchPayload(hyCompanybranchDeleteCompanyBranchCompanyBranchID string, hyCompanybranchDeleteCompanyBranchToken string) (*hycompanybranch.DeleteCompanyBranchPayload, error) {
 	var err error
-	var companyDetailID int
+	var companyBranchID int
 	{
 		var v int64
-		v, err = strconv.ParseInt(hyCompanybranchDeleteCompanyBranchCompanyDetailID, 10, 64)
-		companyDetailID = int(v)
+		v, err = strconv.ParseInt(hyCompanybranchDeleteCompanyBranchCompanyBranchID, 10, 64)
+		companyBranchID = int(v)
 		if err != nil {
-			return nil, fmt.Errorf("invalid value for companyDetailID, must be INT")
+			return nil, fmt.Errorf("invalid value for companyBranchID, must be INT")
 		}
 	}
 	var token *string
@@ -165,7 +165,7 @@ func BuildDeleteCompanyBranchPayload(hyCompanybranchDeleteCompanyBranchCompanyDe
 		}
 	}
 	v := &hycompanybranch.DeleteCompanyBranchPayload{}
-	v.CompanyDetailID = &companyDetailID
+	v.CompanyBranchID = &companyBranchID
 	v.Token = token
 
 	return v, nil

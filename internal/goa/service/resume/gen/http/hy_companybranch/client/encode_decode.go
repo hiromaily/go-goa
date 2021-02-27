@@ -24,18 +24,18 @@ import (
 // endpoint
 func (c *Client) BuildGetCompanyBranchRequest(ctx context.Context, v interface{}) (*http.Request, error) {
 	var (
-		companyDetailID int
+		companyBranchID int
 	)
 	{
 		p, ok := v.(*hycompanybranch.GetCompanyBranchPayload)
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_companybranch", "getCompanyBranch", "*hycompanybranch.GetCompanyBranchPayload", v)
 		}
-		if p.CompanyDetailID != nil {
-			companyDetailID = *p.CompanyDetailID
+		if p.CompanyBranchID != nil {
+			companyBranchID = *p.CompanyBranchID
 		}
 	}
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetCompanyBranchHyCompanybranchPath(companyDetailID)}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetCompanyBranchHyCompanybranchPath(companyBranchID)}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("hy_companybranch", "getCompanyBranch", u.String(), err)
@@ -178,18 +178,18 @@ func DecodeCreateCompanyBranchResponse(decoder func(*http.Response) goahttp.Deco
 // "updateCompanyBranch" endpoint
 func (c *Client) BuildUpdateCompanyBranchRequest(ctx context.Context, v interface{}) (*http.Request, error) {
 	var (
-		companyDetailID int
+		companyBranchID int
 	)
 	{
 		p, ok := v.(*hycompanybranch.UpdateCompanyBranchPayload)
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_companybranch", "updateCompanyBranch", "*hycompanybranch.UpdateCompanyBranchPayload", v)
 		}
-		if p.CompanyDetailID != nil {
-			companyDetailID = *p.CompanyDetailID
+		if p.CompanyBranchID != nil {
+			companyBranchID = *p.CompanyBranchID
 		}
 	}
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateCompanyBranchHyCompanybranchPath(companyDetailID)}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateCompanyBranchHyCompanybranchPath(companyBranchID)}
 	req, err := http.NewRequest("PUT", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("hy_companybranch", "updateCompanyBranch", u.String(), err)
@@ -257,18 +257,18 @@ func DecodeUpdateCompanyBranchResponse(decoder func(*http.Response) goahttp.Deco
 // "deleteCompanyBranch" endpoint
 func (c *Client) BuildDeleteCompanyBranchRequest(ctx context.Context, v interface{}) (*http.Request, error) {
 	var (
-		companyDetailID int
+		companyBranchID int
 	)
 	{
 		p, ok := v.(*hycompanybranch.DeleteCompanyBranchPayload)
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_companybranch", "deleteCompanyBranch", "*hycompanybranch.DeleteCompanyBranchPayload", v)
 		}
-		if p.CompanyDetailID != nil {
-			companyDetailID = *p.CompanyDetailID
+		if p.CompanyBranchID != nil {
+			companyBranchID = *p.CompanyBranchID
 		}
 	}
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteCompanyBranchHyCompanybranchPath(companyDetailID)}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteCompanyBranchHyCompanybranchPath(companyBranchID)}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("hy_companybranch", "deleteCompanyBranch", u.String(), err)

@@ -82,7 +82,7 @@ paths:
       security:
       - jwt_header_Authorization:
         - api:access
-  /company/{companyID}:
+  /company/{company_id}:
     delete:
       tags:
       - hy_company
@@ -90,7 +90,7 @@ paths:
       description: Delete company
       operationId: hy_company#deleteCompany
       parameters:
-      - name: companyID
+      - name: company_id
         in: path
         description: Company ID
         required: true
@@ -113,7 +113,7 @@ paths:
       description: Retrieve company with given company_id
       operationId: hy_company#getCompanyGroup
       parameters:
-      - name: companyID
+      - name: company_id
         in: path
         description: Company ID
         required: true
@@ -167,7 +167,7 @@ paths:
       description: Change company properties
       operationId: hy_company#updateCompany
       parameters:
-      - name: companyID
+      - name: company_id
         in: path
         description: Company ID
         required: true
@@ -193,7 +193,7 @@ paths:
       security:
       - jwt_header_Authorization:
         - api:access
-  /company/branch/{companyDetailID}:
+  /company/branch/{company_branch_id}:
     delete:
       tags:
       - hy_companybranch
@@ -201,13 +201,13 @@ paths:
       description: Delete company branch
       operationId: hy_companybranch#deleteCompanyBranch
       parameters:
-      - name: companyDetailID
+      - name: company_branch_id
         in: path
-        description: Company detail ID
+        description: Company branch ID
         required: true
         schema:
           type: integer
-          description: Company detail ID
+          description: Company branch ID
           example: 1104135424519714373
           format: int64
         example: 5419122538831028252
@@ -224,13 +224,13 @@ paths:
       description: Get company branch with given id
       operationId: hy_companybranch#getCompanyBranch
       parameters:
-      - name: companyDetailID
+      - name: company_branch_id
         in: path
-        description: Company detail ID
+        description: Company branch ID
         required: true
         schema:
           type: integer
-          description: Company detail ID
+          description: Company branch ID
           example: 3242133180634172339
           format: int64
         example: 4305815294588818520
@@ -247,13 +247,13 @@ paths:
       description: Change company branch properties
       operationId: hy_companybranch#updateCompanyBranch
       parameters:
-      - name: companyDetailID
+      - name: company_branch_id
         in: path
-        description: Company detail ID
+        description: Company branch ID
         required: true
         schema:
           type: integer
-          description: Company detail ID
+          description: Company branch ID
           example: 4101199312322278393
           format: int64
         example: 1312789485499666988
@@ -272,7 +272,7 @@ paths:
       security:
       - jwt_header_Authorization:
         - api:access
-  /company/branch/{companyID}:
+  /company/branch/{company_id}:
     post:
       tags:
       - hy_companybranch
@@ -280,7 +280,7 @@ paths:
       description: Create new company branch
       operationId: hy_companybranch#createCompanyBranch
       parameters:
-      - name: companyID
+      - name: company_id
         in: path
         description: Company ID
         required: true

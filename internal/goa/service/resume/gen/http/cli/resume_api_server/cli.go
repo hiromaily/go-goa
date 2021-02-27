@@ -43,7 +43,7 @@ auth login
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
-	return os.Args[0] + ` hy-companybranch get-company-branch --company-detail-id 2069010046497218702 --token "Necessitatibus reiciendis quis."` + "\n" +
+	return os.Args[0] + ` hy-companybranch get-company-branch --company-branch-id 2069010046497218702 --token "Necessitatibus reiciendis quis."` + "\n" +
 		os.Args[0] + ` hy-user-work-history get-user-work-history --user-id 3221921965628780407 --token "Iste aspernatur deserunt itaque ratione."` + "\n" +
 		os.Args[0] + ` hy-usertech get-user-like-tech --user-id 3444501311284418728 --token "Quibusdam velit ipsum."` + "\n" +
 		os.Args[0] + ` hy-company company-list --token "Eaque dicta sint veniam et facere."` + "\n" +
@@ -64,7 +64,7 @@ func ParseEndpoint(
 		hyCompanybranchFlags = flag.NewFlagSet("hy-companybranch", flag.ContinueOnError)
 
 		hyCompanybranchGetCompanyBranchFlags               = flag.NewFlagSet("get-company-branch", flag.ExitOnError)
-		hyCompanybranchGetCompanyBranchCompanyDetailIDFlag = hyCompanybranchGetCompanyBranchFlags.String("company-detail-id", "REQUIRED", "Company detail ID")
+		hyCompanybranchGetCompanyBranchCompanyBranchIDFlag = hyCompanybranchGetCompanyBranchFlags.String("company-branch-id", "REQUIRED", "Company branch ID")
 		hyCompanybranchGetCompanyBranchTokenFlag           = hyCompanybranchGetCompanyBranchFlags.String("token", "", "")
 
 		hyCompanybranchCreateCompanyBranchFlags         = flag.NewFlagSet("create-company-branch", flag.ExitOnError)
@@ -74,11 +74,11 @@ func ParseEndpoint(
 
 		hyCompanybranchUpdateCompanyBranchFlags               = flag.NewFlagSet("update-company-branch", flag.ExitOnError)
 		hyCompanybranchUpdateCompanyBranchBodyFlag            = hyCompanybranchUpdateCompanyBranchFlags.String("body", "REQUIRED", "")
-		hyCompanybranchUpdateCompanyBranchCompanyDetailIDFlag = hyCompanybranchUpdateCompanyBranchFlags.String("company-detail-id", "REQUIRED", "Company detail ID")
+		hyCompanybranchUpdateCompanyBranchCompanyBranchIDFlag = hyCompanybranchUpdateCompanyBranchFlags.String("company-branch-id", "REQUIRED", "Company branch ID")
 		hyCompanybranchUpdateCompanyBranchTokenFlag           = hyCompanybranchUpdateCompanyBranchFlags.String("token", "", "")
 
 		hyCompanybranchDeleteCompanyBranchFlags               = flag.NewFlagSet("delete-company-branch", flag.ExitOnError)
-		hyCompanybranchDeleteCompanyBranchCompanyDetailIDFlag = hyCompanybranchDeleteCompanyBranchFlags.String("company-detail-id", "REQUIRED", "Company detail ID")
+		hyCompanybranchDeleteCompanyBranchCompanyBranchIDFlag = hyCompanybranchDeleteCompanyBranchFlags.String("company-branch-id", "REQUIRED", "Company branch ID")
 		hyCompanybranchDeleteCompanyBranchTokenFlag           = hyCompanybranchDeleteCompanyBranchFlags.String("token", "", "")
 
 		hyUserWorkHistoryFlags = flag.NewFlagSet("hy-user-work-history", flag.ContinueOnError)
@@ -388,16 +388,16 @@ func ParseEndpoint(
 			switch epn {
 			case "get-company-branch":
 				endpoint = c.GetCompanyBranch()
-				data, err = hycompanybranchc.BuildGetCompanyBranchPayload(*hyCompanybranchGetCompanyBranchCompanyDetailIDFlag, *hyCompanybranchGetCompanyBranchTokenFlag)
+				data, err = hycompanybranchc.BuildGetCompanyBranchPayload(*hyCompanybranchGetCompanyBranchCompanyBranchIDFlag, *hyCompanybranchGetCompanyBranchTokenFlag)
 			case "create-company-branch":
 				endpoint = c.CreateCompanyBranch()
 				data, err = hycompanybranchc.BuildCreateCompanyBranchPayload(*hyCompanybranchCreateCompanyBranchBodyFlag, *hyCompanybranchCreateCompanyBranchCompanyIDFlag, *hyCompanybranchCreateCompanyBranchTokenFlag)
 			case "update-company-branch":
 				endpoint = c.UpdateCompanyBranch()
-				data, err = hycompanybranchc.BuildUpdateCompanyBranchPayload(*hyCompanybranchUpdateCompanyBranchBodyFlag, *hyCompanybranchUpdateCompanyBranchCompanyDetailIDFlag, *hyCompanybranchUpdateCompanyBranchTokenFlag)
+				data, err = hycompanybranchc.BuildUpdateCompanyBranchPayload(*hyCompanybranchUpdateCompanyBranchBodyFlag, *hyCompanybranchUpdateCompanyBranchCompanyBranchIDFlag, *hyCompanybranchUpdateCompanyBranchTokenFlag)
 			case "delete-company-branch":
 				endpoint = c.DeleteCompanyBranch()
-				data, err = hycompanybranchc.BuildDeleteCompanyBranchPayload(*hyCompanybranchDeleteCompanyBranchCompanyDetailIDFlag, *hyCompanybranchDeleteCompanyBranchTokenFlag)
+				data, err = hycompanybranchc.BuildDeleteCompanyBranchPayload(*hyCompanybranchDeleteCompanyBranchCompanyBranchIDFlag, *hyCompanybranchDeleteCompanyBranchTokenFlag)
 			}
 		case "hy-user-work-history":
 			c := hyuserworkhistoryc.NewClient(scheme, host, doer, enc, dec, restore)
@@ -514,14 +514,14 @@ Additional help:
 `, os.Args[0], os.Args[0])
 }
 func hyCompanybranchGetCompanyBranchUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] hy-companybranch get-company-branch -company-detail-id INT -token STRING
+	fmt.Fprintf(os.Stderr, `%s [flags] hy-companybranch get-company-branch -company-branch-id INT -token STRING
 
 Get company branch with given id
-    -company-detail-id INT: Company detail ID
+    -company-branch-id INT: Company branch ID
     -token STRING: 
 
 Example:
-    `+os.Args[0]+` hy-companybranch get-company-branch --company-detail-id 2069010046497218702 --token "Necessitatibus reiciendis quis."
+    `+os.Args[0]+` hy-companybranch get-company-branch --company-branch-id 2069010046497218702 --token "Necessitatibus reiciendis quis."
 `, os.Args[0])
 }
 
@@ -542,30 +542,30 @@ Example:
 }
 
 func hyCompanybranchUpdateCompanyBranchUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] hy-companybranch update-company-branch -body JSON -company-detail-id INT -token STRING
+	fmt.Fprintf(os.Stderr, `%s [flags] hy-companybranch update-company-branch -body JSON -company-branch-id INT -token STRING
 
 Change company branch properties
     -body JSON: 
-    -company-detail-id INT: Company detail ID
+    -company-branch-id INT: Company branch ID
     -token STRING: 
 
 Example:
     `+os.Args[0]+` hy-companybranch update-company-branch --body '{
       "address": "Shinagawa Tokyo",
       "country_id": 110
-   }' --company-detail-id 7313508458543645628 --token "Atque vitae ratione."
+   }' --company-branch-id 7313508458543645628 --token "Atque vitae ratione."
 `, os.Args[0])
 }
 
 func hyCompanybranchDeleteCompanyBranchUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] hy-companybranch delete-company-branch -company-detail-id INT -token STRING
+	fmt.Fprintf(os.Stderr, `%s [flags] hy-companybranch delete-company-branch -company-branch-id INT -token STRING
 
 Delete company branch
-    -company-detail-id INT: Company detail ID
+    -company-branch-id INT: Company branch ID
     -token STRING: 
 
 Example:
-    `+os.Args[0]+` hy-companybranch delete-company-branch --company-detail-id 4019683876875420858 --token "At natus accusamus eum maxime."
+    `+os.Args[0]+` hy-companybranch delete-company-branch --company-branch-id 4019683876875420858 --token "At natus accusamus eum maxime."
 `, os.Args[0])
 }
 

@@ -92,7 +92,7 @@ paths:
       - http
       security:
       - jwt_header_Authorization: []
-  /company/{companyID}:
+  /company/{company_id}:
     get:
       tags:
       - hy_company
@@ -104,7 +104,7 @@ paths:
           * `api:access`
       operationId: hy_company#getCompanyGroup
       parameters:
-      - name: companyID
+      - name: company_id
         in: path
         description: Company ID
         required: true
@@ -139,7 +139,7 @@ paths:
           * `api:access`
       operationId: hy_company#updateCompany
       parameters:
-      - name: companyID
+      - name: company_id
         in: path
         description: Company ID
         required: true
@@ -176,7 +176,7 @@ paths:
           * `api:access`
       operationId: hy_company#deleteCompany
       parameters:
-      - name: companyID
+      - name: company_id
         in: path
         description: Company ID
         required: true
@@ -193,7 +193,7 @@ paths:
       - http
       security:
       - jwt_header_Authorization: []
-  /company/branch/{companyDetailID}:
+  /company/branch/{company_branch_id}:
     get:
       tags:
       - hy_companybranch
@@ -205,9 +205,9 @@ paths:
           * `api:access`
       operationId: hy_companybranch#getCompanyBranch
       parameters:
-      - name: companyDetailID
+      - name: company_branch_id
         in: path
-        description: Company detail ID
+        description: Company branch ID
         required: true
         type: integer
       - name: Authorization
@@ -233,9 +233,9 @@ paths:
           * `api:access`
       operationId: hy_companybranch#updateCompanyBranch
       parameters:
-      - name: companyDetailID
+      - name: company_branch_id
         in: path
-        description: Company detail ID
+        description: Company branch ID
         required: true
         type: integer
       - name: Authorization
@@ -269,9 +269,9 @@ paths:
           * `api:access`
       operationId: hy_companybranch#deleteCompanyBranch
       parameters:
-      - name: companyDetailID
+      - name: company_branch_id
         in: path
-        description: Company detail ID
+        description: Company branch ID
         required: true
         type: integer
       - name: Authorization
@@ -286,7 +286,7 @@ paths:
       - http
       security:
       - jwt_header_Authorization: []
-  /company/branch/{companyID}:
+  /company/branch/{company_id}:
     post:
       tags:
       - hy_companybranch
@@ -298,7 +298,7 @@ paths:
           * `api:access`
       operationId: hy_companybranch#createCompanyBranch
       parameters:
-      - name: companyID
+      - name: company_id
         in: path
         description: Company ID
         required: true

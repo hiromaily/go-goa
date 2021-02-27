@@ -12,8 +12,8 @@ import (
 )
 
 // GetCompanyBranchHyCompanybranchPath returns the URL path to the hy_companybranch service getCompanyBranch HTTP endpoint.
-func GetCompanyBranchHyCompanybranchPath(companyDetailID int) string {
-	return fmt.Sprintf("/company/branch/%v", companyDetailID)
+func GetCompanyBranchHyCompanybranchPath(companyBranchID int) string {
+	return fmt.Sprintf("/company/branch/%v", companyBranchID)
 }
 
 // CreateCompanyBranchHyCompanybranchPath returns the URL path to the hy_companybranch service createCompanyBranch HTTP endpoint.
@@ -22,11 +22,11 @@ func CreateCompanyBranchHyCompanybranchPath(companyID int) string {
 }
 
 // UpdateCompanyBranchHyCompanybranchPath returns the URL path to the hy_companybranch service updateCompanyBranch HTTP endpoint.
-func UpdateCompanyBranchHyCompanybranchPath(companyDetailID int) string {
-	return fmt.Sprintf("/company/branch/%v", companyDetailID)
+func UpdateCompanyBranchHyCompanybranchPath(companyBranchID int) string {
+	return fmt.Sprintf("/company/branch/%v", companyBranchID)
 }
 
 // DeleteCompanyBranchHyCompanybranchPath returns the URL path to the hy_companybranch service deleteCompanyBranch HTTP endpoint.
-func DeleteCompanyBranchHyCompanybranchPath(companyDetailID int) string {
-	return fmt.Sprintf("/company/branch/%v", companyDetailID)
+func DeleteCompanyBranchHyCompanybranchPath(companyBranchID int) string {
+	return fmt.Sprintf("/company/branch/%v", companyBranchID)
 }

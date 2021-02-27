@@ -59,14 +59,14 @@ var _ = Service(resourcePrefix+"company", func() {
 		Error("NotFound")
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyID", Int, "Company ID") //params
+			Attribute("company_id", Int, "Company ID") //params
 			Attribute("hq_flg", String, "Head Quarters flag", func() {
 				Enum("1", "0")
 			})
 		})
 		Result(CollectionOf(RTCompany))
 		HTTP(func() {
-			GET("/{companyID}")
+			GET("/{company_id}")
 			Response(StatusOK)
 		})
 	})
@@ -127,14 +127,14 @@ var _ = Service(resourcePrefix+"company", func() {
 		Error("NotFound")
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyID", Int, "Company ID") //params
+			Attribute("company_id", Int, "Company ID") //params
 			Attribute("name", String, "Company Name", fieldCompanyName)
 			Attribute("country_id", Int, "Country's ID", fieldCountryID)
 			Attribute("address", String, "Address of company", fieldAddress)
 			Required("name", "country_id", "address")
 		})
 		HTTP(func() {
-			PUT("/{companyID}")
+			PUT("/{company_id}")
 			Response(StatusOK)
 		})
 	})
@@ -162,10 +162,10 @@ var _ = Service(resourcePrefix+"company", func() {
 		Error("NotFound")
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyID", Int, "Company ID") //params
+			Attribute("company_id", Int, "Company ID") //params
 		})
 		HTTP(func() {
-			DELETE("/{companyID}")
+			DELETE("/{company_id}")
 			Response(StatusOK)
 		})
 	})
@@ -212,10 +212,10 @@ var _ = Service(resourcePrefix+"companybranch", func() {
 		Error("BadRequest")
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyDetailID", Int, "Company detail ID")
+			Attribute("company_branch_id", Int, "Company branch ID")
 		})
 		HTTP(func() {
-			GET("/{companyDetailID}")
+			GET("/{company_branch_id}")
 			Response(StatusOK)
 		})
 	})
@@ -238,14 +238,14 @@ var _ = Service(resourcePrefix+"companybranch", func() {
 		Error("BadRequest")
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyID", Int, "Company ID") //params
+			Attribute("company_id", Int, "Company ID") //params
 			Attribute("country_id", Int, "Country's ID", fieldCountryID)
 			Attribute("address", String, "Address of company", fieldAddress)
 			Required("country_id", "address")
 		})
 		HTTP(func() {
 			//TODO:somehow POST path should be unique
-			POST("/{companyID}")
+			POST("/{company_id}")
 			Response(StatusOK)
 			Response(StatusCreated)
 		})
@@ -280,13 +280,13 @@ var _ = Service(resourcePrefix+"companybranch", func() {
 		Error("NotFound")
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyDetailID", Int, "Company detail ID") //params
+			Attribute("company_branch_id", Int, "Company branch ID") //params
 			Attribute("country_id", Int, "Country's ID", fieldCountryID)
 			Attribute("address", String, "Address of company", fieldAddress)
 			Required("country_id", "address")
 		})
 		HTTP(func() {
-			PUT("/{companyDetailID}")
+			PUT("/{company_branch_id}")
 			Response(StatusOK)
 		})
 	})
@@ -315,10 +315,10 @@ var _ = Service(resourcePrefix+"companybranch", func() {
 		Error("NotFound")
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyDetailID", Int, "Company detail ID")
+			Attribute("company_branch_id", Int, "Company branch ID")
 		})
 		HTTP(func() {
-			DELETE("/{companyDetailID}")
+			DELETE("/{company_branch_id}")
 			Response(StatusOK)
 		})
 	})

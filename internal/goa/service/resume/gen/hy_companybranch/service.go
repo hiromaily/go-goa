@@ -47,8 +47,8 @@ var MethodNames = [4]string{"getCompanyBranch", "createCompanyBranch", "updateCo
 type GetCompanyBranchPayload struct {
 	// JWT token used to perform authorization
 	Token *string
-	// Company detail ID
-	CompanyDetailID *int
+	// Company branch ID
+	CompanyBranchID *int
 }
 
 // CreateCompanyBranchPayload is the payload type of the hy_companybranch
@@ -69,8 +69,8 @@ type CreateCompanyBranchPayload struct {
 type UpdateCompanyBranchPayload struct {
 	// JWT token used to perform authorization
 	Token *string
-	// Company detail ID
-	CompanyDetailID *int
+	// Company branch ID
+	CompanyBranchID *int
 	// Country ID
 	CountryID int
 	// Company Address
@@ -82,8 +82,8 @@ type UpdateCompanyBranchPayload struct {
 type DeleteCompanyBranchPayload struct {
 	// JWT token used to perform authorization
 	Token *string
-	// Company detail ID
-	CompanyDetailID *int
+	// Company branch ID
+	CompanyBranchID *int
 }
 
 // MakeNotFound builds a goa.ServiceError from an error.

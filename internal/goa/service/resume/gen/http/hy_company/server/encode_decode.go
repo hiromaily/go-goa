@@ -116,7 +116,7 @@ func DecodeGetCompanyGroupRequest(mux goahttp.Muxer, decoder func(*http.Request)
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["companyID"]
+			companyIDRaw := params["company_id"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
@@ -228,7 +228,7 @@ func DecodeUpdateCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["companyID"]
+			companyIDRaw := params["company_id"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
@@ -276,7 +276,7 @@ func DecodeDeleteCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["companyID"]
+			companyIDRaw := params["company_id"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))

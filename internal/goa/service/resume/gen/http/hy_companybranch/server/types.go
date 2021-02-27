@@ -34,9 +34,9 @@ type UpdateCompanyBranchRequestBody struct {
 
 // NewGetCompanyBranchPayload builds a hy_companybranch service
 // getCompanyBranch endpoint payload.
-func NewGetCompanyBranchPayload(companyDetailID int, token *string) *hycompanybranch.GetCompanyBranchPayload {
+func NewGetCompanyBranchPayload(companyBranchID int, token *string) *hycompanybranch.GetCompanyBranchPayload {
 	v := &hycompanybranch.GetCompanyBranchPayload{}
-	v.CompanyDetailID = &companyDetailID
+	v.CompanyBranchID = &companyBranchID
 	v.Token = token
 
 	return v
@@ -57,12 +57,12 @@ func NewCreateCompanyBranchPayload(body *CreateCompanyBranchRequestBody, company
 
 // NewUpdateCompanyBranchPayload builds a hy_companybranch service
 // updateCompanyBranch endpoint payload.
-func NewUpdateCompanyBranchPayload(body *UpdateCompanyBranchRequestBody, companyDetailID int, token *string) *hycompanybranch.UpdateCompanyBranchPayload {
+func NewUpdateCompanyBranchPayload(body *UpdateCompanyBranchRequestBody, companyBranchID int, token *string) *hycompanybranch.UpdateCompanyBranchPayload {
 	v := &hycompanybranch.UpdateCompanyBranchPayload{
 		CountryID: *body.CountryID,
 		Address:   *body.Address,
 	}
-	v.CompanyDetailID = &companyDetailID
+	v.CompanyBranchID = &companyBranchID
 	v.Token = token
 
 	return v
@@ -70,9 +70,9 @@ func NewUpdateCompanyBranchPayload(body *UpdateCompanyBranchRequestBody, company
 
 // NewDeleteCompanyBranchPayload builds a hy_companybranch service
 // deleteCompanyBranch endpoint payload.
-func NewDeleteCompanyBranchPayload(companyDetailID int, token *string) *hycompanybranch.DeleteCompanyBranchPayload {
+func NewDeleteCompanyBranchPayload(companyBranchID int, token *string) *hycompanybranch.DeleteCompanyBranchPayload {
 	v := &hycompanybranch.DeleteCompanyBranchPayload{}
-	v.CompanyDetailID = &companyDetailID
+	v.CompanyBranchID = &companyBranchID
 	v.Token = token
 
 	return v

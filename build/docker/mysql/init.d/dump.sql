@@ -99,10 +99,10 @@ UNLOCK TABLES;
 
 
 --
--- Table structure for table `t_company_detail`
+-- Table structure for table `t_company_branch`
 --
 
-CREATE TABLE `t_company_detail` (
+CREATE TABLE `t_company_branch` (
   `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'Company detail ID',
   `company_id` int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company ID',
   `hq_flg`     char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'headquarters flg',
@@ -117,9 +117,9 @@ CREATE TABLE `t_company_detail` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-LOCK TABLES `t_company_detail` WRITE;
-/*!40000 ALTER TABLE `t_company_detail` DISABLE KEYS */;
-INSERT INTO `t_company_detail` VALUES
+LOCK TABLES `t_company_branch` WRITE;
+/*!40000 ALTER TABLE `t_company_branch` DISABLE KEYS */;
+INSERT INTO `t_company_branch` VALUES
   (null,1,'1',110,'','0',now(),now()),
   (null,1,'0',155,'','0',now(),now()),
   (null,1,'0',80,'','0',now(),now()),
@@ -130,7 +130,7 @@ INSERT INTO `t_company_detail` VALUES
   (null,5,'1',110,'東京都港区赤坂4-13-13 赤坂ビル4F','0',now(),now()),
   (null,6,'1',110,'東京都江東区東陽2-4-24','0',now(),now()),
   (null,7,'1',155,'Stationsplein 92, 2011 LM Haarlem','0',now(),now());
-/*!40000 ALTER TABLE `t_company_detail` ENABLE KEYS */;
+/*!40000 ALTER TABLE `t_company_branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
 

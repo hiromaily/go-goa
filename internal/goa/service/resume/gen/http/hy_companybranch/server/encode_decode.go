@@ -32,19 +32,19 @@ func EncodeGetCompanyBranchResponse(encoder func(context.Context, http.ResponseW
 func DecodeGetCompanyBranchRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			companyDetailID int
+			companyBranchID int
 			token           *string
 			err             error
 
 			params = mux.Vars(r)
 		)
 		{
-			companyDetailIDRaw := params["companyDetailID"]
-			v, err2 := strconv.ParseInt(companyDetailIDRaw, 10, strconv.IntSize)
+			companyBranchIDRaw := params["company_branch_id"]
+			v, err2 := strconv.ParseInt(companyBranchIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyDetailID", companyDetailIDRaw, "integer"))
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyBranchID", companyBranchIDRaw, "integer"))
 			}
-			companyDetailID = int(v)
+			companyBranchID = int(v)
 		}
 		tokenRaw := r.Header.Get("Authorization")
 		if tokenRaw != "" {
@@ -53,7 +53,7 @@ func DecodeGetCompanyBranchRequest(mux goahttp.Muxer, decoder func(*http.Request
 		if err != nil {
 			return nil, err
 		}
-		payload := NewGetCompanyBranchPayload(companyDetailID, token)
+		payload := NewGetCompanyBranchPayload(companyBranchID, token)
 		if payload.Token != nil {
 			if strings.Contains(*payload.Token, " ") {
 				// Remove authorization scheme prefix (e.g. "Bearer")
@@ -102,7 +102,7 @@ func DecodeCreateCompanyBranchRequest(mux goahttp.Muxer, decoder func(*http.Requ
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["companyID"]
+			companyIDRaw := params["company_id"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
@@ -159,18 +159,18 @@ func DecodeUpdateCompanyBranchRequest(mux goahttp.Muxer, decoder func(*http.Requ
 		}
 
 		var (
-			companyDetailID int
+			companyBranchID int
 			token           *string
 
 			params = mux.Vars(r)
 		)
 		{
-			companyDetailIDRaw := params["companyDetailID"]
-			v, err2 := strconv.ParseInt(companyDetailIDRaw, 10, strconv.IntSize)
+			companyBranchIDRaw := params["company_branch_id"]
+			v, err2 := strconv.ParseInt(companyBranchIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyDetailID", companyDetailIDRaw, "integer"))
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyBranchID", companyBranchIDRaw, "integer"))
 			}
-			companyDetailID = int(v)
+			companyBranchID = int(v)
 		}
 		tokenRaw := r.Header.Get("Authorization")
 		if tokenRaw != "" {
@@ -179,7 +179,7 @@ func DecodeUpdateCompanyBranchRequest(mux goahttp.Muxer, decoder func(*http.Requ
 		if err != nil {
 			return nil, err
 		}
-		payload := NewUpdateCompanyBranchPayload(&body, companyDetailID, token)
+		payload := NewUpdateCompanyBranchPayload(&body, companyBranchID, token)
 		if payload.Token != nil {
 			if strings.Contains(*payload.Token, " ") {
 				// Remove authorization scheme prefix (e.g. "Bearer")
@@ -206,19 +206,19 @@ func EncodeDeleteCompanyBranchResponse(encoder func(context.Context, http.Respon
 func DecodeDeleteCompanyBranchRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
 		var (
-			companyDetailID int
+			companyBranchID int
 			token           *string
 			err             error
 
 			params = mux.Vars(r)
 		)
 		{
-			companyDetailIDRaw := params["companyDetailID"]
-			v, err2 := strconv.ParseInt(companyDetailIDRaw, 10, strconv.IntSize)
+			companyBranchIDRaw := params["company_branch_id"]
+			v, err2 := strconv.ParseInt(companyBranchIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyDetailID", companyDetailIDRaw, "integer"))
+				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyBranchID", companyBranchIDRaw, "integer"))
 			}
-			companyDetailID = int(v)
+			companyBranchID = int(v)
 		}
 		tokenRaw := r.Header.Get("Authorization")
 		if tokenRaw != "" {
@@ -227,7 +227,7 @@ func DecodeDeleteCompanyBranchRequest(mux goahttp.Muxer, decoder func(*http.Requ
 		if err != nil {
 			return nil, err
 		}
-		payload := NewDeleteCompanyBranchPayload(companyDetailID, token)
+		payload := NewDeleteCompanyBranchPayload(companyBranchID, token)
 		if payload.Token != nil {
 			if strings.Contains(*payload.Token, " ") {
 				// Remove authorization scheme prefix (e.g. "Bearer")

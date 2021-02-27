@@ -63,12 +63,12 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"CompanyList", "GET", "/company"},
-			{"GetCompanyGroup", "GET", "/company/{companyID}"},
+			{"GetCompanyGroup", "GET", "/company/{company_id}"},
 			{"CreateCompany", "POST", "/company"},
-			{"UpdateCompany", "PUT", "/company/{companyID}"},
-			{"DeleteCompany", "DELETE", "/company/{companyID}"},
+			{"UpdateCompany", "PUT", "/company/{company_id}"},
+			{"DeleteCompany", "DELETE", "/company/{company_id}"},
 			{"CORS", "OPTIONS", "/company"},
-			{"CORS", "OPTIONS", "/company/{companyID}"},
+			{"CORS", "OPTIONS", "/company/{company_id}"},
 		},
 		CompanyList:     NewCompanyListHandler(e.CompanyList, mux, decoder, encoder, errhandler, formatter),
 		GetCompanyGroup: NewGetCompanyGroupHandler(e.GetCompanyGroup, mux, decoder, encoder, errhandler, formatter),
@@ -162,7 +162,7 @@ func MountGetCompanyGroupHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/company/{companyID}", f)
+	mux.Handle("GET", "/company/{company_id}", f)
 }
 
 // NewGetCompanyGroupHandler creates a HTTP handler which loads the HTTP
@@ -264,7 +264,7 @@ func MountUpdateCompanyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("PUT", "/company/{companyID}", f)
+	mux.Handle("PUT", "/company/{company_id}", f)
 }
 
 // NewUpdateCompanyHandler creates a HTTP handler which loads the HTTP request
@@ -315,7 +315,7 @@ func MountDeleteCompanyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/company/{companyID}", f)
+	mux.Handle("DELETE", "/company/{company_id}", f)
 }
 
 // NewDeleteCompanyHandler creates a HTTP handler which loads the HTTP request
@@ -368,7 +368,7 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 		}
 	}
 	mux.Handle("OPTIONS", "/company", f)
-	mux.Handle("OPTIONS", "/company/{companyID}", f)
+	mux.Handle("OPTIONS", "/company/{company_id}", f)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.
