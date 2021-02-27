@@ -10,6 +10,9 @@ import (
 // https://pkg.go.dev/goa.design/goa/v3/dsl
 // https://goa.design/learn/upgrading/
 
+// https://goa.design/learn/getting-started/
+// https://goa.design/ja/learn/getting-started/
+
 // API defines a network service API. It provides the API name, description and other global
 // properties. There may only be one API declaration in a given design package.
 var _ = API("resume-api", func() {

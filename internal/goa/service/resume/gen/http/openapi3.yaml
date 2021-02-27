@@ -341,21 +341,21 @@ paths:
               example:
                 id: 10
                 token: token.string
+  /openapi.json:
+    get:
+      tags:
+      - public
+      summary: Download ../gen/http/openapi.json
+      operationId: public#/openapi.json
+      responses:
+        "200":
+          description: File downloaded
   /swagger-ui/*filepath:
     get:
       tags:
       - public
       summary: Download resources/swagger-ui/dist/
       operationId: public#/swagger-ui/*filepath
-      responses:
-        "200":
-          description: File downloaded
-  /swagger.json:
-    get:
-      tags:
-      - public
-      summary: Download goa/swagger/swagger.json
-      operationId: public#/swagger.json
       responses:
         "200":
           description: File downloaded

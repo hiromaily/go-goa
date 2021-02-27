@@ -63,7 +63,8 @@ gen-design:
 
 .PHONY: gen-example
 gen-example:
-	cd internal/goa/service/resume && goa example resume/design -o ./example
+	#cd internal/goa/service/resume && goa example resume/design -o $(PROJECT_ROOT)/example
+	cd internal/goa/service/resume && goa example resume/design
 
 
 ###############################################################################

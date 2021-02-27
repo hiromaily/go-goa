@@ -21,7 +21,8 @@ var _ = Service("public", func() {
 	//})
 	Files("/*filepath", "public/")
 	Files("/swagger-ui/*filepath", "resources/swagger-ui/dist/")
-	Files("/swagger.json", "goa/swagger/swagger.json")
+	//Files("/swagger.json", "goa/swagger/swagger.json")
+	Files("/openapi.json", "../gen/http/openapi.json")
 })
 
 //var _ = Resource("public", func() {

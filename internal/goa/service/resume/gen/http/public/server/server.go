@@ -58,10 +58,10 @@ func New(
 		Mounts: []*MountPoint{
 			{"CORS", "OPTIONS", "/*filepath"},
 			{"CORS", "OPTIONS", "/swagger-ui/*filepath"},
-			{"CORS", "OPTIONS", "/swagger.json"},
+			{"CORS", "OPTIONS", "/openapi.json"},
 			{"public/", "GET", "/*filepath"},
 			{"resources/swagger-ui/dist/", "GET", "/swagger-ui/*filepath"},
-			{"goa/swagger/swagger.json", "GET", "/swagger.json"},
+			{"../gen/http/openapi.json", "GET", "/openapi.json"},
 		},
 		CORS: NewCORSHandler(),
 	}
@@ -84,8 +84,8 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountResourcesSwaggerUIDist(mux, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "resources/swagger-ui/dist/")
 	}))
-	MountGoaSwaggerSwaggerJSON(mux, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "goa/swagger/swagger.json")
+	MountGenHTTPOpenapiJSON(mux, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "../gen/http/openapi.json")
 	}))
 }
 
@@ -100,10 +100,10 @@ func MountResourcesSwaggerUIDist(mux goahttp.Muxer, h http.Handler) {
 	mux.Handle("GET", "/swagger-ui/*filepath", handlePublicOrigin(h).ServeHTTP)
 }
 
-// MountGoaSwaggerSwaggerJSON configures the mux to serve GET request made to
-// "/swagger.json".
-func MountGoaSwaggerSwaggerJSON(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/swagger.json", handlePublicOrigin(h).ServeHTTP)
+// MountGenHTTPOpenapiJSON configures the mux to serve GET request made to
+// "/openapi.json".
+func MountGenHTTPOpenapiJSON(mux goahttp.Muxer, h http.Handler) {
+	mux.Handle("GET", "/openapi.json", handlePublicOrigin(h).ServeHTTP)
 }
 
 // MountCORSHandler configures the mux to serve the CORS endpoints for the
@@ -118,7 +118,7 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	}
 	mux.Handle("OPTIONS", "/*filepath", f)
 	mux.Handle("OPTIONS", "/swagger-ui/*filepath", f)
-	mux.Handle("OPTIONS", "/swagger.json", f)
+	mux.Handle("OPTIONS", "/openapi.json", f)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

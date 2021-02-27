@@ -358,12 +358,12 @@ paths:
             $ref: '#/definitions/AuthLoginResponseBody'
       schemes:
       - http
-  /swagger-ui/*filepath:
+  /openapi.json:
     get:
       tags:
       - public
-      summary: Download resources/swagger-ui/dist/
-      operationId: public#/swagger-ui/*filepath
+      summary: Download ../gen/http/openapi.json
+      operationId: public#/openapi.json
       responses:
         "200":
           description: File downloaded
@@ -371,12 +371,12 @@ paths:
             type: file
       schemes:
       - http
-  /swagger.json:
+  /swagger-ui/*filepath:
     get:
       tags:
       - public
-      summary: Download goa/swagger/swagger.json
-      operationId: public#/swagger.json
+      summary: Download resources/swagger-ui/dist/
+      operationId: public#/swagger-ui/*filepath
       responses:
         "200":
           description: File downloaded

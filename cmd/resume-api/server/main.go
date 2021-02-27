@@ -9,23 +9,18 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
+	resumeapi "resume"
+	auth "resume/gen/auth"
+	health "resume/gen/health"
+	hycompany "resume/gen/hy_company"
+	hycompanybranch "resume/gen/hy_companybranch"
+	hytech "resume/gen/hy_tech"
+	hyuser "resume/gen/hy_user"
+	hyuserworkhistory "resume/gen/hy_user_work_history"
+	hyusertech "resume/gen/hy_usertech"
 	"sync"
 	"syscall"
-
-	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/auth"
-	"github.com/hiromaily/go-goa/internal/goa/service/resume/gen/health"
-	hycompany "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_company"
-	hycompanybranch "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_companybranch"
-	hytech "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_tech"
-	hyuser "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user"
-	hyuserworkhistory "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_user_work_history"
-	hyusertech "github.com/hiromaily/go-goa/internal/goa/service/resume/gen/hy_usertech"
-	"github.com/hiromaily/go-goa/pkg/goa/service"
 )
-
-// replace
-// resume/example to
-// github.com/hiromaily/go-goa/internal/goa/service/resume
 
 func main() {
 	// Define command line flags, add any other flag required to configure the
@@ -59,14 +54,14 @@ func main() {
 		hyUserWorkHistorySvc hyuserworkhistory.Service
 	)
 	{
-		authSvc = service.NewAuth(logger)
-		hyCompanySvc = service.NewHyCompany(logger)
-		hyCompanybranchSvc = service.NewHyCompanybranch(logger)
-		healthSvc = service.NewHealth(logger)
-		hyTechSvc = service.NewHyTech(logger)
-		hyUserSvc = service.NewHyUser(logger)
-		hyUsertechSvc = service.NewHyUsertech(logger)
-		hyUserWorkHistorySvc = service.NewHyUserWorkHistory(logger)
+		authSvc = resumeapi.NewAuth(logger)
+		hyCompanySvc = resumeapi.NewHyCompany(logger)
+		hyCompanybranchSvc = resumeapi.NewHyCompanybranch(logger)
+		healthSvc = resumeapi.NewHealth(logger)
+		hyTechSvc = resumeapi.NewHyTech(logger)
+		hyUserSvc = resumeapi.NewHyUser(logger)
+		hyUsertechSvc = resumeapi.NewHyUsertech(logger)
+		hyUserWorkHistorySvc = resumeapi.NewHyUserWorkHistory(logger)
 	}
 
 	// Wrap the services in endpoints that can be invoked from other services
