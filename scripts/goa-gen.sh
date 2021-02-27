@@ -5,6 +5,9 @@ cd internal/goa/service/resume
 goa gen resume/design
 goa example resume/design
 
+# replace
+grep -l '\"resume\"' ./internal/goa/service/resume/cmd/resume_api_server/*.go | xargs sed -i.bak -e 's|\"resume\"|\"github.com/hiromaily/go-goa/pkg/goa/service/resume\"|g'
+grep -l '\"resume\"' ./internal/goa/service/resume/cmd/resume_api_server-cli/*.go | xargs sed -i.bak -e 's|\"resume\"|\"github.com/hiromaily/go-goa/pkg/goa/service/resume\"|g'
 
 # mv
 mv cmd/resume_api_server/*.go ${GOPATH}/src/github.com/hiromaily/go-goa/cmd/resume-api/server/

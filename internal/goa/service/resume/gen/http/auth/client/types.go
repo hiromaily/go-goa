@@ -32,7 +32,7 @@ type LoginResponseBody struct {
 
 // NewLoginRequestBody builds the HTTP request body from the payload of the
 // "login" endpoint of the "auth" service.
-func NewLoginRequestBody(p *auth.LoginPayload) *LoginRequestBody {
+func NewLoginRequestBody(p *auth.PayloadLogin) *LoginRequestBody {
 	body := &LoginRequestBody{
 		Email:    p.Email,
 		Password: p.Password,

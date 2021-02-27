@@ -14,7 +14,7 @@ var JWT = JWTSecurity("jwt", func() {
 	Scope("api:access", "API access") // Define "api:access" scope
 })
 
-var PayloadLogin = Type("LoginPayload", func() {
+var PayloadLogin = Type("PayloadLogin", func() {
 	Attribute("email", String, "E-mail of user", fieldEmail)
 	Attribute("password", String, "Password", fieldPassword)
 })

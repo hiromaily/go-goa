@@ -34,7 +34,7 @@ func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 // of service "auth".
 func NewLoginEndpoint(s Service) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
-		p := req.(*LoginPayload)
+		p := req.(*PayloadLogin)
 		res, err := s.Login(ctx, p)
 		if err != nil {
 			return nil, err

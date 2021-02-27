@@ -38,9 +38,9 @@ func (c *Client) BuildLoginRequest(ctx context.Context, v interface{}) (*http.Re
 // server.
 func EncodeLoginRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
 	return func(req *http.Request, v interface{}) error {
-		p, ok := v.(*auth.LoginPayload)
+		p, ok := v.(*auth.PayloadLogin)
 		if !ok {
-			return goahttp.ErrInvalidType("auth", "login", "*auth.LoginPayload", v)
+			return goahttp.ErrInvalidType("auth", "login", "*auth.PayloadLogin", v)
 		}
 		body := NewLoginRequestBody(p)
 		if err := encoder(req).Encode(&body); err != nil {

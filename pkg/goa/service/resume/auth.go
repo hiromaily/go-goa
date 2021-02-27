@@ -18,7 +18,7 @@ func NewAuth(logger *log.Logger) auth.Service {
 }
 
 // Login implements login.
-func (s *authsrvc) Login(ctx context.Context, p *auth.LoginPayload) (res *auth.Authorized, err error) {
+func (s *authsrvc) Login(ctx context.Context, p *auth.PayloadLogin) (res *auth.Authorized, err error) {
 	res = &auth.Authorized{}
 	s.logger.Print("auth.login")
 	return

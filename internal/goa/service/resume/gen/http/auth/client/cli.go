@@ -18,7 +18,7 @@ import (
 
 // BuildLoginPayload builds the payload for the auth login endpoint from CLI
 // flags.
-func BuildLoginPayload(authLoginBody string) (*auth.LoginPayload, error) {
+func BuildLoginPayload(authLoginBody string) (*auth.PayloadLogin, error) {
 	var err error
 	var body LoginRequestBody
 	{
@@ -38,7 +38,7 @@ func BuildLoginPayload(authLoginBody string) (*auth.LoginPayload, error) {
 			return nil, err
 		}
 	}
-	v := &auth.LoginPayload{
+	v := &auth.PayloadLogin{
 		Email:    body.Email,
 		Password: body.Password,
 	}

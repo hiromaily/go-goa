@@ -63,8 +63,29 @@ gen-design:
 
 .PHONY: gen-example
 gen-example:
-	#cd internal/goa/service/resume && goa example resume/design -o $(PROJECT_ROOT)/example
 	cd internal/goa/service/resume && goa example resume/design
+
+.PHONY: replace-example
+replace-example:
+	grep -l '\"resume\"' ./internal/goa/service/resume/cmd/resume_api_server/*.go | xargs sed -i.bak -e 's|\"resume\"|\"github.com/hiromaily/go-goa/pkg/goa/service/resume\"|g'
+	grep -l '\"resume\"' ./internal/goa/service/resume/cmd/resume_api_server-cli/*.go | xargs sed -i.bak -e 's|\"resume\"|\"github.com/hiromaily/go-goa/pkg/goa/service/resume\"|g'
+	#resumeapi "github.com/hiromaily/go-goa/pkg/goa/service/resume"
+	#resumeapi "resume"
+
+.PHONY: move-example
+move-example:
+	mv internal/goa/service/resume/cmd/resume_api_server/*.go ${GOPATH}/src/github.com/hiromaily/go-goa/cmd/resume-api/server/
+	mv internal/goa/service/resume/cmd/resume_api_server-cli/*.go ${GOPATH}/src/github.com/hiromaily/go-goa/cmd/resume-api/cli/
+	mv internal/goa/service/resume/auth.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
+	mv internal/goa/service/resume/health.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
+	mv internal/goa/service/resume/hy_company.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
+	mv internal/goa/service/resume/hy_companybranch.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
+	mv internal/goa/service/resume/hy_tech.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
+	mv internal/goa/service/resume/hy_user.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
+	mv internal/goa/service/resume/hy_user_work_history.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
+	mv internal/goa/service/resume/hy_usertech.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
+	mv internal/goa/service/resume/public.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
+	rm -rf internal/goa/service/resume/cmd
 
 
 ###############################################################################
