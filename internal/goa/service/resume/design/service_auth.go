@@ -46,7 +46,13 @@ var _ = Service("auth", func() {
 	// Method defines a single service method.
 	Method("login", func() { // just name
 		NoSecurity()
-		Payload(PayloadLogin, func() {
+		//Note: embed Type causes wrong generated code
+		//Payload(PayloadLogin, func() {
+		//	Required("email", "password")
+		//})
+		Payload(func() {
+			Attribute("email", String, "E-mail of user", fieldEmail)
+			Attribute("password", String, "Password", fieldPassword)
 			Required("email", "password")
 		})
 		Result(RTAuthorized)

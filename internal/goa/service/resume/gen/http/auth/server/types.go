@@ -43,9 +43,9 @@ func NewLoginResponseBody(res *authviews.AuthorizedView) *LoginResponseBody {
 	return body
 }
 
-// NewLoginPayloadLogin builds a auth service login endpoint payload.
-func NewLoginPayloadLogin(body *LoginRequestBody) *auth.PayloadLogin {
-	v := &auth.PayloadLogin{
+// NewLoginPayload builds a auth service login endpoint payload.
+func NewLoginPayload(body *LoginRequestBody) *auth.LoginPayload {
+	v := &auth.LoginPayload{
 		Email:    *body.Email,
 		Password: *body.Password,
 	}

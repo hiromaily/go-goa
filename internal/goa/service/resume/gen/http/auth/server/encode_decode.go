@@ -48,7 +48,7 @@ func DecodeLoginRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.D
 		if err != nil {
 			return nil, err
 		}
-		payload := NewLoginPayloadLogin(&body)
+		payload := NewLoginPayload(&body)
 
 		return payload, nil
 	}

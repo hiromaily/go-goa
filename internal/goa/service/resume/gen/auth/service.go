@@ -17,7 +17,7 @@ import (
 // The auth service performs login with JWT
 type Service interface {
 	// Login implements login.
-	Login(context.Context, *PayloadLogin) (res *Authorized, err error)
+	Login(context.Context, *LoginPayload) (res *Authorized, err error)
 }
 
 // ServiceName is the name of the service as defined in the design. This is the
@@ -30,12 +30,12 @@ const ServiceName = "auth"
 // MethodKey key.
 var MethodNames = [1]string{"login"}
 
-// PayloadLogin is the payload type of the auth service login method.
-type PayloadLogin struct {
+// LoginPayload is the payload type of the auth service login method.
+type LoginPayload struct {
 	// E-mail of user
-	Email *string
+	Email string
 	// Password
-	Password *string
+	Password string
 }
 
 // Authorized is the result type of the auth service login method.
