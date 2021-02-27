@@ -45,13 +45,13 @@ func BuildGetCompanyBranchPayload(hyCompanybranchGetCompanyBranchCompanyBranchID
 
 // BuildCreateCompanyBranchPayload builds the payload for the hy_companybranch
 // createCompanyBranch endpoint from CLI flags.
-func BuildCreateCompanyBranchPayload(hyCompanybranchCreateCompanyBranchBody string, hyCompanybranchCreateCompanyBranchCompanyID string, hyCompanybranchCreateCompanyBranchToken string) (*hycompanybranch.CreateCompanyBranchPayload, error) {
+func BuildCreateCompanyBranchPayload(hyCompanybranchCreateCompanyBranchBody string, hyCompanybranchCreateCompanyBranchToken string) (*hycompanybranch.CreateCompanyBranchPayload, error) {
 	var err error
 	var body CreateCompanyBranchRequestBody
 	{
 		err = json.Unmarshal([]byte(hyCompanybranchCreateCompanyBranchBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"address\": \"Shinagawa Tokyo\",\n      \"country_id\": 110\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"address\": \"Shinagawa Tokyo\",\n      \"company_id\": 6011793900613907701,\n      \"country_id\": 110\n   }'")
 		}
 		if body.CountryID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("body.country_id", body.CountryID, 1, true))
@@ -69,15 +69,6 @@ func BuildCreateCompanyBranchPayload(hyCompanybranchCreateCompanyBranchBody stri
 			return nil, err
 		}
 	}
-	var companyID int
-	{
-		var v int64
-		v, err = strconv.ParseInt(hyCompanybranchCreateCompanyBranchCompanyID, 10, 64)
-		companyID = int(v)
-		if err != nil {
-			return nil, fmt.Errorf("invalid value for companyID, must be INT")
-		}
-	}
 	var token *string
 	{
 		if hyCompanybranchCreateCompanyBranchToken != "" {
@@ -85,10 +76,10 @@ func BuildCreateCompanyBranchPayload(hyCompanybranchCreateCompanyBranchBody stri
 		}
 	}
 	v := &hycompanybranch.CreateCompanyBranchPayload{
+		CompanyID: body.CompanyID,
 		CountryID: body.CountryID,
 		Address:   body.Address,
 	}
-	v.CompanyID = &companyID
 	v.Token = token
 
 	return v, nil

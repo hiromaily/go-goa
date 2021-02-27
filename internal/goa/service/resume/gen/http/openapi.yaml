@@ -193,6 +193,40 @@ paths:
       - http
       security:
       - jwt_header_Authorization: []
+  /company/branch:
+    post:
+      tags:
+      - hy_companybranch
+      summary: createCompanyBranch hy_companybranch
+      description: |-
+        Create new company branch
+
+        **Required security scopes for jwt**:
+          * `api:access`
+      operationId: hy_companybranch#createCompanyBranch
+      parameters:
+      - name: Authorization
+        in: header
+        description: JWT token used to perform authorization
+        required: false
+        type: string
+      - name: CreateCompanyBranchRequestBody
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/HyCompanybranchCreateCompanyBranchRequestBody'
+          required:
+          - country_id
+          - address
+      responses:
+        "200":
+          description: OK response.
+        "201":
+          description: Created response.
+      schemes:
+      - http
+      security:
+      - jwt_header_Authorization: []
   /company/branch/{company_branch_id}:
     get:
       tags:
@@ -282,45 +316,6 @@ paths:
       responses:
         "200":
           description: OK response.
-      schemes:
-      - http
-      security:
-      - jwt_header_Authorization: []
-  /company/branch/{company_id}:
-    post:
-      tags:
-      - hy_companybranch
-      summary: createCompanyBranch hy_companybranch
-      description: |-
-        Create new company branch
-
-        **Required security scopes for jwt**:
-          * `api:access`
-      operationId: hy_companybranch#createCompanyBranch
-      parameters:
-      - name: company_id
-        in: path
-        description: Company ID
-        required: true
-        type: integer
-      - name: Authorization
-        in: header
-        description: JWT token used to perform authorization
-        required: false
-        type: string
-      - name: CreateCompanyBranchRequestBody
-        in: body
-        required: true
-        schema:
-          $ref: '#/definitions/HyCompanybranchCreateCompanyBranchRequestBody'
-          required:
-          - country_id
-          - address
-      responses:
-        "200":
-          description: OK response.
-        "201":
-          description: Created response.
       schemes:
       - http
       security:
@@ -854,10 +849,10 @@ definitions:
         minimum: 1
       country_name:
         type: string
-        example: Sint saepe illo officiis.
+        example: Officiis labore illo.
       hq_flg:
         type: string
-        example: Voluptatem fuga cum.
+        example: Cum aperiam sint saepe.
       id:
         type: integer
         description: ID
@@ -873,8 +868,8 @@ definitions:
     example:
       address: Shinagawa Tokyo
       company_id: 10
-      country_name: Qui eveniet consectetur laudantium.
-      hq_flg: Illo totam qui rerum.
+      country_name: Animi corrupti libero beatae autem.
+      hq_flg: Qui rerum fuga qui eveniet consectetur laudantium.
       id: 10
       name: Company
     required:
@@ -891,25 +886,19 @@ definitions:
     - address: Shinagawa Tokyo
       company_id: 10
       country_name: Ducimus sapiente.
-      hq_flg: Sunt saepe.
+      hq_flg: Autem sunt saepe.
       id: 10
       name: Company
     - address: Shinagawa Tokyo
       company_id: 10
       country_name: Ducimus sapiente.
-      hq_flg: Sunt saepe.
+      hq_flg: Autem sunt saepe.
       id: 10
       name: Company
     - address: Shinagawa Tokyo
       company_id: 10
       country_name: Ducimus sapiente.
-      hq_flg: Sunt saepe.
-      id: 10
-      name: Company
-    - address: Shinagawa Tokyo
-      company_id: 10
-      country_name: Ducimus sapiente.
-      hq_flg: Sunt saepe.
+      hq_flg: Autem sunt saepe.
       id: 10
       name: Company
   HyCompanyCreateCompanyRequestBody:
@@ -995,6 +984,11 @@ definitions:
         example: Shinagawa Tokyo
         minLength: 2
         maxLength: 80
+      company_id:
+        type: integer
+        description: Company ID
+        example: 2433896226403955730
+        format: int64
       country_id:
         type: integer
         description: Country ID
@@ -1003,6 +997,7 @@ definitions:
         maximum: 999
     example:
       address: Shinagawa Tokyo
+      company_id: 584610433152659516
       country_id: 110
     required:
     - country_id
@@ -1060,10 +1055,10 @@ definitions:
         minimum: 1
       country_name:
         type: string
-        example: Dolor maiores soluta rerum dolorum.
+        example: Animi nihil consequatur saepe labore.
       hq_flg:
         type: string
-        example: Autem nobis cupiditate.
+        example: Soluta rerum dolorum fuga vel fugit possimus.
       id:
         type: integer
         description: ID
@@ -1079,8 +1074,8 @@ definitions:
     example:
       address: Shinagawa Tokyo
       company_id: 10
-      country_name: Nihil consequatur saepe labore.
-      hq_flg: Vel fugit possimus dolores.
+      country_name: Magni voluptas deleniti consequatur sint unde quo.
+      hq_flg: Dolorem aliquam tenetur officia.
       id: 10
       name: Company
     required:
@@ -1094,6 +1089,10 @@ definitions:
     description: TechListResponseBody is the result type for an array of TechResponse
       (default view)
     example:
+    - id: 10
+      name: Golang
+    - id: 10
+      name: Golang
     - id: 10
       name: Golang
     - id: 10
@@ -1136,13 +1135,13 @@ definitions:
       userID:
         type: integer
         description: User ID
-        example: 4668719627662343888
+        example: 4921675786632078098
         minimum: 1
     example:
       email: hy@gmail.com
       password: xxxxxxxx
       user_name: Hiroki
-      userID: 7631263973801819665
+      userID: 342619316233253573
     required:
     - user_name
     - email
@@ -1218,6 +1217,12 @@ definitions:
     - email: hy@gmail.com
       id: 10
       user_name: Hiroki
+    - email: hy@gmail.com
+      id: 10
+      user_name: Hiroki
+    - email: hy@gmail.com
+      id: 10
+      user_name: Hiroki
   HyUserWorkHistoryUserworkhistoryResponseCollection:
     title: 'Mediatype identifier: application/vnd.userworkhistory+json; type=collection;
       view=default'
@@ -1239,6 +1244,18 @@ definitions:
       techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
       term: Jul 2017 - Aug 2017
       title: Developer
+    - company: Company
+      country: nl
+      description: '["Developed resume site for job seeking."]'
+      techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+      term: Jul 2017 - Aug 2017
+      title: Developer
+    - company: Company
+      country: nl
+      description: '["Developed resume site for job seeking."]'
+      techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+      term: Jul 2017 - Aug 2017
+      title: Developer
   HyUsertechUsertechResponseCollection:
     title: 'Mediatype identifier: application/vnd.usertech+json; type=collection;
       view=default'
@@ -1248,10 +1265,6 @@ definitions:
     description: GetUserLikeTechResponseBody is the result type for an array of UsertechResponse
       (default view)
     example:
-    - id: 10
-      tech_name: Golang
-    - id: 10
-      tech_name: Golang
     - id: 10
       tech_name: Golang
     - id: 10

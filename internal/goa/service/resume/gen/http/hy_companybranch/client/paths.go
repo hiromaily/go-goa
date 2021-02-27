@@ -17,8 +17,8 @@ func GetCompanyBranchHyCompanybranchPath(companyBranchID int) string {
 }
 
 // CreateCompanyBranchHyCompanybranchPath returns the URL path to the hy_companybranch service createCompanyBranch HTTP endpoint.
-func CreateCompanyBranchHyCompanybranchPath(companyID int) string {
-	return fmt.Sprintf("/company/branch/%v", companyID)
+func CreateCompanyBranchHyCompanybranchPath() string {
+	return "/company/branch"
 }
 
 // UpdateCompanyBranchHyCompanybranchPath returns the URL path to the hy_companybranch service updateCompanyBranch HTTP endpoint.

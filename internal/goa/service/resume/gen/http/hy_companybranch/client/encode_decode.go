@@ -98,19 +98,7 @@ func DecodeGetCompanyBranchResponse(decoder func(*http.Response) goahttp.Decoder
 // method and path set to call the "hy_companybranch" service
 // "createCompanyBranch" endpoint
 func (c *Client) BuildCreateCompanyBranchRequest(ctx context.Context, v interface{}) (*http.Request, error) {
-	var (
-		companyID int
-	)
-	{
-		p, ok := v.(*hycompanybranch.CreateCompanyBranchPayload)
-		if !ok {
-			return nil, goahttp.ErrInvalidType("hy_companybranch", "createCompanyBranch", "*hycompanybranch.CreateCompanyBranchPayload", v)
-		}
-		if p.CompanyID != nil {
-			companyID = *p.CompanyID
-		}
-	}
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: CreateCompanyBranchHyCompanybranchPath(companyID)}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: CreateCompanyBranchHyCompanybranchPath()}
 	req, err := http.NewRequest("POST", u.String(), nil)
 	if err != nil {
 		return nil, goahttp.ErrInvalidURL("hy_companybranch", "createCompanyBranch", u.String(), err)

@@ -62,11 +62,11 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"GetCompanyBranch", "GET", "/company/branch/{company_branch_id}"},
-			{"CreateCompanyBranch", "POST", "/company/branch/{company_id}"},
+			{"CreateCompanyBranch", "POST", "/company/branch"},
 			{"UpdateCompanyBranch", "PUT", "/company/branch/{company_branch_id}"},
 			{"DeleteCompanyBranch", "DELETE", "/company/branch/{company_branch_id}"},
 			{"CORS", "OPTIONS", "/company/branch/{company_branch_id}"},
-			{"CORS", "OPTIONS", "/company/branch/{company_id}"},
+			{"CORS", "OPTIONS", "/company/branch"},
 		},
 		GetCompanyBranch:    NewGetCompanyBranchHandler(e.GetCompanyBranch, mux, decoder, encoder, errhandler, formatter),
 		CreateCompanyBranch: NewCreateCompanyBranchHandler(e.CreateCompanyBranch, mux, decoder, encoder, errhandler, formatter),
@@ -157,7 +157,7 @@ func MountCreateCompanyBranchHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/company/branch/{company_id}", f)
+	mux.Handle("POST", "/company/branch", f)
 }
 
 // NewCreateCompanyBranchHandler creates a HTTP handler which loads the HTTP
@@ -315,7 +315,7 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 		}
 	}
 	mux.Handle("OPTIONS", "/company/branch/{company_branch_id}", f)
-	mux.Handle("OPTIONS", "/company/branch/{company_id}", f)
+	mux.Handle("OPTIONS", "/company/branch", f)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

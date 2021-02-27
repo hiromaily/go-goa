@@ -17,6 +17,8 @@ import (
 // CreateCompanyBranchRequestBody is the type of the "hy_companybranch" service
 // "createCompanyBranch" endpoint HTTP request body.
 type CreateCompanyBranchRequestBody struct {
+	// Company ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Country ID
 	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
 	// Company Address
@@ -44,12 +46,12 @@ func NewGetCompanyBranchPayload(companyBranchID int, token *string) *hycompanybr
 
 // NewCreateCompanyBranchPayload builds a hy_companybranch service
 // createCompanyBranch endpoint payload.
-func NewCreateCompanyBranchPayload(body *CreateCompanyBranchRequestBody, companyID int, token *string) *hycompanybranch.CreateCompanyBranchPayload {
+func NewCreateCompanyBranchPayload(body *CreateCompanyBranchRequestBody, token *string) *hycompanybranch.CreateCompanyBranchPayload {
 	v := &hycompanybranch.CreateCompanyBranchPayload{
+		CompanyID: body.CompanyID,
 		CountryID: *body.CountryID,
 		Address:   *body.Address,
 	}
-	v.CompanyID = &companyID
 	v.Token = token
 
 	return v

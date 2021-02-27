@@ -33,7 +33,6 @@ import (
 // handleHTTPServer starts configures and starts a HTTP server on the given
 // URL. It shuts down the server if any error is received in the error channel.
 func handleHTTPServer(ctx context.Context, u *url.URL, authEndpoints *auth.Endpoints, hyCompanyEndpoints *hycompany.Endpoints, hyCompanybranchEndpoints *hycompanybranch.Endpoints, healthEndpoints *health.Endpoints, hyTechEndpoints *hytech.Endpoints, hyUserEndpoints *hyuser.Endpoints, hyUsertechEndpoints *hyusertech.Endpoints, hyUserWorkHistoryEndpoints *hyuserworkhistory.Endpoints, wg *sync.WaitGroup, errc chan error, logger *log.Logger, debug bool) {
-
 	// Setup goa log adapter.
 	var (
 		adapter middleware.Logger

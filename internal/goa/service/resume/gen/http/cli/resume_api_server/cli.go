@@ -44,9 +44,9 @@ auth login
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` hy-companybranch get-company-branch --company-branch-id 2069010046497218702 --token "Necessitatibus reiciendis quis."` + "\n" +
-		os.Args[0] + ` hy-user-work-history get-user-work-history --user-id 3221921965628780407 --token "Iste aspernatur deserunt itaque ratione."` + "\n" +
-		os.Args[0] + ` hy-usertech get-user-like-tech --user-id 3444501311284418728 --token "Quibusdam velit ipsum."` + "\n" +
-		os.Args[0] + ` hy-company company-list --token "Eaque dicta sint veniam et facere."` + "\n" +
+		os.Args[0] + ` hy-user-work-history get-user-work-history --user-id 6933677279844121964 --token "Maxime voluptatem praesentium consequatur iste aspernatur deserunt."` + "\n" +
+		os.Args[0] + ` hy-usertech get-user-like-tech --user-id 7198981857456076142 --token "Magni quia."` + "\n" +
+		os.Args[0] + ` hy-company company-list --token "Dolore eaque dicta sint veniam et."` + "\n" +
 		os.Args[0] + ` hy-tech tech-list --token "Nulla sit esse magni delectus."` + "\n" +
 		""
 }
@@ -67,10 +67,9 @@ func ParseEndpoint(
 		hyCompanybranchGetCompanyBranchCompanyBranchIDFlag = hyCompanybranchGetCompanyBranchFlags.String("company-branch-id", "REQUIRED", "Company branch ID")
 		hyCompanybranchGetCompanyBranchTokenFlag           = hyCompanybranchGetCompanyBranchFlags.String("token", "", "")
 
-		hyCompanybranchCreateCompanyBranchFlags         = flag.NewFlagSet("create-company-branch", flag.ExitOnError)
-		hyCompanybranchCreateCompanyBranchBodyFlag      = hyCompanybranchCreateCompanyBranchFlags.String("body", "REQUIRED", "")
-		hyCompanybranchCreateCompanyBranchCompanyIDFlag = hyCompanybranchCreateCompanyBranchFlags.String("company-id", "REQUIRED", "Company ID")
-		hyCompanybranchCreateCompanyBranchTokenFlag     = hyCompanybranchCreateCompanyBranchFlags.String("token", "", "")
+		hyCompanybranchCreateCompanyBranchFlags     = flag.NewFlagSet("create-company-branch", flag.ExitOnError)
+		hyCompanybranchCreateCompanyBranchBodyFlag  = hyCompanybranchCreateCompanyBranchFlags.String("body", "REQUIRED", "")
+		hyCompanybranchCreateCompanyBranchTokenFlag = hyCompanybranchCreateCompanyBranchFlags.String("token", "", "")
 
 		hyCompanybranchUpdateCompanyBranchFlags               = flag.NewFlagSet("update-company-branch", flag.ExitOnError)
 		hyCompanybranchUpdateCompanyBranchBodyFlag            = hyCompanybranchUpdateCompanyBranchFlags.String("body", "REQUIRED", "")
@@ -391,7 +390,7 @@ func ParseEndpoint(
 				data, err = hycompanybranchc.BuildGetCompanyBranchPayload(*hyCompanybranchGetCompanyBranchCompanyBranchIDFlag, *hyCompanybranchGetCompanyBranchTokenFlag)
 			case "create-company-branch":
 				endpoint = c.CreateCompanyBranch()
-				data, err = hycompanybranchc.BuildCreateCompanyBranchPayload(*hyCompanybranchCreateCompanyBranchBodyFlag, *hyCompanybranchCreateCompanyBranchCompanyIDFlag, *hyCompanybranchCreateCompanyBranchTokenFlag)
+				data, err = hycompanybranchc.BuildCreateCompanyBranchPayload(*hyCompanybranchCreateCompanyBranchBodyFlag, *hyCompanybranchCreateCompanyBranchTokenFlag)
 			case "update-company-branch":
 				endpoint = c.UpdateCompanyBranch()
 				data, err = hycompanybranchc.BuildUpdateCompanyBranchPayload(*hyCompanybranchUpdateCompanyBranchBodyFlag, *hyCompanybranchUpdateCompanyBranchCompanyBranchIDFlag, *hyCompanybranchUpdateCompanyBranchTokenFlag)
@@ -526,18 +525,18 @@ Example:
 }
 
 func hyCompanybranchCreateCompanyBranchUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] hy-companybranch create-company-branch -body JSON -company-id INT -token STRING
+	fmt.Fprintf(os.Stderr, `%s [flags] hy-companybranch create-company-branch -body JSON -token STRING
 
 Create new company branch
     -body JSON: 
-    -company-id INT: Company ID
     -token STRING: 
 
 Example:
     `+os.Args[0]+` hy-companybranch create-company-branch --body '{
       "address": "Shinagawa Tokyo",
+      "company_id": 6011793900613907701,
       "country_id": 110
-   }' --company-id 5471480437634627235 --token "Neque minus provident ut."
+   }' --token "Distinctio neque minus provident."
 `, os.Args[0])
 }
 
@@ -553,7 +552,7 @@ Example:
     `+os.Args[0]+` hy-companybranch update-company-branch --body '{
       "address": "Shinagawa Tokyo",
       "country_id": 110
-   }' --company-branch-id 7313508458543645628 --token "Atque vitae ratione."
+   }' --company-branch-id 6767585331202093415 --token "Natus atque vitae."
 `, os.Args[0])
 }
 
@@ -565,7 +564,7 @@ Delete company branch
     -token STRING: 
 
 Example:
-    `+os.Args[0]+` hy-companybranch delete-company-branch --company-branch-id 4019683876875420858 --token "At natus accusamus eum maxime."
+    `+os.Args[0]+` hy-companybranch delete-company-branch --company-branch-id 3993521505785604736 --token "Et at."
 `, os.Args[0])
 }
 
@@ -591,7 +590,7 @@ get user's work history
     -token STRING: 
 
 Example:
-    `+os.Args[0]+` hy-user-work-history get-user-work-history --user-id 3221921965628780407 --token "Iste aspernatur deserunt itaque ratione."
+    `+os.Args[0]+` hy-user-work-history get-user-work-history --user-id 6933677279844121964 --token "Maxime voluptatem praesentium consequatur iste aspernatur deserunt."
 `, os.Args[0])
 }
 
@@ -618,7 +617,7 @@ get user's favorite techs
     -token STRING: 
 
 Example:
-    `+os.Args[0]+` hy-usertech get-user-like-tech --user-id 3444501311284418728 --token "Quibusdam velit ipsum."
+    `+os.Args[0]+` hy-usertech get-user-like-tech --user-id 7198981857456076142 --token "Magni quia."
 `, os.Args[0])
 }
 
@@ -630,7 +629,7 @@ get user's dislike techs
     -token STRING: 
 
 Example:
-    `+os.Args[0]+` hy-usertech get-user-dis-like-tech --user-id 3678939298088920752 --token "Sequi distinctio consequatur."
+    `+os.Args[0]+` hy-usertech get-user-dis-like-tech --user-id 1437577178286731270 --token "Alias autem esse sequi distinctio."
 `, os.Args[0])
 }
 
@@ -659,7 +658,7 @@ List all companies
     -token STRING: 
 
 Example:
-    `+os.Args[0]+` hy-company company-list --token "Eaque dicta sint veniam et facere."
+    `+os.Args[0]+` hy-company company-list --token "Dolore eaque dicta sint veniam et."
 `, os.Args[0])
 }
 

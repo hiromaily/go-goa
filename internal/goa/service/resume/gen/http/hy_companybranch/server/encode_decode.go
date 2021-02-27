@@ -96,27 +96,13 @@ func DecodeCreateCompanyBranchRequest(mux goahttp.Muxer, decoder func(*http.Requ
 		}
 
 		var (
-			companyID int
-			token     *string
-
-			params = mux.Vars(r)
+			token *string
 		)
-		{
-			companyIDRaw := params["company_id"]
-			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
-			if err2 != nil {
-				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
-			}
-			companyID = int(v)
-		}
 		tokenRaw := r.Header.Get("Authorization")
 		if tokenRaw != "" {
 			token = &tokenRaw
 		}
-		if err != nil {
-			return nil, err
-		}
-		payload := NewCreateCompanyBranchPayload(&body, companyID, token)
+		payload := NewCreateCompanyBranchPayload(&body, token)
 		if payload.Token != nil {
 			if strings.Contains(*payload.Token, " ") {
 				// Remove authorization scheme prefix (e.g. "Bearer")

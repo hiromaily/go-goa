@@ -238,14 +238,13 @@ var _ = Service(resourcePrefix+"companybranch", func() {
 		Error("BadRequest")
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("company_id", Int, "Company ID") //params
+			Attribute("company_id", Int, "Company ID") // FIXME: changed from params to body
 			Attribute("country_id", Int, "Country's ID", fieldCountryID)
 			Attribute("address", String, "Address of company", fieldAddress)
 			Required("country_id", "address")
 		})
 		HTTP(func() {
-			//TODO:somehow POST path should be unique
-			POST("/{company_id}")
+			POST("")
 			Response(StatusOK)
 			Response(StatusCreated)
 		})
