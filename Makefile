@@ -87,6 +87,8 @@ move-example:
 	mv internal/goa/service/resume/public.go ${GOPATH}/src/github.com/hiromaily/go-goa/pkg/goa/service/resume/
 	rm -rf internal/goa/service/resume/cmd
 
+.PHONY: gen-all
+gen-all: gen-design gen-example replace-example move-example
 
 ###############################################################################
 # Goa generation (It's better to exexute `make genfull` regularly (old style)
