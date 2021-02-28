@@ -3,7 +3,7 @@ version: "3.9"
 services:
   mysql:
     ports:
-      - "${MYSQL_PORT:-3307}:3306"
+      - "${MYSQL_PORT:-13306}:3306"
 
   webserver:
     ports:
@@ -18,5 +18,5 @@ services:
     tty: true
     restart: always
 
-    command: realize start
+    command: ./scripts/wait-mysql.sh 127.0.0.1 13306 realize start
     #command: ["./wait-for-db.sh", "mysql-server", "go-goa", "-f", "/go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"]

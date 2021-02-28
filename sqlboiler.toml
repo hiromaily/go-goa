@@ -1,0 +1,20 @@
+no-hooks = true
+no-tests = true
+output = "./pkg/model/rdb"
+
+[mysql]
+dbname = "go-goa"
+host = "localhost"
+port = 13306
+user = "root"
+pass = "root"
+sslmode = "false"
+whitelist = [
+    "t_user",
+    "t_company",
+    "t_company_branch",
+    "t_tech",
+    "t_user_like_tech",
+    "t_user_dislike_tech",
+    "t_user_work_history"
+]

@@ -1,8 +1,6 @@
--- MySQL dump 10.13  Distrib 5.7.12, for osx10.11 (x86_64)
---
--- Host: 127.0.0.1    Database: hiromaily
+-- Host: 127.0.0.1    Database: go-goa
 -- ------------------------------------------------------
--- Server version	5.7.12
+-- Server version	5.7.30
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -17,28 +15,28 @@
 
 
 --
--- DATABASE hiromaily
+-- DATABASE go-goa
 --
-DROP DATABASE IF EXISTS `hiromaily`;
+DROP DATABASE IF EXISTS `go-goa`;
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `hiromaily` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `go-goa` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `hiromaily`;
+USE `go-goa`;
 
 
 --
 -- Table structure for table `t_users`
 --
 
-DROP TABLE IF EXISTS `t_users`;
+DROP TABLE IF EXISTS `t_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT'User ID',
-  `user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT'User Name',
-  `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'E-Mail Address',
-  `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'Password',
-  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+CREATE TABLE `t_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT'user id',
+  `user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT'user name',
+  `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'mail address',
+  `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'password',
+  `is_deleted` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`),
@@ -47,54 +45,44 @@ CREATE TABLE `t_users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-LOCK TABLES `t_users` WRITE;
-/*!40000 ALTER TABLE `t_users` DISABLE KEYS */;
-INSERT INTO `t_users` VALUES
-  (1,'Hiroki Yasui','hiroki@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (2,'guest','guest@guest.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (3,'harry3','aaaa3@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (4,'harry4','aaaa4@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (5,'harry5','aaaa5@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (6,'harry6','aaaa6@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (7,'harry7','aaaa7@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (8,'harry8','aaaa8@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (9,'harry9','aaaa9@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (10,'harry10','aaaa10@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (11,'harry11','aaaa11@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now()),
-  (12,'harry12','aaaa12@goa.com','02aaa55939a894316cfc3427234bf201','0',now(),now());
-/*!40000 ALTER TABLE `t_users` ENABLE KEYS */;
+LOCK TABLES `t_user` WRITE;
+/*!40000 ALTER TABLE `t_user` DISABLE KEYS */;
+INSERT INTO `t_user` VALUES
+  (1,'Hiroki Yasui','hiroki@goa.com','baa62a499e9b21940c2d763f58a25647','0',now(),now()),
+  (2,'guest','guest@guest.com','d978eb967fbe04345371478a97f3c903','0',now(),now());
+/*!40000 ALTER TABLE `t_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
 --
--- Table structure for table `t_companies`
+-- Table structure for table `t_company`
 --
 
-DROP TABLE IF EXISTS `t_companies`;
+DROP TABLE IF EXISTS `t_company`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_companies` (
-  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'Company ID',
-  `name`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company Name',
-  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+CREATE TABLE `t_company` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'company id',
+  `name`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'company name',
+  `is_deleted` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Company Table';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='company table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-LOCK TABLES `t_companies` WRITE;
-/*!40000 ALTER TABLE `t_companies` DISABLE KEYS */;
-INSERT INTO `t_companies` VALUES
+LOCK TABLES `t_company` WRITE;
+/*!40000 ALTER TABLE `t_company` DISABLE KEYS */;
+INSERT INTO `t_company` VALUES
   (1,'Freelancer','0',now(),now()),
-  (2,'Hugo.events','0',now(),now()),
+  (2,'BookerZzz','0',now(),now()),
   (3,'2Gears','0',now(),now()),
-  (4,'J-Stream Inc.','0',now(),now()),
-  (5,'PROTERAS Co., Ltd.','0',now(),now()),
-  (6,'JIP INFO BRIDGE Inc.','0',now(),now()),
-  (7,'BookerZzz','0',now(),now());
-/*!40000 ALTER TABLE `t_companies` ENABLE KEYS */;
+  (4,'Hugo.events','0',now(),now()),
+  (5,'J-Stream Inc.','0',now(),now()),
+  (6,'PROTERAS Co., Ltd.','0',now(),now()),
+  (7,'JIP Inc.','0',now(),now());
+/*!40000 ALTER TABLE `t_company` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -103,17 +91,17 @@ UNLOCK TABLES;
 --
 
 CREATE TABLE `t_company_branch` (
-  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'Company detail ID',
-  `company_id` int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company ID',
-  `hq_flg`     char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'headquarters flg',
-  `country_id` smallint COLLATE utf8_unicode_ci NOT NULL COMMENT'Country ID',
-  `address`    varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'Address',
-  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'company branch id',
+  `company_id` int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'company id',
+  `is_hq`      char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'headquarters flag',
+  `country_id` smallint COLLATE utf8_unicode_ci NOT NULL COMMENT'country id',
+  `address`    varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'address',
+  `is_deleted` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`),
   INDEX company_id (`company_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Company Detail Table';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='company branch table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -123,38 +111,38 @@ INSERT INTO `t_company_branch` VALUES
   (null,1,'1',110,'','0',now(),now()),
   (null,1,'0',155,'','0',now(),now()),
   (null,1,'0',80,'','0',now(),now()),
-  (null,2,'1',155,'Keienbergweg 97 1101 GG Amsterdam','0',now(),now()),
+  (null,2,'1',155,'Stationsplein 92, 2011 LM Haarlem','0',now(),now()),
   (null,3,'1',128,'17, Boulevard Prince Henri L-1724','0',now(),now()),
   (null,3,'0',155,'Molslaan 111 NL-2611 RK Delft','0',now(),now()),
-  (null,4,'1',110,'東京都港区芝二丁目5-6 芝256スクエアビル6階','0',now(),now()),
-  (null,5,'1',110,'東京都港区赤坂4-13-13 赤坂ビル4F','0',now(),now()),
-  (null,6,'1',110,'東京都江東区東陽2-4-24','0',now(),now()),
-  (null,7,'1',155,'Stationsplein 92, 2011 LM Haarlem','0',now(),now());
+  (null,4,'1',155,'Keienbergweg 97 1101 GG Amsterdam','0',now(),now()),
+  (null,5,'1',110,'Minatoku Tokyo','0',now(),now()),
+  (null,6,'1',110,'Minatoku Tokyo','0',now(),now()),
+  (null,7,'1',110,'Koutoku Tokyo','0',now(),now());
 /*!40000 ALTER TABLE `t_company_branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
 --
--- Table structure for table `t_techs`
+-- Table structure for table `t_tech`
 --
 
-DROP TABLE IF EXISTS `t_techs`;
+DROP TABLE IF EXISTS `t_tech`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_techs` (
-  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'Tech ID',
-  `name`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech Name',
-  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+CREATE TABLE `t_tech` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'tech id',
+  `name`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'tech name',
+  `is_deleted` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Tech Table';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='tech table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-LOCK TABLES `t_techs` WRITE;
-/*!40000 ALTER TABLE `t_techs` DISABLE KEYS */;
-INSERT INTO `t_techs` VALUES
+LOCK TABLES `t_tech` WRITE;
+/*!40000 ALTER TABLE `t_tech` DISABLE KEYS */;
+INSERT INTO `t_tech` VALUES
   (1,'Golang','0',now(),now()),
   (2,'Golang with goa','0',now(),now()),
   (3,'PHP5','0',now(),now()),
@@ -226,7 +214,7 @@ INSERT INTO `t_techs` VALUES
   (122,'Jasmine','0',now(),now()),
   (131,'gRPC','0',now(),now()),
   (132,'Microservice Architecture','0',now(),now());
-/*!40000 ALTER TABLE `t_techs` ENABLE KEYS */;
+/*!40000 ALTER TABLE `t_tech` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -234,32 +222,32 @@ UNLOCK TABLES;
 -- Table structure for table `t_user_like_tech`
 --
 
-DROP TABLE IF EXISTS `t_user_like_techs`;
+DROP TABLE IF EXISTS `t_user_like_tech`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_user_like_techs` (
-  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
-  `user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
-  `tech_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech ID',
-  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+CREATE TABLE `t_user_like_tech` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'id',
+  `user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'user id',
+  `tech_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'tech id',
+  `is_deleted` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`),
   INDEX user_id (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Like Tech Table';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='user like tech table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-LOCK TABLES `t_user_like_techs` WRITE;
-/*!40000 ALTER TABLE `t_user_like_techs` DISABLE KEYS */;
-INSERT INTO `t_user_like_techs` VALUES
+LOCK TABLES `t_user_like_tech` WRITE;
+/*!40000 ALTER TABLE `t_user_like_tech` DISABLE KEYS */;
+INSERT INTO `t_user_like_tech` VALUES
   (null,1,1,'0',now(),now()),
   (null,1,10,'0',now(),now()),
   (null,1,32,'0',now(),now()),
   (null,1,70,'0',now(),now()),
   (null,1,101,'0',now(),now()),
   (null,1,102,'0',now(),now());
-/*!40000 ALTER TABLE `t_user_like_techs` ENABLE KEYS */;
+/*!40000 ALTER TABLE `t_user_like_tech` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -267,29 +255,29 @@ UNLOCK TABLES;
 -- Table structure for table `t_user_dislike_tech`
 --
 
-DROP TABLE IF EXISTS `t_user_dislike_techs`;
+DROP TABLE IF EXISTS `t_user_dislike_tech`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_user_dislike_techs` (
-  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
-  `user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
-  `tech_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech ID',
-  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+CREATE TABLE `t_user_dislike_tech` (
+  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'id',
+  `user_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'user id',
+  `tech_id`    int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'tech id',
+  `is_deleted` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`),
   INDEX user_id (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Dislike Tech Table';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='user dislike tech table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-LOCK TABLES `t_user_dislike_techs` WRITE;
-/*!40000 ALTER TABLE `t_user_dislike_techs` DISABLE KEYS */;
-INSERT INTO `t_user_dislike_techs` VALUES
+LOCK TABLES `t_user_dislike_tech` WRITE;
+/*!40000 ALTER TABLE `t_user_dislike_tech` DISABLE KEYS */;
+INSERT INTO `t_user_dislike_tech` VALUES
   (null,1,25,'0',now(),now()),
   (null,1,12,'0',now(),now()),
   (null,1,27,'0',now(),now());
-/*!40000 ALTER TABLE `t_user_dislike_techs` ENABLE KEYS */;
+/*!40000 ALTER TABLE `t_user_dislike_tech` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
@@ -301,21 +289,21 @@ DROP TABLE IF EXISTS `t_user_work_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t_user_work_history` (
-  `id`          int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
-  `user_id`     int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
-  `company_branch_id`  int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company Branch ID',
-  `title`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Title',
-  `description` json NOT NULL COMMENT'Description',
-  `tech_ids`    json NOT NULL COMMENT'Tech IDs',
-  `started_at`  date DEFAULT NULL COMMENT'Started Date',
-  `ended_at`    date DEFAULT NULL COMMENT'Ended Date',
-  `delete_flg`  char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+  `id`          int(11) NOT NULL AUTO_INCREMENT COMMENT'id',
+  `user_id`     int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'user id',
+  `company_branch_id`  int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'company branch id',
+  `title`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'title',
+  `description` json NOT NULL COMMENT'description',
+  `tech_ids`    json NOT NULL COMMENT'tech ids',
+  `started_at`  date DEFAULT NULL COMMENT'started date',
+  `ended_at`    date DEFAULT NULL COMMENT'ended date',
+  `is_deleted`  char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
   `created_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`),
   INDEX user_id (`user_id`),
   INDEX started_at (`started_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='User Work History Table';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='user work history table';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -391,24 +379,24 @@ UNLOCK TABLES;
 
 
 --
--- Table structure for table `t_countries`
+-- Table structure for table `t_country`
 --
 
-CREATE TABLE `m_countries` (
-  `id`         SMALLINT NOT NULL AUTO_INCREMENT COMMENT'Country ID',
-  `country_code` varchar(2) NOT NULL default'' COMMENT'Country Code',
-  `name`       varchar(60) COLLATE utf8_unicode_ci NOT NULL COMMENT'Country Name',
-  `delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
+CREATE TABLE `m_country` (
+  `id`         SMALLINT NOT NULL AUTO_INCREMENT COMMENT'country id',
+  `country_code` varchar(2) NOT NULL default'' COMMENT'country code',
+  `name`       varchar(60) COLLATE utf8_unicode_ci NOT NULL COMMENT'country name',
+  `is_deleted` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Country Table';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='country table';
 /*!40101 SET character_set_client = @saved_cs_client */;
   ;
 
-LOCK TABLES `m_countries` WRITE;
-/*!40000 ALTER TABLE `m_countries` DISABLE KEYS */;
-INSERT INTO `m_countries` VALUES
+LOCK TABLES `m_country` WRITE;
+/*!40000 ALTER TABLE `m_country` DISABLE KEYS */;
+INSERT INTO `m_country` VALUES
   (null,'AF','Afghanistan','0',now(),now()),
   (null,'AL','Albania','0',now(),now()),
   (null,'DZ','Algeria','0',now(),now()),
@@ -654,9 +642,8 @@ INSERT INTO `m_countries` VALUES
   (null,'ZR','Zaire','0',now(),now()),
   (null,'ZM','Zambia','0',now(),now()),
   (null,'ZW','Zimbabwe','0',now(),now());
-  /*!40000 ALTER TABLE `m_countries` ENABLE KEYS */;
+  /*!40000 ALTER TABLE `m_country` ENABLE KEYS */;
 UNLOCK TABLES;
-
 
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -668,5 +655,3 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2016-09-03 16:52:59

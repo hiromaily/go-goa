@@ -1,3 +1,6 @@
+CURRENTDIR=`pwd`
+modVer=$(shell cat go.mod | head -n 3 | tail -n 1 | awk '{print $2}' | cut -d'.' -f2)
+currentVer=$(shell go version | awk '{print $3}' | sed -e "s/go//" | cut -d'.' -f2)
 
 PROJECT_ROOT=${GOPATH}/src/github.com/hiromaily/go-goa
 TOMLPATH=${PROJECT_ROOT}/configs/settings.toml
@@ -8,8 +11,11 @@ TOMLPATH2=${PROJECT_ROOT}/configs/docker.toml
 ###############################################################################
 .PHONY: setup-tools
 setup-tools:
-	go get -u github.com/rakyll/hey
-	go get -u github.com/davecheney/httpstat
+	GO111MODULE=off go get -u github.com/oxequa/realize
+	GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+	GO111MODULE=off go get -u github.com/rakyll/hey
+	GO111MODULE=off go get -u github.com/davecheney/httpstat
+	go get -u github.com/volatiletech/sqlboiler
 	go get -u goa.design/goa/v3/...@v3
 	go get -u goa.design/plugins/v3/cors/dsl
 
@@ -19,6 +25,10 @@ setup-resume-service:
 	go mod init resume && \
 	go get -u goa.design/goa/v3/...@v3 && \
 	go get -u goa.design/plugins/v3/cors/dsl
+
+.PHONY: sqlboiler
+sqlboiler:
+	sqlboiler --wipe mysql
 
 #.PHONY: setup-swagger
 #setup-swagger:
@@ -41,6 +51,14 @@ update-service:
 ###############################################################################
 # linter and formatter
 ###############################################################################
+.PHONY: check-ver
+check-ver:
+	#echo $(modVer)
+	#echo $(currentVer)
+	@if [ ${currentVer} -lt ${modVer} ]; then\
+		echo go version ${modVer}++ is required but your go version is ${currentVer};\
+	fi
+
 .PHONY: lint-all
 lint-all: imports lint
 
@@ -99,9 +117,56 @@ run-server:
 bld-server:
 	go build -race -v -o ${GOPATH}/bin/goa-server ./cmd/resume-api/server/...
 
+bld-client:
+	go build -race -v -o ${GOPATH}/bin/goa-client ./cmd/resume-api/cli/...
+
 #bldlinux:
 #	GOOS=linux GOARCH=amd64 go build -race -v -o ${GOPATH}/bin/linux_amd64/$1 ./ext/cmd/
 
+
+###############################################################################
+# httpie
+###############################################################################
+http POST localhost:8080/login email=aaa@aaa.com password=secret-secret
+http localhost:8080/company
+http localhost:8080/company/1
+
+
+#[resumeapi] 21:01:25 HTTP "CompanyList" mounted on GET /company
+#[resumeapi] 21:01:25 HTTP "GetCompanyGroup" mounted on GET /company/{company_id}
+#[resumeapi] 21:01:25 HTTP "CreateCompany" mounted on POST /company
+#[resumeapi] 21:01:25 HTTP "UpdateCompany" mounted on PUT /company/{company_id}
+#[resumeapi] 21:01:25 HTTP "DeleteCompany" mounted on DELETE /company/{company_id}
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /company
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /company/{company_id}
+#[resumeapi] 21:01:25 HTTP "GetCompanyBranch" mounted on GET /company/branch/{company_branch_id}
+#[resumeapi] 21:01:25 HTTP "CreateCompanyBranch" mounted on POST /company/branch
+#[resumeapi] 21:01:25 HTTP "UpdateCompanyBranch" mounted on PUT /company/branch/{company_branch_id}
+#[resumeapi] 21:01:25 HTTP "DeleteCompanyBranch" mounted on DELETE /company/branch/{company_branch_id}
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /company/branch/{company_branch_id}
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /company/branch
+#[resumeapi] 21:01:25 HTTP "Health" mounted on GET /health
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /health
+#[resumeapi] 21:01:25 HTTP "TechList" mounted on GET /tech
+#[resumeapi] 21:01:25 HTTP "GetTech" mounted on GET /tech/{techID}
+#[resumeapi] 21:01:25 HTTP "CreateTech" mounted on POST /tech
+#[resumeapi] 21:01:25 HTTP "UpdateTech" mounted on PUT /tech/{techID}
+#[resumeapi] 21:01:25 HTTP "DeleteTech" mounted on DELETE /tech/{techID}
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /tech
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /tech/{techID}
+#[resumeapi] 21:01:25 HTTP "UserList" mounted on GET /user
+#[resumeapi] 21:01:25 HTTP "GetUser" mounted on GET /user/{userID}
+#[resumeapi] 21:01:25 HTTP "CreateUser" mounted on POST /user
+#[resumeapi] 21:01:25 HTTP "UpdateUser" mounted on PUT /user/{userID}
+#[resumeapi] 21:01:25 HTTP "DeleteUser" mounted on DELETE /user/{userID}
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user/{userID}
+#[resumeapi] 21:01:25 HTTP "GetUserLikeTech" mounted on GET /user/{userID}/liketech
+#[resumeapi] 21:01:25 HTTP "GetUserDisLikeTech" mounted on GET /user/{userID}/disliketech
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user/{userID}/liketech
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user/{userID}/disliketech
+#[resumeapi] 21:01:25 HTTP "GetUserWorkHistory" mounted on GET /user/{userID}/workhistory
+#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user/{userID}/workhistory
 
 ###############################################################################
 # Goa generation (It's better to exexute `make genfull` regularly (old style)
@@ -188,29 +253,6 @@ dctest:
 dcpush:
 	docker push hirokiy/go-goa:1.0
 
-
-###############################################################################
-# Execution for local
-###############################################################################
-exec:
-	go-goa
-
-
-###############################################################################
-# CLI
-###############################################################################
-cli:
-	go-goa-cli company-list hy-company
-
-
-###############################################################################
-# maintenance
-###############################################################################
-cln:
-	go clean -n
-
-clnok:
-	go clean
 
 
 ###############################################################################

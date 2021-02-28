@@ -251,6 +251,6 @@ local_settings:
 	#sudo mysql.server start
 
 mysql:
-	kubectl port-forward mysql-4197980765-57rmp 3307:3306
-	mysql -u root -P 3307
+	kubectl port-forward mysql-4197980765-57rmp 13306:3306
+	mysql -u root -P 13306
 
