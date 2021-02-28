@@ -2,12 +2,12 @@
 environment = "local"
 
 [jwt]
-key = "keys"
+secret_code = "keys"
 
 [mysql]
 encrypted = false
 host = "localhost"
 port = 13306
-dbname = "hiromaily"
-user = "hiromaily"
-pass = "12345678"
+dbname = "go-goa"
+user = "guestuser"
+pass = "secret123"
