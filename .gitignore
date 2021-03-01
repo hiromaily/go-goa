@@ -4,14 +4,14 @@ node_modules
 build/docker/mysql/data/*
 build/docker/redis/data/*
 build/docker/golang/*
-resources/tmp/*
+web/resources/tmp/*
 #resources/swagger-ui/*
 #!resources/swagger-ui/dist/*
 public/swagger
 
-frontend_workspace/riot-webpack-v2/public/assets
-frontend_workspace/riot-webpack-v2/public/components
-frontend_workspace/riot-webpack-v2/public/css
-frontend_workspace/riot-webpack-v2/public/img
-frontend_workspace/riot-webpack-v2/public/js
-frontend_workspace/riot-webpack-v2/public/json
+web/frontend_workspace/riot-webpack-v2/public/assets
+web/frontend_workspace/riot-webpack-v2/public/components
+web/frontend_workspace/riot-webpack-v2/public/css
+web/frontend_workspace/riot-webpack-v2/public/img
+web/frontend_workspace/riot-webpack-v2/public/js
+web/frontend_workspace/riot-webpack-v2/public/json
