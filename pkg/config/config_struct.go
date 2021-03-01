@@ -25,7 +25,7 @@ type MySQL struct {
 	Encrypted bool   `toml:"encrypted"`
 	Host      string `toml:"host"`
 	Port      uint16 `toml:"port"`
-	DbName    string `toml:"dbname"`
+	DBName    string `toml:"dbname"`
 	User      string `toml:"user"`
 	Pass      string `toml:"pass"`
 }

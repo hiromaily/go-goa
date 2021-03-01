@@ -1,11 +1,13 @@
 package middleware
 
 import (
-	"github.com/hiromaily/go-goa/pkg/jwts"
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
 	"net/http"
 	"strings"
+
+	"github.com/pkg/errors"
+	"go.uber.org/zap"
+
+	"github.com/hiromaily/go-goa/pkg/jwts"
 )
 
 // Middlewarer interface
