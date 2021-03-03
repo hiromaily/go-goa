@@ -35,27 +35,23 @@ func NewCompanyRepository(dbConn *sql.DB, logger *zap.Logger) CompanyRepository 
 func (c *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	ctx := context.Background()
 
+
 	// sql := "SELECT id as company_id, name FROM t_companies WHERE delete_flg=?"
 	items, err := models.TCompanies(
 		qm.Select("id, name"),
-		qm.Where("delete_flg=?", 0),
+		qm.Where("is_deleted=?", 0),
 	).All(ctx, c.dbConn)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to call models.TCompanies().All()")
 	}
 
-	// TODO: convert []*models.TCompany to []*hycompany.Company
+	// convert []*models.TCompany to []*hycompany.Company
 	converted := make([]*hycompany.Company, len(items))
 	for i, item := range items {
+		// return only companyID, name
 		converted[i] = &hycompany.Company{
-			ID: &item.ID,
-			//CompanyID: &item.Name *int
-			//Name:        item.Name
-			//HqFlg       *string
-			//CountryName *string
-			//Address string
-			//CreatedAt *string
-			//UpdatedAt *string
+			CompanyID: &item.ID,
+			Name:      item.Name,
 		}
 	}
 	return converted, nil

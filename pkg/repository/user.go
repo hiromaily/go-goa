@@ -74,7 +74,7 @@ func (u *userRepository) Login(email, password string) (int, error) {
 	err := models.TUsers(
 		qm.Select("id, email, password"),
 		qm.Where("email=?", email),
-		qm.And("delete_flg=?", 0),
+		qm.And("is_deleted=?", 0),
 	).Bind(ctx, u.dbConn, &user)
 	if err != nil {
 		return 0, errors.Wrap(err, "failed to call models.TUsers().Bind()")

@@ -57,7 +57,7 @@ func (s *hyCompanysrvc) CompanyList(ctx context.Context, p *hycompany.CompanyLis
 	//	res := app.CompanyIdnameCollection(companies)
 	//	return ctx.OKIdname(res)
 
-	view = "default"
+	view = "idname"
 	s.logger.Print("hyCompany.companyList")
 	return
 }
