@@ -63,7 +63,7 @@ func (c *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 //	return nil
 //}
 
-func (c *companyRepository) GetCompanyGroup(companyID int, IsHQ *string) ([]*models.TCompany, error) {
+func (c *companyRepository) GetCompanyGroup(companyID int, isHQ *string) ([]*hycompany.Company, error) {
 	ctx := context.Background()
 
 	//	sql := `
@@ -77,15 +77,26 @@ func (c *companyRepository) GetCompanyGroup(companyID int, IsHQ *string) ([]*mod
 	// AND country.delete_flg=? %s
 	// AND c.id=?
 	//`
+	q := []qm.QueryMod{
+		qm.Select("cd.id as id, cd.company_id as company_id, c.name as name, cd.is_hq as is_hq, country.name as country_name, cd.address as address"),
+		qm.From("t_companies AS c"),
+		qm.LeftOuterJoin("group_members on group_members.user_id = users.id"),
+		qm.LeftOuterJoin("m_countries AS country ON cd.country_id = country.id"),
+		qm.Where("c.is_deleted=?", 0),
+		qm.And("cd.is_deleted=?", 0),
+		qm.And("country.is_deleted=?", 0),
+		qm.And("c.id=?", companyID),
+	}
+	if isHQ != nil {
+		q = append(q, qm.And("cd.is_hq=?", *isHQ))
+	}
 
-	//items, err := models.TCompanies(
-	//	qm.Select("id, name"),
-	//	qm.Where("delete_flg=?", 0),
-	//).All(ctx, c.dbConn)
-	//if err != nil {
-	//	return nil, errors.Wrap(err, "failed to call models.TCompanies().All()")
-	//}
-	return nil, nil
+	var companies []*hycompany.Company
+	err := models.TCompanies(q...).BindG(ctx, &companies)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to call models.TCompanies().BindG()")
+	}
+	return companies, nil
 }
 
 //func (m *Company) GetCompanyGroup(companyID int, hqFlg *string, companies *[]*app.Company) error {
