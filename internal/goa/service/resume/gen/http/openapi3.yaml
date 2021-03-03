@@ -43,16 +43,16 @@ paths:
                 company_id: 10
                 country_name: Aut est qui.
                 created_at: "2017-03-10T15:00:00Z"
-                hq_flg: Quas laudantium laudantium.
                 id: 10
+                is_hq: Quas laudantium laudantium.
                 name: Company
                 updated_at: "2017-03-10T15:00:00Z"
               - address: Shinagawa Tokyo
                 company_id: 10
                 country_name: Aut est qui.
                 created_at: "2017-03-10T15:00:00Z"
-                hq_flg: Quas laudantium laudantium.
                 id: 10
+                is_hq: Quas laudantium laudantium.
                 name: Company
                 updated_at: "2017-03-10T15:00:00Z"
       security:
@@ -130,7 +130,7 @@ paths:
             schema:
               $ref: '#/components/schemas/GetCompanyGroupRequestBody'
             example:
-              hq_flg: "1"
+              is_hq: "1"
       responses:
         "200":
           description: OK response.
@@ -145,16 +145,16 @@ paths:
                 company_id: 10
                 country_name: Aut est qui.
                 created_at: "2017-03-10T15:00:00Z"
-                hq_flg: Quas laudantium laudantium.
                 id: 10
+                is_hq: Quas laudantium laudantium.
                 name: Company
                 updated_at: "2017-03-10T15:00:00Z"
               - address: Shinagawa Tokyo
                 company_id: 10
                 country_name: Aut est qui.
                 created_at: "2017-03-10T15:00:00Z"
-                hq_flg: Quas laudantium laudantium.
                 id: 10
+                is_hq: Quas laudantium laudantium.
                 name: Company
                 updated_at: "2017-03-10T15:00:00Z"
       security:
@@ -457,8 +457,8 @@ paths:
                 company_id: 10
                 country_name: Ut rerum architecto numquam quis eveniet veritatis.
                 created_at: "2017-03-10T15:00:00Z"
-                hq_flg: Qui sint id hic quis.
                 id: 10
+                is_hq: Qui sint id hic quis.
                 name: Company
                 updated_at: "2017-03-10T15:00:00Z"
       security:
@@ -810,14 +810,14 @@ components:
           description: Datetime
           example: "2017-03-10T15:00:00Z"
           format: date-time
-        hq_flg:
-          type: string
-          example: Corporis voluptatum.
         id:
           type: integer
           description: ID
           example: 10
           minimum: 1
+        is_hq:
+          type: string
+          example: Corporis voluptatum.
         name:
           type: string
           description: Company name
@@ -835,8 +835,8 @@ components:
         company_id: 10
         country_name: Nobis fuga totam quae assumenda ea nemo.
         created_at: "2017-03-10T15:00:00Z"
-        hq_flg: Et corrupti rerum et cumque.
         id: 10
+        is_hq: Et corrupti rerum et cumque.
         name: Company
         updated_at: "2017-03-10T15:00:00Z"
       required:
@@ -851,16 +851,16 @@ components:
         company_id: 10
         country_name: Aut est qui.
         created_at: "2017-03-10T15:00:00Z"
-        hq_flg: Quas laudantium laudantium.
         id: 10
+        is_hq: Quas laudantium laudantium.
         name: Company
         updated_at: "2017-03-10T15:00:00Z"
       - address: Shinagawa Tokyo
         company_id: 10
         country_name: Aut est qui.
         created_at: "2017-03-10T15:00:00Z"
-        hq_flg: Quas laudantium laudantium.
         id: 10
+        is_hq: Quas laudantium laudantium.
         name: Company
         updated_at: "2017-03-10T15:00:00Z"
     CompanyResponseDetailid:
@@ -1044,7 +1044,7 @@ components:
     GetCompanyGroupRequestBody:
       type: object
       properties:
-        hq_flg:
+        is_hq:
           type: string
           description: Head Quarters flag
           example: "1"
@@ -1052,7 +1052,7 @@ components:
           - "1"
           - "0"
       example:
-        hq_flg: "0"
+        is_hq: "0"
     LoginRequestBody:
       type: object
       properties:

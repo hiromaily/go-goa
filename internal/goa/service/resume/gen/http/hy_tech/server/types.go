@@ -46,7 +46,7 @@ type GetTechResponseBody struct {
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
 	Name        string  `form:"name" json:"name" xml:"name"`
-	HqFlg       *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// Company Address
 	Address string `form:"address" json:"address" xml:"address"`
@@ -116,7 +116,7 @@ func NewGetTechResponseBody(res *hytechviews.CompanyView) *GetTechResponseBody {
 		ID:          res.ID,
 		CompanyID:   res.CompanyID,
 		Name:        *res.Name,
-		HqFlg:       res.HqFlg,
+		IsHq:        res.IsHq,
 		CountryName: res.CountryName,
 		Address:     *res.Address,
 	}

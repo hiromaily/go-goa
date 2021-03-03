@@ -78,7 +78,7 @@ type Company struct {
 	CompanyID *int
 	// Company name
 	Name        string
-	HqFlg       *string
+	IsHq        *string
 	CountryName *string
 	// Company Address
 	Address string
@@ -304,7 +304,7 @@ func newCompany(vres *hytechviews.CompanyView) *Company {
 	res := &Company{
 		ID:          vres.ID,
 		CompanyID:   vres.CompanyID,
-		HqFlg:       vres.HqFlg,
+		IsHq:        vres.IsHq,
 		CountryName: vres.CountryName,
 	}
 	if vres.Name != nil {
@@ -350,7 +350,7 @@ func newCompanyView(res *Company) *hytechviews.CompanyView {
 		ID:          res.ID,
 		CompanyID:   res.CompanyID,
 		Name:        &res.Name,
-		HqFlg:       res.HqFlg,
+		IsHq:        res.IsHq,
 		CountryName: res.CountryName,
 		Address:     &res.Address,
 	}

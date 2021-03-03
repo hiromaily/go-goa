@@ -60,7 +60,7 @@ var _ = Service(resourcePrefix+"company", func() {
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
 			Attribute("company_id", Int, "Company ID") //params
-			Attribute("hq_flg", String, "Head Quarters flag", func() {
+			Attribute("is_hq", String, "Head Quarters flag", func() {
 				Enum("1", "0")
 			})
 		})

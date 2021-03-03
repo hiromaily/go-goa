@@ -850,14 +850,14 @@ definitions:
       country_name:
         type: string
         example: Officiis labore illo.
-      hq_flg:
-        type: string
-        example: Cum aperiam sint saepe.
       id:
         type: integer
         description: ID
         example: 10
         minimum: 1
+      is_hq:
+        type: string
+        example: Cum aperiam sint saepe.
       name:
         type: string
         description: Company name
@@ -869,8 +869,8 @@ definitions:
       address: Shinagawa Tokyo
       company_id: 10
       country_name: Animi corrupti libero beatae autem.
-      hq_flg: Qui rerum fuga qui eveniet consectetur laudantium.
       id: 10
+      is_hq: Qui rerum fuga qui eveniet consectetur laudantium.
       name: Company
     required:
     - name
@@ -886,20 +886,20 @@ definitions:
     - address: Shinagawa Tokyo
       company_id: 10
       country_name: Ducimus sapiente.
-      hq_flg: Autem sunt saepe.
       id: 10
+      is_hq: Autem sunt saepe.
       name: Company
     - address: Shinagawa Tokyo
       company_id: 10
       country_name: Ducimus sapiente.
-      hq_flg: Autem sunt saepe.
       id: 10
+      is_hq: Autem sunt saepe.
       name: Company
     - address: Shinagawa Tokyo
       company_id: 10
       country_name: Ducimus sapiente.
-      hq_flg: Autem sunt saepe.
       id: 10
+      is_hq: Autem sunt saepe.
       name: Company
   HyCompanyCreateCompanyRequestBody:
     title: HyCompanyCreateCompanyRequestBody
@@ -935,7 +935,7 @@ definitions:
     title: HyCompanyGetCompanyGroupRequestBody
     type: object
     properties:
-      hq_flg:
+      is_hq:
         type: string
         description: Head Quarters flag
         example: "1"
@@ -943,7 +943,7 @@ definitions:
         - "1"
         - "0"
     example:
-      hq_flg: "1"
+      is_hq: "1"
   HyCompanyUpdateCompanyRequestBody:
     title: HyCompanyUpdateCompanyRequestBody
     type: object
@@ -1056,14 +1056,14 @@ definitions:
       country_name:
         type: string
         example: Animi nihil consequatur saepe labore.
-      hq_flg:
-        type: string
-        example: Soluta rerum dolorum fuga vel fugit possimus.
       id:
         type: integer
         description: ID
         example: 10
         minimum: 1
+      is_hq:
+        type: string
+        example: Soluta rerum dolorum fuga vel fugit possimus.
       name:
         type: string
         description: Company name
@@ -1075,8 +1075,8 @@ definitions:
       address: Shinagawa Tokyo
       company_id: 10
       country_name: Magni voluptas deleniti consequatur sint unde quo.
-      hq_flg: Dolorem aliquam tenetur officia.
       id: 10
+      is_hq: Dolorem aliquam tenetur officia.
       name: Company
     required:
     - name

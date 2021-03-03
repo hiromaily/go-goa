@@ -41,14 +41,6 @@ var RTUser = ResultType("application/vnd.user+json", func() {
 	Reference(PayloadUser)
 	Reference(TypeFooter)
 
-	//`id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'User ID',
-	//`user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'User Name',
-	//`email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'E-Mail Address',
-	//`password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'Password',
-	//`delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT '0' COMMENT 'delete flg',
-	//`created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'created date',
-	//`updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'updated date',
-
 	Attributes(func() {
 		Attribute("id", Int, "User ID", fieldID)
 		Attribute("user_name")
@@ -120,17 +112,6 @@ var RTUserWorkHistory = ResultType("application/vnd.userworkhistory+json", func(
 
 	Reference(PayloadUserWorkHistory)
 
-	//`id`          int(11) NOT NULL AUTO_INCREMENT COMMENT'ID',
-	//`user_id`     int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'User ID',
-	//`company_branch_id`  int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'Company Branch ID',
-	//`title`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Title',
-	//`description` json NOT NULL COMMENT'Description',
-	//`started_at`  date DEFAULT NULL COMMENT'Started Date',
-	//`ended_at`    date DEFAULT NULL COMMENT'Ended Date',
-	//`delete_flg`  char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
-	//`created_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
-	//`updated_at`  datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
-
 	Attributes(func() {
 		Attribute("title")
 		Attribute("company")
@@ -198,7 +179,7 @@ var RTCompany = ResultType("application/vnd.company+json", func() {
 		Attribute("id", Int, "Company Detail ID", fieldID)
 		Attribute("company_id", Int, "Company ID", fieldID)
 		Attribute("name")
-		Attribute("hq_flg")
+		Attribute("is_hq")
 		Attribute("country_name")
 		Attribute("address")
 		Attribute("created_at")
@@ -211,7 +192,7 @@ var RTCompany = ResultType("application/vnd.company+json", func() {
 		Attribute("id")
 		Attribute("company_id")
 		Attribute("name")
-		Attribute("hq_flg")
+		Attribute("is_hq")
 		Attribute("country_name")
 		Attribute("address")
 		//Attribute("created_at")

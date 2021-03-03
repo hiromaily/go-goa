@@ -52,7 +52,7 @@ type CompanyView struct {
 	CompanyID *int
 	// Company name
 	Name        *string
-	HqFlg       *string
+	IsHq        *string
 	CountryName *string
 	// Company Address
 	Address *string
@@ -81,7 +81,7 @@ var (
 			"id",
 			"company_id",
 			"name",
-			"hq_flg",
+			"is_hq",
 			"country_name",
 			"address",
 		},

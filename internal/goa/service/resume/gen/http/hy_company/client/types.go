@@ -19,7 +19,7 @@ import (
 // "getCompanyGroup" endpoint HTTP request body.
 type GetCompanyGroupRequestBody struct {
 	// Head Quarters flag
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+	IsHq *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
 }
 
 // CreateCompanyRequestBody is the type of the "hy_company" service
@@ -60,7 +60,7 @@ type CompanyResponse struct {
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
 	Name        *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
-	HqFlg       *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
@@ -74,7 +74,7 @@ type CompanyResponse struct {
 // of the "getCompanyGroup" endpoint of the "hy_company" service.
 func NewGetCompanyGroupRequestBody(p *hycompany.GetCompanyGroupPayload) *GetCompanyGroupRequestBody {
 	body := &GetCompanyGroupRequestBody{
-		HqFlg: p.HqFlg,
+		IsHq: p.IsHq,
 	}
 	return body
 }

@@ -415,7 +415,7 @@ func unmarshalCompanyResponseToHycompanyviewsCompanyView(v *CompanyResponse) *hy
 		ID:          v.ID,
 		CompanyID:   v.CompanyID,
 		Name:        v.Name,
-		HqFlg:       v.HqFlg,
+		IsHq:        v.IsHq,
 		CountryName: v.CountryName,
 		Address:     v.Address,
 		CreatedAt:   v.CreatedAt,

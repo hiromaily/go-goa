@@ -19,7 +19,7 @@ import (
 // "getCompanyGroup" endpoint HTTP request body.
 type GetCompanyGroupRequestBody struct {
 	// Head Quarters flag
-	HqFlg *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+	IsHq *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
 }
 
 // CreateCompanyRequestBody is the type of the "hy_company" service
@@ -68,7 +68,7 @@ type CompanyResponse struct {
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
 	Name        string  `form:"name" json:"name" xml:"name"`
-	HqFlg       *string `form:"hq_flg,omitempty" json:"hq_flg,omitempty" xml:"hq_flg,omitempty"`
+	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// Company Address
 	Address string `form:"address" json:"address" xml:"address"`
@@ -147,7 +147,7 @@ func NewCompanyListPayload(token *string) *hycompany.CompanyListPayload {
 // endpoint payload.
 func NewGetCompanyGroupPayload(body *GetCompanyGroupRequestBody, companyID int, token *string) *hycompany.GetCompanyGroupPayload {
 	v := &hycompany.GetCompanyGroupPayload{
-		HqFlg: body.HqFlg,
+		IsHq: body.IsHq,
 	}
 	v.CompanyID = &companyID
 	v.Token = token
@@ -195,9 +195,9 @@ func NewDeleteCompanyPayload(companyID int, token *string) *hycompany.DeleteComp
 // ValidateGetCompanyGroupRequestBody runs the validations defined on
 // GetCompanyGroupRequestBody
 func ValidateGetCompanyGroupRequestBody(body *GetCompanyGroupRequestBody) (err error) {
-	if body.HqFlg != nil {
-		if !(*body.HqFlg == "1" || *body.HqFlg == "0") {
-			err = goa.MergeErrors(err, goa.InvalidEnumValueError("body.hq_flg", *body.HqFlg, []interface{}{"1", "0"}))
+	if body.IsHq != nil {
+		if !(*body.IsHq == "1" || *body.IsHq == "0") {
+			err = goa.MergeErrors(err, goa.InvalidEnumValueError("body.is_hq", *body.IsHq, []interface{}{"1", "0"}))
 		}
 	}
 	return

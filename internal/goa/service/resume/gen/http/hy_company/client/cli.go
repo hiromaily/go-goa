@@ -40,7 +40,7 @@ func BuildGetCompanyGroupPayload(hyCompanyGetCompanyGroupBody string, hyCompanyG
 	{
 		err = json.Unmarshal([]byte(hyCompanyGetCompanyGroupBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"hq_flg\": \"1\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"is_hq\": \"1\"\n   }'")
 		}
 	}
 	var companyID int
@@ -59,7 +59,7 @@ func BuildGetCompanyGroupPayload(hyCompanyGetCompanyGroupBody string, hyCompanyG
 		}
 	}
 	v := &hycompany.GetCompanyGroupPayload{
-		HqFlg: body.HqFlg,
+		IsHq: body.IsHq,
 	}
 	v.CompanyID = &companyID
 	v.Token = token

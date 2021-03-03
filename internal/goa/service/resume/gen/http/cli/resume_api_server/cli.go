@@ -672,7 +672,7 @@ Retrieve company with given company_id
 
 Example:
     `+os.Args[0]+` hy-company get-company-group --body '{
-      "hq_flg": "1"
+      "is_hq": "1"
    }' --company-id 7693173126686315027 --token "Sit et."
 `, os.Args[0])
 }

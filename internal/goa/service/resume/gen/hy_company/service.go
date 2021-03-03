@@ -74,7 +74,7 @@ type GetCompanyGroupPayload struct {
 	// Company ID
 	CompanyID *int
 	// Head Quarters flag
-	HqFlg *string
+	IsHq *string
 }
 
 // CreateCompanyPayload is the payload type of the hy_company service
@@ -122,7 +122,7 @@ type Company struct {
 	CompanyID *int
 	// Company name
 	Name        string
-	HqFlg       *string
+	IsHq        *string
 	CountryName *string
 	// Company Address
 	Address string
@@ -282,7 +282,7 @@ func newCompany(vres *hycompanyviews.CompanyView) *Company {
 	res := &Company{
 		ID:          vres.ID,
 		CompanyID:   vres.CompanyID,
-		HqFlg:       vres.HqFlg,
+		IsHq:        vres.IsHq,
 		CountryName: vres.CountryName,
 	}
 	if vres.Name != nil {
@@ -328,7 +328,7 @@ func newCompanyView(res *Company) *hycompanyviews.CompanyView {
 		ID:          res.ID,
 		CompanyID:   res.CompanyID,
 		Name:        &res.Name,
-		HqFlg:       res.HqFlg,
+		IsHq:        res.IsHq,
 		CountryName: res.CountryName,
 		Address:     &res.Address,
 	}
