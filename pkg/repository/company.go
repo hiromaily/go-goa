@@ -6,7 +6,7 @@ import (
 	hycompany "resume/gen/hy_company"
 
 	"github.com/pkg/errors"
-	"github.com/volatiletech/sqlboiler/queries/qm"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 	"go.uber.org/zap"
 
 	models "github.com/hiromaily/go-goa/pkg/model/rdb"
@@ -34,7 +34,6 @@ func NewCompanyRepository(dbConn *sql.DB, logger *zap.Logger) CompanyRepository 
 
 func (c *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	ctx := context.Background()
-
 
 	// sql := "SELECT id as company_id, name FROM t_companies WHERE delete_flg=?"
 	items, err := models.TCompanies(

@@ -5,7 +5,7 @@ import (
 	"database/sql"
 
 	"github.com/pkg/errors"
-	"github.com/volatiletech/sqlboiler/queries/qm"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 	"go.uber.org/zap"
 
 	"github.com/hiromaily/go-goa/pkg/encryption"

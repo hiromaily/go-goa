@@ -15,7 +15,9 @@ setup-tools:
 	GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 	GO111MODULE=off go get -u github.com/rakyll/hey
 	GO111MODULE=off go get -u github.com/davecheney/httpstat
-	go get -u github.com/volatiletech/sqlboiler
+	go get -u go get github.com/volatiletech/sqlboiler/v4
+	go get -u github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mysql
+	go get -u github.com/volatiletech/null/v8
 	go get -u goa.design/goa/v3/...@v3
 	go get -u goa.design/plugins/v3/cors/dsl
 
