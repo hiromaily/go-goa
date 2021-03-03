@@ -1,15 +1,16 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
-	models "github.com/hiromaily/go-goa/pkg/model/rdb"
+	hycompany "resume/gen/hy_company"
+
+	"github.com/pkg/errors"
 	"github.com/volatiletech/sqlboiler/queries/qm"
 	"go.uber.org/zap"
-	"context"
-	"github.com/pkg/errors"
-	hycompany "resume/gen/hy_company"
-)
 
+	models "github.com/hiromaily/go-goa/pkg/model/rdb"
+)
 
 // CompanyRepository interface
 type CompanyRepository interface {
@@ -30,7 +31,7 @@ func NewCompanyRepository(dbConn *sql.DB, logger *zap.Logger) CompanyRepository 
 		logger:    logger,
 	}
 }
-[]*hycompany.Company
+
 func (c *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	ctx := context.Background()
 
@@ -47,7 +48,7 @@ func (c *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	converted := make([]*hycompany.Company, len(items))
 	for i, item := range items {
 		converted[i] = &hycompany.Company{
-			ID:        &item.ID,
+			ID: &item.ID,
 			//CompanyID: &item.Name *int
 			//Name:        item.Name
 			//HqFlg       *string
@@ -59,6 +60,7 @@ func (c *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	}
 	return converted, nil
 }
+
 //func (m *Company) CompanyList(companies *[]*app.CompanyIdname) error {
 //	if err := m.Db.DB.Raw("SELECT id as company_id, name FROM t_companies WHERE delete_flg=?", "0").Scan(companies).Error; err != nil {
 //		return err
@@ -80,14 +82,15 @@ func (c *companyRepository) GetCompanyGroup(companyID int, IsHQ *string) ([]*mod
 	// AND country.delete_flg=? %s
 	// AND c.id=?
 	//`
-	items, err := models.TCompanies(
-		qm.Select("id, name"),
-		qm.Where("delete_flg=?", 0),
-	).All(ctx, c.dbConn)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to call models.TCompanies().All()")
-	}
 
+	//items, err := models.TCompanies(
+	//	qm.Select("id, name"),
+	//	qm.Where("delete_flg=?", 0),
+	//).All(ctx, c.dbConn)
+	//if err != nil {
+	//	return nil, errors.Wrap(err, "failed to call models.TCompanies().All()")
+	//}
+	return nil, nil
 }
 
 //func (m *Company) GetCompanyGroup(companyID int, hqFlg *string, companies *[]*app.Company) error {
@@ -115,8 +118,6 @@ func (c *companyRepository) GetCompanyGroup(companyID int, IsHQ *string) ([]*mod
 //
 //	return nil
 //}
-
-
 
 //
 //type ParamCompany struct {

@@ -1,5 +1,17 @@
 package repository
 
+import (
+	"context"
+	"database/sql"
+
+	"github.com/pkg/errors"
+	"github.com/volatiletech/sqlboiler/queries/qm"
+	"go.uber.org/zap"
+
+	"github.com/hiromaily/go-goa/pkg/encryption"
+	models "github.com/hiromaily/go-goa/pkg/model/rdb"
+)
+
 //
 //import (
 //	"errors"
@@ -13,13 +25,28 @@ package repository
 //	//"gopkg.in/guregu/null.v3"
 //	"fmt"
 //)
-//
-//// User is user object in Database
-//type User struct {
-//	//Ctx *c.Ctx
-//	Db *gorm.GR
-//}
-//
+
+// UserRepository interface
+type UserRepository interface {
+	Login(email, password string) (int, error)
+}
+
+type userRepository struct {
+	dbConn    *sql.DB
+	tableName string
+	logger    *zap.Logger
+	hash      encryption.Hasher
+}
+
+// NewUserRepository returns CompanyRepository
+func NewUserRepository(dbConn *sql.DB, logger *zap.Logger) CompanyRepository {
+	return &companyRepository{
+		dbConn:    dbConn,
+		tableName: "t_company",
+		logger:    logger,
+	}
+}
+
 //type LoginUser struct {
 //	ID       int
 //	UserName string
@@ -32,15 +59,35 @@ package repository
 //	Password string `gorm:"column:password"`
 //}
 //
-//const TableUser = "t_users"
-//
-//// TODO:Count is to count
-//func (m *User) Count() (cnt int) {
-//	//m.Ctx.Db
-//	//m.Db.DB
-//	return 0
-//}
-//
+
+func (u *userRepository) Login(email, password string) (int, error) {
+	type LoginUser struct {
+		ID       int    `boil:"id"`
+		Email    string `boil:"email"`
+		Password string `boil:"password"`
+	}
+
+	ctx := context.Background()
+
+	var user LoginUser
+	// sql := "SELECT id, user_name FROM t_users WHERE delete_flg=? AND email=? AND password=?"
+	err := models.TUsers(
+		qm.Select("id, email, password"),
+		qm.Where("email=?", email),
+		qm.And("delete_flg=?", 0),
+	).Bind(ctx, u.dbConn, &user)
+	if err != nil {
+		return 0, errors.Wrap(err, "failed to call models.TUsers().Bind()")
+	}
+
+	// check
+	if user.Password != u.hash.Hash(password) {
+		return 0, errors.Errorf("password is invalid")
+	}
+	return user.ID, nil
+
+}
+
 //// Login is for login
 //func (m *User) Login(email, password string) (int, error) {
 //	var users []LoginUser
