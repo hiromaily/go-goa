@@ -19,11 +19,5 @@ var fieldTechName = func() {
 // TechPayload defines the data structure used in the create user request body.
 //-----------------------------------------------------------------------------
 var PayloadTech = Type("PayloadTech", func() {
-	//`id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'Tech ID',
-	//`name`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'Tech Name',
-	//`delete_flg` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flg',
-	//`created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
-	//`updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
-
 	Attribute("name", String, "Tech Name", fieldTechName)
 })
