@@ -1,13 +1,9 @@
-package design
+package types
 
 import (
 	. "goa.design/goa/v3/dsl"
 )
 
-//-----------------------------------------------------------------------------
-// Define fields
-//-----------------------------------------------------------------------------
-// UserWorkHistory
 var fieldJobTitle = func() {
 	Description("Job Title")
 	MinLength(2)
@@ -39,9 +35,7 @@ var fieldTechs = func() {
 	Example(`["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]`)
 }
 
-//-----------------------------------------------------------------------------
-// UserPayload defines the data structure used in the create user request body.
-//-----------------------------------------------------------------------------
+// PayloadUserWorkHistory defines the data structure used in the create user-work-history request body
 var PayloadUserWorkHistory = Type("PayloadUserWorkHistory", func() {
 	Attribute("title", String, "Job Title", fieldJobTitle)
 	Attribute("company", String, "Company", fieldCompanyName)
@@ -49,4 +43,34 @@ var PayloadUserWorkHistory = Type("PayloadUserWorkHistory", func() {
 	Attribute("term", String, "Country", fieldTerm)
 	Attribute("description", Any, "Description Json", fieldDescription)
 	Attribute("techs", Any, "Used Techs as Array", fieldTechs)
+})
+
+// RTUserWorkHistory is the user work history resource result type.
+var RTUserWorkHistory = ResultType("application/vnd.userworkhistory+json", func() {
+	// Response Description
+	Description("A user information")
+
+	ContentType("application/json")
+
+	Reference(PayloadUserWorkHistory)
+
+	Attributes(func() {
+		Attribute("title")
+		Attribute("company")
+		Attribute("country")
+		Attribute("term")
+		Attribute("description")
+		Attribute("techs")
+
+		Required("title", "company", "country")
+	})
+
+	View("default", func() {
+		Attribute("title")
+		Attribute("company")
+		Attribute("country")
+		Attribute("term")
+		Attribute("description")
+		Attribute("techs")
+	})
 })

@@ -3,6 +3,8 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 	hycompany "resume/gen/hy_company"
 
 	"github.com/pkg/errors"
@@ -56,13 +58,6 @@ func (c *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	return converted, nil
 }
 
-//func (m *Company) CompanyList(companies *[]*app.CompanyIdname) error {
-//	if err := m.Db.DB.Raw("SELECT id as company_id, name FROM t_companies WHERE delete_flg=?", "0").Scan(companies).Error; err != nil {
-//		return err
-//	}
-//	return nil
-//}
-
 func (c *companyRepository) GetCompanyGroup(companyID int, isHQ *string) ([]*hycompany.Company, error) {
 	ctx := context.Background()
 
@@ -99,32 +94,6 @@ func (c *companyRepository) GetCompanyGroup(companyID int, isHQ *string) ([]*hyc
 	return companies, nil
 }
 
-//func (m *Company) GetCompanyGroup(companyID int, hqFlg *string, companies *[]*app.Company) error {
-//	sql := `
-//SELECT cd.id as id, cd.company_id as company_id, c.name as name, cd.hq_flg as hq_flg,
-//  country.name as country_name, cd.address as address
-// FROM t_companies AS c
-// LEFT JOIN t_company_detail AS cd ON c.id = cd.company_id
-// LEFT JOIN m_countries AS country ON cd.country_id = country.id
-// WHERE c.delete_flg=?
-// AND cd.delete_flg=?
-// AND country.delete_flg=? %s
-// AND c.id=?
-//`
-//	if hqFlg != nil {
-//		sql = fmt.Sprintf(sql, fmt.Sprintf("AND cd.hq_flg='%s' ", *hqFlg))
-//	} else {
-//		sql = fmt.Sprintf(sql, "")
-//	}
-//
-//	if err := m.Db.DB.Raw(sql, "0", "0", "0", companyID).Scan(companies).Error; err != nil {
-//		fmt.Println("[error]", err)
-//		return err
-//	}
-//
-//	return nil
-//}
-
 //
 //type ParamCompany struct {
 //	ID   int    `gorm:"column:id"`
@@ -149,7 +118,53 @@ func (c *companyRepository) GetCompanyGroup(companyID int, isHQ *string) ([]*hyc
 //const TableCompany = "t_companies"
 //const TableCompanyDetail = "t_company_detail"
 //
-//
+
+// InsertCompany inserts company and company detail
+// TODO: transaction
+func (c *companyRepository) InsertCompany(name string, branchItem *models.TCompanyBranch) (int, error) {
+
+	ctx := context.Background()
+	// company
+	companyItem := &models.TCompany{
+		Name:      name,
+		IsDeleted: null.StringFrom("0"),
+	}
+	if err := companyItem.Insert(ctx, c.dbConn, boil.Infer()); err != nil {
+		return 0, errors.Wrap(err, "failed to call companyItem.Insert()")
+	}
+	// get LastInsertId()
+	id, err := c.getCompanyIDByName(companyItem.Name)
+	if err != nil {
+		return 0, err
+	}
+
+	// company branch
+	//		CompanyID: insCompany.ID,
+	//		HqFlg:     "1",
+	//		CountryID: company.CountryID,
+	//		Address:   company.Address,
+	if err := branchItem.Insert(ctx, c.dbConn, boil.Infer()); err != nil {
+		return 0, errors.Wrap(err, "failed to call branchItem.Insert()")
+	}
+
+	return id, nil
+}
+
+func (c *companyRepository) getCompanyIDByName(name string) (int, error) {
+	ctx := context.Background()
+
+	item, err := models.TCompanies(
+		qm.Select("id"),
+		qm.Where("name=?", name),
+		qm.And("is_deleted=?", 0),
+	).One(ctx, c.dbConn)
+	if err != nil {
+		return 0, errors.Wrap(err, "failed to call models.TCompanies().One()")
+	}
+
+	return item.ID, nil
+}
+
 //func (m *Company) InsertCompany(company *app.CreateCompanyHyCompanyPayload) (int, error) {
 //	//TODO:transaction is required
 //	tx := m.Db.DB.Begin()
@@ -174,7 +189,7 @@ func (c *companyRepository) GetCompanyGroup(companyID int, isHQ *string) ([]*hyc
 //	tx.Commit()
 //	return insCompany.ID, nil
 //}
-//
+
 //func (m *Company) UpdateCompany(companyID int, company *app.UpdateCompanyHyCompanyPayload) error {
 //	tx := m.Db.DB.Begin()
 //

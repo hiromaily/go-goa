@@ -56,7 +56,6 @@ func (s *hyTechsrvc) TechList(ctx context.Context, p *hytech.TechListPayload) (r
 	//
 	//	res := app.TechCollection(techs)
 	//	return ctx.OK(res)
-
 	view = "default"
 	s.logger.Print("hyTech.techList")
 	return

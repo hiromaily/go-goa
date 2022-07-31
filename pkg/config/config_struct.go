@@ -1,5 +1,7 @@
 package config
 
+import "github.com/hiromaily/go-goa/pkg/jwts"
+
 // Root is config root
 type Root struct {
 	Logger *Logger `toml:"logger" validate:"required"`
@@ -17,7 +19,11 @@ type Logger struct {
 
 // Jwt is JWT property
 type JWT struct {
-	Secret string `toml:"secret_code" validate:"required"`
+	Mode       jwts.JWTAlgo `toml:"mode" validate:"oneof=hmac rsa"`
+	Audience   string       `toml:"audience" validate:"required"`
+	Secret     string       `toml:"secret_code"`
+	PrivateKey string       `toml:"private_key"`
+	PublicKey  string       `toml:"public_key"`
 }
 
 // MySQL is MySQL Server property
@@ -28,4 +34,5 @@ type MySQL struct {
 	DBName    string `toml:"dbname"`
 	User      string `toml:"user"`
 	Pass      string `toml:"pass"`
+	Debug     bool   `toml:"debug"`
 }

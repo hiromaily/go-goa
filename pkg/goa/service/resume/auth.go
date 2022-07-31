@@ -19,6 +19,7 @@ func NewAuth(logger *log.Logger) auth.Service {
 
 // Login implements login.
 func (s *authsrvc) Login(ctx context.Context, p *auth.LoginPayload) (res *auth.Authorized, err error) {
+
 	//	// Login
 	//	svc := &m.User{Db: c.ctx.Db}
 	//	id, err := svc.Login(ctx.Payload.Email, ctx.Payload.Password)

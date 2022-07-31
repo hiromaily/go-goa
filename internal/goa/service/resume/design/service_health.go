@@ -7,7 +7,7 @@ import (
 var _ = Service("health", func() {
 	Description("health check")
 
-	Method("health", func() { //just name
+	Method("health", func() {
 		NoSecurity()
 		HTTP(func() {
 			GET("/health")

@@ -4,11 +4,14 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"log"
 	"net"
 	"net/url"
 	"os"
 	"os/signal"
+	"sync"
+	"syscall"
+
+	resumeapi "github.com/hiromaily/go-goa/pkg/goa/service/resume"
 	auth "resume/gen/auth"
 	health "resume/gen/health"
 	hycompany "resume/gen/hy_company"
@@ -17,10 +20,6 @@ import (
 	hyuser "resume/gen/hy_user"
 	hyuserworkhistory "resume/gen/hy_user_work_history"
 	hyusertech "resume/gen/hy_usertech"
-	"sync"
-	"syscall"
-
-	resumeapi "github.com/hiromaily/go-goa/pkg/goa/service/resume"
 )
 
 func main() {
@@ -32,16 +31,11 @@ func main() {
 		httpPortF = flag.String("http-port", "", "HTTP port (overrides host HTTP port specified in service design)")
 		secureF   = flag.Bool("secure", false, "Use secure scheme (https or grpcs)")
 		dbgF      = flag.Bool("debug", false, "Log request and response bodies")
+		confPath  = flag.String("conf", "", "config path")
 	)
 	flag.Parse()
 
-	// Setup logger. Replace logger with your own log package of choice.
-	var (
-		logger *log.Logger
-	)
-	{
-		logger = log.New(os.Stderr, "[resumeapi] ", log.Ltime)
-	}
+	reg := createRegistry(*confPath)
 
 	// Initialize the services.
 	var (
@@ -55,14 +49,14 @@ func main() {
 		hyUserWorkHistorySvc hyuserworkhistory.Service
 	)
 	{
-		authSvc = resumeapi.NewAuth(logger)
-		hyCompanySvc = resumeapi.NewHyCompany(logger)
-		hyCompanybranchSvc = resumeapi.NewHyCompanybranch(logger)
-		healthSvc = resumeapi.NewHealth(logger)
-		hyTechSvc = resumeapi.NewHyTech(logger)
-		hyUserSvc = resumeapi.NewHyUser(logger)
-		hyUsertechSvc = resumeapi.NewHyUsertech(logger)
-		hyUserWorkHistorySvc = resumeapi.NewHyUserWorkHistory(logger)
+		authSvc = resumeapi.NewAuth(logger, db)
+		hyCompanySvc = resumeapi.NewHyCompany(logger, db)
+		hyCompanybranchSvc = resumeapi.NewHyCompanybranch(logger, db)
+		healthSvc = resumeapi.NewHealth(logger, db)
+		hyTechSvc = resumeapi.NewHyTech(logger, db)
+		hyUserSvc = resumeapi.NewHyUser(logger, db)
+		hyUsertechSvc = resumeapi.NewHyUsertech(logger, db)
+		hyUserWorkHistorySvc = resumeapi.NewHyUserWorkHistory(logger, db)
 	}
 
 	// Wrap the services in endpoints that can be invoked from other services
@@ -110,8 +104,7 @@ func main() {
 			addr := "http://localhost:8080/api"
 			u, err := url.Parse(addr)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "invalid URL %#v: %s\n", addr, err)
-				os.Exit(1)
+				logger.Fatalf("invalid URL %#v: %s\n", addr, err)
 			}
 			if *secureF {
 				u.Scheme = "https"
@@ -122,18 +115,17 @@ func main() {
 			if *httpPortF != "" {
 				h, _, err := net.SplitHostPort(u.Host)
 				if err != nil {
-					fmt.Fprintf(os.Stderr, "invalid URL %#v: %s\n", u.Host, err)
-					os.Exit(1)
+					logger.Fatalf("invalid URL %#v: %s\n", u.Host, err)
 				}
 				u.Host = net.JoinHostPort(h, *httpPortF)
 			} else if u.Port() == "" {
-				u.Host = net.JoinHostPort(u.Host, ":80")
+				u.Host = net.JoinHostPort(u.Host, "80")
 			}
 			handleHTTPServer(ctx, u, authEndpoints, hyCompanyEndpoints, hyCompanybranchEndpoints, healthEndpoints, hyTechEndpoints, hyUserEndpoints, hyUsertechEndpoints, hyUserWorkHistoryEndpoints, &wg, errc, logger, *dbgF)
 		}
 
 	default:
-		fmt.Fprintf(os.Stderr, "invalid host argument: %q (valid hosts: localhost)\n", *hostF)
+		logger.Fatalf("invalid host argument: %q (valid hosts: localhost)\n", *hostF)
 	}
 
 	// Wait for signal.

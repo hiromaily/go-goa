@@ -3,6 +3,10 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/boil"
+	hyuser "resume/gen/hy_user"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
@@ -32,33 +36,21 @@ type UserRepository interface {
 }
 
 type userRepository struct {
-	dbConn    *sql.DB
 	tableName string
+	dbConn    *sql.DB
 	logger    *zap.Logger
 	hash      encryption.Hasher
 }
 
 // NewUserRepository returns CompanyRepository
-func NewUserRepository(dbConn *sql.DB, logger *zap.Logger) CompanyRepository {
-	return &companyRepository{
+func NewUserRepository(dbConn *sql.DB, logger *zap.Logger, hash encryption.Hasher) UserRepository {
+	return &userRepository{
 		dbConn:    dbConn,
-		tableName: "t_company",
+		tableName: "t_user",
 		logger:    logger,
+		hash:      hash,
 	}
 }
-
-//type LoginUser struct {
-//	ID       int
-//	UserName string
-//}
-//
-//type ParamUser struct {
-//	Id       int    `gorm:"column:id"`
-//	UserName string `gorm:"column:user_name"`
-//	Email    string `gorm:"column:email"`
-//	Password string `gorm:"column:password"`
-//}
-//
 
 func (u *userRepository) Login(email, password string) (int, error) {
 	type LoginUser struct {
@@ -88,72 +80,118 @@ func (u *userRepository) Login(email, password string) (int, error) {
 
 }
 
-//// Login is for login
-//func (m *User) Login(email, password string) (int, error) {
-//	var users []LoginUser
-//
-//	if err := m.Db.DB.Raw("SELECT id, user_name FROM t_users WHERE delete_flg=? AND email=? AND password=?", "0", email, hs.GetMD5Plus(password, "")).Scan(&users).Error; err != nil {
-//		return 0, err
-//	}
-//
-//	if len(users) == 0 || users[0].ID == 0 {
-//		return 0, nil
-//	} else if len(users) > 1 {
-//		return 0, errors.New("data in database would be broken.")
-//	}
-//
-//	return users[0].ID, nil
-//}
-//
-//func (m *User) UserList(users *[]*app.User) error {
-//	if err := m.Db.DB.Raw("SELECT id, user_name, email FROM t_users WHERE delete_flg=?", "0").Scan(users).Error; err != nil {
-//		fmt.Println("[error]", err)
-//		return err
-//	}
-//
-//	return nil
-//}
-//
-//func (m *User) GetUser(userID int, user *app.User) error {
-//	users := []*app.User{}
-//	if err := m.Db.DB.Raw("SELECT id, user_name, email FROM t_users WHERE delete_flg=? AND id=? limit 1", "0", userID).Scan(&users).Error; err != nil {
-//		fmt.Println("[error]", err)
-//		return err
-//	}
-//
-//	if len(users) == 1 {
-//		*user = *users[0]
-//	}
-//	return nil
-//}
-//
-//func (m *User) InsertUser(user *app.CreateUserHyUserPayload) (int, error) {
-//	//m.Db.DB.Exec("INSERT INTO t_users (user_name, email, password) VALUES (?, ?, ?)", user.UserName, user.Email, user.Password)
-//	insUser := ParamUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
-//	if err := m.Db.DB.Table(TableUser).Save(&insUser).Error; err != nil {
-//		return 0, err
-//	}
-//
-//	return insUser.Id, nil
-//}
-//
-//func (m *User) UpdateUser(userID int, user *app.UpdateUserHyUserPayload) error {
-//	//updUser := ParamUser{UserName: user.UserName, Email: user.Email, Password: user.Password}
-//	updUser := ParamUser{UserName: user.UserName, Email: user.Email}
-//	if user.Password != "**********" {
-//		updUser.Password = user.Password
-//	}
-//	if err := m.Db.DB.Table(TableUser).Where("id = ?", userID).Update(&updUser).Error; err != nil {
-//		return err
-//	}
-//
-//	return nil
-//}
-//
-//func (m *User) DeleteUser(userID int) error {
-//	if err := m.Db.DB.Table(TableUser).Where("id = ?", userID).Delete(&ParamUser{}).Error; err != nil {
-//		return err
-//	}
-//
-//	return nil
-//}
+func (u *userRepository) UserList() ([]*hyuser.User, error) {
+	ctx := context.Background()
+
+	// sql = "SELECT id, user_name, email FROM t_users WHERE delete_flg=?"
+	items, err := models.TUsers(
+		qm.Select("id, user_name, email"),
+		qm.Where("is_deleted=?", 0),
+	).All(ctx, u.dbConn)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to call models.TUsers().All()")
+	}
+
+	converted := make([]*hyuser.User, len(items))
+	for i, item := range items {
+		converted[i] = &hyuser.User{
+			ID:       &item.ID,
+			UserName: item.UserName,
+			Email:    item.Email.String,
+		}
+	}
+	return converted, nil
+}
+
+func (u *userRepository) GetUser(userID int) (*hyuser.User, error) {
+	ctx := context.Background()
+	// sql := "SELECT id, user_name, email FROM t_users WHERE delete_flg=?"
+	q := []qm.QueryMod{
+		qm.Select("id, user_name, email"),
+		qm.Where("delete_flg=?", 0),
+		qm.And("id=?", userID),
+	}
+	item, err := models.TUsers(q...).One(ctx, u.dbConn)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to call models.TUsers().All()")
+	}
+	return &hyuser.User{
+		ID:       &item.ID,
+		UserName: item.UserName,
+		Email:    item.Email.String,
+	}, nil
+
+}
+
+func (u *userRepository) getUserByEmail(email string) (*models.TUser, error) {
+	ctx := context.Background()
+
+	q := []qm.QueryMod{
+		qm.Where("delete_flg=?", 0),
+		qm.And("email=?", email),
+	}
+	item, err := models.TUsers(q...).One(ctx, u.dbConn)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to call models.TUsers().All()")
+	}
+	return item, nil
+}
+
+func (u *userRepository) InsertUser(name, email, password string) (int, error) {
+	item := &models.TUser{
+		UserName: name,
+		Email:    null.StringFrom(email),
+		Password: null.StringFrom(u.hash.Hash(password)),
+	}
+
+	ctx := context.Background()
+	// sql := "INSERT INTO t_users (user_name, email, password) VALUES (?, ?, ?)"
+	if err := item.Insert(ctx, u.dbConn, boil.Infer()); err != nil {
+		return 0, errors.Wrap(err, "failed to call item.Insert()")
+	}
+	user, err := u.getUserByEmail(email)
+	return 0, errors.Wrap(err, "failed to call getUserByEmail()")
+
+	return user.ID, nil
+}
+
+func (u *userRepository) UpdateUser(userID int, name, email, password string) (int, error) {
+	if userID == 0 {
+		return 0, errors.New("parameter:id is invalid")
+	}
+
+	ctx := context.Background()
+
+	// Set updating columns
+	updCols := map[string]interface{}{}
+	if name != "" {
+		updCols[models.TUserColumns.UserName] = name
+	}
+	if email != "" {
+		updCols[models.TUserColumns.Email] = email
+	}
+	if password != "" {
+		updCols[models.TUserColumns.Password] = u.hash.Hash(password)
+	}
+	updCols[models.TUserColumns.UpdatedAt] = null.TimeFrom(time.Now().UTC())
+
+	id, err := models.TUsers(
+		qm.Where("id=?", userID),
+	).UpdateAll(ctx, u.dbConn, updCols)
+	return int(id), err
+}
+
+// DeleteUser deletes user
+func (u *userRepository) DeleteUser(userID int) (int, error) {
+	ctx := context.Background()
+
+	// Set updating columns
+	updCols := map[string]interface{}{}
+	updCols[models.TUserColumns.IsDeleted] = null.StringFrom("1")
+	updCols[models.TUserColumns.UpdatedAt] = null.TimeFrom(time.Now())
+
+	id, err := models.TUsers(
+		qm.Where("id=?", userID),
+	).UpdateAll(ctx, u.dbConn, updCols)
+	return int(id), err
+}

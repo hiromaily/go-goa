@@ -70,7 +70,6 @@ func (s *hyUsertechsrvc) GetUserLikeTech(ctx context.Context, p *hyusertech.GetU
 	//	//type UserCollection []*User
 	//	res := app.UsertechTechCollection(userTechs)
 	//	return ctx.OKTech(res)
-
 	view = "default"
 	s.logger.Print("hyUsertech.getUserLikeTech")
 	return
@@ -102,7 +101,6 @@ func (s *hyUsertechsrvc) GetUserDisLikeTech(ctx context.Context, p *hyusertech.G
 	//	//type UserCollection []*User
 	//	res := app.UsertechTechCollection(userTechs)
 	//	return ctx.OKTech(res)
-
 	view = "default"
 	s.logger.Print("hyUsertech.getUserDisLikeTech")
 	return

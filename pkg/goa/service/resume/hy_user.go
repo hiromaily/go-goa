@@ -63,7 +63,6 @@ func (s *hyUsersrvc) UserList(ctx context.Context, p *hyuser.UserListPayload) (r
 	//	//type UserCollection []*User
 	//	res := app.UserCollection(users)
 	//	return ctx.OK(res)
-
 	view = "default"
 	s.logger.Print("hyUser.userList")
 	return
@@ -86,7 +85,6 @@ func (s *hyUsersrvc) GetUser(ctx context.Context, p *hyuser.GetUserPayload) (res
 	//
 	//	//res := &app.User{}
 	//	return ctx.OK(user)
-
 	res = &hyuser.User{}
 	view = "default"
 	s.logger.Print("hyUser.getUser")
@@ -103,7 +101,6 @@ func (s *hyUsersrvc) CreateUser(ctx context.Context, p *hyuser.CreateUserPayload
 	//
 	//	res := &app.UserID{ID: &userID}
 	//	return ctx.OKId(res)
-
 	s.logger.Print("hyUser.createUser")
 	return
 }
@@ -118,7 +115,6 @@ func (s *hyUsersrvc) UpdateUser(ctx context.Context, p *hyuser.UpdateUserPayload
 	//
 	//	res := &app.UserID{ID: &ctx.UserID}
 	//	return ctx.OKId(res)
-
 	s.logger.Print("hyUser.updateUser")
 	return
 }
@@ -133,7 +129,6 @@ func (s *hyUsersrvc) DeleteUser(ctx context.Context, p *hyuser.DeleteUserPayload
 	//
 	//	res := &app.UserID{ID: &ctx.UserID}
 	//	return ctx.OKId(res)
-
 	s.logger.Print("hyUser.deleteUser")
 	return
 }

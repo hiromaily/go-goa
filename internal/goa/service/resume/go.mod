@@ -1,16 +1,29 @@
 module resume
 
-go 1.15
+go 1.17
 
 require (
-	goa.design/goa/v3 v3.2.6
-	goa.design/plugins/v3 v3.2.6
-	golang.org/x/mod v0.4.1 // indirect
-	golang.org/x/net v0.0.0-20210222171744-9060382bd457 // indirect
-	golang.org/x/sys v0.0.0-20210220050731-9a76102bfb43 // indirect
-	golang.org/x/text v0.3.5 // indirect
-	golang.org/x/tools v0.1.0 // indirect
-	google.golang.org/genproto v0.0.0-20210222212404-3e1e516060db // indirect
-	google.golang.org/grpc v1.35.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
+	goa.design/goa/v3 v3.7.13
+	goa.design/plugins/v3 v3.7.13
+)
+
+require (
+	github.com/dimfeld/httppath v0.0.0-20170720192232-ee938bf73598 // indirect
+	github.com/dimfeld/httptreemux/v5 v5.4.0 // indirect
+	github.com/google/uuid v1.3.0 // indirect
+	github.com/gorilla/websocket v1.5.0 // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/hashicorp/go-multierror v1.1.1 // indirect
+	github.com/kr/text v0.2.0 // indirect
+	github.com/manveru/faker v0.0.0-20171103152722-9fbc68a78c4d // indirect
+	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
+	github.com/sergi/go-diff v1.2.0 // indirect
+	github.com/stretchr/testify v1.6.1 // indirect
+	github.com/zach-klippenstein/goregen v0.0.0-20160303162051-795b5e3961ea // indirect
+	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
+	golang.org/x/sys v0.0.0-20220730100132-1609e554cd39 // indirect
+	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/tools v0.1.12 // indirect
+	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

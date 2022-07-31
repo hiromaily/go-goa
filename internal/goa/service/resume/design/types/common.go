@@ -1,12 +1,9 @@
-package design
+package types
 
 import (
 	. "goa.design/goa/v3/dsl"
 )
 
-//-----------------------------------------------------------------------------
-// Define fields
-//-----------------------------------------------------------------------------
 // Common
 var fieldID = func() {
 	Description("ID")
@@ -26,10 +23,6 @@ var fieldDatetime = func() {
 	Format("date-time")
 	Example("2017-03-10T15:00:00Z")
 }
-
-//-----------------------------------------------------------------------------
-// Define Type
-//-----------------------------------------------------------------------------
 
 var TypeFooter = Type("TypeFooter", func() {
 	Attribute("created_at", String, "Date of creation", fieldDatetime)
