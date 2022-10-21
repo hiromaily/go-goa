@@ -2,7 +2,7 @@ package design
 
 import (
 	. "goa.design/goa/v3/dsl"
-	cors "goa.design/plugins/v3/cors/dsl"
+	//cors "goa.design/plugins/v3/cors/dsl"
 )
 
 // Reference
@@ -10,10 +10,13 @@ import (
 // - https://pkg.go.dev/goa.design/goa/v3/dsl [important]
 // - https://goa.design/learn/upgrading/
 
-var resourcePrefix = "hy_"
+var (
+	resourcePrefix = "hy_"
+	domain         = "localhost"
+)
 
 // API
-var _ = API("resume-api", func() {
+var _ = API("resume", func() {
 	Title("resume API")
 	Description("go-goa API with goa framework")
 	Contact(func() {
@@ -31,17 +34,18 @@ var _ = API("resume-api", func() {
 	})
 	// CORS policy: https://github.com/goadesign/plugins/tree/v3/cors
 	// - Sets CORS response headers for requests with Origin header matching the regular expression ".*domain.*"
-	cors.Origin("/swagger.goa.design/", func() {
-		cors.Headers("*")
-		cors.Methods("GET", "POST", "PUT", "PATCH", "DELETE")
-		cors.MaxAge(600)
-		cors.Credentials()
-	})
+	//cors.Origin(fmt.Sprintf("/%s/", domain), func() {
+	//	cors.Headers("*")
+	//	cors.Methods("GET", "POST", "PUT", "PATCH", "DELETE")
+	//	cors.MaxAge(600)
+	//	cors.Credentials()
+	//})
 
 	// Server
-	Server("resume-api-server", func() {
+	// this name can be used as directory name after generated in cmd
+	Server("resume", func() {
 		Host("localhost", func() {
-			URI("http://localhost:8080/api")
+			URI("http://localhost:8080")
 			URI("grpc://localhost:9090")
 		})
 		// List the services hosted by this server.
@@ -50,7 +54,7 @@ var _ = API("resume-api", func() {
 	})
 	// HTTP: https://pkg.go.dev/goa.design/goa/v3/dsl#HTTP
 	HTTP(func() {
-		// MIME type
+		// MIME type support
 		Consumes("application/json", "application/xml")
 	})
 })

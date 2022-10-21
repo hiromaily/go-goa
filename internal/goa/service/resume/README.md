@@ -9,3 +9,5 @@
 - [Design: Upgrading (ja)](https://goa.design/ja/learn/upgrading/)
 - [Goa DSL](https://pkg.go.dev/goa.design/goa/dsl)
 - [Goa DSL: V3](https://pkg.go.dev/goa.design/goa/v3/dsl)
+
+## How to develop

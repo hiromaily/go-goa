@@ -5,13 +5,13 @@ import (
 	cors "goa.design/plugins/v3/cors/dsl"
 )
 
-var _ = Service("public", func() {
-	Description("The public service returns static data")
+var _ = Service("static", func() {
+	Description("The static service returns static files")
 	// Sets CORS response headers for requests with Origin header matching the regular expression ".*domain.*"
 	cors.Origin("*", func() {
 		cors.Methods("GET", "OPTIONS")
 	})
-	Files("/*filepath", "public/")
+	Files("/assets/{*filepath}", "assets/")
 	Files("/swagger-ui/*filepath", "resources/swagger-ui/dist/")
 	//Files("/swagger.json", "goa/swagger/swagger.json")
 	Files("/openapi.json", "../gen/http/openapi.json")

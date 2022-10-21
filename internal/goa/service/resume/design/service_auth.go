@@ -5,6 +5,7 @@ import (
 	"resume/design/types"
 )
 
+// goa メモ
 // https://hackmd.io/@vWEf3Ct8QVu2_w2RDTRIaQ/ByyoCY5Hr
 
 var JWT = JWTSecurity("jwt", func() {

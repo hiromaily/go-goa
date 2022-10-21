@@ -755,7 +755,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -771,14 +771,14 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
                 example: true
         description: login_Unauthorized_response_body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -808,7 +808,7 @@ definitions:
                 minimum: 1
             country_name:
                 type: string
-                example: Rerum dolorum fuga.
+                example: Voluptate alias et ut et omnis.
             id:
                 type: integer
                 description: ID
@@ -816,7 +816,7 @@ definitions:
                 minimum: 1
             is_hq:
                 type: string
-                example: Nihil dolor maiores.
+                example: Quasi ab ducimus eius.
             name:
                 type: string
                 description: Company name
@@ -827,9 +827,9 @@ definitions:
         example:
             address: Shinagawa Tokyo
             company_id: 10
-            country_name: Nihil consequatur saepe labore.
+            country_name: Temporibus officiis.
             id: 10
-            is_hq: Fugit possimus dolores.
+            is_hq: Sit dolorem quia distinctio temporibus ea ipsa.
             name: Company
         required:
             - name
@@ -843,15 +843,21 @@ definitions:
         example:
             - address: Shinagawa Tokyo
               company_id: 10
-              country_name: Natus accusamus eum maxime.
+              country_name: Voluptas fuga.
               id: 10
-              is_hq: Ratione quas delectus et.
+              is_hq: Hic aut cumque dicta autem quod.
               name: Company
             - address: Shinagawa Tokyo
               company_id: 10
-              country_name: Natus accusamus eum maxime.
+              country_name: Voluptas fuga.
               id: 10
-              is_hq: Ratione quas delectus et.
+              is_hq: Hic aut cumque dicta autem quod.
+              name: Company
+            - address: Shinagawa Tokyo
+              company_id: 10
+              country_name: Voluptas fuga.
+              id: 10
+              is_hq: Hic aut cumque dicta autem quod.
               name: Company
     HyCompanyCreateCompanyRequestBody:
         title: HyCompanyCreateCompanyRequestBody
@@ -939,7 +945,7 @@ definitions:
             company_id:
                 type: integer
                 description: Company ID
-                example: 3507903279861163267
+                example: 1872571669261647631
                 format: int64
             country_id:
                 type: integer
@@ -949,7 +955,7 @@ definitions:
                 maximum: 999
         example:
             address: Shinagawa Tokyo
-            company_id: 3406041282294801167
+            company_id: 6209311211303702808
             country_id: 110
         required:
             - country_id
@@ -1007,7 +1013,7 @@ definitions:
                 minimum: 1
             country_name:
                 type: string
-                example: Qui deleniti ut accusantium corrupti sunt aut.
+                example: Ipsum exercitationem.
             id:
                 type: integer
                 description: ID
@@ -1015,7 +1021,7 @@ definitions:
                 minimum: 1
             is_hq:
                 type: string
-                example: Voluptas deleniti consequatur sint unde quo dolor.
+                example: Porro est.
             name:
                 type: string
                 description: Company name
@@ -1026,9 +1032,9 @@ definitions:
         example:
             address: Shinagawa Tokyo
             company_id: 10
-            country_name: Animi repellendus et corrupti.
+            country_name: Corporis iure distinctio omnis.
             id: 10
-            is_hq: Voluptatum atque.
+            is_hq: Rerum adipisci adipisci.
             name: Company
         required:
             - name
@@ -1040,6 +1046,10 @@ definitions:
             $ref: '#/definitions/TechResponse'
         description: TechListResponseBody is the result type for an array of TechResponse (default view)
         example:
+            - id: 10
+              name: Golang
+            - id: 10
+              name: Golang
             - id: 10
               name: Golang
             - id: 10
@@ -1082,13 +1092,13 @@ definitions:
             userID:
                 type: integer
                 description: User ID
-                example: 2645492613972931954
+                example: 8166682445503144992
                 minimum: 1
         example:
             email: hy@gmail.com
             password: xxxxxxxx
             user_name: Hiroki
-            userID: 1435843308215978603
+            userID: 628430436074407989
         required:
             - user_name
             - email
@@ -1185,6 +1195,18 @@ definitions:
               techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
               term: Jul 2017 - Aug 2017
               title: Developer
+            - company: Company
+              country: nl
+              description: '["Developed resume site for job seeking."]'
+              techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+              term: Jul 2017 - Aug 2017
+              title: Developer
+            - company: Company
+              country: nl
+              description: '["Developed resume site for job seeking."]'
+              techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+              term: Jul 2017 - Aug 2017
+              title: Developer
     HyUsertechUsertechResponseCollection:
         title: 'Mediatype identifier: application/vnd.usertech+json; type=collection; view=default'
         type: array
@@ -1192,8 +1214,6 @@ definitions:
             $ref: '#/definitions/UsertechResponse'
         description: GetUserLikeTechResponseBody is the result type for an array of UsertechResponse (default view)
         example:
-            - id: 10
-              tech_name: Golang
             - id: 10
               tech_name: Golang
             - id: 10
