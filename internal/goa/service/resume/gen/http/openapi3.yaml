@@ -13,15 +13,22 @@ info:
 servers:
     - url: http://localhost:8080
 paths:
-    /*filepath:
+    /assets/{*filepath}:
         get:
             tags:
-                - public
-            summary: Download public/
-            operationId: public#/*filepath
+                - static
+            summary: Download assets/
+            operationId: static#/assets/{*filepath}
+            parameters:
+                - name: filepath
+                  in: path
+                  description: Relative file path
+                  required: true
             responses:
                 "200":
-                    description: File downloaded
+                    description: File not found
+                "404":
+                    description: File not found
     /company:
         get:
             tags:
@@ -96,9 +103,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 174707256933496807
+                    example: 1527676881617102182
                     format: int64
-                  example: 5640647172011608606
+                  example: 3416244926440088421
             responses:
                 "200":
                     description: OK response.
@@ -119,9 +126,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 614694957858244943
+                    example: 6452748538961127060
                     format: int64
-                  example: 766181467878029623
+                  example: 5709384348704187233
             requestBody:
                 required: true
                 content:
@@ -172,9 +179,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 9132443853158385423
+                    example: 9079370171329166773
                     format: int64
-                  example: 2442878704078016206
+                  example: 1288301141656066466
             requestBody:
                 required: true
                 content:
@@ -231,9 +238,9 @@ paths:
                   schema:
                     type: integer
                     description: Company branch ID
-                    example: 339745344289456660
+                    example: 156287551336088559
                     format: int64
-                  example: 4571527033430832188
+                  example: 3869040641015927669
             responses:
                 "200":
                     description: OK response.
@@ -254,9 +261,9 @@ paths:
                   schema:
                     type: integer
                     description: Company branch ID
-                    example: 3163300068779443068
+                    example: 5989441150819645179
                     format: int64
-                  example: 1813871800037835769
+                  example: 7745277364261132186
             responses:
                 "200":
                     description: OK response.
@@ -277,9 +284,9 @@ paths:
                   schema:
                     type: integer
                     description: Company branch ID
-                    example: 5205654078207144836
+                    example: 7909492857951961545
                     format: int64
-                  example: 7913414299811921262
+                  example: 6105886882736115679
             requestBody:
                 required: true
                 content:
@@ -335,24 +342,6 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /openapi.json:
-        get:
-            tags:
-                - public
-            summary: Download ../gen/http/openapi.json
-            operationId: public#/openapi.json
-            responses:
-                "200":
-                    description: File downloaded
-    /swagger-ui/*filepath:
-        get:
-            tags:
-                - public
-            summary: Download resources/swagger-ui/dist/
-            operationId: public#/swagger-ui/*filepath
-            responses:
-                "200":
-                    description: File downloaded
     /tech:
         get:
             tags:
@@ -417,9 +406,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 2847978431605506771
+                    example: 5389793844023254175
                     format: int64
-                  example: 2575621331362584675
+                  example: 663415220421919034
             responses:
                 "200":
                     description: OK response.
@@ -440,9 +429,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 4190895503921200414
+                    example: 2429748020324554068
                     format: int64
-                  example: 396881324212913758
+                  example: 220270010374292934
             responses:
                 "200":
                     description: OK response.
@@ -477,9 +466,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 1046919295188121970
+                    example: 5823852514308063431
                     format: int64
-                  example: 6988304720051856350
+                  example: 1834169377607048048
             requestBody:
                 required: true
                 content:
@@ -577,9 +566,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 1288301141656066467
+                    example: 3636658398520322719
                     minimum: 1
-                  example: 1527676881617102183
+                  example: 4931327110170807761
             responses:
                 "200":
                     description: OK response.
@@ -600,9 +589,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 1834942356353653981
+                    example: 6593177061318658673
                     minimum: 1
-                  example: 6452748538961127061
+                  example: 2888634869541791708
             responses:
                 "200":
                     description: OK response.
@@ -635,9 +624,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 5709384348704187234
+                    example: 3751881216934263680
                     minimum: 1
-                  example: 9079370171329166774
+                  example: 6797425482325929157
             requestBody:
                 required: true
                 content:
@@ -669,9 +658,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 7745277364261132187
+                    example: 8023692041009768972
                     minimum: 1
-                  example: 7909492857951961546
+                  example: 7985191217834800860
             responses:
                 "200":
                     description: OK response.
@@ -705,9 +694,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 3416244926440088422
+                    example: 1427770506408139542
                     minimum: 1
-                  example: 5989441150819645180
+                  example: 3208695966424482667
             responses:
                 "200":
                     description: OK response.
@@ -741,9 +730,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 6105886882736115680
+                    example: 9071009543265281536
                     minimum: 1
-                  example: 156287551336088560
+                  example: 659333683120361844
             responses:
                 "200":
                     description: OK response.
@@ -809,7 +798,7 @@ components:
                     minimum: 1
                 country_name:
                     type: string
-                    example: Hic eum delectus labore.
+                    example: Ut provident fugiat esse iusto architecto nesciunt.
                 created_at:
                     type: string
                     description: Datetime
@@ -822,7 +811,7 @@ components:
                     minimum: 1
                 is_hq:
                     type: string
-                    example: Rerum facere neque doloremque beatae itaque.
+                    example: Blanditiis corporis ut et.
                 name:
                     type: string
                     description: Company name
@@ -838,10 +827,10 @@ components:
             example:
                 address: Shinagawa Tokyo
                 company_id: 10
-                country_name: Ut et.
+                country_name: Beatae reprehenderit a quis consequuntur ea consequatur.
                 created_at: "2017-03-10T15:00:00Z"
                 id: 10
-                is_hq: Est blanditiis.
+                is_hq: Aut exercitationem.
                 name: Company
                 updated_at: "2017-03-10T15:00:00Z"
             required:
@@ -852,22 +841,6 @@ components:
             items:
                 $ref: '#/components/schemas/Company'
             example:
-                - address: Shinagawa Tokyo
-                  company_id: 10
-                  country_name: Ut quia exercitationem autem non nisi.
-                  created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  is_hq: Est qui iure eligendi alias.
-                  name: Company
-                  updated_at: "2017-03-10T15:00:00Z"
-                - address: Shinagawa Tokyo
-                  company_id: 10
-                  country_name: Ut quia exercitationem autem non nisi.
-                  created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  is_hq: Est qui iure eligendi alias.
-                  name: Company
-                  updated_at: "2017-03-10T15:00:00Z"
                 - address: Shinagawa Tokyo
                   company_id: 10
                   country_name: Ut quia exercitationem autem non nisi.
@@ -903,6 +876,7 @@ components:
             example:
                 - id: 10
                 - id: 10
+                - id: 10
         CompanyResponseID:
             type: object
             properties:
@@ -920,7 +894,6 @@ components:
                 $ref: '#/components/schemas/CompanyResponseID'
             description: CompanyListResponseBody is the result type for an array of CompanyResponse (id view)
             example:
-                - company_id: 10
                 - company_id: 10
                 - company_id: 10
                 - company_id: 10
@@ -954,6 +927,8 @@ components:
                   name: Company
                 - company_id: 10
                   name: Company
+                - company_id: 10
+                  name: Company
         CreateCompanyBranchRequestBody:
             type: object
             properties:
@@ -966,7 +941,7 @@ components:
                 company_id:
                     type: integer
                     description: Company ID
-                    example: 5639337732304257505
+                    example: 5205654078207144836
                     format: int64
                 country_id:
                     type: integer
@@ -976,7 +951,7 @@ components:
                     maximum: 999
             example:
                 address: Shinagawa Tokyo
-                company_id: 2728230755377463615
+                company_id: 7913414299811921262
                 country_id: 110
             required:
                 - country_id
@@ -1046,13 +1021,13 @@ components:
                 userID:
                     type: integer
                     description: User ID
-                    example: 6968908288167102051
+                    example: 1046919295188121971
                     minimum: 1
             example:
                 email: hy@gmail.com
                 password: xxxxxxxx
                 user_name: Hiroki
-                userID: 1532314570247062039
+                userID: 6988304720051856351
             required:
                 - user_name
                 - email
@@ -1101,7 +1076,7 @@ components:
                 is_hq:
                     type: string
                     description: Head Quarters flag
-                    example: "0"
+                    example: "1"
                     enum:
                         - "1"
                         - "0"
@@ -1193,6 +1168,8 @@ components:
                 $ref: '#/components/schemas/TechResponseID'
             description: TechListResponseBody is the result type for an array of TechResponse (id view)
             example:
+                - id: 10
+                - id: 10
                 - id: 10
                 - id: 10
         UpdateCompanyBranchRequestBody:
@@ -1308,6 +1285,12 @@ components:
                   password: xxxxxxxx
                   updated_at: "2017-03-10T15:00:00Z"
                   user_name: Hiroki
+                - created_at: "2017-03-10T15:00:00Z"
+                  email: hy@gmail.com
+                  id: 10
+                  password: xxxxxxxx
+                  updated_at: "2017-03-10T15:00:00Z"
+                  user_name: Hiroki
         UserResponseID:
             type: object
             properties:
@@ -1377,8 +1360,6 @@ components:
                 $ref: '#/components/schemas/UsertechResponseTech'
             description: GetUserLikeTechResponseBody is the result type for an array of UsertechResponse (tech view)
             example:
-                - tech_name: Golang
-                - tech_name: Golang
                 - tech_name: Golang
                 - tech_name: Golang
         Userworkhistory:
@@ -1458,8 +1439,8 @@ tags:
       description: The company service returns company data
     - name: hy_companybranch
       description: The company branch service returns company branch data
-    - name: public
-      description: The public service returns static data
+    - name: static
+      description: The static service returns static files
     - name: hy_tech
       description: The company service returns company data
     - name: hy_user

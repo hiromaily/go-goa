@@ -9,6 +9,7 @@ hy_user.go
 hy_user_work_history.go
 hy_usertech.go
 public.go
+static.go
 
 resume
 resume-cli

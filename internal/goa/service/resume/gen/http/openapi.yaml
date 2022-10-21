@@ -19,17 +19,27 @@ produces:
     - application/xml
     - application/gob
 paths:
-    /*filepath:
+    /assets/{filepath}:
         get:
             tags:
-                - public
-            summary: Download public/
-            operationId: public#/*filepath
+                - static
+            summary: Download assets/
+            operationId: static#/assets/{*filepath}
+            parameters:
+                - name: filepath
+                  in: path
+                  description: Relative file path
+                  required: true
+                  type: string
             responses:
                 "200":
                     description: File downloaded
                     schema:
                         type: file
+                "404":
+                    description: File not found
+                    schema:
+                        $ref: '#/definitions/Error'
             schemes:
                 - http
     /company:
@@ -319,32 +329,6 @@ paths:
                     description: Unauthorized response.
                     schema:
                         $ref: '#/definitions/AuthLoginUnauthorizedResponseBody'
-            schemes:
-                - http
-    /openapi.json:
-        get:
-            tags:
-                - public
-            summary: Download ../gen/http/openapi.json
-            operationId: public#/openapi.json
-            responses:
-                "200":
-                    description: File downloaded
-                    schema:
-                        type: file
-            schemes:
-                - http
-    /swagger-ui/*filepath:
-        get:
-            tags:
-                - public
-            summary: Download resources/swagger-ui/dist/
-            operationId: public#/swagger-ui/*filepath
-            responses:
-                "200":
-                    description: File downloaded
-                    schema:
-                        type: file
             schemes:
                 - http
     /tech:
@@ -834,6 +818,49 @@ definitions:
         required:
             - name
             - address
+    Error:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: false
+        description: Error response result type (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
     HyCompanyCompanyResponseCollection:
         title: 'Mediatype identifier: application/vnd.company+json; type=collection; view=default'
         type: array
@@ -1013,7 +1040,7 @@ definitions:
                 minimum: 1
             country_name:
                 type: string
-                example: Ipsum exercitationem.
+                example: Corporis iure distinctio omnis.
             id:
                 type: integer
                 description: ID
@@ -1021,7 +1048,7 @@ definitions:
                 minimum: 1
             is_hq:
                 type: string
-                example: Porro est.
+                example: Rerum adipisci adipisci.
             name:
                 type: string
                 description: Company name
@@ -1032,9 +1059,9 @@ definitions:
         example:
             address: Shinagawa Tokyo
             company_id: 10
-            country_name: Corporis iure distinctio omnis.
+            country_name: Veniam rerum facere neque doloremque.
             id: 10
-            is_hq: Rerum adipisci adipisci.
+            is_hq: Dolorem itaque officiis iusto iste aliquid.
             name: Company
         required:
             - name
@@ -1046,8 +1073,6 @@ definitions:
             $ref: '#/definitions/TechResponse'
         description: TechListResponseBody is the result type for an array of TechResponse (default view)
         example:
-            - id: 10
-              name: Golang
             - id: 10
               name: Golang
             - id: 10
@@ -1092,13 +1117,13 @@ definitions:
             userID:
                 type: integer
                 description: User ID
-                example: 8166682445503144992
+                example: 381782836909369389
                 minimum: 1
         example:
             email: hy@gmail.com
             password: xxxxxxxx
             user_name: Hiroki
-            userID: 628430436074407989
+            userID: 4184350793505023335
         required:
             - user_name
             - email
@@ -1214,6 +1239,8 @@ definitions:
             $ref: '#/definitions/UsertechResponse'
         description: GetUserLikeTechResponseBody is the result type for an array of UsertechResponse (default view)
         example:
+            - id: 10
+              tech_name: Golang
             - id: 10
               tech_name: Golang
             - id: 10
