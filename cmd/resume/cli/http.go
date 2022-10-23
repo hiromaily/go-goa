@@ -1,18 +1,16 @@
-package cli
+package main
 
 import (
 	"net/http"
-	cli "resume/gen/http/cli/resume"
 	"time"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
+	cli "resume/gen/http/cli/resume"
 )
 
 func doHTTP(scheme, host string, timeout int, debug bool) (goa.Endpoint, interface{}, error) {
-	var (
-		doer goahttp.Doer
-	)
+	var doer goahttp.Doer
 	{
 		doer = &http.Client{Timeout: time.Duration(timeout) * time.Second}
 		if debug {

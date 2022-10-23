@@ -5,9 +5,8 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/go-playground/validator/v10"
-	"github.com/pkg/errors"
-
 	"github.com/hiromaily/go-goa/pkg/encryption"
+	"github.com/pkg/errors"
 )
 
 // NewConfig returns *Root config
@@ -55,7 +54,6 @@ func (c *Root) validate() error {
 
 // decrypt decrypts encrypted values in config file
 func (c *Root) decrypt(crypt encryption.Crypt) {
-
 	//if c.MySQL.Encrypted {
 	//	m := c.MySQL
 	//	m.Host, _ = crypt.DecryptBase64(m.Host)

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/hiromaily/go-goa/cmd/resume/cli"
 	"net/url"
 	"os"
 	"strings"
@@ -65,7 +64,7 @@ func main() {
 	{
 		switch scheme {
 		case "http", "https":
-			endpoint, payload, err = cli.doHTTP(scheme, host, timeout, debug)
+			endpoint, payload, err = doHTTP(scheme, host, timeout, debug)
 		default:
 			fmt.Fprintf(os.Stderr, "invalid scheme: %q (valid schemes: grpc|http)\n", scheme)
 			os.Exit(1)
@@ -110,7 +109,7 @@ Additional help:
 
 Example:
 %s
-`, os.Args[0], os.Args[0], indent(cli.httpUsageCommands()), os.Args[0], indent(cli.httpUsageExamples()))
+`, os.Args[0], os.Args[0], indent(httpUsageCommands()), os.Args[0], indent(httpUsageExamples()))
 }
 
 func indent(s string) string {

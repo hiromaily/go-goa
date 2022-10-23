@@ -3,14 +3,16 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"github.com/volatiletech/null/v8"
-	"github.com/volatiletech/sqlboiler/v4/boil"
-	hycompany "resume/gen/hy_company"
 	"time"
 
 	models "github.com/hiromaily/go-goa/pkg/model/rdb"
 	"github.com/pkg/errors"
+	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
+	hycompany "resume/gen/hy_company"
+
+	models "github.com/hiromaily/go-goa/pkg/model/rdb"
 )
 
 // CompanyRepository interface
@@ -75,7 +77,6 @@ func (c *companyRepository) getCompanyIDByName(name string) (int, error) {
 
 // InsertCompany inserts company and company detail
 func (c *companyRepository) InsertCompany(name, address string, countryID int16) (int, error) {
-
 	ctx := context.Background()
 	// company
 	companyItem := &models.TCompany{

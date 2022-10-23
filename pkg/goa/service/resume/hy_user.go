@@ -3,21 +3,24 @@ package resumeapi
 import (
 	"context"
 	"fmt"
-	"log"
+
+	"github.com/hiromaily/go-goa/pkg/repository"
+	"github.com/rs/zerolog/log"
+	"goa.design/goa/v3/security"
 	hyuser "resume/gen/hy_user"
 
-	"goa.design/goa/v3/security"
+	"github.com/hiromaily/go-goa/pkg/repository"
 )
 
 // hy_user service example implementation.
 // The example methods log the requests and return zero values.
 type hyUsersrvc struct {
-	logger *log.Logger
+	userRepo repository.UserRepository
 }
 
 // NewHyUser returns the hy_user service implementation.
-func NewHyUser(logger *log.Logger) hyuser.Service {
-	return &hyUsersrvc{logger}
+func NewHyUser(userRepo repository.UserRepository) hyuser.Service {
+	return &hyUsersrvc{userRepo}
 }
 
 // JWTAuth implements the authorization logic for service "hy_user" for the
@@ -64,7 +67,7 @@ func (s *hyUsersrvc) UserList(ctx context.Context, p *hyuser.UserListPayload) (r
 	//	res := app.UserCollection(users)
 	//	return ctx.OK(res)
 	view = "default"
-	s.logger.Print("hyUser.userList")
+	log.Info().Msg("hyUser.userList")
 	return
 }
 
@@ -87,7 +90,7 @@ func (s *hyUsersrvc) GetUser(ctx context.Context, p *hyuser.GetUserPayload) (res
 	//	return ctx.OK(user)
 	res = &hyuser.User{}
 	view = "default"
-	s.logger.Print("hyUser.getUser")
+	log.Info().Msg("hyUser.getUser")
 	return
 }
 
@@ -101,7 +104,7 @@ func (s *hyUsersrvc) CreateUser(ctx context.Context, p *hyuser.CreateUserPayload
 	//
 	//	res := &app.UserID{ID: &userID}
 	//	return ctx.OKId(res)
-	s.logger.Print("hyUser.createUser")
+	log.Info().Msg("hyUser.createUser")
 	return
 }
 
@@ -115,7 +118,7 @@ func (s *hyUsersrvc) UpdateUser(ctx context.Context, p *hyuser.UpdateUserPayload
 	//
 	//	res := &app.UserID{ID: &ctx.UserID}
 	//	return ctx.OKId(res)
-	s.logger.Print("hyUser.updateUser")
+	log.Info().Msg("hyUser.updateUser")
 	return
 }
 
@@ -129,6 +132,6 @@ func (s *hyUsersrvc) DeleteUser(ctx context.Context, p *hyuser.DeleteUserPayload
 	//
 	//	res := &app.UserID{ID: &ctx.UserID}
 	//	return ctx.OKId(res)
-	s.logger.Print("hyUser.deleteUser")
+	log.Info().Msg("hyUser.deleteUser")
 	return
 }

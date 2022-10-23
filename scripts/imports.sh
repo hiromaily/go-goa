@@ -1,6 +1,6 @@
 #!/bin/bash
 
-gofiles=$(find . -name "*.go" | grep -v "/gen/" | grep -v "/example/")
+gofiles=$(find . -name "*.go" | grep -v "/gen/")
 
 for gofile in $gofiles; do
     echo $gofile
@@ -9,4 +9,4 @@ for gofile in $gofiles; do
 done
 
 go fmt `go list ./... | grep -v "/vendor/"`
-goimports -local github.com/hiromaily/ -w `goimports -local github.com/hiromaily/ -l ./ | grep -v "/gen/" | grep -v "/example/"`
+goimports -local github.com/hiromaily/,resume/gen/ -w `goimports -local github.com/hiromaily/,resume/gen/ -l ./ | grep -v "/gen/"`

@@ -1,17 +1,14 @@
 run:
   deadline: 10m
-  build-tags:
-    - integration
+  #build-tags:
+  #  - integration
   skip-dirs:
+    - assets
     - build
     - configs
-    - ext
-    - frontend_workspace
-    - internal/goa/service/resume/example
     - internal/goa/service/resume/gen
-    - public
-    - resources
     - scripts
+    - web
 
 linters-settings:
   misspell:
@@ -19,7 +16,7 @@ linters-settings:
   goimports:
     # put imports beginning with prefix after 3rd-party packages;
     # it's a comma-separated list of prefixes
-    local-prefixes: github.com/hiromaily
+    local-prefixes: github.com/hiromaily, resume/gen
   #unused:
   #  check-exported: true
   golint:
@@ -34,18 +31,14 @@ issues:
 linters:
   disable-all: true
   enable:
-    - deadcode
     - gosimple
     - govet
     - ineffassign
     - staticcheck
-    - structcheck
     - typecheck
     - unused
-    - varcheck
     - goimports
     - misspell
-    - golint
   presets:
     # only next presets exist: (bugs|complexity|format|performance|style|unused)
     - format

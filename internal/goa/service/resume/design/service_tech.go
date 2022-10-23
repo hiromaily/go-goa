@@ -1,8 +1,9 @@
 package design
 
 import (
-	. "goa.design/goa/v3/dsl"
 	"resume/design/types"
+
+	. "goa.design/goa/v3/dsl"
 )
 
 var _ = Service(resourcePrefix+"tech", func() {

@@ -3,16 +3,15 @@ package repository
 import (
 	"context"
 	"database/sql"
-
-	"github.com/pkg/errors"
-	"github.com/volatiletech/null/v8"
-	"github.com/volatiletech/sqlboiler/v4/boil"
-	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 	hyuser "resume/gen/hy_user"
 	"time"
 
 	"github.com/hiromaily/go-goa/pkg/encryption"
 	models "github.com/hiromaily/go-goa/pkg/model/rdb"
+	"github.com/pkg/errors"
+	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 // UserRepository interface
@@ -65,7 +64,6 @@ func (u *userRepository) Login(email, password string) (int, error) {
 		return 0, errors.Errorf("password is invalid")
 	}
 	return user.ID, nil
-
 }
 
 func (u *userRepository) UserList() ([]*hyuser.User, error) {
@@ -108,7 +106,6 @@ func (u *userRepository) GetUser(userID int) (*hyuser.User, error) {
 		UserName: item.UserName,
 		Email:    item.Email.String,
 	}, nil
-
 }
 
 func (u *userRepository) getUserByEmail(email string) (*models.TUser, error) {
@@ -138,7 +135,9 @@ func (u *userRepository) InsertUser(name, email, password string) (int, error) {
 		return 0, errors.Wrap(err, "failed to call item.Insert()")
 	}
 	user, err := u.getUserByEmail(email)
-	return 0, errors.Wrap(err, "failed to call getUserByEmail()")
+	if err != nil {
+		return 0, errors.Wrap(err, "failed to call getUserByEmail()")
+	}
 
 	return user.ID, nil
 }

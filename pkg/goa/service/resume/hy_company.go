@@ -3,11 +3,13 @@ package resumeapi
 import (
 	"context"
 	"fmt"
+
 	"github.com/hiromaily/go-goa/pkg/repository"
 	"github.com/rs/zerolog/log"
+	"goa.design/goa/v3/security"
 	hycompany "resume/gen/hy_company"
 
-	"goa.design/goa/v3/security"
+	"github.com/hiromaily/go-goa/pkg/repository"
 )
 
 // hy_company service example implementation.
@@ -67,7 +69,7 @@ func (s *hyCompanysrvc) CompanyList(ctx context.Context, p *hycompany.CompanyLis
 func (s *hyCompanysrvc) GetCompany(ctx context.Context, p *hycompany.GetCompanyPayload) (res *hycompany.Company, view string, err error) {
 	res = &hycompany.Company{}
 	view = "default"
-	s.logger.Print("hyCompany.getCompany")
+	log.Info().Msg("hyCompany.getCompany")
 	return
 }
 
@@ -82,7 +84,7 @@ func (s *hyCompanysrvc) CreateCompany(ctx context.Context, p *hycompany.CreateCo
 	//	res := &app.CompanyID{CompanyID: &companyID}
 	//	return ctx.OKId(res)
 
-	s.logger.Print("hyCompany.createCompany")
+	log.Info().Msg("hyCompany.createCompany")
 	return
 }
 
@@ -97,7 +99,7 @@ func (s *hyCompanysrvc) UpdateCompany(ctx context.Context, p *hycompany.UpdateCo
 	//	res := &app.CompanyID{CompanyID: &ctx.CompanyID}
 	//	return ctx.OKId(res)
 
-	s.logger.Print("hyCompany.updateCompany")
+	log.Info().Msg("hyCompany.updateCompany")
 	return
 }
 
@@ -112,6 +114,6 @@ func (s *hyCompanysrvc) DeleteCompany(ctx context.Context, p *hycompany.DeleteCo
 	//	res := &app.CompanyID{CompanyID: &ctx.CompanyID}
 	//	return ctx.OKId(res)
 
-	s.logger.Print("hyCompany.deleteCompany")
+	log.Info().Msg("hyCompany.deleteCompany")
 	return
 }

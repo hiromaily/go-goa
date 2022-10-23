@@ -3,16 +3,15 @@ package logger
 import (
 	"os"
 
+	"github.com/hiromaily/go-goa/pkg/config"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-
-	"github.com/hiromaily/go-goa/pkg/config"
 )
 
 // NewZeroLog configures globally
 // - https://github.com/rs/zerolog
-func NewZeroLog(conf *config.Logger) {
-	//zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+func InitializeZeroLog(conf *config.Logger) {
+	// zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
 	logLv := zerolog.Level(conf.Level)
 	if logLv.String() == "" {

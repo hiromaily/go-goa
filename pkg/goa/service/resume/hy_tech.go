@@ -3,21 +3,24 @@ package resumeapi
 import (
 	"context"
 	"fmt"
-	"log"
+
+	"github.com/hiromaily/go-goa/pkg/repository"
+	"github.com/rs/zerolog/log"
+	"goa.design/goa/v3/security"
 	hytech "resume/gen/hy_tech"
 
-	"goa.design/goa/v3/security"
+	"github.com/hiromaily/go-goa/pkg/repository"
 )
 
 // hy_tech service example implementation.
 // The example methods log the requests and return zero values.
 type hyTechsrvc struct {
-	logger *log.Logger
+	techRepo repository.TechRepository
 }
 
 // NewHyTech returns the hy_tech service implementation.
-func NewHyTech(logger *log.Logger) hytech.Service {
-	return &hyTechsrvc{logger}
+func NewHyTech(techRepo repository.TechRepository) hytech.Service {
+	return &hyTechsrvc{techRepo}
 }
 
 // JWTAuth implements the authorization logic for service "hy_tech" for the
@@ -57,7 +60,7 @@ func (s *hyTechsrvc) TechList(ctx context.Context, p *hytech.TechListPayload) (r
 	//	res := app.TechCollection(techs)
 	//	return ctx.OK(res)
 	view = "default"
-	s.logger.Print("hyTech.techList")
+	log.Info().Msg("hyTech.techList")
 	return
 }
 
@@ -80,7 +83,7 @@ func (s *hyTechsrvc) GetTech(ctx context.Context, p *hytech.GetTechPayload) (res
 
 	res = &hytech.Company{}
 	view = "default"
-	s.logger.Print("hyTech.getTech")
+	log.Info().Msg("hyTech.getTech")
 	return
 }
 
@@ -95,7 +98,7 @@ func (s *hyTechsrvc) CreateTech(ctx context.Context, p *hytech.CreateTechPayload
 	//	res := &app.TechID{ID: &techID}
 	//	return ctx.OKId(res)
 
-	s.logger.Print("hyTech.createTech")
+	log.Info().Msg("hyTech.createTech")
 	return
 }
 
@@ -110,7 +113,7 @@ func (s *hyTechsrvc) UpdateTech(ctx context.Context, p *hytech.UpdateTechPayload
 	//	res := &app.TechID{ID: &ctx.TechID}
 	//	return ctx.OKId(res)
 
-	s.logger.Print("hyTech.updateTech")
+	log.Info().Msg("hyTech.updateTech")
 	return
 }
 
@@ -125,6 +128,6 @@ func (s *hyTechsrvc) DeleteTech(ctx context.Context, p *hytech.DeleteTechPayload
 	//	res := &app.TechID{ID: &ctx.TechID}
 	//	return ctx.OKId(res)
 
-	s.logger.Print("hyTech.deleteTech")
+	log.Info().Msg("hyTech.deleteTech")
 	return
 }

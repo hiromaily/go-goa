@@ -42,8 +42,11 @@ imports:
 
 .PHONY: lint
 lint:
-	golangci-lint run --fix
+	golangci-lint run
 
+.PHONY: lint-fix
+lint-fix:
+	golangci-lint run --fix
 
 ###############################################################################
 # Goa generation
@@ -61,15 +64,23 @@ gen-example:
 ###############################################################################
 # Build on local
 ###############################################################################
-run-server:
-	go run -race ./cmd/resume/server/...
+.PHONY: bld
+bld: bld-server
 
+.PHONY: bld-all
+bld-all: bld-server bld-client
+
+.PHONY: bld-server
 bld-server:
 	go build -v -o ${GOPATH}/bin/goa-server ./cmd/resume/server/...
 
+.PHONY: bld-client
 bld-client:
 	go build -v -o ${GOPATH}/bin/goa-client ./cmd/resume/cli/...
 
+.PHONY: run-server
+run-server:
+	go run -race ./cmd/resume/server/...
 
 ###############################################################################
 # Docker

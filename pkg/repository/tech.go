@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"time"
 
+	models "github.com/hiromaily/go-goa/pkg/model/rdb"
 	"github.com/pkg/errors"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
@@ -99,7 +100,9 @@ func (u *techRepository) InsertTech(name string) (int, error) {
 		return 0, errors.Wrap(err, "failed to call item.Insert()")
 	}
 	tech, err := u.getTechByName(name)
-	return 0, errors.Wrap(err, "failed to call getTechByName()")
+	if err != nil {
+		return 0, errors.Wrap(err, "failed to call getTechByName()")
+	}
 
 	return tech.ID, nil
 }

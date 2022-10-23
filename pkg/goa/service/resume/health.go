@@ -2,23 +2,22 @@ package resumeapi
 
 import (
 	"context"
-	"log"
+
+	"github.com/rs/zerolog/log"
 	health "resume/gen/health"
 )
 
 // health service example implementation.
 // The example methods log the requests and return zero values.
-type healthsrvc struct {
-	logger *log.Logger
-}
+type healthsrvc struct{}
 
 // NewHealth returns the health service implementation.
-func NewHealth(logger *log.Logger) health.Service {
-	return &healthsrvc{logger}
+func NewHealth() health.Service {
+	return &healthsrvc{}
 }
 
 // Health implements health.
 func (s *healthsrvc) Health(ctx context.Context) (err error) {
-	s.logger.Print("health.health")
+	log.Info().Msg("health.health")
 	return
 }

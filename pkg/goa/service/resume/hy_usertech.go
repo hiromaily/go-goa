@@ -3,21 +3,24 @@ package resumeapi
 import (
 	"context"
 	"fmt"
-	"log"
+
+	"github.com/hiromaily/go-goa/pkg/repository"
+	"github.com/rs/zerolog/log"
+	"goa.design/goa/v3/security"
 	hyusertech "resume/gen/hy_usertech"
 
-	"goa.design/goa/v3/security"
+	"github.com/hiromaily/go-goa/pkg/repository"
 )
 
 // hy_usertech service example implementation.
 // The example methods log the requests and return zero values.
 type hyUsertechsrvc struct {
-	logger *log.Logger
+	userTechRepo repository.UserTechRepository
 }
 
 // NewHyUsertech returns the hy_usertech service implementation.
-func NewHyUsertech(logger *log.Logger) hyusertech.Service {
-	return &hyUsertechsrvc{logger}
+func NewHyUsertech(userTechRepo repository.UserTechRepository) hyusertech.Service {
+	return &hyUsertechsrvc{userTechRepo}
 }
 
 // JWTAuth implements the authorization logic for service "hy_usertech" for the
@@ -71,7 +74,7 @@ func (s *hyUsertechsrvc) GetUserLikeTech(ctx context.Context, p *hyusertech.GetU
 	//	res := app.UsertechTechCollection(userTechs)
 	//	return ctx.OKTech(res)
 	view = "default"
-	s.logger.Print("hyUsertech.getUserLikeTech")
+	log.Info().Msg("hyUsertech.getUserLikeTech")
 	return
 }
 
@@ -102,6 +105,6 @@ func (s *hyUsertechsrvc) GetUserDisLikeTech(ctx context.Context, p *hyusertech.G
 	//	res := app.UsertechTechCollection(userTechs)
 	//	return ctx.OKTech(res)
 	view = "default"
-	s.logger.Print("hyUsertech.getUserDisLikeTech")
+	log.Info().Msg("hyUsertech.getUserDisLikeTech")
 	return
 }

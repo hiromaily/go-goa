@@ -2,6 +2,7 @@ package resumeapi
 
 import (
 	"log"
+
 	static "resume/gen/static"
 )
 

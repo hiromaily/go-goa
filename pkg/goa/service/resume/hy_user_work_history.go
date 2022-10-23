@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"log"
-	hyuserworkhistory "resume/gen/hy_user_work_history"
 
 	"goa.design/goa/v3/security"
+	hyuserworkhistory "resume/gen/hy_user_work_history"
 )
 
 // hy_userWorkHistory service example implementation.

@@ -2,16 +2,20 @@ package main
 
 import (
 	"database/sql"
-	"github.com/hiromaily/go-goa/pkg/mysql"
-	"github.com/pkg/errors"
-	"github.com/volatiletech/sqlboiler/v4/boil"
 	"resume/gen/auth"
+	"resume/gen/health"
+
+
 	hycompany "resume/gen/hy_company"
+	hytech "resume/gen/hy_tech"
+	hyuser "resume/gen/hy_user"
+	hyusertech "resume/gen/hy_usertech"
 
 	"github.com/hiromaily/go-goa/pkg/config"
 	"github.com/hiromaily/go-goa/pkg/encryption"
 	resume "github.com/hiromaily/go-goa/pkg/goa/service/resume"
 	"github.com/hiromaily/go-goa/pkg/jwts"
+	"github.com/hiromaily/go-goa/pkg/mysql"
 	"github.com/hiromaily/go-goa/pkg/repository"
 )
 
@@ -44,22 +48,32 @@ func NewRegistry(confPath string) *registry {
 	return reg
 }
 
-// TODO: WIP
 func (r *registry) NewAuth() auth.Service {
 	return resume.NewAuth(r.userRepo)
 }
 
-// TODO: WIP
+func (r *registry) NewHyUser() hyuser.Service {
+	return resume.NewHyUser(r.userRepo)
+}
+
 func (r *registry) NewHyCompany() hycompany.Service {
 	return resume.NewHyCompany(r.companyRepo)
 }
 
-//hyCompanybranchSvc = resume.NewHyCompanybranch(logger, db)
-//healthSvc = resume.NewHealth(logger, db)
-//hyTechSvc = resume.NewHyTech(logger, db)
-//hyUserSvc = resume.NewHyUser(logger, db)
-//hyUsertechSvc = resume.NewHyUsertech(logger, db)
-//hyUserWorkHistorySvc = resume.NewHyUserWorkHistory(logger, db)
+func (r *registry) NewHyTech() hytech.Service {
+	return resume.NewHyTech(r.techRepo)
+}
+
+func (r *registry) NewHyUserTech() hyusertech.Service {
+	return resume.NewHyUsertech(r.userTechRepo)
+}
+
+func (r *registry) NewHealth() health.Service {
+	return resume.NewHealth()
+}
+
+// TODO
+// hyUserWorkHistorySvc = resume.NewHyUserWorkHistory(logger, db)
 
 //func (r *registry) newLogger() *zap.Logger {
 //	if r.logger == nil {

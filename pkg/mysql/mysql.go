@@ -4,9 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/pkg/errors"
-
 	"github.com/hiromaily/go-goa/pkg/config"
+	"github.com/pkg/errors"
 )
 
 // NewMySQL creates mysql db connection
