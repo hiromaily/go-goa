@@ -29,7 +29,7 @@ var _ = Service(resourcePrefix+"company", func() {
 		})
 	})
 
-	Method("getCompanyGroup", func() {
+	Method("getCompany", func() {
 		Description("Retrieve company with given company_id")
 		Error("NoContent")
 		Error("BadRequest")
@@ -37,11 +37,9 @@ var _ = Service(resourcePrefix+"company", func() {
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
 			Attribute("company_id", Int, "Company ID")
-			Attribute("is_hq", String, "Head Quarters flag", func() {
-				Enum("1", "0")
-			})
 		})
-		Result(CollectionOf(types.RTCompany))
+		//Result(CollectionOf(types.RTCompany))
+		Result(types.RTCompany)
 		HTTP(func() {
 			GET("/{company_id}")
 			Response(StatusOK)
@@ -95,72 +93,72 @@ var _ = Service(resourcePrefix+"company", func() {
 })
 
 // Service company branch
-var _ = Service(resourcePrefix+"companybranch", func() {
-	Description("The company branch service returns company branch data")
-
-	Security(JWT)
-	// BasePath
-	HTTP(func() {
-		Path("/company/branch")
-	})
-
-	Method("getCompanyBranch", func() {
-		Description("Get company branch with given id")
-		Error("NotFound")
-		Error("BadRequest")
-		Payload(func() {
-			Token("token", String, "JWT token used to perform authorization")
-			Attribute("company_branch_id", Int, "Company branch ID")
-		})
-		HTTP(func() {
-			GET("/{company_branch_id}")
-			Response(StatusOK)
-		})
-	})
-
-	Method("createCompanyBranch", func() {
-		Description("Create new company branch")
-		Error("BadRequest")
-		Payload(func() {
-			Token("token", String, "JWT token used to perform authorization")
-			Attribute("company_id", Int, "Company ID")
-			Extend(types.PayloadCompanyPartial)
-			Required("country_id", "address")
-		})
-		HTTP(func() {
-			POST("")
-			Response(StatusOK)
-			Response(StatusCreated)
-		})
-	})
-
-	Method("updateCompanyBranch", func() {
-		Description("Change company branch properties")
-		Error("BadRequest")
-		Error("NotFound")
-		Payload(func() {
-			Token("token", String, "JWT token used to perform authorization")
-			Attribute("company_branch_id", Int, "Company branch ID")
-			Extend(types.PayloadCompanyPartial)
-			Required("country_id", "address")
-		})
-		HTTP(func() {
-			PUT("/{company_branch_id}")
-			Response(StatusOK)
-		})
-	})
-
-	Method("deleteCompanyBranch", func() {
-		Description("Delete company branch")
-		Error("BadRequest")
-		Error("NotFound")
-		Payload(func() {
-			Token("token", String, "JWT token used to perform authorization")
-			Attribute("company_branch_id", Int, "Company branch ID")
-		})
-		HTTP(func() {
-			DELETE("/{company_branch_id}")
-			Response(StatusOK)
-		})
-	})
-})
+//var _ = Service(resourcePrefix+"companybranch", func() {
+//	Description("The company branch service returns company branch data")
+//
+//	Security(JWT)
+//	// BasePath
+//	HTTP(func() {
+//		Path("/company/branch")
+//	})
+//
+//	Method("getCompanyBranch", func() {
+//		Description("Get company branch with given id")
+//		Error("NotFound")
+//		Error("BadRequest")
+//		Payload(func() {
+//			Token("token", String, "JWT token used to perform authorization")
+//			Attribute("company_branch_id", Int, "Company branch ID")
+//		})
+//		HTTP(func() {
+//			GET("/{company_branch_id}")
+//			Response(StatusOK)
+//		})
+//	})
+//
+//	Method("createCompanyBranch", func() {
+//		Description("Create new company branch")
+//		Error("BadRequest")
+//		Payload(func() {
+//			Token("token", String, "JWT token used to perform authorization")
+//			Attribute("company_id", Int, "Company ID")
+//			Extend(types.PayloadCompanyPartial)
+//			Required("country_id", "address")
+//		})
+//		HTTP(func() {
+//			POST("")
+//			Response(StatusOK)
+//			Response(StatusCreated)
+//		})
+//	})
+//
+//	Method("updateCompanyBranch", func() {
+//		Description("Change company branch properties")
+//		Error("BadRequest")
+//		Error("NotFound")
+//		Payload(func() {
+//			Token("token", String, "JWT token used to perform authorization")
+//			Attribute("company_branch_id", Int, "Company branch ID")
+//			Extend(types.PayloadCompanyPartial)
+//			Required("country_id", "address")
+//		})
+//		HTTP(func() {
+//			PUT("/{company_branch_id}")
+//			Response(StatusOK)
+//		})
+//	})
+//
+//	Method("deleteCompanyBranch", func() {
+//		Description("Delete company branch")
+//		Error("BadRequest")
+//		Error("NotFound")
+//		Payload(func() {
+//			Token("token", String, "JWT token used to perform authorization")
+//			Attribute("company_branch_id", Int, "Company branch ID")
+//		})
+//		HTTP(func() {
+//			DELETE("/{company_branch_id}")
+//			Response(StatusOK)
+//		})
+//	})
+//})

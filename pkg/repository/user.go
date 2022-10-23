@@ -3,51 +3,39 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"github.com/volatiletech/null/v8"
-	"github.com/volatiletech/sqlboiler/v4/boil"
-	hyuser "resume/gen/hy_user"
-	"time"
 
 	"github.com/pkg/errors"
+	"github.com/volatiletech/null/v8"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
-	"go.uber.org/zap"
+	hyuser "resume/gen/hy_user"
+	"time"
 
 	"github.com/hiromaily/go-goa/pkg/encryption"
 	models "github.com/hiromaily/go-goa/pkg/model/rdb"
 )
 
-//
-//import (
-//	"errors"
-//	"github.com/hiromaily/go-goa/goa/app"
-//	hs "github.com/hiromaily/golibs/cipher/hash"
-//	"github.com/hiromaily/golibs/db/gorm"
-//	//lg "github.com/hiromaily/golibs/log"
-//	//c "github.com/hiromaily/go-goa/ext/context"
-//	//"github.com/jinzhu/gorm"
-//	//"golang.org/x/crypto/bcrypt"
-//	//"gopkg.in/guregu/null.v3"
-//	"fmt"
-//)
-
 // UserRepository interface
 type UserRepository interface {
 	Login(email, password string) (int, error)
+	UserList() ([]*hyuser.User, error)
+	GetUser(userID int) (*hyuser.User, error)
+	InsertUser(name, email, password string) (int, error)
+	UpdateUser(userID int, name, email, password string) (int, error)
+	DeleteUser(userID int) (int, error)
 }
 
 type userRepository struct {
 	tableName string
 	dbConn    *sql.DB
-	logger    *zap.Logger
 	hash      encryption.Hasher
 }
 
-// NewUserRepository returns CompanyRepository
-func NewUserRepository(dbConn *sql.DB, logger *zap.Logger, hash encryption.Hasher) UserRepository {
+// NewUserRepository returns UserRepository
+func NewUserRepository(dbConn *sql.DB, hash encryption.Hasher) UserRepository {
 	return &userRepository{
 		dbConn:    dbConn,
 		tableName: "t_user",
-		logger:    logger,
 		hash:      hash,
 	}
 }
@@ -108,12 +96,12 @@ func (u *userRepository) GetUser(userID int) (*hyuser.User, error) {
 	// sql := "SELECT id, user_name, email FROM t_users WHERE delete_flg=?"
 	q := []qm.QueryMod{
 		qm.Select("id, user_name, email"),
-		qm.Where("delete_flg=?", 0),
+		qm.Where("is_deleted=?", 0),
 		qm.And("id=?", userID),
 	}
 	item, err := models.TUsers(q...).One(ctx, u.dbConn)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to call models.TUsers().All()")
+		return nil, errors.Wrap(err, "failed to call models.TUsers().One()")
 	}
 	return &hyuser.User{
 		ID:       &item.ID,
@@ -127,12 +115,12 @@ func (u *userRepository) getUserByEmail(email string) (*models.TUser, error) {
 	ctx := context.Background()
 
 	q := []qm.QueryMod{
-		qm.Where("delete_flg=?", 0),
+		qm.Where("is_deleted=?", 0),
 		qm.And("email=?", email),
 	}
 	item, err := models.TUsers(q...).One(ctx, u.dbConn)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to call models.TUsers().All()")
+		return nil, errors.Wrap(err, "failed to call models.TUsers().One()")
 	}
 	return item, nil
 }
@@ -157,7 +145,7 @@ func (u *userRepository) InsertUser(name, email, password string) (int, error) {
 
 func (u *userRepository) UpdateUser(userID int, name, email, password string) (int, error) {
 	if userID == 0 {
-		return 0, errors.New("parameter:id is invalid")
+		return 0, errors.New("userID is invalid")
 	}
 
 	ctx := context.Background()

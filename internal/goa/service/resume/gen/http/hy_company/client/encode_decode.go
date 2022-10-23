@@ -97,25 +97,25 @@ func DecodeCompanyListResponse(decoder func(*http.Response) goahttp.Decoder, res
 	}
 }
 
-// BuildGetCompanyGroupRequest instantiates a HTTP request object with method
-// and path set to call the "hy_company" service "getCompanyGroup" endpoint
-func (c *Client) BuildGetCompanyGroupRequest(ctx context.Context, v interface{}) (*http.Request, error) {
+// BuildGetCompanyRequest instantiates a HTTP request object with method and
+// path set to call the "hy_company" service "getCompany" endpoint
+func (c *Client) BuildGetCompanyRequest(ctx context.Context, v interface{}) (*http.Request, error) {
 	var (
 		companyID int
 	)
 	{
-		p, ok := v.(*hycompany.GetCompanyGroupPayload)
+		p, ok := v.(*hycompany.GetCompanyPayload)
 		if !ok {
-			return nil, goahttp.ErrInvalidType("hy_company", "getCompanyGroup", "*hycompany.GetCompanyGroupPayload", v)
+			return nil, goahttp.ErrInvalidType("hy_company", "getCompany", "*hycompany.GetCompanyPayload", v)
 		}
 		if p.CompanyID != nil {
 			companyID = *p.CompanyID
 		}
 	}
-	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetCompanyGroupHyCompanyPath(companyID)}
+	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetCompanyHyCompanyPath(companyID)}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
-		return nil, goahttp.ErrInvalidURL("hy_company", "getCompanyGroup", u.String(), err)
+		return nil, goahttp.ErrInvalidURL("hy_company", "getCompany", u.String(), err)
 	}
 	if ctx != nil {
 		req = req.WithContext(ctx)
@@ -124,13 +124,13 @@ func (c *Client) BuildGetCompanyGroupRequest(ctx context.Context, v interface{})
 	return req, nil
 }
 
-// EncodeGetCompanyGroupRequest returns an encoder for requests sent to the
-// hy_company getCompanyGroup server.
-func EncodeGetCompanyGroupRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
+// EncodeGetCompanyRequest returns an encoder for requests sent to the
+// hy_company getCompany server.
+func EncodeGetCompanyRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.Request, interface{}) error {
 	return func(req *http.Request, v interface{}) error {
-		p, ok := v.(*hycompany.GetCompanyGroupPayload)
+		p, ok := v.(*hycompany.GetCompanyPayload)
 		if !ok {
-			return goahttp.ErrInvalidType("hy_company", "getCompanyGroup", "*hycompany.GetCompanyGroupPayload", v)
+			return goahttp.ErrInvalidType("hy_company", "getCompany", "*hycompany.GetCompanyPayload", v)
 		}
 		if p.Token != nil {
 			head := *p.Token
@@ -140,18 +140,14 @@ func EncodeGetCompanyGroupRequest(encoder func(*http.Request) goahttp.Encoder) f
 				req.Header.Set("Authorization", head)
 			}
 		}
-		body := NewGetCompanyGroupRequestBody(p)
-		if err := encoder(req).Encode(&body); err != nil {
-			return goahttp.ErrEncodingError("hy_company", "getCompanyGroup", err)
-		}
 		return nil
 	}
 }
 
-// DecodeGetCompanyGroupResponse returns a decoder for responses returned by
-// the hy_company getCompanyGroup endpoint. restoreBody controls whether the
-// response body should be restored after having been read.
-func DecodeGetCompanyGroupResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
+// DecodeGetCompanyResponse returns a decoder for responses returned by the
+// hy_company getCompany endpoint. restoreBody controls whether the response
+// body should be restored after having been read.
+func DecodeGetCompanyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
 			b, err := io.ReadAll(resp.Body)
@@ -168,24 +164,24 @@ func DecodeGetCompanyGroupResponse(decoder func(*http.Response) goahttp.Decoder,
 		switch resp.StatusCode {
 		case http.StatusOK:
 			var (
-				body GetCompanyGroupResponseBody
+				body GetCompanyResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
-				return nil, goahttp.ErrDecodingError("hy_company", "getCompanyGroup", err)
+				return nil, goahttp.ErrDecodingError("hy_company", "getCompany", err)
 			}
-			p := NewGetCompanyGroupCompanyCollectionOK(body)
+			p := NewGetCompanyCompanyOK(&body)
 			view := resp.Header.Get("goa-view")
-			vres := hycompanyviews.CompanyCollection{Projected: p, View: view}
-			if err = hycompanyviews.ValidateCompanyCollection(vres); err != nil {
-				return nil, goahttp.ErrValidationError("hy_company", "getCompanyGroup", err)
+			vres := &hycompanyviews.Company{Projected: p, View: view}
+			if err = hycompanyviews.ValidateCompany(vres); err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "getCompany", err)
 			}
-			res := hycompany.NewCompanyCollection(vres)
+			res := hycompany.NewCompany(vres)
 			return res, nil
 		default:
 			body, _ := io.ReadAll(resp.Body)
-			return nil, goahttp.ErrInvalidResponse("hy_company", "getCompanyGroup", resp.StatusCode, string(body))
+			return nil, goahttp.ErrInvalidResponse("hy_company", "getCompany", resp.StatusCode, string(body))
 		}
 	}
 }

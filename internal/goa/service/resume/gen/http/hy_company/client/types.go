@@ -15,13 +15,6 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
-// GetCompanyGroupRequestBody is the type of the "hy_company" service
-// "getCompanyGroup" endpoint HTTP request body.
-type GetCompanyGroupRequestBody struct {
-	// Head Quarters flag
-	IsHq *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
-}
-
 // CreateCompanyRequestBody is the type of the "hy_company" service
 // "createCompany" endpoint HTTP request body.
 type CreateCompanyRequestBody struct {
@@ -48,9 +41,24 @@ type UpdateCompanyRequestBody struct {
 // "companyList" endpoint HTTP response body.
 type CompanyListResponseBody []*CompanyResponse
 
-// GetCompanyGroupResponseBody is the type of the "hy_company" service
-// "getCompanyGroup" endpoint HTTP response body.
-type GetCompanyGroupResponseBody []*CompanyResponse
+// GetCompanyResponseBody is the type of the "hy_company" service "getCompany"
+// endpoint HTTP response body.
+type GetCompanyResponseBody struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	// Company name
+	Name        *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
+	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
+	// Company Address
+	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	// Datetime
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
+	// Datetime
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
+}
 
 // CompanyResponse is used to define fields on response body types.
 type CompanyResponse struct {
@@ -68,15 +76,6 @@ type CompanyResponse struct {
 	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
 	// Datetime
 	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
-}
-
-// NewGetCompanyGroupRequestBody builds the HTTP request body from the payload
-// of the "getCompanyGroup" endpoint of the "hy_company" service.
-func NewGetCompanyGroupRequestBody(p *hycompany.GetCompanyGroupPayload) *GetCompanyGroupRequestBody {
-	body := &GetCompanyGroupRequestBody{
-		IsHq: p.IsHq,
-	}
-	return body
 }
 
 // NewCreateCompanyRequestBody builds the HTTP request body from the payload of
@@ -112,12 +111,18 @@ func NewCompanyListCompanyCollectionOK(body CompanyListResponseBody) hycompanyvi
 	return v
 }
 
-// NewGetCompanyGroupCompanyCollectionOK builds a "hy_company" service
-// "getCompanyGroup" endpoint result from a HTTP "OK" response.
-func NewGetCompanyGroupCompanyCollectionOK(body GetCompanyGroupResponseBody) hycompanyviews.CompanyCollectionView {
-	v := make([]*hycompanyviews.CompanyView, len(body))
-	for i, val := range body {
-		v[i] = unmarshalCompanyResponseToHycompanyviewsCompanyView(val)
+// NewGetCompanyCompanyOK builds a "hy_company" service "getCompany" endpoint
+// result from a HTTP "OK" response.
+func NewGetCompanyCompanyOK(body *GetCompanyResponseBody) *hycompanyviews.CompanyView {
+	v := &hycompanyviews.CompanyView{
+		ID:          body.ID,
+		CompanyID:   body.CompanyID,
+		Name:        body.Name,
+		IsHq:        body.IsHq,
+		CountryName: body.CountryName,
+		Address:     body.Address,
+		CreatedAt:   body.CreatedAt,
+		UpdatedAt:   body.UpdatedAt,
 	}
 
 	return v

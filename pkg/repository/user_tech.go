@@ -1,36 +1,55 @@
 package repository
 
-//
-//import (
-//	"fmt"
-//	"github.com/hiromaily/go-goa/goa/app"
-//	"github.com/hiromaily/golibs/db/gorm"
-//)
-//
-//// User is user object in Database
-//type UserTech struct {
-//	//Ctx *c.Ctx
-//	Db *gorm.GR
-//}
-//
-//const TableTechLike = "t_user_like_techs"
-//const TableTechDislike = "t_user_dislike_techs"
-//
-//func (m *UserTech) GetUserTechs(userID int, userTechs *[]*app.UsertechTech, tableName string) error {
-//	sql := `
-//SELECT t.name as tech_name
-// FROM %s AS ult
-// LEFT JOIN t_techs AS t ON ult.tech_id = t.id
-// WHERE ult.delete_flg=?
-// AND t.delete_flg=?
-// AND ult.user_id=?
-//`
-//	sql = fmt.Sprintf(sql, tableName)
-//
-//	if err := m.Db.DB.Raw(sql, "0", "0", userID).Scan(userTechs).Error; err != nil {
-//		fmt.Println("[error]", err)
-//		return err
-//	}
-//
-//	return nil
-//}
+import (
+	"context"
+	"database/sql"
+	"fmt"
+	"github.com/pkg/errors"
+	"github.com/volatiletech/sqlboiler/v4/queries"
+)
+
+// UserTechRepository interface
+type UserTechRepository interface {
+	GetUserLikeTechs(userID int) ([]string, error)
+	GetUserDisLikeTechs(userID int) ([]string, error)
+}
+
+type userTechRepository struct {
+	dbConn           *sql.DB
+	tableNameLike    string
+	tableNameDisLike string
+}
+
+// NewUserTechRepository returns UserTechRepository
+func NewUserTechRepository(dbConn *sql.DB) UserTechRepository {
+	return &userTechRepository{
+		dbConn:           dbConn,
+		tableNameLike:    "t_user_like_tech",
+		tableNameDisLike: "t_user_dislike_tech",
+	}
+}
+
+func (c *userTechRepository) getUserTechs(userID int, tableName string) ([]string, error) {
+	var res []string
+
+	if err := queries.Raw(fmt.Sprintf(`
+		SELECT
+		  t.name as tech_name
+		FROM %s as lt
+		  LEFT JOIN t_tech AS t ON lt.tech_id = t.id
+		WHERE lt.is_deleted="0"
+		AND t.is_deleted="0"
+		AND lt.user_id=%d`, tableName, userID),
+	).Bind(context.Background(), c.dbConn, &res); err != nil {
+		return nil, errors.Wrap(err, "failed to call models.TCompanies().One()")
+	}
+	return res, nil
+}
+
+func (c *userTechRepository) GetUserLikeTechs(userID int) ([]string, error) {
+	return c.getUserTechs(userID, c.tableNameLike)
+}
+
+func (c *userTechRepository) GetUserDisLikeTechs(userID int) ([]string, error) {
+	return c.getUserTechs(userID, c.tableNameDisLike)
+}

@@ -16,11 +16,11 @@ import (
 
 // Endpoints wraps the "hy_company" service endpoints.
 type Endpoints struct {
-	CompanyList     goa.Endpoint
-	GetCompanyGroup goa.Endpoint
-	CreateCompany   goa.Endpoint
-	UpdateCompany   goa.Endpoint
-	DeleteCompany   goa.Endpoint
+	CompanyList   goa.Endpoint
+	GetCompany    goa.Endpoint
+	CreateCompany goa.Endpoint
+	UpdateCompany goa.Endpoint
+	DeleteCompany goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "hy_company" service with endpoints.
@@ -28,18 +28,18 @@ func NewEndpoints(s Service) *Endpoints {
 	// Casting service to Auther interface
 	a := s.(Auther)
 	return &Endpoints{
-		CompanyList:     NewCompanyListEndpoint(s, a.JWTAuth),
-		GetCompanyGroup: NewGetCompanyGroupEndpoint(s, a.JWTAuth),
-		CreateCompany:   NewCreateCompanyEndpoint(s, a.JWTAuth),
-		UpdateCompany:   NewUpdateCompanyEndpoint(s, a.JWTAuth),
-		DeleteCompany:   NewDeleteCompanyEndpoint(s, a.JWTAuth),
+		CompanyList:   NewCompanyListEndpoint(s, a.JWTAuth),
+		GetCompany:    NewGetCompanyEndpoint(s, a.JWTAuth),
+		CreateCompany: NewCreateCompanyEndpoint(s, a.JWTAuth),
+		UpdateCompany: NewUpdateCompanyEndpoint(s, a.JWTAuth),
+		DeleteCompany: NewDeleteCompanyEndpoint(s, a.JWTAuth),
 	}
 }
 
 // Use applies the given middleware to all the "hy_company" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.CompanyList = m(e.CompanyList)
-	e.GetCompanyGroup = m(e.GetCompanyGroup)
+	e.GetCompany = m(e.GetCompany)
 	e.CreateCompany = m(e.CreateCompany)
 	e.UpdateCompany = m(e.UpdateCompany)
 	e.DeleteCompany = m(e.DeleteCompany)
@@ -73,11 +73,11 @@ func NewCompanyListEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpo
 	}
 }
 
-// NewGetCompanyGroupEndpoint returns an endpoint function that calls the
-// method "getCompanyGroup" of service "hy_company".
-func NewGetCompanyGroupEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint {
+// NewGetCompanyEndpoint returns an endpoint function that calls the method
+// "getCompany" of service "hy_company".
+func NewGetCompanyEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint {
 	return func(ctx context.Context, req interface{}) (interface{}, error) {
-		p := req.(*GetCompanyGroupPayload)
+		p := req.(*GetCompanyPayload)
 		var err error
 		sc := security.JWTScheme{
 			Name:           "jwt",
@@ -92,11 +92,11 @@ func NewGetCompanyGroupEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.E
 		if err != nil {
 			return nil, err
 		}
-		res, view, err := s.GetCompanyGroup(ctx, p)
+		res, view, err := s.GetCompany(ctx, p)
 		if err != nil {
 			return nil, err
 		}
-		vres := NewViewedCompanyCollection(res, view)
+		vres := NewViewedCompany(res, view)
 		return vres, nil
 	}
 }

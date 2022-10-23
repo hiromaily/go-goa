@@ -16,8 +16,8 @@ func CompanyListHyCompanyPath() string {
 	return "/company"
 }
 
-// GetCompanyGroupHyCompanyPath returns the URL path to the hy_company service getCompanyGroup HTTP endpoint.
-func GetCompanyGroupHyCompanyPath(companyID int) string {
+// GetCompanyHyCompanyPath returns the URL path to the hy_company service getCompany HTTP endpoint.
+func GetCompanyHyCompanyPath(companyID int) string {
 	return fmt.Sprintf("/company/%v", companyID)
 }
 

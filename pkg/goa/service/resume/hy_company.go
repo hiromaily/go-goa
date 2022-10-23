@@ -3,7 +3,8 @@ package resumeapi
 import (
 	"context"
 	"fmt"
-	"log"
+	"github.com/hiromaily/go-goa/pkg/repository"
+	"github.com/rs/zerolog/log"
 	hycompany "resume/gen/hy_company"
 
 	"goa.design/goa/v3/security"
@@ -12,12 +13,12 @@ import (
 // hy_company service example implementation.
 // The example methods log the requests and return zero values.
 type hyCompanysrvc struct {
-	logger *log.Logger
+	companyRepo repository.CompanyRepository
 }
 
 // NewHyCompany returns the hy_company service implementation.
-func NewHyCompany(logger *log.Logger) hycompany.Service {
-	return &hyCompanysrvc{logger}
+func NewHyCompany(companyRepo repository.CompanyRepository) hycompany.Service {
+	return &hyCompanysrvc{companyRepo}
 }
 
 // JWTAuth implements the authorization logic for service "hy_company" for the
@@ -58,29 +59,15 @@ func (s *hyCompanysrvc) CompanyList(ctx context.Context, p *hycompany.CompanyLis
 	//	return ctx.OKIdname(res)
 
 	view = "default"
-	s.logger.Print("hyCompany.companyList")
+	log.Info().Msg("hyCompany.companyList")
 	return
 }
 
 // Retrieve company with given company_id
-func (s *hyCompanysrvc) GetCompanyGroup(ctx context.Context, p *hycompany.GetCompanyGroupPayload) (res hycompany.CompanyCollection, view string, err error) {
-	//	var companies []*app.CompanyIdname
-	//
-	//	svc := &m.Company{Db: c.ctx.Db}
-	//	err := svc.CompanyList(&companies)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	if len(companies) == 0 {
-	//		return ctx.NoContent()
-	//	}
-	//
-	//	res := app.CompanyIdnameCollection(companies)
-	//	return ctx.OKIdname(res)
-
+func (s *hyCompanysrvc) GetCompany(ctx context.Context, p *hycompany.GetCompanyPayload) (res *hycompany.Company, view string, err error) {
+	res = &hycompany.Company{}
 	view = "default"
-	s.logger.Print("hyCompany.getCompanyGroup")
+	s.logger.Print("hyCompany.getCompany")
 	return
 }
 

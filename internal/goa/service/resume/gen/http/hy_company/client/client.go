@@ -21,9 +21,9 @@ type Client struct {
 	// endpoint.
 	CompanyListDoer goahttp.Doer
 
-	// GetCompanyGroup Doer is the HTTP client used to make requests to the
-	// getCompanyGroup endpoint.
-	GetCompanyGroupDoer goahttp.Doer
+	// GetCompany Doer is the HTTP client used to make requests to the getCompany
+	// endpoint.
+	GetCompanyDoer goahttp.Doer
 
 	// CreateCompany Doer is the HTTP client used to make requests to the
 	// createCompany endpoint.
@@ -61,7 +61,7 @@ func NewClient(
 ) *Client {
 	return &Client{
 		CompanyListDoer:     doer,
-		GetCompanyGroupDoer: doer,
+		GetCompanyDoer:      doer,
 		CreateCompanyDoer:   doer,
 		UpdateCompanyDoer:   doer,
 		DeleteCompanyDoer:   doer,
@@ -98,15 +98,15 @@ func (c *Client) CompanyList() goa.Endpoint {
 	}
 }
 
-// GetCompanyGroup returns an endpoint that makes HTTP requests to the
-// hy_company service getCompanyGroup server.
-func (c *Client) GetCompanyGroup() goa.Endpoint {
+// GetCompany returns an endpoint that makes HTTP requests to the hy_company
+// service getCompany server.
+func (c *Client) GetCompany() goa.Endpoint {
 	var (
-		encodeRequest  = EncodeGetCompanyGroupRequest(c.encoder)
-		decodeResponse = DecodeGetCompanyGroupResponse(c.decoder, c.RestoreResponseBody)
+		encodeRequest  = EncodeGetCompanyRequest(c.encoder)
+		decodeResponse = DecodeGetCompanyResponse(c.decoder, c.RestoreResponseBody)
 	)
 	return func(ctx context.Context, v interface{}) (interface{}, error) {
-		req, err := c.BuildGetCompanyGroupRequest(ctx, v)
+		req, err := c.BuildGetCompanyRequest(ctx, v)
 		if err != nil {
 			return nil, err
 		}
@@ -114,9 +114,9 @@ func (c *Client) GetCompanyGroup() goa.Endpoint {
 		if err != nil {
 			return nil, err
 		}
-		resp, err := c.GetCompanyGroupDoer.Do(req)
+		resp, err := c.GetCompanyDoer.Do(req)
 		if err != nil {
-			return nil, goahttp.ErrRequestError("hy_company", "getCompanyGroup", err)
+			return nil, goahttp.ErrRequestError("hy_company", "getCompany", err)
 		}
 		return decodeResponse(resp)
 	}

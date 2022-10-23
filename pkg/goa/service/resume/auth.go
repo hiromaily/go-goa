@@ -2,22 +2,23 @@ package resumeapi
 
 import (
 	"context"
-	"log"
+	"github.com/hiromaily/go-goa/pkg/repository"
+	"github.com/rs/zerolog/log"
 	auth "resume/gen/auth"
 )
 
 // auth service example implementation.
 // The example methods log the requests and return zero values.
 type authsrvc struct {
-	logger *log.Logger
+	userRepo repository.UserRepository
 }
 
 // NewAuth returns the auth service implementation.
-func NewAuth(logger *log.Logger) auth.Service {
-	return &authsrvc{logger}
+func NewAuth(userRepo repository.UserRepository) auth.Service {
+	return &authsrvc{userRepo}
 }
 
-// Login implements login.
+// TODO: Login implements login.
 func (s *authsrvc) Login(ctx context.Context, p *auth.LoginPayload) (res *auth.Authorized, err error) {
 
 	//	// Login
@@ -45,6 +46,6 @@ func (s *authsrvc) Login(ctx context.Context, p *auth.LoginPayload) (res *auth.A
 	//	return ctx.OK(res)
 
 	res = &auth.Authorized{}
-	s.logger.Print("auth.login")
+	log.Info().Msg("auth.login")
 	return
 }

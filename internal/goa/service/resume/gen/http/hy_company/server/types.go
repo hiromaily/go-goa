@@ -15,13 +15,6 @@ import (
 	goa "goa.design/goa/v3/pkg"
 )
 
-// GetCompanyGroupRequestBody is the type of the "hy_company" service
-// "getCompanyGroup" endpoint HTTP request body.
-type GetCompanyGroupRequestBody struct {
-	// Head Quarters flag
-	IsHq *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
-}
-
 // CreateCompanyRequestBody is the type of the "hy_company" service
 // "createCompany" endpoint HTTP request body.
 type CreateCompanyRequestBody struct {
@@ -59,6 +52,44 @@ type CompanyResponseIDCollection []*CompanyResponseID
 // CompanyResponseIdnameCollection is the type of the "hy_company" service
 // "companyList" endpoint HTTP response body.
 type CompanyResponseIdnameCollection []*CompanyResponseIdname
+
+// GetCompanyResponseBody is the type of the "hy_company" service "getCompany"
+// endpoint HTTP response body.
+type GetCompanyResponseBody struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	// Company name
+	Name        string  `form:"name" json:"name" xml:"name"`
+	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
+	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
+	// Company Address
+	Address string `form:"address" json:"address" xml:"address"`
+}
+
+// GetCompanyResponseBodyDetailid is the type of the "hy_company" service
+// "getCompany" endpoint HTTP response body.
+type GetCompanyResponseBodyDetailid struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+}
+
+// GetCompanyResponseBodyID is the type of the "hy_company" service
+// "getCompany" endpoint HTTP response body.
+type GetCompanyResponseBodyID struct {
+	// ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+}
+
+// GetCompanyResponseBodyIdname is the type of the "hy_company" service
+// "getCompany" endpoint HTTP response body.
+type GetCompanyResponseBodyIdname struct {
+	// ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	// Company name
+	Name string `form:"name" json:"name" xml:"name"`
+}
 
 // CompanyResponse is used to define fields on response body types.
 type CompanyResponse struct {
@@ -134,6 +165,48 @@ func NewCompanyResponseIdnameCollection(res hycompanyviews.CompanyCollectionView
 	return body
 }
 
+// NewGetCompanyResponseBody builds the HTTP response body from the result of
+// the "getCompany" endpoint of the "hy_company" service.
+func NewGetCompanyResponseBody(res *hycompanyviews.CompanyView) *GetCompanyResponseBody {
+	body := &GetCompanyResponseBody{
+		ID:          res.ID,
+		CompanyID:   res.CompanyID,
+		Name:        *res.Name,
+		IsHq:        res.IsHq,
+		CountryName: res.CountryName,
+		Address:     *res.Address,
+	}
+	return body
+}
+
+// NewGetCompanyResponseBodyDetailid builds the HTTP response body from the
+// result of the "getCompany" endpoint of the "hy_company" service.
+func NewGetCompanyResponseBodyDetailid(res *hycompanyviews.CompanyView) *GetCompanyResponseBodyDetailid {
+	body := &GetCompanyResponseBodyDetailid{
+		ID: res.ID,
+	}
+	return body
+}
+
+// NewGetCompanyResponseBodyID builds the HTTP response body from the result of
+// the "getCompany" endpoint of the "hy_company" service.
+func NewGetCompanyResponseBodyID(res *hycompanyviews.CompanyView) *GetCompanyResponseBodyID {
+	body := &GetCompanyResponseBodyID{
+		CompanyID: res.CompanyID,
+	}
+	return body
+}
+
+// NewGetCompanyResponseBodyIdname builds the HTTP response body from the
+// result of the "getCompany" endpoint of the "hy_company" service.
+func NewGetCompanyResponseBodyIdname(res *hycompanyviews.CompanyView) *GetCompanyResponseBodyIdname {
+	body := &GetCompanyResponseBodyIdname{
+		CompanyID: res.CompanyID,
+		Name:      *res.Name,
+	}
+	return body
+}
+
 // NewCompanyListPayload builds a hy_company service companyList endpoint
 // payload.
 func NewCompanyListPayload(token *string) *hycompany.CompanyListPayload {
@@ -143,12 +216,9 @@ func NewCompanyListPayload(token *string) *hycompany.CompanyListPayload {
 	return v
 }
 
-// NewGetCompanyGroupPayload builds a hy_company service getCompanyGroup
-// endpoint payload.
-func NewGetCompanyGroupPayload(body *GetCompanyGroupRequestBody, companyID int, token *string) *hycompany.GetCompanyGroupPayload {
-	v := &hycompany.GetCompanyGroupPayload{
-		IsHq: body.IsHq,
-	}
+// NewGetCompanyPayload builds a hy_company service getCompany endpoint payload.
+func NewGetCompanyPayload(companyID int, token *string) *hycompany.GetCompanyPayload {
+	v := &hycompany.GetCompanyPayload{}
 	v.CompanyID = &companyID
 	v.Token = token
 
@@ -190,17 +260,6 @@ func NewDeleteCompanyPayload(companyID int, token *string) *hycompany.DeleteComp
 	v.Token = token
 
 	return v
-}
-
-// ValidateGetCompanyGroupRequestBody runs the validations defined on
-// GetCompanyGroupRequestBody
-func ValidateGetCompanyGroupRequestBody(body *GetCompanyGroupRequestBody) (err error) {
-	if body.IsHq != nil {
-		if !(*body.IsHq == "1" || *body.IsHq == "0") {
-			err = goa.MergeErrors(err, goa.InvalidEnumValueError("body.is_hq", *body.IsHq, []interface{}{"1", "0"}))
-		}
-	}
-	return
 }
 
 // ValidateCreateCompanyRequestBody runs the validations defined on

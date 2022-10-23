@@ -32,21 +32,14 @@ func BuildCompanyListPayload(hyCompanyCompanyListToken string) (*hycompany.Compa
 	return v, nil
 }
 
-// BuildGetCompanyGroupPayload builds the payload for the hy_company
-// getCompanyGroup endpoint from CLI flags.
-func BuildGetCompanyGroupPayload(hyCompanyGetCompanyGroupBody string, hyCompanyGetCompanyGroupCompanyID string, hyCompanyGetCompanyGroupToken string) (*hycompany.GetCompanyGroupPayload, error) {
+// BuildGetCompanyPayload builds the payload for the hy_company getCompany
+// endpoint from CLI flags.
+func BuildGetCompanyPayload(hyCompanyGetCompanyCompanyID string, hyCompanyGetCompanyToken string) (*hycompany.GetCompanyPayload, error) {
 	var err error
-	var body GetCompanyGroupRequestBody
-	{
-		err = json.Unmarshal([]byte(hyCompanyGetCompanyGroupBody), &body)
-		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"is_hq\": \"0\"\n   }'")
-		}
-	}
 	var companyID int
 	{
 		var v int64
-		v, err = strconv.ParseInt(hyCompanyGetCompanyGroupCompanyID, 10, strconv.IntSize)
+		v, err = strconv.ParseInt(hyCompanyGetCompanyCompanyID, 10, strconv.IntSize)
 		companyID = int(v)
 		if err != nil {
 			return nil, fmt.Errorf("invalid value for companyID, must be INT")
@@ -54,13 +47,11 @@ func BuildGetCompanyGroupPayload(hyCompanyGetCompanyGroupBody string, hyCompanyG
 	}
 	var token *string
 	{
-		if hyCompanyGetCompanyGroupToken != "" {
-			token = &hyCompanyGetCompanyGroupToken
+		if hyCompanyGetCompanyToken != "" {
+			token = &hyCompanyGetCompanyToken
 		}
 	}
-	v := &hycompany.GetCompanyGroupPayload{
-		IsHq: body.IsHq,
-	}
+	v := &hycompany.GetCompanyPayload{}
 	v.CompanyID = &companyID
 	v.Token = token
 

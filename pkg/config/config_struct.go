@@ -9,15 +9,15 @@ type Root struct {
 	MySQL  *MySQL  `toml:"mysql" validate:"required"`
 }
 
-// Logger is zap logger property
+// Logger is zerolog setting
 type Logger struct {
 	Service      string `toml:"service" validate:"required"`
-	Env          string `toml:"env" validate:"oneof=dev prod custom"`
-	Level        string `toml:"level" validate:"required"`
+	Level        int    `toml:"level" validate:"required"`
 	IsStackTrace bool   `toml:"is_stacktrace"`
+	FileName     string `toml:"file_name"`
 }
 
-// Jwt is JWT property
+// Jwt is JWT setting
 type JWT struct {
 	Mode       jwts.JWTAlgo `toml:"mode" validate:"oneof=hmac rsa"`
 	Audience   string       `toml:"audience" validate:"required"`
@@ -26,7 +26,7 @@ type JWT struct {
 	PublicKey  string       `toml:"public_key"`
 }
 
-// MySQL is MySQL Server property
+// MySQL is MySQL Server setting
 type MySQL struct {
 	Encrypted bool   `toml:"encrypted"`
 	Host      string `toml:"host"`

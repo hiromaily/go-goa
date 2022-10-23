@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/hiromaily/go-goa/cmd/resume/cli"
 	"net/url"
 	"os"
 	"strings"
@@ -33,7 +34,7 @@ func main() {
 		if addr == "" {
 			switch *hostF {
 			case "localhost":
-				addr = "http://localhost:8080/api"
+				addr = "http://localhost:8080"
 			default:
 				fmt.Fprintf(os.Stderr, "invalid host argument: %q (valid hosts: localhost)\n", *hostF)
 				os.Exit(1)
@@ -64,7 +65,7 @@ func main() {
 	{
 		switch scheme {
 		case "http", "https":
-			endpoint, payload, err = doHTTP(scheme, host, timeout, debug)
+			endpoint, payload, err = cli.doHTTP(scheme, host, timeout, debug)
 		default:
 			fmt.Fprintf(os.Stderr, "invalid scheme: %q (valid schemes: grpc|http)\n", scheme)
 			os.Exit(1)
@@ -92,7 +93,7 @@ func main() {
 }
 
 func usage() {
-	fmt.Fprintf(os.Stderr, `%s is a command line client for the resume-api API.
+	fmt.Fprintf(os.Stderr, `%s is a command line client for the resume API.
 
 Usage:
     %s [-host HOST][-url URL][-timeout SECONDS][-verbose|-v] SERVICE ENDPOINT [flags]
@@ -109,7 +110,7 @@ Additional help:
 
 Example:
 %s
-`, os.Args[0], os.Args[0], indent(httpUsageCommands()), os.Args[0], indent(httpUsageExamples()))
+`, os.Args[0], os.Args[0], indent(cli.httpUsageCommands()), os.Args[0], indent(cli.httpUsageExamples()))
 }
 
 func indent(s string) string {

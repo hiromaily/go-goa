@@ -66,52 +66,38 @@ func DecodeCompanyListRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 	}
 }
 
-// EncodeGetCompanyGroupResponse returns an encoder for responses returned by
-// the hy_company getCompanyGroup endpoint.
-func EncodeGetCompanyGroupResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+// EncodeGetCompanyResponse returns an encoder for responses returned by the
+// hy_company getCompany endpoint.
+func EncodeGetCompanyResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
-		res := v.(hycompanyviews.CompanyCollection)
+		res := v.(*hycompanyviews.Company)
 		w.Header().Set("goa-view", res.View)
+		ctx = context.WithValue(ctx, goahttp.ContentTypeKey, "application/json")
 		enc := encoder(ctx, w)
 		var body interface{}
 		switch res.View {
 		case "default", "":
-			body = NewCompanyResponseCollection(res.Projected)
+			body = NewGetCompanyResponseBody(res.Projected)
 		case "detailid":
-			body = NewCompanyResponseDetailidCollection(res.Projected)
+			body = NewGetCompanyResponseBodyDetailid(res.Projected)
 		case "id":
-			body = NewCompanyResponseIDCollection(res.Projected)
+			body = NewGetCompanyResponseBodyID(res.Projected)
 		case "idname":
-			body = NewCompanyResponseIdnameCollection(res.Projected)
+			body = NewGetCompanyResponseBodyIdname(res.Projected)
 		}
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}
 }
 
-// DecodeGetCompanyGroupRequest returns a decoder for requests sent to the
-// hy_company getCompanyGroup endpoint.
-func DecodeGetCompanyGroupRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
+// DecodeGetCompanyRequest returns a decoder for requests sent to the
+// hy_company getCompany endpoint.
+func DecodeGetCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.Decoder) func(*http.Request) (interface{}, error) {
 	return func(r *http.Request) (interface{}, error) {
-		var (
-			body GetCompanyGroupRequestBody
-			err  error
-		)
-		err = decoder(r).Decode(&body)
-		if err != nil {
-			if err == io.EOF {
-				return nil, goa.MissingPayloadError()
-			}
-			return nil, goa.DecodePayloadError(err.Error())
-		}
-		err = ValidateGetCompanyGroupRequestBody(&body)
-		if err != nil {
-			return nil, err
-		}
-
 		var (
 			companyID int
 			token     *string
+			err       error
 
 			params = mux.Vars(r)
 		)
@@ -130,7 +116,7 @@ func DecodeGetCompanyGroupRequest(mux goahttp.Muxer, decoder func(*http.Request)
 		if err != nil {
 			return nil, err
 		}
-		payload := NewGetCompanyGroupPayload(&body, companyID, token)
+		payload := NewGetCompanyPayload(companyID, token)
 		if payload.Token != nil {
 			if strings.Contains(*payload.Token, " ") {
 				// Remove authorization scheme prefix (e.g. "Bearer")

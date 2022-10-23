@@ -4,14 +4,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/hiromaily/go-goa/pkg/config"
+	"github.com/hiromaily/go-goa/pkg/logger"
 	"net"
 	"net/url"
 	"os"
 	"os/signal"
-	"sync"
-	"syscall"
-
-	resumeapi "github.com/hiromaily/go-goa/pkg/goa/service/resume"
 	auth "resume/gen/auth"
 	health "resume/gen/health"
 	hycompany "resume/gen/hy_company"
@@ -20,6 +18,10 @@ import (
 	hyuser "resume/gen/hy_user"
 	hyuserworkhistory "resume/gen/hy_user_work_history"
 	hyusertech "resume/gen/hy_usertech"
+	"sync"
+	"syscall"
+
+	resume "github.com/hiromaily/go-goa/pkg/goa/service/resume"
 )
 
 func main() {
@@ -35,9 +37,19 @@ func main() {
 	)
 	flag.Parse()
 
-	reg := createRegistry(*confPath)
+	// Config
+	conf, err := config.NewConfig(*confPath, false)
+	if err != nil {
+		panic(err)
+	}
+	// Logger for zerolog
+	logger.NewZeroLog(conf.Logger)
+
+	// Registry
+	reg := NewRegistry(*confPath)
 
 	// Initialize the services.
+	// TODO: switch to registry
 	var (
 		authSvc              auth.Service
 		hyCompanySvc         hycompany.Service
@@ -49,14 +61,14 @@ func main() {
 		hyUserWorkHistorySvc hyuserworkhistory.Service
 	)
 	{
-		authSvc = resumeapi.NewAuth(logger, db)
-		hyCompanySvc = resumeapi.NewHyCompany(logger, db)
-		hyCompanybranchSvc = resumeapi.NewHyCompanybranch(logger, db)
-		healthSvc = resumeapi.NewHealth(logger, db)
-		hyTechSvc = resumeapi.NewHyTech(logger, db)
-		hyUserSvc = resumeapi.NewHyUser(logger, db)
-		hyUsertechSvc = resumeapi.NewHyUsertech(logger, db)
-		hyUserWorkHistorySvc = resumeapi.NewHyUserWorkHistory(logger, db)
+		authSvc = resume.NewAuth(logger, db)
+		hyCompanySvc = resume.NewHyCompany(logger, db)
+		hyCompanybranchSvc = resume.NewHyCompanybranch(logger, db)
+		healthSvc = resume.NewHealth(logger, db)
+		hyTechSvc = resume.NewHyTech(logger, db)
+		hyUserSvc = resume.NewHyUser(logger, db)
+		hyUsertechSvc = resume.NewHyUsertech(logger, db)
+		hyUserWorkHistorySvc = resume.NewHyUserWorkHistory(logger, db)
 	}
 
 	// Wrap the services in endpoints that can be invoked from other services
@@ -101,7 +113,7 @@ func main() {
 	switch *hostF {
 	case "localhost":
 		{
-			addr := "http://localhost:8080/api"
+			addr := "http://localhost:8080"
 			u, err := url.Parse(addr)
 			if err != nil {
 				logger.Fatalf("invalid URL %#v: %s\n", addr, err)

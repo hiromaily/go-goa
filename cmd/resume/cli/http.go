@@ -1,8 +1,8 @@
-package main
+package cli
 
 import (
 	"net/http"
-	cli "resume/gen/http/cli/resume_api_server"
+	cli "resume/gen/http/cli/resume"
 	"time"
 
 	goahttp "goa.design/goa/v3/http"

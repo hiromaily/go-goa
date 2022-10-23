@@ -3,7 +3,6 @@ cmd/
 auth.go
 health.go
 hy_company.go
-hy_companybranch.go
 hy_tech.go
 hy_user.go
 hy_user_work_history.go

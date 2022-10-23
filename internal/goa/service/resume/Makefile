@@ -36,13 +36,16 @@ check-endpoint:
 	curl -X PUT http://localhost:8080/company/1 -H "Content-Type: application/json" -d "{}"
 	curl -X DELETE http://localhost:8080/company/1
 
-.PHONY: clean
-clean:
+.PHONY: clean-example
+clean-example:
 	rm -rf resume resume-cli
-	rm -rf gen cmd
-	rm -rf auth.go health.go hy_company.go hy_companybranch.go hy_tech.go hy_user.go
+	rm -rf cmd
+	rm -rf auth.go health.go hy_company.go hy_tech.go hy_user.go
 	rm -rf hy_user_work_history.go hy_usertech.go public.go static.go
 
+.PHONY: clean
+clean: clean-example
+	rm -rf gen cmd
 
 #.PHONY: replace-example
 #replace-example:

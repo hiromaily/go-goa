@@ -64,6 +64,8 @@ DROP TABLE IF EXISTS `t_company`;
 CREATE TABLE `t_company` (
   `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'company id',
   `name`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'company name',
+  `country_id` smallint COLLATE utf8_unicode_ci NOT NULL COMMENT'country id',
+  `address`    varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'address',
   `is_deleted` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
@@ -75,50 +77,13 @@ CREATE TABLE `t_company` (
 LOCK TABLES `t_company` WRITE;
 /*!40000 ALTER TABLE `t_company` DISABLE KEYS */;
 INSERT INTO `t_company` VALUES
-  (1,'Freelancer','0',now(),now()),
-  (2,'BookerZzz','0',now(),now()),
-  (3,'2Gears','0',now(),now()),
-  (4,'Hugo.events','0',now(),now()),
-  (5,'J-Stream Inc.','0',now(),now()),
-  (6,'PROTERAS Co., Ltd.','0',now(),now()),
-  (7,'JIP Inc.','0',now(),now());
+  (1,'Freelancer',110,'Meguro-ku, Tokyo','0',now(),now()),
+  (2,'BookerZzz',155,'Stationsplein 92, 2011 LM Haarlem','0',now(),now()),
+  (3,'2Gears',155,'Molslaan 111 NL-2611 RK Delft','0',now(),now()),
+  (4,'Hugo.events',155,'Keienbergweg 97 1101 GG Amsterdam','0',now(),now()),
+  (5,'J-Stream Inc.',110,'Shibuya-ku, Tokyo','0',now(),now()),
+  (6,'PROTERAS Co., Ltd.',110,'Minato-ku, Tokyo','0',now(),now());
 /*!40000 ALTER TABLE `t_company` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
---
--- Table structure for table `t_company_branch`
---
-
-CREATE TABLE `t_company_branch` (
-  `id`         int(11) NOT NULL AUTO_INCREMENT COMMENT'company branch id',
-  `company_id` int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'company id',
-  `is_hq`      char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'headquarters flag',
-  `country_id` smallint COLLATE utf8_unicode_ci NOT NULL COMMENT'country id',
-  `address`    varchar(80) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT'address',
-  `is_deleted` char(1) COLLATE utf8_unicode_ci DEFAULT'0' COMMENT'delete flag',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'created date',
-  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT'updated date',
-  PRIMARY KEY (`id`),
-  INDEX company_id (`company_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='company branch table';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
-LOCK TABLES `t_company_branch` WRITE;
-/*!40000 ALTER TABLE `t_company_branch` DISABLE KEYS */;
-INSERT INTO `t_company_branch` VALUES
-  (null,1,'1',110,'','0',now(),now()),
-  (null,1,'0',155,'','0',now(),now()),
-  (null,1,'0',80,'','0',now(),now()),
-  (null,2,'1',155,'Stationsplein 92, 2011 LM Haarlem','0',now(),now()),
-  (null,3,'1',128,'17, Boulevard Prince Henri L-1724','0',now(),now()),
-  (null,3,'0',155,'Molslaan 111 NL-2611 RK Delft','0',now(),now()),
-  (null,4,'1',155,'Keienbergweg 97 1101 GG Amsterdam','0',now(),now()),
-  (null,5,'1',110,'Minatoku Tokyo','0',now(),now()),
-  (null,6,'1',110,'Minatoku Tokyo','0',now(),now()),
-  (null,7,'1',110,'Koutoku Tokyo','0',now(),now());
-/*!40000 ALTER TABLE `t_company_branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
 

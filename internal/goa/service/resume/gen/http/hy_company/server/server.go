@@ -18,13 +18,13 @@ import (
 
 // Server lists the hy_company service endpoint HTTP handlers.
 type Server struct {
-	Mounts          []*MountPoint
-	CompanyList     http.Handler
-	GetCompanyGroup http.Handler
-	CreateCompany   http.Handler
-	UpdateCompany   http.Handler
-	DeleteCompany   http.Handler
-	CORS            http.Handler
+	Mounts        []*MountPoint
+	CompanyList   http.Handler
+	GetCompany    http.Handler
+	CreateCompany http.Handler
+	UpdateCompany http.Handler
+	DeleteCompany http.Handler
+	CORS          http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -55,19 +55,19 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"CompanyList", "GET", "/company"},
-			{"GetCompanyGroup", "GET", "/company/{company_id}"},
+			{"GetCompany", "GET", "/company/{company_id}"},
 			{"CreateCompany", "POST", "/company"},
 			{"UpdateCompany", "PUT", "/company/{company_id}"},
 			{"DeleteCompany", "DELETE", "/company/{company_id}"},
 			{"CORS", "OPTIONS", "/company"},
 			{"CORS", "OPTIONS", "/company/{company_id}"},
 		},
-		CompanyList:     NewCompanyListHandler(e.CompanyList, mux, decoder, encoder, errhandler, formatter),
-		GetCompanyGroup: NewGetCompanyGroupHandler(e.GetCompanyGroup, mux, decoder, encoder, errhandler, formatter),
-		CreateCompany:   NewCreateCompanyHandler(e.CreateCompany, mux, decoder, encoder, errhandler, formatter),
-		UpdateCompany:   NewUpdateCompanyHandler(e.UpdateCompany, mux, decoder, encoder, errhandler, formatter),
-		DeleteCompany:   NewDeleteCompanyHandler(e.DeleteCompany, mux, decoder, encoder, errhandler, formatter),
-		CORS:            NewCORSHandler(),
+		CompanyList:   NewCompanyListHandler(e.CompanyList, mux, decoder, encoder, errhandler, formatter),
+		GetCompany:    NewGetCompanyHandler(e.GetCompany, mux, decoder, encoder, errhandler, formatter),
+		CreateCompany: NewCreateCompanyHandler(e.CreateCompany, mux, decoder, encoder, errhandler, formatter),
+		UpdateCompany: NewUpdateCompanyHandler(e.UpdateCompany, mux, decoder, encoder, errhandler, formatter),
+		DeleteCompany: NewDeleteCompanyHandler(e.DeleteCompany, mux, decoder, encoder, errhandler, formatter),
+		CORS:          NewCORSHandler(),
 	}
 }
 
@@ -77,7 +77,7 @@ func (s *Server) Service() string { return "hy_company" }
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.CompanyList = m(s.CompanyList)
-	s.GetCompanyGroup = m(s.GetCompanyGroup)
+	s.GetCompany = m(s.GetCompany)
 	s.CreateCompany = m(s.CreateCompany)
 	s.UpdateCompany = m(s.UpdateCompany)
 	s.DeleteCompany = m(s.DeleteCompany)
@@ -90,7 +90,7 @@ func (s *Server) MethodNames() []string { return hycompany.MethodNames[:] }
 // Mount configures the mux to serve the hy_company endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountCompanyListHandler(mux, h.CompanyList)
-	MountGetCompanyGroupHandler(mux, h.GetCompanyGroup)
+	MountGetCompanyHandler(mux, h.GetCompany)
 	MountCreateCompanyHandler(mux, h.CreateCompany)
 	MountUpdateCompanyHandler(mux, h.UpdateCompany)
 	MountDeleteCompanyHandler(mux, h.DeleteCompany)
@@ -153,9 +153,9 @@ func NewCompanyListHandler(
 	})
 }
 
-// MountGetCompanyGroupHandler configures the mux to serve the "hy_company"
-// service "getCompanyGroup" endpoint.
-func MountGetCompanyGroupHandler(mux goahttp.Muxer, h http.Handler) {
+// MountGetCompanyHandler configures the mux to serve the "hy_company" service
+// "getCompany" endpoint.
+func MountGetCompanyHandler(mux goahttp.Muxer, h http.Handler) {
 	f, ok := HandleHyCompanyOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
@@ -165,9 +165,9 @@ func MountGetCompanyGroupHandler(mux goahttp.Muxer, h http.Handler) {
 	mux.Handle("GET", "/company/{company_id}", f)
 }
 
-// NewGetCompanyGroupHandler creates a HTTP handler which loads the HTTP
-// request and calls the "hy_company" service "getCompanyGroup" endpoint.
-func NewGetCompanyGroupHandler(
+// NewGetCompanyHandler creates a HTTP handler which loads the HTTP request and
+// calls the "hy_company" service "getCompany" endpoint.
+func NewGetCompanyHandler(
 	endpoint goa.Endpoint,
 	mux goahttp.Muxer,
 	decoder func(*http.Request) goahttp.Decoder,
@@ -176,13 +176,13 @@ func NewGetCompanyGroupHandler(
 	formatter func(ctx context.Context, err error) goahttp.Statuser,
 ) http.Handler {
 	var (
-		decodeRequest  = DecodeGetCompanyGroupRequest(mux, decoder)
-		encodeResponse = EncodeGetCompanyGroupResponse(encoder)
+		decodeRequest  = DecodeGetCompanyRequest(mux, decoder)
+		encodeResponse = EncodeGetCompanyResponse(encoder)
 		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
-		ctx = context.WithValue(ctx, goa.MethodKey, "getCompanyGroup")
+		ctx = context.WithValue(ctx, goa.MethodKey, "getCompany")
 		ctx = context.WithValue(ctx, goa.ServiceKey, "hy_company")
 		payload, err := decodeRequest(r)
 		if err != nil {

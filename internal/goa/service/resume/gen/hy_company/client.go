@@ -15,21 +15,21 @@ import (
 
 // Client is the "hy_company" service client.
 type Client struct {
-	CompanyListEndpoint     goa.Endpoint
-	GetCompanyGroupEndpoint goa.Endpoint
-	CreateCompanyEndpoint   goa.Endpoint
-	UpdateCompanyEndpoint   goa.Endpoint
-	DeleteCompanyEndpoint   goa.Endpoint
+	CompanyListEndpoint   goa.Endpoint
+	GetCompanyEndpoint    goa.Endpoint
+	CreateCompanyEndpoint goa.Endpoint
+	UpdateCompanyEndpoint goa.Endpoint
+	DeleteCompanyEndpoint goa.Endpoint
 }
 
 // NewClient initializes a "hy_company" service client given the endpoints.
-func NewClient(companyList, getCompanyGroup, createCompany, updateCompany, deleteCompany goa.Endpoint) *Client {
+func NewClient(companyList, getCompany, createCompany, updateCompany, deleteCompany goa.Endpoint) *Client {
 	return &Client{
-		CompanyListEndpoint:     companyList,
-		GetCompanyGroupEndpoint: getCompanyGroup,
-		CreateCompanyEndpoint:   createCompany,
-		UpdateCompanyEndpoint:   updateCompany,
-		DeleteCompanyEndpoint:   deleteCompany,
+		CompanyListEndpoint:   companyList,
+		GetCompanyEndpoint:    getCompany,
+		CreateCompanyEndpoint: createCompany,
+		UpdateCompanyEndpoint: updateCompany,
+		DeleteCompanyEndpoint: deleteCompany,
 	}
 }
 
@@ -47,20 +47,19 @@ func (c *Client) CompanyList(ctx context.Context, p *CompanyListPayload) (res Co
 	return ires.(CompanyCollection), nil
 }
 
-// GetCompanyGroup calls the "getCompanyGroup" endpoint of the "hy_company"
-// service.
-// GetCompanyGroup may return the following errors:
+// GetCompany calls the "getCompany" endpoint of the "hy_company" service.
+// GetCompany may return the following errors:
 //   - "NoContent" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
 //   - error: internal error
-func (c *Client) GetCompanyGroup(ctx context.Context, p *GetCompanyGroupPayload) (res CompanyCollection, err error) {
+func (c *Client) GetCompany(ctx context.Context, p *GetCompanyPayload) (res *Company, err error) {
 	var ires interface{}
-	ires, err = c.GetCompanyGroupEndpoint(ctx, p)
+	ires, err = c.GetCompanyEndpoint(ctx, p)
 	if err != nil {
 		return
 	}
-	return ires.(CompanyCollection), nil
+	return ires.(*Company), nil
 }
 
 // CreateCompany calls the "createCompany" endpoint of the "hy_company" service.

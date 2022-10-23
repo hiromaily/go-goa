@@ -49,8 +49,8 @@ var _ = API("resume", func() {
 			URI("grpc://localhost:9090")
 		})
 		// List the services hosted by this server.
-		Services("auth", resourcePrefix+"company", resourcePrefix+"companybranch", "health",
-			resourcePrefix+"tech", resourcePrefix+"user", resourcePrefix+"usertech", resourcePrefix+"userWorkHistory")
+		Services("auth", resourcePrefix+"company", "health", resourcePrefix+"tech",
+			resourcePrefix+"user", resourcePrefix+"usertech", resourcePrefix+"userWorkHistory")
 	})
 	// HTTP: https://pkg.go.dev/goa.design/goa/v3/dsl#HTTP
 	HTTP(func() {

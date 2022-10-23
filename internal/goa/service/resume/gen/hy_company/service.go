@@ -30,7 +30,7 @@ type Service interface {
 	//	- "detailid": only company's detail id
 	//	- "id": only company's id
 	//	- "idname": only company's id and name
-	GetCompanyGroup(context.Context, *GetCompanyGroupPayload) (res CompanyCollection, view string, err error)
+	GetCompany(context.Context, *GetCompanyPayload) (res *Company, view string, err error)
 	// Create new company
 	CreateCompany(context.Context, *CreateCompanyPayload) (err error)
 	// Change company properties
@@ -53,9 +53,9 @@ const ServiceName = "hy_company"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [5]string{"companyList", "getCompanyGroup", "createCompany", "updateCompany", "deleteCompany"}
+var MethodNames = [5]string{"companyList", "getCompany", "createCompany", "updateCompany", "deleteCompany"}
 
-// A company information
+// Company is the result type of the hy_company service getCompany method.
 type Company struct {
 	// ID
 	ID *int
@@ -106,15 +106,13 @@ type DeleteCompanyPayload struct {
 	CompanyID *int
 }
 
-// GetCompanyGroupPayload is the payload type of the hy_company service
-// getCompanyGroup method.
-type GetCompanyGroupPayload struct {
+// GetCompanyPayload is the payload type of the hy_company service getCompany
+// method.
+type GetCompanyPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// Company ID
 	CompanyID *int
-	// Head Quarters flag
-	IsHq *string
 }
 
 // UpdateCompanyPayload is the payload type of the hy_company service
@@ -181,6 +179,43 @@ func NewViewedCompanyCollection(res CompanyCollection, view string) hycompanyvie
 	case "idname":
 		p := newCompanyCollectionViewIdname(res)
 		vres = hycompanyviews.CompanyCollection{Projected: p, View: "idname"}
+	}
+	return vres
+}
+
+// NewCompany initializes result type Company from viewed result type Company.
+func NewCompany(vres *hycompanyviews.Company) *Company {
+	var res *Company
+	switch vres.View {
+	case "default", "":
+		res = newCompany(vres.Projected)
+	case "detailid":
+		res = newCompanyDetailid(vres.Projected)
+	case "id":
+		res = newCompanyID(vres.Projected)
+	case "idname":
+		res = newCompanyIdname(vres.Projected)
+	}
+	return res
+}
+
+// NewViewedCompany initializes viewed result type Company from result type
+// Company using the given view.
+func NewViewedCompany(res *Company, view string) *hycompanyviews.Company {
+	var vres *hycompanyviews.Company
+	switch view {
+	case "default", "":
+		p := newCompanyView(res)
+		vres = &hycompanyviews.Company{Projected: p, View: "default"}
+	case "detailid":
+		p := newCompanyViewDetailid(res)
+		vres = &hycompanyviews.Company{Projected: p, View: "detailid"}
+	case "id":
+		p := newCompanyViewID(res)
+		vres = &hycompanyviews.Company{Projected: p, View: "id"}
+	case "idname":
+		p := newCompanyViewIdname(res)
+		vres = &hycompanyviews.Company{Projected: p, View: "idname"}
 	}
 	return vres
 }

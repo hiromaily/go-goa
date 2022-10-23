@@ -1,6 +1,12 @@
 #local, heroku, docker, staging, production
 environment = "docker"
 
+[logger]
+service = "goa-server"
+level = 0 # 0:debug, 1:info, 2:warn, 3:error, 4: fatal, 5: panic, 6: no level, 7: disable
+is_stacktrace = true
+file_name = "" # e.g. `./goa_api.log`
+
 [jwt]
 secret_code = "keys"
 

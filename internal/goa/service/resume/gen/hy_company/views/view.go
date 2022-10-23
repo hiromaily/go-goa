@@ -22,6 +22,14 @@ type CompanyCollection struct {
 	View string
 }
 
+// Company is the viewed result type that is projected based on a view.
+type Company struct {
+	// Type to project
+	Projected *CompanyView
+	// View to render
+	View string
+}
+
 // CompanyCollectionView is a type that runs validations on a projected type.
 type CompanyCollectionView []*CompanyView
 
@@ -101,6 +109,24 @@ func ValidateCompanyCollection(result CompanyCollection) (err error) {
 		err = ValidateCompanyCollectionViewID(result.Projected)
 	case "idname":
 		err = ValidateCompanyCollectionViewIdname(result.Projected)
+	default:
+		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "detailid", "id", "idname"})
+	}
+	return
+}
+
+// ValidateCompany runs the validations defined on the viewed result type
+// Company.
+func ValidateCompany(result *Company) (err error) {
+	switch result.View {
+	case "default", "":
+		err = ValidateCompanyView(result.Projected)
+	case "detailid":
+		err = ValidateCompanyViewDetailid(result.Projected)
+	case "id":
+		err = ValidateCompanyViewID(result.Projected)
+	case "idname":
+		err = ValidateCompanyViewIdname(result.Projected)
 	default:
 		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "detailid", "id", "idname"})
 	}

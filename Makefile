@@ -4,50 +4,25 @@ currentVer=$(shell go version | awk '{print $3}' | sed -e "s/go//" | cut -d'.' -
 
 PROJECT_ROOT=${GOPATH}/src/github.com/hiromaily/go-goa
 TOMLPATH=${PROJECT_ROOT}/configs/settings.toml
-TOMLPATH2=${PROJECT_ROOT}/configs/docker.toml
 
 ###############################################################################
 # Initialization
 ###############################################################################
+# expects MacOS user here because of using `brew` command
 .PHONY: setup-tools
 setup-tools:
-	GO111MODULE=off go get -u github.com/oxequa/realize
-	GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-	GO111MODULE=off go get -u github.com/rakyll/hey
-	GO111MODULE=off go get -u github.com/davecheney/httpstat
-	go get -u go get github.com/volatiletech/sqlboiler/v4
-	go get -u github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mysql
-	go get -u github.com/volatiletech/null/v8
-	go get -u goa.design/goa/v3/...@v3
-	go get -u goa.design/plugins/v3/cors/dsl
-
-#.PHONY: setup-resume-service
-#setup-resume-service:
-#	cd internal/goa/service/resume && \
-#	go mod init resume && \
-#	go get -u goa.design/goa/v3/...@v3 && \
-#	go get -u goa.design/plugins/v3/cors/dsl
+	brew install httpie
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
+	go install github.com/rakyll/hey@latest
+	go install github.com/davecheney/httpstat@latest
+	go install github.com/volatiletech/sqlboiler/v4@latest
+	go install github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mysql@latest
+	go install github.com/cosmtrek/air@latest
+	#go get -u github.com/volatiletech/null/v8
 
 .PHONY: sqlboiler
 sqlboiler:
 	sqlboiler --wipe mysql
-
-#.PHONY: setup-swagger
-#setup-swagger:
-#	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
-#	git submodule add https://github.com/swagger-api/swagger-ui.git resources/swagger-ui
-#	#after this, `make genfull`
-#
-#	#
-#	cd resources/swagger-ui/dist/;sed -e "s|http://petstore.swagger.io/v2/swagger.json|/swagger.json|g" index.html > goa.html
-
-###############################################################################
-# PKG Dependencies
-###############################################################################
-.PHONY: update-service
-update-service:
-	cd pkg/goa/design/resume && \
-	go get -u -d -v ./...
 
 
 ###############################################################################
@@ -60,9 +35,6 @@ check-ver:
 	@if [ ${currentVer} -lt ${modVer} ]; then\
 		echo go version ${modVer}++ is required but your go version is ${currentVer};\
 	fi
-
-.PHONY: lint-all
-lint-all: imports lint
 
 .PHONY: imports
 imports:
@@ -90,117 +62,13 @@ gen-example:
 # Build on local
 ###############################################################################
 run-server:
-	go run -race ./cmd/resume-api/server/...
+	go run -race ./cmd/resume/server/...
 
 bld-server:
-	go build -race -v -o ${GOPATH}/bin/goa-server ./cmd/resume-api/server/...
+	go build -v -o ${GOPATH}/bin/goa-server ./cmd/resume/server/...
 
 bld-client:
-	go build -race -v -o ${GOPATH}/bin/goa-client ./cmd/resume-api/cli/...
-
-#bldlinux:
-#	GOOS=linux GOARCH=amd64 go build -race -v -o ${GOPATH}/bin/linux_amd64/$1 ./ext/cmd/
-
-
-###############################################################################
-# httpie
-###############################################################################
-http POST localhost:8080/login email=aaa@aaa.com password=secret-secret
-http localhost:8080/company
-http localhost:8080/company/1
-
-
-#[resumeapi] 21:01:25 HTTP "CompanyList" mounted on GET /company
-#[resumeapi] 21:01:25 HTTP "GetCompanyGroup" mounted on GET /company/{company_id}
-#[resumeapi] 21:01:25 HTTP "CreateCompany" mounted on POST /company
-#[resumeapi] 21:01:25 HTTP "UpdateCompany" mounted on PUT /company/{company_id}
-#[resumeapi] 21:01:25 HTTP "DeleteCompany" mounted on DELETE /company/{company_id}
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /company
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /company/{company_id}
-#[resumeapi] 21:01:25 HTTP "GetCompanyBranch" mounted on GET /company/branch/{company_branch_id}
-#[resumeapi] 21:01:25 HTTP "CreateCompanyBranch" mounted on POST /company/branch
-#[resumeapi] 21:01:25 HTTP "UpdateCompanyBranch" mounted on PUT /company/branch/{company_branch_id}
-#[resumeapi] 21:01:25 HTTP "DeleteCompanyBranch" mounted on DELETE /company/branch/{company_branch_id}
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /company/branch/{company_branch_id}
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /company/branch
-#[resumeapi] 21:01:25 HTTP "Health" mounted on GET /health
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /health
-#[resumeapi] 21:01:25 HTTP "TechList" mounted on GET /tech
-#[resumeapi] 21:01:25 HTTP "GetTech" mounted on GET /tech/{techID}
-#[resumeapi] 21:01:25 HTTP "CreateTech" mounted on POST /tech
-#[resumeapi] 21:01:25 HTTP "UpdateTech" mounted on PUT /tech/{techID}
-#[resumeapi] 21:01:25 HTTP "DeleteTech" mounted on DELETE /tech/{techID}
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /tech
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /tech/{techID}
-#[resumeapi] 21:01:25 HTTP "UserList" mounted on GET /user
-#[resumeapi] 21:01:25 HTTP "GetUser" mounted on GET /user/{userID}
-#[resumeapi] 21:01:25 HTTP "CreateUser" mounted on POST /user
-#[resumeapi] 21:01:25 HTTP "UpdateUser" mounted on PUT /user/{userID}
-#[resumeapi] 21:01:25 HTTP "DeleteUser" mounted on DELETE /user/{userID}
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user/{userID}
-#[resumeapi] 21:01:25 HTTP "GetUserLikeTech" mounted on GET /user/{userID}/liketech
-#[resumeapi] 21:01:25 HTTP "GetUserDisLikeTech" mounted on GET /user/{userID}/disliketech
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user/{userID}/liketech
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user/{userID}/disliketech
-#[resumeapi] 21:01:25 HTTP "GetUserWorkHistory" mounted on GET /user/{userID}/workhistory
-#[resumeapi] 21:01:25 HTTP "CORS" mounted on OPTIONS /user/{userID}/workhistory
-
-###############################################################################
-# Goa generation (It's better to exexute `make genfull` regularly (old style)
-###############################################################################
-#gen-old:
-#	#goagen won’t be re-generated (by default) if already present
-#	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
-#
-#gencln-old:
-#	rm -f goa/*.go
-#	#rm -f goa/hy_*.go goa/{public,swagger,health}.go
-#	rm -rf goa/app/ goa/client/ goa/swagger/ goa/tool/
-#	goagen bootstrap -d github.com/hiromaily/go-goa/goa/design -o goa/
-#
-#aftergen-old:
-#	# rewrite package name
-#	rm -f goa/main.go
-#
-#	sed -e "1s/main/goa/" ./goa/auth.go >> ./resources/tmp/tmp.go
-#	mv -f ./resources/tmp/tmp.go ./goa/auth.go
-#
-#	sed -e "1s/main/goa/" ./goa/health.go >> ./resources/tmp/tmp.go
-#	mv -f ./resources/tmp/tmp.go ./goa/health.go
-#
-#	sed -e "1s/main/goa/" ./goa/public.go >> ./resources/tmp/tmp.go
-#	mv -f ./resources/tmp/tmp.go ./goa/public.go
-#
-#	sed -e "1s/main/goa/" ./goa/hy_user.go >> ./resources/tmp/tmp.go
-#	mv -f ./resources/tmp/tmp.go ./goa/hy_user.go
-#
-#	sed -e "1s/main/goa/" ./goa/hy_tech.go >> ./resources/tmp/tmp.go
-#	mv -f ./resources/tmp/tmp.go ./goa/hy_tech.go
-#
-#	sed -e "1s/main/goa/" ./goa/hy_company.go >> ./resources/tmp/tmp.go
-#	mv -f ./resources/tmp/tmp.go ./goa/hy_company.go
-#
-#	sed -e "1s/main/goa/" ./goa/hy_companybranch.go >> ./resources/tmp/tmp.go
-#	mv -f ./resources/tmp/tmp.go ./goa/hy_companybranch.go
-#
-#	sed -e "1s/main/goa/" ./goa/hy_usertech.go >> ./resources/tmp/tmp.go
-#	mv -f ./resources/tmp/tmp.go ./goa/hy_usertech.go
-#
-#	sed -e "1s/main/goa/" ./goa/hy_user_work_history.go >> ./resources/tmp/tmp.go
-#	mv -f ./resources/tmp/tmp.go ./goa/hy_user_work_history.go
-#
-#genfull: gencln aftergen
-#
-#genctl:
-#	goagen controller -d github.com/hiromaily/go-goa/goa/design -o goa/
-
-# this command should be executed regularly
-#updall: updgoa gencln aftergen
-
-#link_swagger:
-#	ln -s ${GOPATH}/src/github.com/hiromaily/go-goa/goa/swagger ./public/swagger
-
+	go build -v -o ${GOPATH}/bin/goa-client ./cmd/resume/cli/...
 
 
 ###############################################################################
@@ -230,34 +98,6 @@ dctest:
 
 dcpush:
 	docker push hirokiy/go-goa:1.0
-
-
-
-###############################################################################
-# test
-###############################################################################
-gotest:
-	go test -v ext/cmd/*.go
-	#go test -v ext/cmd/*.go -f ${TOMLPATH}
-	#go test -v ext/cmd/main_test.go -health 10
-
-gotest1:
-	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestUserAPIOnTable"
-
-gotest2:
-	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestCompanyAPIOnTable"
-
-gotest3:
-	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestCompanyBranchAPIOnTable"
-
-gotest4:
-	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestGetUserTechOnTable"
-
-gotest5:
-	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestGetUserWorkHistoryOnTable"
-
-gotest6:
-	go test -v ext/cmd/*.go -run "TestLoginOnTable|TestTechAPIOnTable"
 
 
 ###############################################################################
@@ -318,15 +158,6 @@ heroku_updfull:
 
 
 ###############################################################################
-# Deploy Heroku on Travis
-###############################################################################
-travis_init:
-	gem install travis
-
-travis_enc:
-	travis encrypt $(heroku auth:token) --add deploy.api_key
-
-###############################################################################
 # Build Image for GCP Kubernetes
 ###############################################################################
 dcp_build:
@@ -344,6 +175,10 @@ dcp_push:
 http:
 	# httpie #brew install httpie
 	# jq     #brew install jq
+
+	#http POST localhost:8080/login email=aaa@aaa.com password=secret-secret
+	#http localhost:8080/company
+	#http localhost:8080/company/1
 
 	# Static files
 	http localhost:8080/

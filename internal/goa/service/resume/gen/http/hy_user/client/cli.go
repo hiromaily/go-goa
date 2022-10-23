@@ -72,7 +72,7 @@ func BuildCreateUserPayload(hyUserCreateUserBody string, hyUserCreateUserToken s
 	{
 		err = json.Unmarshal([]byte(hyUserCreateUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"hy@gmail.com\",\n      \"password\": \"xxxxxxxx\",\n      \"userID\": 73809940154092563,\n      \"user_name\": \"Hiroki\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"hy@gmail.com\",\n      \"password\": \"xxxxxxxx\",\n      \"userID\": 4489428684054812144,\n      \"user_name\": \"Hiroki\"\n   }'")
 		}
 		if body.UserID != nil {
 			if *body.UserID < 1 {
