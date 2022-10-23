@@ -12,6 +12,8 @@ TOMLPATH=${PROJECT_ROOT}/configs/settings.toml
 .PHONY: setup-tools
 setup-tools:
 	brew install httpie
+	go install golang.org/x/tools/cmd/goimports@latest
+	go install mvdan.cc/gofumpt@latest
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
 	go install github.com/rakyll/hey@latest
 	go install github.com/davecheney/httpstat@latest
@@ -44,9 +46,9 @@ imports:
 lint:
 	golangci-lint run
 
-.PHONY: lint-fix
-lint-fix:
-	golangci-lint run --fix
+#.PHONY: lint-fix
+#lint-fix:
+#	golangci-lint run --fix
 
 ###############################################################################
 # Goa generation
@@ -64,23 +66,22 @@ gen-example:
 ###############################################################################
 # Build on local
 ###############################################################################
-.PHONY: bld
-bld: bld-server
 
-.PHONY: bld-all
-bld-all: bld-server bld-client
+.PHONY: build-all
+build-all: build build-client
 
-.PHONY: bld-server
-bld-server:
+.PHONY: build
+build:
 	go build -v -o ${GOPATH}/bin/goa-server ./cmd/resume/server/...
 
-.PHONY: bld-client
-bld-client:
+.PHONY: build-client
+build-client:
 	go build -v -o ${GOPATH}/bin/goa-client ./cmd/resume/cli/...
 
-.PHONY: run-server
-run-server:
-	go run -race ./cmd/resume/server/...
+.PHONY: run
+run:
+	#go run -race ./cmd/resume/server/... -conf ./configs/settings.toml
+	goa-server -conf ./configs/settings.toml
 
 ###############################################################################
 # Docker

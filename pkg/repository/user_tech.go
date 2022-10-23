@@ -30,27 +30,29 @@ func NewUserTechRepository(dbConn *sql.DB) UserTechRepository {
 	}
 }
 
-func (c *userTechRepository) getUserTechs(userID int, tableName string) ([]string, error) {
-	var res []string
-
-	if err := queries.Raw(fmt.Sprintf(`
+func (r *userTechRepository) getUserTechs(userID int, tableName string) ([]string, error) {
+	var (
+		res []string
+		sql = fmt.Sprintf(`
 		SELECT
 		  t.name as tech_name
 		FROM %s as lt
 		  LEFT JOIN t_tech AS t ON lt.tech_id = t.id
 		WHERE lt.is_deleted="0"
 		AND t.is_deleted="0"
-		AND lt.user_id=%d`, tableName, userID),
-	).Bind(context.Background(), c.dbConn, &res); err != nil {
-		return nil, errors.Wrap(err, "failed to call models.TCompanies().One()")
+		AND lt.user_id=%d`, tableName, userID)
+	)
+
+	if err := queries.Raw(sql).Bind(context.Background(), r.dbConn, &res); err != nil {
+		return nil, errors.Wrapf(err, "failed to call queries.Raw(): %s", sql)
 	}
 	return res, nil
 }
 
-func (c *userTechRepository) GetUserLikeTechs(userID int) ([]string, error) {
-	return c.getUserTechs(userID, c.tableNameLike)
+func (r *userTechRepository) GetUserLikeTechs(userID int) ([]string, error) {
+	return r.getUserTechs(userID, r.tableNameLike)
 }
 
-func (c *userTechRepository) GetUserDisLikeTechs(userID int) ([]string, error) {
-	return c.getUserTechs(userID, c.tableNameDisLike)
+func (r *userTechRepository) GetUserDisLikeTechs(userID int) ([]string, error) {
+	return r.getUserTechs(userID, r.tableNameDisLike)
 }

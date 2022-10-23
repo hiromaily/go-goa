@@ -6,9 +6,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
-	hyuser "resume/gen/hy_user"
 
 	"github.com/hiromaily/go-goa/pkg/repository"
+	hyuser "resume/gen/hy_user"
 )
 
 // hy_user service example implementation.

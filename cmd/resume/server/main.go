@@ -11,7 +11,11 @@ import (
 	"sync"
 	"syscall"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/rs/zerolog/log"
+
+	"github.com/hiromaily/go-goa/pkg/config"
+	"github.com/hiromaily/go-goa/pkg/logger"
 	auth "resume/gen/auth"
 	health "resume/gen/health"
 	hycompany "resume/gen/hy_company"
@@ -19,9 +23,6 @@ import (
 	hyuser "resume/gen/hy_user"
 	hyuserworkhistory "resume/gen/hy_user_work_history"
 	hyusertech "resume/gen/hy_usertech"
-
-	"github.com/hiromaily/go-goa/pkg/config"
-	"github.com/hiromaily/go-goa/pkg/logger"
 )
 
 func main() {
@@ -47,7 +48,7 @@ func main() {
 	// logger.NewZeroLog(conf.Logger)
 
 	// Registry
-	reg := NewRegistry(*confPath)
+	reg := NewRegistry(conf)
 
 	// Initialize the services.
 	authSvc := reg.NewAuth()
@@ -56,8 +57,7 @@ func main() {
 	hyTechSvc := reg.NewHyTech()
 	hyUsertechSvc := reg.NewHyUserTech()
 	healthSvc := reg.NewHealth()
-	// TODO
-	// hyUserWorkHistorySvc := reg.NewHyUserWorkHistory()
+	hyUserWorkHistorySvc := reg.NewHyUserWorkHistory()
 
 	//var (
 	//	authSvc              auth.Service
@@ -96,7 +96,7 @@ func main() {
 		hyTechEndpoints = hytech.NewEndpoints(hyTechSvc)
 		hyUserEndpoints = hyuser.NewEndpoints(hyUserSvc)
 		hyUsertechEndpoints = hyusertech.NewEndpoints(hyUsertechSvc)
-		// hyUserWorkHistoryEndpoints = hyuserworkhistory.NewEndpoints(hyUserWorkHistorySvc)
+		hyUserWorkHistoryEndpoints = hyuserworkhistory.NewEndpoints(hyUserWorkHistorySvc)
 	}
 
 	// Create channel used by both the signal handler and server goroutines

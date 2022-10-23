@@ -2,7 +2,7 @@ package jwts
 
 import (
 	"crypto/rsa"
-	"io/ioutil"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/pkg/errors"
@@ -260,7 +260,7 @@ func (a *algoRSA) GetKey() interface{} {
 
 // public key using ParseRSAPublicKeyFromPEM()
 func lookupPublicKey(keyPath string) (*rsa.PublicKey, error) {
-	key, err := ioutil.ReadFile(keyPath)
+	key, err := os.ReadFile(keyPath)
 	if err != nil {
 		return nil, err
 	}
@@ -270,7 +270,7 @@ func lookupPublicKey(keyPath string) (*rsa.PublicKey, error) {
 
 // private key using ParseRSAPrivateKeyFromPEM()
 func lookupPrivateKey(keyPath string) (*rsa.PrivateKey, error) {
-	key, err := ioutil.ReadFile(keyPath)
+	key, err := os.ReadFile(keyPath)
 	if err != nil {
 		return nil, err
 	}

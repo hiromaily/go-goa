@@ -9,9 +9,9 @@ import (
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
-	hycompany "resume/gen/hy_company"
 
 	models "github.com/hiromaily/go-goa/pkg/model/rdb"
+	hycompany "resume/gen/hy_company"
 )
 
 // CompanyRepository interface
@@ -35,14 +35,14 @@ func NewCompanyRepository(dbConn *sql.DB) CompanyRepository {
 	}
 }
 
-func (c *companyRepository) CompanyList() ([]*hycompany.Company, error) {
+func (r *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	ctx := context.Background()
 
 	// sql := "SELECT id as company_id, name FROM t_companies WHERE delete_flg=?"
 	items, err := models.TCompanies(
 		qm.Select("id, name"),
 		qm.Where("is_deleted=?", 0),
-	).All(ctx, c.dbConn)
+	).All(ctx, r.dbConn)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to call models.TCompanies().All()")
 	}
@@ -59,14 +59,14 @@ func (c *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	return converted, nil
 }
 
-func (c *companyRepository) getCompanyIDByName(name string) (int, error) {
+func (r *companyRepository) getCompanyIDByName(name string) (int, error) {
 	ctx := context.Background()
 
 	item, err := models.TCompanies(
 		qm.Select("id"),
 		qm.Where("name=?", name),
 		qm.And("is_deleted=?", 0),
-	).One(ctx, c.dbConn)
+	).One(ctx, r.dbConn)
 	if err != nil {
 		return 0, errors.Wrap(err, "failed to call models.TCompanies().One()")
 	}
@@ -75,7 +75,7 @@ func (c *companyRepository) getCompanyIDByName(name string) (int, error) {
 }
 
 // InsertCompany inserts company and company detail
-func (c *companyRepository) InsertCompany(name, address string, countryID int16) (int, error) {
+func (r *companyRepository) InsertCompany(name, address string, countryID int16) (int, error) {
 	ctx := context.Background()
 	// company
 	companyItem := &models.TCompany{
@@ -84,14 +84,14 @@ func (c *companyRepository) InsertCompany(name, address string, countryID int16)
 		Address:   null.StringFrom(address),
 		IsDeleted: null.StringFrom("0"),
 	}
-	if err := companyItem.Insert(ctx, c.dbConn, boil.Infer()); err != nil {
+	if err := companyItem.Insert(ctx, r.dbConn, boil.Infer()); err != nil {
 		return 0, errors.Wrap(err, "failed to call companyItem.Insert()")
 	}
 	// get LastInsertId()
-	return c.getCompanyIDByName(companyItem.Name)
+	return r.getCompanyIDByName(companyItem.Name)
 }
 
-func (u *companyRepository) UpdateCompany(companyID int, name, address string, countryID int16) (int, error) {
+func (r *companyRepository) UpdateCompany(companyID int, name, address string, countryID int16) (int, error) {
 	if companyID == 0 {
 		return 0, errors.New("companyID is invalid")
 	}
@@ -113,11 +113,11 @@ func (u *companyRepository) UpdateCompany(companyID int, name, address string, c
 
 	id, err := models.TCompanies(
 		qm.Where("id=?", companyID),
-	).UpdateAll(ctx, u.dbConn, updCols)
+	).UpdateAll(ctx, r.dbConn, updCols)
 	return int(id), err
 }
 
-func (u *companyRepository) DeleteCompany(companyID int) (int, error) {
+func (r *companyRepository) DeleteCompany(companyID int) (int, error) {
 	ctx := context.Background()
 
 	// Set updating columns
@@ -127,6 +127,6 @@ func (u *companyRepository) DeleteCompany(companyID int) (int, error) {
 
 	id, err := models.TCompanies(
 		qm.Where("id=?", companyID),
-	).UpdateAll(ctx, u.dbConn, updCols)
+	).UpdateAll(ctx, r.dbConn, updCols)
 	return int(id), err
 }

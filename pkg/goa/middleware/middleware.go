@@ -4,9 +4,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/hiromaily/go-goa/pkg/jwts"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
+
+	"github.com/hiromaily/go-goa/pkg/jwts"
 )
 
 // Middlewarer interface

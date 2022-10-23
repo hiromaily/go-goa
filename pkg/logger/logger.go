@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/hiromaily/go-goa/pkg/config"
 	"github.com/rs/zerolog/log"
+
+	"github.com/hiromaily/go-goa/pkg/config"
 )
 
 // logger interface

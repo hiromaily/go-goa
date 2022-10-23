@@ -1,11 +1,13 @@
 .idea/*
 !.gitkeep
+.env
+
 node_modules
+
 build/docker/mysql/data/*
 build/docker/golang/*
 
 web/resources/tmp/*
-
 web/frontend_workspace/riot-webpack-v2/public/assets
 web/frontend_workspace/riot-webpack-v2/public/components
 web/frontend_workspace/riot-webpack-v2/public/css

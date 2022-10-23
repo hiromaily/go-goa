@@ -13,6 +13,7 @@ import (
 	httpmdlwr "goa.design/goa/v3/http/middleware"
 	"goa.design/goa/v3/middleware"
 
+	"github.com/hiromaily/go-goa/pkg/logger"
 	auth "resume/gen/auth"
 	health "resume/gen/health"
 	authsvr "resume/gen/http/auth/server"
@@ -27,8 +28,6 @@ import (
 	hyuser "resume/gen/hy_user"
 	hyuserworkhistory "resume/gen/hy_user_work_history"
 	hyusertech "resume/gen/hy_usertech"
-
-	"github.com/hiromaily/go-goa/pkg/logger"
 )
 
 // handleHTTPServer starts configures and starts a HTTP server on the given

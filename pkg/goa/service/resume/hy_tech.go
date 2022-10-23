@@ -6,9 +6,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
-	hytech "resume/gen/hy_tech"
 
 	"github.com/hiromaily/go-goa/pkg/repository"
+	hytech "resume/gen/hy_tech"
 )
 
 // hy_tech service example implementation.

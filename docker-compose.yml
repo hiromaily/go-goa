@@ -16,7 +16,7 @@ services:
       MYSQL_USER: guestuser
       MYSQL_PASSWORD: secret123
     ports:
-      - "3306"
+      - "3306:3306"
 
   webserver:
     build:

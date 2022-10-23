@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/rs/zerolog/log"
-	auth "resume/gen/auth"
 
 	"github.com/hiromaily/go-goa/pkg/repository"
+	auth "resume/gen/auth"
 )
 
 // auth service example implementation.

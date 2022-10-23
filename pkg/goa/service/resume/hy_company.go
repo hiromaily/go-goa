@@ -6,9 +6,9 @@ import (
 
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
-	hycompany "resume/gen/hy_company"
 
 	"github.com/hiromaily/go-goa/pkg/repository"
+	hycompany "resume/gen/hy_company"
 )
 
 // hy_company service example implementation.

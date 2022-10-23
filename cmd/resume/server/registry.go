@@ -2,15 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 
-	"github.com/pkg/errors"
 	"github.com/volatiletech/sqlboiler/v4/boil"
-	"resume/gen/auth"
-	"resume/gen/health"
-	hycompany "resume/gen/hy_company"
-	hytech "resume/gen/hy_tech"
-	hyuser "resume/gen/hy_user"
-	hyusertech "resume/gen/hy_usertech"
 
 	"github.com/hiromaily/go-goa/pkg/config"
 	"github.com/hiromaily/go-goa/pkg/encryption"
@@ -18,21 +12,33 @@ import (
 	"github.com/hiromaily/go-goa/pkg/jwts"
 	"github.com/hiromaily/go-goa/pkg/mysql"
 	"github.com/hiromaily/go-goa/pkg/repository"
+	"resume/gen/auth"
+	"resume/gen/health"
+	hycompany "resume/gen/hy_company"
+	hytech "resume/gen/hy_tech"
+	hyuser "resume/gen/hy_user"
+	hyuserworkhistory "resume/gen/hy_user_work_history"
+	hyusertech "resume/gen/hy_usertech"
 )
 
 type registry struct {
-	conf         *config.Root
-	jwter        jwts.JWTer
-	db           *sql.DB
-	hasher       encryption.Hasher
-	userRepo     repository.UserRepository
-	techRepo     repository.TechRepository
-	companyRepo  repository.CompanyRepository
-	userTechRepo repository.UserTechRepository
+	conf                *config.Root
+	jwter               jwts.JWTer
+	db                  *sql.DB
+	hasher              encryption.Hasher
+	userRepo            repository.UserRepository
+	techRepo            repository.TechRepository
+	companyRepo         repository.CompanyRepository
+	userTechRepo        repository.UserTechRepository
+	userWorkHistoryRepo repository.UserWorkHistoryRepository
 }
 
-func NewRegistry(confPath string) *registry {
-	reg := &registry{}
+func NewRegistry(conf *config.Root) *registry {
+	if conf == nil {
+		panic(errors.New("conf is invalid"))
+	}
+
+	reg := &registry{conf: conf}
 
 	// JWT
 	reg.newJWT()
@@ -41,32 +47,37 @@ func NewRegistry(confPath string) *registry {
 	reg.newMySQLClient()
 
 	// Create repository
-	// TODO: create proper repository for each services
-	reg.newUserRepo()
-	reg.newTechRepo()
-	reg.newCompanyRepo()
+	// reg.newUserRepo()
+	// reg.newCompanyRepo()
+	// reg.newTechRepo()
+	// reg.newUserTechRepo()
+	// reg.newUserWorkHistoryRepo()
 
 	return reg
 }
 
 func (r *registry) NewAuth() auth.Service {
-	return resume.NewAuth(r.userRepo)
+	return resume.NewAuth(r.newUserRepo())
 }
 
 func (r *registry) NewHyUser() hyuser.Service {
-	return resume.NewHyUser(r.userRepo)
+	return resume.NewHyUser(r.newUserRepo())
 }
 
 func (r *registry) NewHyCompany() hycompany.Service {
-	return resume.NewHyCompany(r.companyRepo)
+	return resume.NewHyCompany(r.newCompanyRepo())
 }
 
 func (r *registry) NewHyTech() hytech.Service {
-	return resume.NewHyTech(r.techRepo)
+	return resume.NewHyTech(r.newTechRepo())
 }
 
 func (r *registry) NewHyUserTech() hyusertech.Service {
-	return resume.NewHyUsertech(r.userTechRepo)
+	return resume.NewHyUsertech(r.newUserTechRepo())
+}
+
+func (r *registry) NewHyUserWorkHistory() hyuserworkhistory.Service {
+	return resume.NewHyUserWorkHistory(r.newUserWorkHistoryRepo())
 }
 
 func (r *registry) NewHealth() health.Service {
@@ -153,11 +164,20 @@ func (r *registry) newCompanyRepo() repository.CompanyRepository {
 	return r.companyRepo
 }
 
-func (r *registry) newUesrTechRepo() repository.UserTechRepository {
+func (r *registry) newUserTechRepo() repository.UserTechRepository {
 	if r.userTechRepo == nil {
 		r.userTechRepo = repository.NewUserTechRepository(
 			r.newMySQLClient(),
 		)
 	}
 	return r.userTechRepo
+}
+
+func (r *registry) newUserWorkHistoryRepo() repository.UserWorkHistoryRepository {
+	if r.userWorkHistoryRepo == nil {
+		r.userWorkHistoryRepo = repository.NewUserWorkHistoryRepository(
+			r.newMySQLClient(),
+		)
+	}
+	return r.userWorkHistoryRepo
 }

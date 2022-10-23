@@ -3,15 +3,16 @@ package repository
 import (
 	"context"
 	"database/sql"
-	hyuser "resume/gen/hy_user"
 	"time"
 
-	"github.com/hiromaily/go-goa/pkg/encryption"
-	models "github.com/hiromaily/go-goa/pkg/model/rdb"
 	"github.com/pkg/errors"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
+
+	"github.com/hiromaily/go-goa/pkg/encryption"
+	models "github.com/hiromaily/go-goa/pkg/model/rdb"
+	hyuser "resume/gen/hy_user"
 )
 
 // UserRepository interface
@@ -69,7 +70,6 @@ func (u *userRepository) Login(email, password string) (int, error) {
 func (u *userRepository) UserList() ([]*hyuser.User, error) {
 	ctx := context.Background()
 
-	// sql = "SELECT id, user_name, email FROM t_users WHERE delete_flg=?"
 	items, err := models.TUsers(
 		qm.Select("id, user_name, email"),
 		qm.Where("is_deleted=?", 0),
@@ -91,7 +91,6 @@ func (u *userRepository) UserList() ([]*hyuser.User, error) {
 
 func (u *userRepository) GetUser(userID int) (*hyuser.User, error) {
 	ctx := context.Background()
-	// sql := "SELECT id, user_name, email FROM t_users WHERE delete_flg=?"
 	q := []qm.QueryMod{
 		qm.Select("id, user_name, email"),
 		qm.Where("is_deleted=?", 0),
@@ -130,7 +129,6 @@ func (u *userRepository) InsertUser(name, email, password string) (int, error) {
 	}
 
 	ctx := context.Background()
-	// sql := "INSERT INTO t_users (user_name, email, password) VALUES (?, ?, ?)"
 	if err := item.Insert(ctx, u.dbConn, boil.Infer()); err != nil {
 		return 0, errors.Wrap(err, "failed to call item.Insert()")
 	}

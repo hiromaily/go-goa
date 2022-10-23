@@ -3,9 +3,10 @@ package logger
 import (
 	"os"
 
-	"github.com/hiromaily/go-goa/pkg/config"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+
+	"github.com/hiromaily/go-goa/pkg/config"
 )
 
 // NewZeroLog configures globally

@@ -1,36 +1,73 @@
 package repository
 
-//
-//import (
-//	"encoding/json"
-//	"fmt"
-//	"github.com/hiromaily/go-goa/goa/app"
-//	"github.com/hiromaily/golibs/db/gorm"
-//	u "github.com/hiromaily/golibs/utils"
-//)
-//
-//// User is user object in Database
-//type UserWorkHistory struct {
-//	//Ctx *c.Ctx
-//	Db *gorm.GR
-//}
-//
-//const TableName = "t_user_work_history"
-//
-////type Userworkhistory struct {
-////	// Job Title
-////	Title string `form:"title" json:"title" xml:"title"`
-////	// Company name
-////	Company string `form:"company" json:"company" xml:"company"`
-////	// Country code
-////	Country string `form:"country" json:"country" xml:"country"`
-////	// worked period
-////	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
-////	// job description
-////	Description *interface{} `form:"description,omitempty" json:"description,omitempty" xml:"description,omitempty"`
-////	// used techs
-////	Techs *interface{} `form:"techs,omitempty" json:"techs,omitempty" xml:"techs,omitempty"`
-////}
+import (
+	"context"
+	"database/sql"
+
+	"github.com/pkg/errors"
+	"github.com/volatiletech/sqlboiler/v4/queries"
+
+	hyuserworkhistory "resume/gen/hy_user_work_history"
+)
+
+// UserWorkHistoryRepository interface
+type UserWorkHistoryRepository interface {
+	GetUserWorks(userID int) ([]*hyuserworkhistory.Userworkhistory, error)
+}
+
+type userWorkHistoryRepository struct {
+	tableName string
+	dbConn    *sql.DB
+}
+
+// NewUserWorkHistoryRepository returns UserWorkHistoryRepository
+func NewUserWorkHistoryRepository(dbConn *sql.DB) UserWorkHistoryRepository {
+	return &userWorkHistoryRepository{
+		dbConn:    dbConn,
+		tableName: "t_user_work_history",
+	}
+}
+
+func (r *userWorkHistoryRepository) GetUserWorks(userID int) ([]*hyuserworkhistory.Userworkhistory, error) {
+	type Work struct {
+		Title       string
+		Company     string
+		Country     string
+		Term        string
+		Description string
+		Techs       string
+	}
+
+	var res []Work
+	// var res []*hyuserworkhistory.Userworkhistory
+
+	sql := `
+		SELECT uwh.title, c.name as company, LOWER(mc.country_code) as country,
+			CONCAT(DATE_FORMAT(IFNULL(uwh.started_at, ""),'%Y %b'), " - ", DATE_FORMAT(IFNULL(uwh.ended_at, ""),'%Y %b')) as term,
+			uwh.description,
+			CONCAT('[', GROUP_CONCAT(JSON_OBJECT('name', tech.name)), ']') as techs
+		FROM t_user_work_history AS uwh
+		LEFT JOIN t_company_detail AS cd ON uwh.company_branch_id = cd.id
+		LEFT JOIN t_companies AS c ON c.id = cd.company_id
+		LEFT JOIN m_countries AS mc ON mc.id = cd.country_id
+		INNER JOIN t_techs tech ON JSON_CONTAINS(uwh.tech_ids, CAST(tech.id as json), '$')
+		WHERE uwh.delete_flg=?
+		AND cd.delete_flg=?
+		AND c.delete_flg=?
+		AND mc.delete_flg=?
+		AND uwh.user_id=?
+		GROUP BY uwh.id
+		ORDER BY uwh.started_at DESC
+	`
+
+	if err := queries.Raw(sql, "0", "0", "0", "0", userID).Bind(context.Background(), r.dbConn, &res); err != nil {
+		return nil, errors.Wrapf(err, "failed to call queries.Raw(): %s", sql)
+	}
+
+	// TODO: convert
+	return nil, nil
+}
+
 //func (m *UserWorkHistory) GetUserWorks(userID int, userWorks *[]*app.Userworkhistory) error {
 //	//TODO
 //

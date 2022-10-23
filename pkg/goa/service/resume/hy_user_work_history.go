@@ -3,21 +3,23 @@ package resumeapi
 import (
 	"context"
 	"fmt"
-	"log"
 
+	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
+
+	"github.com/hiromaily/go-goa/pkg/repository"
 	hyuserworkhistory "resume/gen/hy_user_work_history"
 )
 
 // hy_userWorkHistory service example implementation.
 // The example methods log the requests and return zero values.
 type hyUserWorkHistorysrvc struct {
-	logger *log.Logger
+	userWorkHistoryRepo repository.UserWorkHistoryRepository
 }
 
 // NewHyUserWorkHistory returns the hy_userWorkHistory service implementation.
-func NewHyUserWorkHistory(logger *log.Logger) hyuserworkhistory.Service {
-	return &hyUserWorkHistorysrvc{logger}
+func NewHyUserWorkHistory(userWorkHistoryRepo repository.UserWorkHistoryRepository) hyuserworkhistory.Service {
+	return &hyUserWorkHistorysrvc{userWorkHistoryRepo}
 }
 
 // JWTAuth implements the authorization logic for service "hy_userWorkHistory"
@@ -63,6 +65,6 @@ func (s *hyUserWorkHistorysrvc) GetUserWorkHistory(ctx context.Context, p *hyuse
 	//
 	//	res := app.UserworkhistoryCollection(userWorks)
 	//	return ctx.OK(res)
-	s.logger.Print("hyUserWorkHistory.getUserWorkHistory")
+	log.Info().Msg("hyUserWorkHistory.getUserWorkHistory")
 	return
 }

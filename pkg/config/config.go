@@ -1,12 +1,13 @@
 package config
 
 import (
-	"io/ioutil"
+	"os"
 
 	"github.com/BurntSushi/toml"
 	"github.com/go-playground/validator/v10"
-	"github.com/hiromaily/go-goa/pkg/encryption"
 	"github.com/pkg/errors"
+
+	"github.com/hiromaily/go-goa/pkg/encryption"
 )
 
 // NewConfig returns *Root config
@@ -28,7 +29,7 @@ func NewConfig(fileName string, isEncrypted bool) (*Root, error) {
 
 // load config file
 func loadConfig(fileName string) (*Root, error) {
-	d, err := ioutil.ReadFile(fileName)
+	d, err := os.ReadFile(fileName)
 	if err != nil {
 		return nil, errors.Wrapf(err, "fail to read file: %s", fileName)
 	}
