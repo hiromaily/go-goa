@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/hiromaily/go-goa/pkg/repository"
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
 	hyusertech "resume/gen/hy_usertech"

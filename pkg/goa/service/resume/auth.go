@@ -3,7 +3,6 @@ package resumeapi
 import (
 	"context"
 
-	"github.com/hiromaily/go-goa/pkg/repository"
 	"github.com/rs/zerolog/log"
 	auth "resume/gen/auth"
 

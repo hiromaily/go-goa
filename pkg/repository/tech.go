@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"time"
 
-	models "github.com/hiromaily/go-goa/pkg/model/rdb"
 	"github.com/pkg/errors"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"

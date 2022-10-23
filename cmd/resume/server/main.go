@@ -11,6 +11,7 @@ import (
 	"sync"
 	"syscall"
 
+	"github.com/rs/zerolog/log"
 	auth "resume/gen/auth"
 	health "resume/gen/health"
 	hycompany "resume/gen/hy_company"
