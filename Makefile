@@ -84,107 +84,11 @@ run:
 	#go run -race ./cmd/resume/server/... -conf ./configs/settings.toml
 	goa-server -conf ./configs/settings.toml
 
-###############################################################################
-# Docker
-###############################################################################
-dcgobld:
-	#goplus:1.11.5
-	docker build -t hirokiy/goplus:1.11.5 -f ./docker/golang/Dockerfile .
-	docker push hirokiy/goplus:1.11.5
-
-dcup:
-	docker-compose build
-	docker-compose up
-
-dcbld:
-	docker-compose build
-
-dcbldn:
-	docker-compose build --no-cache
-
-dcins:
-	docker exec -it gogoa_webserver_1 bash
-
-dctest:
-	docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go"
-	#docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
-
-dcpush:
-	docker push hirokiy/go-goa:1.0
-
-
-###############################################################################
-# Heroku
-###############################################################################
-heroku_init:
-	heroku plugins:install heroku-container-registry
-	heroku container:login
-	heroku create goa-web
-	#heroku container:push web
-	#cd docker/mysql;heroku container:push mysql
-
-heroku_after_change_app_name:
-	#git remote remove heroku [Important!!]
-
-heroku_settings:
-	heroku apps
-	#goa-web
-
-heroku_open:
-	open -a goa-web
-	#https://goa-web.herokuapp.com/
-
-heroku_remove:
-	heroku apps:destroy
-
-
-###############################################################################
-# Build Image for Heroku
-###############################################################################
-heroku_build_docker1:
-	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
-	docker push hirokiy/goapack_base:latest
-
-heroku_build_docker2:
-	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
-
-heroku_build_multistage:
-	#It works!
-	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.multistage.heroku .
-
-heroku_bldfull:
-	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
-	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
-
-heroku_exec_docker:
-	docker run -p 8080:8080 --name goapack hirokiy/goapack:latest
-	docker stop goapack
-
-heroku_upd:
-	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.heroku .
-	docker push registry.heroku.com/goa-web/web
-
-heroku_updfull:
-	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
-	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.heroku .
-	docker push registry.heroku.com/goa-web/web
-
-
-###############################################################################
-# Build Image for GCP Kubernetes
-###############################################################################
-dcp_build:
-	docker-compose build --no-cache webserver
-	#docker build --no-cache -t hirokiy/go-goa-mysql:latest -f ./docker/mysql/Dockerfile .
-
-dcp_push:
-	docker push hirokiy/go-goa:1.0
-	#docker push hirokiy/go-goa-mysql:latest
-
 
 ###############################################################################
 # httpie
 ###############################################################################
+.PHONY: http
 http:
 	# Login
 	http --body POST http://localhost:8080/auth/login email=hiroki@goa.com password=password
@@ -213,6 +117,7 @@ http:
 	#http localhost:8080/swagger/swagger.json
 	#http localhost:8080/swagger-ui/
 	#http localhost:8080/api/_ah/health
+
 
 ###############################################################################
 # Curl
@@ -248,6 +153,94 @@ curl:
 	curl -i -H "Content-Type: application/x-www-form-urlencoded" -d "name=Google&country=America&address=California" -X POST http://localhost:8080/api/company
 	curl -i -H "Content-Type: application/x-www-form-urlencoded" -d "name=Google&country=America&address=California" -X PUT http://localhost:8080/api/company/1
 	curl -i -X DELETE http://localhost:8080/api/company/1
+
+
+###############################################################################
+# Docker
+###############################################################################
+#dcgobld:
+#	#goplus:1.11.5
+#	docker build -t hirokiy/goplus:1.11.5 -f ./docker/golang/Dockerfile .
+#	docker push hirokiy/goplus:1.11.5
+#
+#dcins:
+#	docker exec -it gogoa_webserver_1 bash
+#
+#dctest:
+#	docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go"
+#	#docker-compose exec webserver /bin/sh -c "go test -v ext/cmd/*.go -f /go/src/github.com/hiromaily/go-goa/resources/tomls/docker.toml"
+#
+#dcpush:
+#	docker push hirokiy/go-goa:1.0
+
+
+###############################################################################
+# Heroku
+###############################################################################
+#heroku_init:
+#	heroku plugins:install heroku-container-registry
+#	heroku container:login
+#	heroku create goa-web
+#	#heroku container:push web
+#	#cd docker/mysql;heroku container:push mysql
+#
+#heroku_after_change_app_name:
+#	#git remote remove heroku [Important!!]
+#
+#heroku_settings:
+#	heroku apps
+#	#goa-web
+#
+#heroku_open:
+#	open -a goa-web
+#	#https://goa-web.herokuapp.com/
+#
+#heroku_remove:
+#	heroku apps:destroy
+
+
+###############################################################################
+# Build Image for Heroku
+###############################################################################
+#heroku_build_docker1:
+#	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
+#	docker push hirokiy/goapack_base:latest
+#
+#heroku_build_docker2:
+#	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
+#
+#heroku_build_multistage:
+#	#It works!
+#	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.multistage.heroku .
+#
+#heroku_bldfull:
+#	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
+#	docker build --no-cache -t hirokiy/goapack:latest -f ./docker/Dockerfile.heroku .
+#
+#heroku_exec_docker:
+#	docker run -p 8080:8080 --name goapack hirokiy/goapack:latest
+#	docker stop goapack
+#
+#heroku_upd:
+#	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.heroku .
+#	docker push registry.heroku.com/goa-web/web
+#
+#heroku_updfull:
+#	docker build --no-cache -t hirokiy/goapack_base:latest -f ./docker/Dockerfile.base.heroku .
+#	docker build --no-cache -t registry.heroku.com/goa-web/web -f ./docker/Dockerfile.heroku .
+#	docker push registry.heroku.com/goa-web/web
+
+
+###############################################################################
+# Build Image for GCP Kubernetes
+###############################################################################
+#dcp_build:
+#	docker-compose build --no-cache webserver
+#	#docker build --no-cache -t hirokiy/go-goa-mysql:latest -f ./docker/mysql/Dockerfile .
+#
+#dcp_push:
+#	docker push hirokiy/go-goa:1.0
+#	#docker push hirokiy/go-goa-mysql:latest
 
 
 ###############################################################################

@@ -24,12 +24,12 @@ func NewAuth(jwt jwts.JWTer, userRepo repository.UserRepository) auth.Service {
 	return &authsrvc{jwt, userRepo}
 }
 
+// TODO: how to handle user has arleady logged in?
 func (s *authsrvc) Login(ctx context.Context, p *auth.LoginPayload) (res *auth.Authorized, err error) {
 	log.Info().Msg("auth.Login()")
 
 	userID, err := s.userRepo.Login(p.Email, p.Password)
 	if err != nil {
-		// FIXME: why filed:fault has `fault`??
 		return nil, auth.MakeUnauthorized(errors.New("login error"))
 	}
 
