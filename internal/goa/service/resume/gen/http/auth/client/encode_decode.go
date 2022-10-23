@@ -53,9 +53,6 @@ func EncodeLoginRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.
 // DecodeLoginResponse returns a decoder for responses returned by the auth
 // login endpoint. restoreBody controls whether the response body should be
 // restored after having been read.
-// DecodeLoginResponse may return the following errors:
-//   - "Unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
-//   - error: internal error
 func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -88,20 +85,6 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 			}
 			res := auth.NewAuthorized(vres)
 			return res, nil
-		case http.StatusUnauthorized:
-			var (
-				body LoginUnauthorizedResponseBody
-				err  error
-			)
-			err = decoder(resp).Decode(&body)
-			if err != nil {
-				return nil, goahttp.ErrDecodingError("auth", "login", err)
-			}
-			err = ValidateLoginUnauthorizedResponseBody(&body)
-			if err != nil {
-				return nil, goahttp.ErrValidationError("auth", "login", err)
-			}
-			return nil, NewLoginUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("auth", "login", resp.StatusCode, string(body))

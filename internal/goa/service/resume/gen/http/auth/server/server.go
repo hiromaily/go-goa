@@ -50,8 +50,8 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"Login", "POST", "/login"},
-			{"CORS", "OPTIONS", "/login"},
+			{"Login", "POST", "/auth/login"},
+			{"CORS", "OPTIONS", "/auth/login"},
 		},
 		Login: NewLoginHandler(e.Login, mux, decoder, encoder, errhandler, formatter),
 		CORS:  NewCORSHandler(),
@@ -90,7 +90,7 @@ func MountLoginHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("POST", "/login", f)
+	mux.Handle("POST", "/auth/login", f)
 }
 
 // NewLoginHandler creates a HTTP handler which loads the HTTP request and
@@ -106,7 +106,7 @@ func NewLoginHandler(
 	var (
 		decodeRequest  = DecodeLoginRequest(mux, decoder)
 		encodeResponse = EncodeLoginResponse(encoder)
-		encodeError    = EncodeLoginError(encoder, formatter)
+		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -136,7 +136,7 @@ func NewLoginHandler(
 // service auth.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleAuthOrigin(h)
-	mux.Handle("OPTIONS", "/login", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/auth/login", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

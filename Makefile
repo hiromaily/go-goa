@@ -12,6 +12,7 @@ TOMLPATH=${PROJECT_ROOT}/configs/settings.toml
 .PHONY: setup-tools
 setup-tools:
 	brew install httpie
+	brew install jq
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install mvdan.cc/gofumpt@latest
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
@@ -185,18 +186,16 @@ dcp_push:
 # httpie
 ###############################################################################
 http:
-	# httpie #brew install httpie
-	# jq     #brew install jq
 
 	#http POST localhost:8080/login email=aaa@aaa.com password=secret-secret
 	#http localhost:8080/company
 	#http localhost:8080/company/1
 
 	# Static files
-	http localhost:8080/
-	http localhost:8080/swagger/swagger.json
-	http localhost:8080/swagger-ui/
-	http localhost:8080/api/_ah/health
+#	http localhost:8080/
+#	http localhost:8080/swagger/swagger.json
+#	http localhost:8080/swagger-ui/
+#	http localhost:8080/api/_ah/health
 
 	# Login
 	#http POST http://localhost:8080/api/auth/login email=hiroki@goa.com password=password

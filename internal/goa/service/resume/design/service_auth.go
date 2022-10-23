@@ -16,28 +16,27 @@ var JWT = JWTSecurity("jwt", func() {
 var _ = Service("auth", func() {
 	Description("The auth service performs login with JWT")
 
-	Security(JWT)
-	Error("Unauthorized")
 	HTTP(func() { // HTTP mapping for error responses
-		// Use HTTP status 401 for 'Unauthorized' errors.
-		Response("Unauthorized", StatusUnauthorized)
+		// base path
+		Path("/auth")
 	})
 
 	Method("login", func() {
-		NoSecurity()
 		Payload(func() {
 			Extend(types.PayloadLogin)
 			Required("email", "password")
 		})
 		Result(types.RTAuthorized)
+		// Use HTTP status 401 for 'Unauthorized' errors.
+		Error("Unauthorized")
+
 		HTTP(func() {
 			POST("/login")
-
-			//FIXME: response token for JWT
+			Response(StatusOK)
 			//Response(StatusOK, func() {
-			//	//Header("auth:Authorization", String, "Auth token", func() {
-			//	//	Pattern("^Bearer [^ ]+$")
-			//	//})
+			//	Header("Authorization", String, func() {
+			//		Pattern("^Bearer [^ ]+$")
+			//	})
 			//})
 		})
 	})
