@@ -1,8 +1,7 @@
 *
 
-!docker/
-!ext/
-!goa/
-!public/
-!resources/swagger-ui/dist/
+!assets/
+!build/
+!configs/
+!web/
 !Makefile

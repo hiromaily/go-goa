@@ -2,12 +2,9 @@
 !.gitkeep
 node_modules
 build/docker/mysql/data/*
-build/docker/redis/data/*
 build/docker/golang/*
+
 web/resources/tmp/*
-#resources/swagger-ui/*
-#!resources/swagger-ui/dist/*
-public/swagger
 
 web/frontend_workspace/riot-webpack-v2/public/assets
 web/frontend_workspace/riot-webpack-v2/public/components

@@ -1,6 +1,0 @@
-[submodule "goa/resources/swagger-ui"]
-	path = goa/resources/swagger-ui
-	url = https://github.com/swagger-api/swagger-ui.git
-[submodule "resources/swagger-ui"]
-	path = resources/swagger-ui
-	url = https://github.com/swagger-api/swagger-ui.git

@@ -1,5 +1,5 @@
-docker/**
-goa/**
-public/**
-resources/**
-frontend_workspace/**
+assets/**
+build/**
+configs/**
+scripts/**
+web/**
