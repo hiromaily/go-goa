@@ -12,7 +12,6 @@ secret_code = "secret1234567890"
 private_key = "/set-absolute-path/test/rsakey/jwttest_rsa"
 public_key = "/set-absolute-path/test/rsakey/jwttest_rsa.pub"
 
-
 [hash]
 salt = "foo-bar"
 

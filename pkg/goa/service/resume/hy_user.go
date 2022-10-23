@@ -2,8 +2,7 @@ package resumeapi
 
 import (
 	"context"
-	"fmt"
-
+	"github.com/hiromaily/go-goa/pkg/jwts"
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
 
@@ -14,18 +13,27 @@ import (
 // hy_user service example implementation.
 // The example methods log the requests and return zero values.
 type hyUsersrvc struct {
+	jwt      jwts.JWTer
 	userRepo repository.UserRepository
 }
 
 // NewHyUser returns the hy_user service implementation.
-func NewHyUser(userRepo repository.UserRepository) hyuser.Service {
-	return &hyUsersrvc{userRepo}
+func NewHyUser(jwt jwts.JWTer, userRepo repository.UserRepository) hyuser.Service {
+	return &hyUsersrvc{jwt, userRepo}
 }
 
 // JWTAuth implements the authorization logic for service "hy_user" for the
 // "jwt" security scheme.
 func (s *hyUsersrvc) JWTAuth(ctx context.Context, token string, scheme *security.JWTScheme) (context.Context, error) {
-	//
+	log.Info().
+		Str("token", token).
+		Strs("scheme.Scopes", scheme.Scopes).
+		Msg("hyUser.JWTAuth")
+
+	if err := s.jwt.ValidateToken(token); err != nil {
+		return ctx, err
+	}
+
 	// TBD: add authorization logic.
 	//
 	// In case of authorization failure this function should return
@@ -39,11 +47,13 @@ func (s *hyUsersrvc) JWTAuth(ctx context.Context, token string, scheme *security
 	//
 	//    return ctx, goa.PermanentError("unauthorized", "invalid token")
 	//
-	return ctx, fmt.Errorf("not implemented")
+	return ctx, nil
 }
 
 // List all users
 func (s *hyUsersrvc) UserList(ctx context.Context, p *hyuser.UserListPayload) (res hyuser.UserCollection, view string, err error) {
+	log.Info().Msg("hyUser.UserList")
+
 	//	//type User struct {
 	//	//	Email     string `form:"email" json:"email" xml:"email"`
 	//	//	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
@@ -66,7 +76,6 @@ func (s *hyUsersrvc) UserList(ctx context.Context, p *hyuser.UserListPayload) (r
 	//	res := app.UserCollection(users)
 	//	return ctx.OK(res)
 	view = "default"
-	log.Info().Msg("hyUser.userList")
 	return
 }
 

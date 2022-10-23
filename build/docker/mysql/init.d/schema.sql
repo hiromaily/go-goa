@@ -48,7 +48,7 @@ CREATE TABLE `t_user` (
 LOCK TABLES `t_user` WRITE;
 /*!40000 ALTER TABLE `t_user` DISABLE KEYS */;
 INSERT INTO `t_user` VALUES
-  (1,'Hiroki Yasui','hiroki@goa.com','baa62a499e9b21940c2d763f58a25647','0',now(),now()),
+  (1,'Hiroki Yasui','hiroki@goa.com','pITkElZAslj3TdCjrwTmRveORU4LcV7sn/EGiCqm0b0=','0',now(),now()),
   (2,'guest','guest@guest.com','d978eb967fbe04345371478a97f3c903','0',now(),now());
 /*!40000 ALTER TABLE `t_user` ENABLE KEYS */;
 UNLOCK TABLES;

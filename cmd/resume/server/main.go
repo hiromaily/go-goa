@@ -59,45 +59,15 @@ func main() {
 	healthSvc := reg.NewHealth()
 	hyUserWorkHistorySvc := reg.NewHyUserWorkHistory()
 
-	//var (
-	//	authSvc              auth.Service
-	//	hyCompanySvc         hycompany.Service
-	//	healthSvc            health.Service
-	//	hyTechSvc            hytech.Service
-	//	hyUserSvc            hyuser.Service
-	//	hyUsertechSvc        hyusertech.Service
-	//	hyUserWorkHistorySvc hyuserworkhistory.Service
-	//)
-	//{
-	//	authSvc = resume.NewAuth(logger, db)
-	//	hyCompanySvc = resume.NewHyCompany(logger, db)
-	//	healthSvc = resume.NewHealth(logger, db)
-	//	hyTechSvc = resume.NewHyTech(logger, db)
-	//	hyUserSvc = resume.NewHyUser(logger, db)
-	//	hyUsertechSvc = resume.NewHyUsertech(logger, db)
-	//	hyUserWorkHistorySvc = resume.NewHyUserWorkHistory(logger, db)
-	//}
-
 	// Wrap the services in endpoints that can be invoked from other services
 	// potentially running in different processes.
-	var (
-		authEndpoints              *auth.Endpoints
-		hyCompanyEndpoints         *hycompany.Endpoints
-		healthEndpoints            *health.Endpoints
-		hyTechEndpoints            *hytech.Endpoints
-		hyUserEndpoints            *hyuser.Endpoints
-		hyUsertechEndpoints        *hyusertech.Endpoints
-		hyUserWorkHistoryEndpoints *hyuserworkhistory.Endpoints
-	)
-	{
-		authEndpoints = auth.NewEndpoints(authSvc)
-		hyCompanyEndpoints = hycompany.NewEndpoints(hyCompanySvc)
-		healthEndpoints = health.NewEndpoints(healthSvc)
-		hyTechEndpoints = hytech.NewEndpoints(hyTechSvc)
-		hyUserEndpoints = hyuser.NewEndpoints(hyUserSvc)
-		hyUsertechEndpoints = hyusertech.NewEndpoints(hyUsertechSvc)
-		hyUserWorkHistoryEndpoints = hyuserworkhistory.NewEndpoints(hyUserWorkHistorySvc)
-	}
+	authEndpoints := auth.NewEndpoints(authSvc)
+	hyCompanyEndpoints := hycompany.NewEndpoints(hyCompanySvc)
+	healthEndpoints := health.NewEndpoints(healthSvc)
+	hyTechEndpoints := hytech.NewEndpoints(hyTechSvc)
+	hyUserEndpoints := hyuser.NewEndpoints(hyUserSvc)
+	hyUsertechEndpoints := hyusertech.NewEndpoints(hyUsertechSvc)
+	hyUserWorkHistoryEndpoints := hyuserworkhistory.NewEndpoints(hyUserWorkHistorySvc)
 
 	// Create channel used by both the signal handler and server goroutines
 	// to notify the main goroutine when to stop the server.

@@ -57,11 +57,11 @@ func NewRegistry(conf *config.Root) *registry {
 }
 
 func (r *registry) NewAuth() auth.Service {
-	return resume.NewAuth(r.newUserRepo())
+	return resume.NewAuth(r.newJWT(), r.newUserRepo())
 }
 
 func (r *registry) NewHyUser() hyuser.Service {
-	return resume.NewHyUser(r.newUserRepo())
+	return resume.NewHyUser(r.newJWT(), r.newUserRepo())
 }
 
 func (r *registry) NewHyCompany() hycompany.Service {
@@ -130,8 +130,10 @@ func (r *registry) newMySQLClient() *sql.DB {
 
 func (r *registry) newHasher() encryption.Hasher {
 	if r.hasher == nil {
-		// TODO: define hash salt in config
-		r.hasher = encryption.NewScrypt("salt")
+		if r.conf.Hash.Salt == "" {
+			panic(errors.New("salt key must be set in config"))
+		}
+		r.hasher = encryption.NewScrypt(r.conf.Hash.Salt)
 	}
 	return r.hasher
 }

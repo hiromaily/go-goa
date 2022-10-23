@@ -29,5 +29,8 @@ func InitializeZeroLog(conf *config.Logger) {
 
 		// FIXME: where to close
 		logFile.Close()
+	} else {
+		// FIXME: this setup must be for development only
+		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}
 }

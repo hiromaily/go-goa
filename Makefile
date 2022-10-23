@@ -186,37 +186,33 @@ dcp_push:
 # httpie
 ###############################################################################
 http:
+	# Login
+	http --body POST http://localhost:8080/auth/login email=hiroki@goa.com password=password
+	$(eval TOKEN := $(shell http --body POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g'))
+
+	# User
+	http localhost:8080/user 'Authorization: Bearer $(TOKEN)'
+#	http localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
+#	http POST http://localhost:8080/api/user name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
+#	http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
+#	http DELETE http://localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
+
+	# Company
+#	http localhost:8080/api/company 'Authorization: Bearer $(TOKEN)'
+#	http localhost:8080/api/company/1 'Authorization: Bearer $(TOKEN)'
+#	http POST http://localhost:8080/api/company name=Google country=America address=California 'Authorization: Bearer $(TOKEN)'
+#	http PUT http://localhost:8080/api/company/1 name=Google country=America address=California 'Authorization: Bearer $(TOKEN)'
+#	http DELETE http://localhost:8080/api/company/1 'Authorization: Bearer $(TOKEN)'
 
 	#http POST localhost:8080/login email=aaa@aaa.com password=secret-secret
 	#http localhost:8080/company
 	#http localhost:8080/company/1
 
 	# Static files
-#	http localhost:8080/
-#	http localhost:8080/swagger/swagger.json
-#	http localhost:8080/swagger-ui/
-#	http localhost:8080/api/_ah/health
-
-	# Login
-	#http POST http://localhost:8080/api/auth/login email=hiroki@goa.com password=password
-	http --body POST http://localhost:8080/api/auth/login email=hiroki@goa.com password=password
-
-	$(eval TOKEN := $(shell http --body POST http://localhost:8080/api/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g'))
-
-	# User
-	http localhost:8080/api/user 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
-	http POST http://localhost:8080/api/user name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
-	http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
-	http DELETE http://localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
-
-	# Company
-	http localhost:8080/api/company 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/api/company/1 'Authorization: Bearer $(TOKEN)'
-	http POST http://localhost:8080/api/company name=Google country=America address=California 'Authorization: Bearer $(TOKEN)'
-	http PUT http://localhost:8080/api/company/1 name=Google country=America address=California 'Authorization: Bearer $(TOKEN)'
-	http DELETE http://localhost:8080/api/company/1 'Authorization: Bearer $(TOKEN)'
-
+	#http localhost:8080/
+	#http localhost:8080/swagger/swagger.json
+	#http localhost:8080/swagger-ui/
+	#http localhost:8080/api/_ah/health
 
 ###############################################################################
 # Curl

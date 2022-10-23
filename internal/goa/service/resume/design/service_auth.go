@@ -28,11 +28,12 @@ var _ = Service("auth", func() {
 		})
 		Result(types.RTAuthorized)
 		// Use HTTP status 401 for 'Unauthorized' errors.
-		Error("Unauthorized")
+		Error("unauthorized", String, "Credentials are invalid")
 
 		HTTP(func() {
 			POST("/login")
 			Response(StatusOK)
+			Response("unauthorized", StatusUnauthorized)
 			//Response(StatusOK, func() {
 			//	Header("Authorization", String, func() {
 			//		Pattern("^Bearer [^ ]+$")
