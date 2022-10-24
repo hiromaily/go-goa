@@ -68,7 +68,7 @@ func EncodeLoginError(encoder func(context.Context, http.ResponseWriter) goahttp
 			return encodeError(ctx, w, v)
 		}
 		switch en.GoaErrorName() {
-		case "unauthorized":
+		case "Unauthorized":
 			var res *goa.ServiceError
 			errors.As(v, &res)
 			enc := encoder(ctx, w)

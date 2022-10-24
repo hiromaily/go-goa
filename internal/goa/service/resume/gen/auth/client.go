@@ -27,7 +27,7 @@ func NewClient(login goa.Endpoint) *Client {
 
 // Login calls the "login" endpoint of the "auth" service.
 // Login may return the following errors:
-//   - "unauthorized" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) Login(ctx context.Context, p *LoginPayload) (res *Authorized, err error) {
 	var ires interface{}

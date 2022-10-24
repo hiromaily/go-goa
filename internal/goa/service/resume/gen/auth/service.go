@@ -16,7 +16,7 @@ import (
 
 // The auth service performs login with JWT
 type Service interface {
-	// Login implements login.
+	// Login and return jwt token
 	Login(context.Context, *LoginPayload) (res *Authorized, err error)
 }
 
@@ -48,7 +48,7 @@ type LoginPayload struct {
 
 // MakeUnauthorized builds a goa.ServiceError from an error.
 func MakeUnauthorized(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "unauthorized", false, false, false)
+	return goa.NewServiceError(err, "Unauthorized", false, false, false)
 }
 
 // NewAuthorized initializes result type Authorized from viewed result type

@@ -58,6 +58,9 @@ func EncodeUserListRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 // DecodeUserListResponse returns a decoder for responses returned by the
 // hy_user userList endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeUserListResponse may return the following errors:
+//   - "NoContent" (type *goa.ServiceError): http.StatusNoContent
+//   - error: internal error
 func DecodeUserListResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -90,6 +93,20 @@ func DecodeUserListResponse(decoder func(*http.Response) goahttp.Decoder, restor
 			}
 			res := hyuser.NewUserCollection(vres)
 			return res, nil
+		case http.StatusNoContent:
+			var (
+				body UserListNoContentResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_user", "userList", err)
+			}
+			err = ValidateUserListNoContentResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_user", "userList", err)
+			}
+			return nil, NewUserListNoContent(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_user", "userList", resp.StatusCode, string(body))
@@ -147,6 +164,9 @@ func EncodeGetUserRequest(encoder func(*http.Request) goahttp.Encoder) func(*htt
 // DecodeGetUserResponse returns a decoder for responses returned by the
 // hy_user getUser endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeGetUserResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeGetUserResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -179,6 +199,20 @@ func DecodeGetUserResponse(decoder func(*http.Response) goahttp.Decoder, restore
 			}
 			res := hyuser.NewUser(vres)
 			return res, nil
+		case http.StatusNotFound:
+			var (
+				body GetUserNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_user", "getUser", err)
+			}
+			err = ValidateGetUserNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_user", "getUser", err)
+			}
+			return nil, NewGetUserNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_user", "getUser", resp.StatusCode, string(body))
@@ -228,6 +262,9 @@ func EncodeCreateUserRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // DecodeCreateUserResponse returns a decoder for responses returned by the
 // hy_user createUser endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeCreateUserResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
 func DecodeCreateUserResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -243,8 +280,22 @@ func DecodeCreateUserResponse(decoder func(*http.Response) goahttp.Decoder, rest
 			defer resp.Body.Close()
 		}
 		switch resp.StatusCode {
-		case http.StatusOK:
+		case http.StatusCreated:
 			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body CreateUserBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_user", "createUser", err)
+			}
+			err = ValidateCreateUserBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_user", "createUser", err)
+			}
+			return nil, NewCreateUserBadRequest(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_user", "createUser", resp.StatusCode, string(body))
@@ -306,6 +357,10 @@ func EncodeUpdateUserRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // DecodeUpdateUserResponse returns a decoder for responses returned by the
 // hy_user updateUser endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeUpdateUserResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeUpdateUserResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -323,6 +378,34 @@ func DecodeUpdateUserResponse(decoder func(*http.Response) goahttp.Decoder, rest
 		switch resp.StatusCode {
 		case http.StatusOK:
 			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body UpdateUserBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_user", "updateUser", err)
+			}
+			err = ValidateUpdateUserBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_user", "updateUser", err)
+			}
+			return nil, NewUpdateUserBadRequest(&body)
+		case http.StatusNotFound:
+			var (
+				body UpdateUserNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_user", "updateUser", err)
+			}
+			err = ValidateUpdateUserNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_user", "updateUser", err)
+			}
+			return nil, NewUpdateUserNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_user", "updateUser", resp.StatusCode, string(body))
@@ -380,6 +463,9 @@ func EncodeDeleteUserRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // DecodeDeleteUserResponse returns a decoder for responses returned by the
 // hy_user deleteUser endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeDeleteUserResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeDeleteUserResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -397,6 +483,20 @@ func DecodeDeleteUserResponse(decoder func(*http.Response) goahttp.Decoder, rest
 		switch resp.StatusCode {
 		case http.StatusOK:
 			return nil, nil
+		case http.StatusNotFound:
+			var (
+				body DeleteUserNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_user", "deleteUser", err)
+			}
+			err = ValidateDeleteUserNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_user", "deleteUser", err)
+			}
+			return nil, NewDeleteUserNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_user", "deleteUser", resp.StatusCode, string(body))

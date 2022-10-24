@@ -127,7 +127,7 @@ func NewUserListHandler(
 	var (
 		decodeRequest  = DecodeUserListRequest(mux, decoder)
 		encodeResponse = EncodeUserListResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeUserListError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -178,7 +178,7 @@ func NewGetUserHandler(
 	var (
 		decodeRequest  = DecodeGetUserRequest(mux, decoder)
 		encodeResponse = EncodeGetUserResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetUserError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -229,7 +229,7 @@ func NewCreateUserHandler(
 	var (
 		decodeRequest  = DecodeCreateUserRequest(mux, decoder)
 		encodeResponse = EncodeCreateUserResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeCreateUserError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -280,7 +280,7 @@ func NewUpdateUserHandler(
 	var (
 		decodeRequest  = DecodeUpdateUserRequest(mux, decoder)
 		encodeResponse = EncodeUpdateUserResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeUpdateUserError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -331,7 +331,7 @@ func NewDeleteUserHandler(
 	var (
 		decodeRequest  = DecodeDeleteUserRequest(mux, decoder)
 		encodeResponse = EncodeDeleteUserResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeDeleteUserError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))

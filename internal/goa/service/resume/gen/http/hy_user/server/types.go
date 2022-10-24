@@ -18,8 +18,6 @@ import (
 // CreateUserRequestBody is the type of the "hy_user" service "createUser"
 // endpoint HTTP request body.
 type CreateUserRequestBody struct {
-	// User ID
-	UserID *int `form:"userID,omitempty" json:"userID,omitempty" xml:"userID,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 	// E-mail of user
@@ -63,6 +61,114 @@ type GetUserResponseBody struct {
 type GetUserResponseBodyID struct {
 	// ID
 	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+}
+
+// UserListNoContentResponseBody is the type of the "hy_user" service
+// "userList" endpoint HTTP response body for the "NoContent" error.
+type UserListNoContentResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetUserNotFoundResponseBody is the type of the "hy_user" service "getUser"
+// endpoint HTTP response body for the "NotFound" error.
+type GetUserNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// CreateUserBadRequestResponseBody is the type of the "hy_user" service
+// "createUser" endpoint HTTP response body for the "BadRequest" error.
+type CreateUserBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateUserBadRequestResponseBody is the type of the "hy_user" service
+// "updateUser" endpoint HTTP response body for the "BadRequest" error.
+type UpdateUserBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateUserNotFoundResponseBody is the type of the "hy_user" service
+// "updateUser" endpoint HTTP response body for the "NotFound" error.
+type UpdateUserNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// DeleteUserNotFoundResponseBody is the type of the "hy_user" service
+// "deleteUser" endpoint HTTP response body for the "NotFound" error.
+type DeleteUserNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
 // UserResponse is used to define fields on response body types.
@@ -121,6 +227,90 @@ func NewGetUserResponseBodyID(res *hyuserviews.UserView) *GetUserResponseBodyID 
 	return body
 }
 
+// NewUserListNoContentResponseBody builds the HTTP response body from the
+// result of the "userList" endpoint of the "hy_user" service.
+func NewUserListNoContentResponseBody(res *goa.ServiceError) *UserListNoContentResponseBody {
+	body := &UserListNoContentResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetUserNotFoundResponseBody builds the HTTP response body from the result
+// of the "getUser" endpoint of the "hy_user" service.
+func NewGetUserNotFoundResponseBody(res *goa.ServiceError) *GetUserNotFoundResponseBody {
+	body := &GetUserNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewCreateUserBadRequestResponseBody builds the HTTP response body from the
+// result of the "createUser" endpoint of the "hy_user" service.
+func NewCreateUserBadRequestResponseBody(res *goa.ServiceError) *CreateUserBadRequestResponseBody {
+	body := &CreateUserBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateUserBadRequestResponseBody builds the HTTP response body from the
+// result of the "updateUser" endpoint of the "hy_user" service.
+func NewUpdateUserBadRequestResponseBody(res *goa.ServiceError) *UpdateUserBadRequestResponseBody {
+	body := &UpdateUserBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateUserNotFoundResponseBody builds the HTTP response body from the
+// result of the "updateUser" endpoint of the "hy_user" service.
+func NewUpdateUserNotFoundResponseBody(res *goa.ServiceError) *UpdateUserNotFoundResponseBody {
+	body := &UpdateUserNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewDeleteUserNotFoundResponseBody builds the HTTP response body from the
+// result of the "deleteUser" endpoint of the "hy_user" service.
+func NewDeleteUserNotFoundResponseBody(res *goa.ServiceError) *DeleteUserNotFoundResponseBody {
+	body := &DeleteUserNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewUserListPayload builds a hy_user service userList endpoint payload.
 func NewUserListPayload(token *string) *hyuser.UserListPayload {
 	v := &hyuser.UserListPayload{}
@@ -141,7 +331,6 @@ func NewGetUserPayload(userID int, token *string) *hyuser.GetUserPayload {
 // NewCreateUserPayload builds a hy_user service createUser endpoint payload.
 func NewCreateUserPayload(body *CreateUserRequestBody, token *string) *hyuser.CreateUserPayload {
 	v := &hyuser.CreateUserPayload{
-		UserID:   body.UserID,
 		UserName: *body.UserName,
 		Email:    *body.Email,
 		Password: *body.Password,
@@ -154,9 +343,9 @@ func NewCreateUserPayload(body *CreateUserRequestBody, token *string) *hyuser.Cr
 // NewUpdateUserPayload builds a hy_user service updateUser endpoint payload.
 func NewUpdateUserPayload(body *UpdateUserRequestBody, userID int, token *string) *hyuser.UpdateUserPayload {
 	v := &hyuser.UpdateUserPayload{
-		UserName: *body.UserName,
-		Email:    *body.Email,
-		Password: *body.Password,
+		UserName: body.UserName,
+		Email:    body.Email,
+		Password: body.Password,
 	}
 	v.UserID = &userID
 	v.Token = token
@@ -184,11 +373,6 @@ func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
 	}
 	if body.Password == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("password", "body"))
-	}
-	if body.UserID != nil {
-		if *body.UserID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.userID", *body.UserID, 1, true))
-		}
 	}
 	if body.UserName != nil {
 		if utf8.RuneCountInString(*body.UserName) < 2 {
@@ -219,15 +403,6 @@ func ValidateCreateUserRequestBody(body *CreateUserRequestBody) (err error) {
 // ValidateUpdateUserRequestBody runs the validations defined on
 // UpdateUserRequestBody
 func ValidateUpdateUserRequestBody(body *UpdateUserRequestBody) (err error) {
-	if body.UserName == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("user_name", "body"))
-	}
-	if body.Email == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))
-	}
-	if body.Password == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("password", "body"))
-	}
 	if body.UserName != nil {
 		if utf8.RuneCountInString(*body.UserName) < 2 {
 			err = goa.MergeErrors(err, goa.InvalidLengthError("body.user_name", *body.UserName, utf8.RuneCountInString(*body.UserName), 2, true))

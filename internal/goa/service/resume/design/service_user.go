@@ -6,6 +6,10 @@ import (
 	. "goa.design/goa/v3/dsl"
 )
 
+// ----------------------------------------------------------------------------
+// User Service
+// ----------------------------------------------------------------------------
+
 var _ = Service(resourcePrefix+"user", func() {
 	Description("The user service returns user data")
 
@@ -16,22 +20,24 @@ var _ = Service(resourcePrefix+"user", func() {
 
 	Method("userList", func() {
 		Description("List all users")
-		Error("NoContent")
-		Error("BadRequest")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
 		})
 		Result(CollectionOf(types.RTUser))
+
+		Error("NoContent")
+
 		HTTP(func() {
 			GET("")
 			Response(StatusOK)
+			Response("NoContent", StatusNoContent)
 		})
 	})
 
 	Method("getUser", func() {
-		Description("get user with given user id")
-		Error("BadRequest")
-		Error("NotFound")
+		Description("Get user by given user id")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
 			Attribute("userID", Int, "User ID", func() {
@@ -39,64 +45,82 @@ var _ = Service(resourcePrefix+"user", func() {
 			})
 		})
 		Result(types.RTUser)
+
+		Error("NotFound")
+
 		HTTP(func() {
 			GET("/{userID}")
 			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 
 	Method("createUser", func() {
 		Description("Create new user")
-		Error("BadRequest")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("userID", Int, "User ID", func() {
-				Minimum(1)
-			})
+			//Attribute("userID", Int, "User ID", func() {
+			//	Minimum(1)
+			//})
 			Extend(types.PayloadUser)
 			Required("user_name", "email", "password")
 		})
+		Error("BadRequest")
+
 		HTTP(func() {
 			POST("")
-			Response(StatusOK)
 			Response(StatusCreated)
+			Response("BadRequest", StatusBadRequest)
 		})
 	})
 
 	Method("updateUser", func() {
-		Description("Change user properties")
-		Error("BadRequest")
-		Error("NotFound")
+		Description("Update user data")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
 			Attribute("userID", Int, "User ID", func() {
 				Minimum(1)
 			})
 			Extend(types.PayloadUser)
-			Required("user_name", "email", "password")
+			//Required("user_name", "email", "password")
 		})
+
+		Error("BadRequest")
+		Error("NotFound")
+
 		HTTP(func() {
 			PUT("/{userID}")
 			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 
 	Method("deleteUser", func() {
 		Description("Delete user")
-		Error("BadRequest")
-		Error("NotFound")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
 			Attribute("userID", Int, "User ID", func() {
 				Minimum(1)
 			})
 		})
+
+		Error("NotFound")
+
 		HTTP(func() {
 			DELETE("/{userID}")
 			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 })
+
+// ----------------------------------------------------------------------------
+// User Tech Service
+// ----------------------------------------------------------------------------
 
 var _ = Service(resourcePrefix+"usertech", func() {
 	Description("The user service returns user data")

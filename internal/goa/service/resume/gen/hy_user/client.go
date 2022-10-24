@@ -36,7 +36,6 @@ func NewClient(userList, getUser, createUser, updateUser, deleteUser goa.Endpoin
 // UserList calls the "userList" endpoint of the "hy_user" service.
 // UserList may return the following errors:
 //   - "NoContent" (type *goa.ServiceError)
-//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) UserList(ctx context.Context, p *UserListPayload) (res UserCollection, err error) {
 	var ires interface{}
@@ -49,7 +48,6 @@ func (c *Client) UserList(ctx context.Context, p *UserListPayload) (res UserColl
 
 // GetUser calls the "getUser" endpoint of the "hy_user" service.
 // GetUser may return the following errors:
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetUser(ctx context.Context, p *GetUserPayload) (res *User, err error) {
@@ -82,7 +80,6 @@ func (c *Client) UpdateUser(ctx context.Context, p *UpdateUserPayload) (err erro
 
 // DeleteUser calls the "deleteUser" endpoint of the "hy_user" service.
 // DeleteUser may return the following errors:
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) DeleteUser(ctx context.Context, p *DeleteUserPayload) (err error) {

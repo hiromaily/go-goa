@@ -72,12 +72,7 @@ func BuildCreateUserPayload(hyUserCreateUserBody string, hyUserCreateUserToken s
 	{
 		err = json.Unmarshal([]byte(hyUserCreateUserBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"hy@gmail.com\",\n      \"password\": \"xxxxxxxx\",\n      \"userID\": 4489428684054812144,\n      \"user_name\": \"Hiroki\"\n   }'")
-		}
-		if body.UserID != nil {
-			if *body.UserID < 1 {
-				err = goa.MergeErrors(err, goa.InvalidRangeError("body.userID", *body.UserID, 1, true))
-			}
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"hy@gmail.com\",\n      \"password\": \"xxxxxxxx\",\n      \"user_name\": \"Hiroki\"\n   }'")
 		}
 		if utf8.RuneCountInString(body.UserName) < 2 {
 			err = goa.MergeErrors(err, goa.InvalidLengthError("body.user_name", body.UserName, utf8.RuneCountInString(body.UserName), 2, true))
@@ -103,7 +98,6 @@ func BuildCreateUserPayload(hyUserCreateUserBody string, hyUserCreateUserToken s
 		}
 	}
 	v := &hyuser.CreateUserPayload{
-		UserID:   body.UserID,
 		UserName: body.UserName,
 		Email:    body.Email,
 		Password: body.Password,
@@ -122,22 +116,6 @@ func BuildUpdateUserPayload(hyUserUpdateUserBody string, hyUserUpdateUserUserID 
 		err = json.Unmarshal([]byte(hyUserUpdateUserBody), &body)
 		if err != nil {
 			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"hy@gmail.com\",\n      \"password\": \"xxxxxxxx\",\n      \"user_name\": \"Hiroki\"\n   }'")
-		}
-		if utf8.RuneCountInString(body.UserName) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.user_name", body.UserName, utf8.RuneCountInString(body.UserName), 2, true))
-		}
-		if utf8.RuneCountInString(body.UserName) > 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.user_name", body.UserName, utf8.RuneCountInString(body.UserName), 20, false))
-		}
-		err = goa.MergeErrors(err, goa.ValidateFormat("body.email", body.Email, goa.FormatEmail))
-		if utf8.RuneCountInString(body.Password) < 8 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.password", body.Password, utf8.RuneCountInString(body.Password), 8, true))
-		}
-		if utf8.RuneCountInString(body.Password) > 20 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.password", body.Password, utf8.RuneCountInString(body.Password), 20, false))
-		}
-		if err != nil {
-			return nil, err
 		}
 	}
 	var userID int

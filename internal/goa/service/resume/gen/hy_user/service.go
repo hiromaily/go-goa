@@ -22,14 +22,14 @@ type Service interface {
 	//	- "default"
 	//	- "id": id is the view used for C U D
 	UserList(context.Context, *UserListPayload) (res UserCollection, view string, err error)
-	// get user with given user id
+	// Get user by given user id
 	// The "view" return value must have one of the following views
 	//	- "default"
 	//	- "id": id is the view used for C U D
 	GetUser(context.Context, *GetUserPayload) (res *User, view string, err error)
 	// Create new user
 	CreateUser(context.Context, *CreateUserPayload) (err error)
-	// Change user properties
+	// Update user data
 	UpdateUser(context.Context, *UpdateUserPayload) (err error)
 	// Delete user
 	DeleteUser(context.Context, *DeleteUserPayload) (err error)
@@ -56,8 +56,6 @@ var MethodNames = [5]string{"userList", "getUser", "createUser", "updateUser", "
 type CreateUserPayload struct {
 	// JWT token used to perform authorization
 	Token *string
-	// User ID
-	UserID *int
 	// User name
 	UserName string
 	// E-mail of user
@@ -91,11 +89,11 @@ type UpdateUserPayload struct {
 	// User ID
 	UserID *int
 	// User name
-	UserName string
+	UserName *string
 	// E-mail of user
-	Email string
+	Email *string
 	// Password
-	Password string
+	Password *string
 }
 
 // User is the result type of the hy_user service getUser method.
@@ -128,14 +126,14 @@ func MakeNoContent(err error) *goa.ServiceError {
 	return goa.NewServiceError(err, "NoContent", false, false, false)
 }
 
-// MakeBadRequest builds a goa.ServiceError from an error.
-func MakeBadRequest(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "BadRequest", false, false, false)
-}
-
 // MakeNotFound builds a goa.ServiceError from an error.
 func MakeNotFound(err error) *goa.ServiceError {
 	return goa.NewServiceError(err, "NotFound", false, false, false)
+}
+
+// MakeBadRequest builds a goa.ServiceError from an error.
+func MakeBadRequest(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "BadRequest", false, false, false)
 }
 
 // NewUserCollection initializes result type UserCollection from viewed result

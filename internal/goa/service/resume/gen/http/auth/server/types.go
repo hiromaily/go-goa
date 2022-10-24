@@ -32,7 +32,7 @@ type LoginResponseBody struct {
 }
 
 // LoginUnauthorizedResponseBody is the type of the "auth" service "login"
-// endpoint HTTP response body for the "unauthorized" error.
+// endpoint HTTP response body for the "Unauthorized" error.
 type LoginUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`

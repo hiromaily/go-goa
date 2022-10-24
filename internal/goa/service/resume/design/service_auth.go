@@ -6,9 +6,6 @@ import (
 	. "goa.design/goa/v3/dsl"
 )
 
-// goa メモ
-// https://hackmd.io/@vWEf3Ct8QVu2_w2RDTRIaQ/ByyoCY5Hr
-
 var JWT = JWTSecurity("jwt", func() {
 	Scope("api:access", "API access") // Define "api:access" scope
 })
@@ -22,6 +19,8 @@ var _ = Service("auth", func() {
 	})
 
 	Method("login", func() {
+		Description("Login and return jwt token")
+
 		Payload(func() {
 			Extend(types.PayloadLogin)
 			Required("email", "password")
@@ -32,7 +31,7 @@ var _ = Service("auth", func() {
 		// FIXME: somehow MakeUnauthorized() is gone
 		// Note: this type of expression can't generate auth.MakeUnauthorized() function
 		//Error("unauthorized", String, "Credentials are invalid")
-		Error("unauthorized")
+		Error("Unauthorized")
 
 		HTTP(func() {
 			POST("/login")
@@ -43,25 +42,7 @@ var _ = Service("auth", func() {
 					Pattern("^Bearer [^ ]+$")
 				})
 			})
-			Response("unauthorized", StatusUnauthorized)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
-
-	//Action("Login", func() {
-	//	Description("user login")
-	//	NoSecurity() // Override the need for auth
-	//	Routing(POST("login"))
-	//
-	//	Payload(LoginPayload, func() {
-	//		Required("email", "password")
-	//	})
-	//
-	//	Response(OK, func() {
-	//		Headers(func() {
-	//			Header("Authorization", String, "Generated JWT")
-	//		})
-	//		Media(Authorized)
-	//	})
-	//	Response(Unauthorized)
-	//})
 })

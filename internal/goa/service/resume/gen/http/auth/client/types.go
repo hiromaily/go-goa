@@ -31,7 +31,7 @@ type LoginResponseBody struct {
 }
 
 // LoginUnauthorizedResponseBody is the type of the "auth" service "login"
-// endpoint HTTP response body for the "unauthorized" error.
+// endpoint HTTP response body for the "Unauthorized" error.
 type LoginUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
@@ -69,7 +69,7 @@ func NewLoginAuthorizedOK(body *LoginResponseBody, token string) *authviews.Auth
 	return v
 }
 
-// NewLoginUnauthorized builds a auth service login endpoint unauthorized error.
+// NewLoginUnauthorized builds a auth service login endpoint Unauthorized error.
 func NewLoginUnauthorized(body *LoginUnauthorizedResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
@@ -84,7 +84,7 @@ func NewLoginUnauthorized(body *LoginUnauthorizedResponseBody) *goa.ServiceError
 }
 
 // ValidateLoginUnauthorizedResponseBody runs the validations defined on
-// login_unauthorized_response_body
+// login_Unauthorized_response_body
 func ValidateLoginUnauthorizedResponseBody(body *LoginUnauthorizedResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))

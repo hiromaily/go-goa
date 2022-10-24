@@ -111,6 +111,7 @@ http:
 	http localhost:8080/user 'Authorization: Bearer $(TOKEN)'
 	http localhost:8080/user/1 'Authorization: Bearer $(TOKEN)'
 	http POST http://localhost:8080/user user_name=harry email=newuser01@foo.com password=secret123 'Authorization: Bearer $(TOKEN)'
+	http PUT http://localhost:8080/user/1 email=newuser01@bar.com password=secret456 'Authorization: Bearer $(TOKEN)'
 
 
 .PHONY: kouho
