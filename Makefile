@@ -88,22 +88,34 @@ run:
 	#go run -race ./cmd/resume/server/... -conf ./configs/settings.toml
 	goa-server -conf ./configs/settings.toml
 
+.PHONY: rerun
+rerun: build run
 
 ###############################################################################
-# httpie
+# httpie [WIP]
 ###############################################################################
+.PHONY: chk
+chk:
+	#http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password
+
 .PHONY: http
 http:
 	# Login
-	http --body POST http://localhost:8080/auth/login email=hiroki@goa.com password=password
-	$(eval TOKEN := $(shell http --body POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g'))
-
+	# when displaying response body
+	#http --body POST http://localhost:8080/auth/login email=hiroki@goa.com password=password
+	#$(eval TOKEN := $(shell http --body POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g'))
+	# when displaying response headers
+	#http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password
+	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
 	# User
 	http localhost:8080/user 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/user
+	http localhost:8080/user/1 'Authorization: Bearer $(TOKEN)'
+	http POST http://localhost:8080/user user_name=harry email=newuser01@foo.com password=secret123 'Authorization: Bearer $(TOKEN)'
 
-#	http localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
-#	http POST http://localhost:8080/api/user name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
+
+.PHONY: kouho
+kouho:
+	@echo test
 #	http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
 #	http DELETE http://localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
 
@@ -126,7 +138,7 @@ http:
 
 
 ###############################################################################
-# Curl
+# Curl [WIP]
 ###############################################################################
 curl:
 	# curl
