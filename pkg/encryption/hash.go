@@ -16,36 +16,42 @@ import (
 //-----------------------------------------------------------------------------
 
 // HashMD5 hashes by MD5 message-digest algorithm
-func HashMD5(target string) string {
+func HashMD5(target string) (string, error) {
 	if target == "" {
-		return ""
+		return "", nil
 	}
 
 	h := md5.New()
-	io.WriteString(h, target)
-	return fmt.Sprintf("%x", h.Sum(nil))
+	if _, err := io.WriteString(h, target); err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%x", h.Sum(nil)), nil
 }
 
 // HashSHA1 hashes by SHA1
-func HashSHA1(target string) string {
+func HashSHA1(target string) (string, error) {
 	if target == "" {
-		return ""
+		return "", nil
 	}
 
 	h := sha1.New()
-	io.WriteString(h, target)
-	return fmt.Sprintf("%x", h.Sum(nil))
+	if _, err := io.WriteString(h, target); err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%x", h.Sum(nil)), nil
 }
 
 // HashSHA256 hashes by SHA256
-func HashSHA256(target string) string {
+func HashSHA256(target string) (string, error) {
 	if target == "" {
-		return ""
+		return "", nil
 	}
 
 	h := sha256.New()
-	io.WriteString(h, target)
-	return fmt.Sprintf("%x", h.Sum(nil))
+	if _, err := io.WriteString(h, target); err != nil {
+		return "", nil
+	}
+	return fmt.Sprintf("%x", h.Sum(nil)), nil
 }
 
 //-----------------------------------------------------------------------------
@@ -63,8 +69,8 @@ type Hasher interface {
 
 // MD5 interface
 type MD5 interface {
-	Hash(target string) string
-	HashWith(target, additional string) string
+	Hash(target string) (string, error)
+	HashWith(target, additional string) (string, error)
 }
 
 type md5Hash struct {
@@ -81,32 +87,42 @@ func NewMD5(salt1, salt2 string) MD5 {
 }
 
 // Hash hashes target
-func (m *md5Hash) Hash(target string) string {
+func (m *md5Hash) Hash(target string) (string, error) {
 	return m.hash(target, "")
 }
 
 // HashWith hashes target with additional salt
-func (m *md5Hash) HashWith(target, additional string) string {
+func (m *md5Hash) HashWith(target, additional string) (string, error) {
 	return m.hash(target, additional)
 }
 
-func (m *md5Hash) hash(target, additional string) string {
+func (m *md5Hash) hash(target, additional string) (string, error) {
 	if target == "" {
-		return ""
+		return "", nil
 	}
 
 	h := md5.New()
-	io.WriteString(h, target)
+	if _, err := io.WriteString(h, target); err != nil {
+		return "", err
+	}
 	hashed := fmt.Sprintf("%x", h.Sum(nil))
 
-	io.WriteString(h, m.salt1)
-	io.WriteString(h, m.salt2)
-	if additional != "" {
-		io.WriteString(h, additional)
+	if _, err := io.WriteString(h, m.salt1); err != nil {
+		return "", err
 	}
-	io.WriteString(h, hashed)
+	if _, err := io.WriteString(h, m.salt2); err != nil {
+		return "", err
+	}
+	if additional != "" {
+		if _, err := io.WriteString(h, additional); err != nil {
+			return "", err
+		}
+	}
+	if _, err := io.WriteString(h, hashed); err != nil {
+		return "", err
+	}
 
-	return fmt.Sprintf("%x", h.Sum(nil))
+	return fmt.Sprintf("%x", h.Sum(nil)), nil
 }
 
 //-----------------------------------------------------------------------------

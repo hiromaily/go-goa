@@ -51,6 +51,10 @@ lint:
 #lint-fix:
 #	golangci-lint run --fix
 
+.PHONY: cache-clean
+cache-clean:
+	golangci-lint cache clean
+
 ###############################################################################
 # Goa generation
 # -

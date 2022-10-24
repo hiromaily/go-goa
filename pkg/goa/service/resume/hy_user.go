@@ -2,10 +2,11 @@ package resumeapi
 
 import (
 	"context"
-	"github.com/hiromaily/go-goa/pkg/jwts"
+
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
 
+	"github.com/hiromaily/go-goa/pkg/jwts"
 	"github.com/hiromaily/go-goa/pkg/repository"
 	hyuser "resume/gen/hy_user"
 )

@@ -2,13 +2,14 @@ package resumeapi
 
 import (
 	"context"
-	"github.com/rs/zerolog/log"
 	"strconv"
 	"time"
 
+	"github.com/pkg/errors"
+	"github.com/rs/zerolog/log"
+
 	"github.com/hiromaily/go-goa/pkg/jwts"
 	"github.com/hiromaily/go-goa/pkg/repository"
-	"github.com/pkg/errors"
 	auth "resume/gen/auth"
 )
 

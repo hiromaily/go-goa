@@ -16,29 +16,33 @@ linters-settings:
   goimports:
     # put imports beginning with prefix after 3rd-party packages;
     # it's a comma-separated list of prefixes
-    local-prefixes: github.com/hiromaily, resume/gen
-  #unused:
-  #  check-exported: true
-  golint:
-    min-confidence: 0.8
+    local-prefixes: github.com/hiromaily/,resume/gen/
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/hiromaily/go-goa)
 
-issues:
-  exclude:
-    - type name will be used
-    - "HeaderMap is deprecated: HeaderMap exists"
-  exclude-use-default: false
+#issues:
+#  exclude:
+#    - type name will be used
+#    - "HeaderMap is deprecated: HeaderMap exists"
+#  exclude-use-default: false
 
 linters:
-  disable-all: true
+  #disable-all: true
   enable:
+    - errcheck
     - gosimple
     - govet
     - ineffassign
     - staticcheck
     - typecheck
     - unused
-    - goimports
+    - goimports # somehow it conflicts with gofumpt
     - misspell
+  disable:
+    - gofumpt
   presets:
     # only next presets exist: (bugs|complexity|format|performance|style|unused)
     - format

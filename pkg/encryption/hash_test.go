@@ -35,7 +35,7 @@ func TestHashMD5(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := HashMD5(tt.args.target)
+			got, _ := HashMD5(tt.args.target)
 			if got != tt.want.result {
 				t.Errorf("HashMD5(): got = %s, want %s", got, tt.want.result)
 			}
@@ -76,7 +76,7 @@ func TestHashSHA1(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := HashSHA1(tt.args.target)
+			got, _ := HashSHA1(tt.args.target)
 			if got != tt.want.result {
 				t.Errorf("HashSHA1(): got = %s, want %s", got, tt.want.result)
 			}
@@ -117,7 +117,7 @@ func TestHashSHA256(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := HashSHA256(tt.args.target)
+			got, _ := HashSHA256(tt.args.target)
 			if got != tt.want.result {
 				t.Errorf("HashSHA256(): got = %s, want %s", got, tt.want.result)
 			}
@@ -176,7 +176,7 @@ func TestMD5_Hash(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			md5Hash := NewMD5(tt.args.salt1, tt.args.salt2)
-			got := md5Hash.Hash(tt.args.target)
+			got, _ := md5Hash.Hash(tt.args.target)
 			if got != tt.want.result {
 				t.Errorf("md5Hash.Hash(): got = %s, want %s", got, tt.want.result)
 			}
@@ -251,7 +251,7 @@ func TestMD5_HashWith(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			md5Hash := NewMD5(tt.args.salt1, tt.args.salt2)
-			got := md5Hash.HashWith(tt.args.target, tt.args.additional)
+			got, _ := md5Hash.HashWith(tt.args.target, tt.args.additional)
 			if got != tt.want.result {
 				t.Errorf("md5Hash.HashWith(): got = %s, want %s", got, tt.want.result)
 			}
