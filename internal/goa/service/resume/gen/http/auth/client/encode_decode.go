@@ -17,6 +17,7 @@ import (
 	authviews "resume/gen/auth/views"
 
 	goahttp "goa.design/goa/v3/http"
+	goa "goa.design/goa/v3/pkg"
 )
 
 // BuildLoginRequest instantiates a HTTP request object with method and path
@@ -53,6 +54,9 @@ func EncodeLoginRequest(encoder func(*http.Request) goahttp.Encoder) func(*http.
 // DecodeLoginResponse returns a decoder for responses returned by the auth
 // login endpoint. restoreBody controls whether the response body should be
 // restored after having been read.
+// DecodeLoginResponse may return the following errors:
+//   - "unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
+//   - error: internal error
 func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -77,7 +81,18 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("auth", "login", err)
 			}
-			p := NewLoginAuthorizedOK(&body)
+			var (
+				token string
+			)
+			tokenRaw := resp.Header.Get("Authorization")
+			if tokenRaw == "" {
+				err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
+			}
+			token = tokenRaw
+			if err != nil {
+				return nil, goahttp.ErrValidationError("auth", "login", err)
+			}
+			p := NewLoginAuthorizedOK(&body, token)
 			view := "default"
 			vres := &authviews.Authorized{Projected: p, View: view}
 			if err = authviews.ValidateAuthorized(vres); err != nil {
@@ -85,6 +100,20 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 			}
 			res := auth.NewAuthorized(vres)
 			return res, nil
+		case http.StatusUnauthorized:
+			var (
+				body LoginUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("auth", "login", err)
+			}
+			err = ValidateLoginUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("auth", "login", err)
+			}
+			return nil, NewLoginUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("auth", "login", resp.StatusCode, string(body))

@@ -40,37 +40,10 @@ func (s *authsrvc) Login(ctx context.Context, p *auth.LoginPayload) (res *auth.A
 		return nil, auth.MakeUnauthorized(errors.New("fail to generate jwt"))
 	}
 
-	// TODO: Set auth header for client retrieval
-	//ctx..ResponseData.Header().Set("Authorization", "Bearer "+signedToken)
-
 	// Response
 	res = &auth.Authorized{
 		Token: signedToken,
 		ID:    userID,
 	}
-
-	//	// Login
-	//	svc := &m.User{Db: c.ctx.Db}
-	//	id, err := svc.Login(ctx.Payload.Email, ctx.Payload.Password)
-	//	if err != nil {
-	//		//return ctx.Unauthorized()
-	//		return err
-	//	} else if id == 0 {
-	//		return ctx.Unauthorized()
-	//	}
-	//
-	//	// Generate JWT
-	//	signedToken, err := jwt.GenerateToken(c.ctx, id)
-	//	if err != nil {
-	//		return ctx.Unauthorized()
-	//	}
-	//
-	//	// Set auth header for client retrieval
-	//	ctx.ResponseData.Header().Set("Authorization", "Bearer "+signedToken)
-	//
-	//	// Send response
-	//	// AuthController_Login: end_implement
-	//	res := &app.Authorized{Token: signedToken, ID: id}
-	//	return ctx.OK(res)
 	return
 }

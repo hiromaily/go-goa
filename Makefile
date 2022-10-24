@@ -100,6 +100,8 @@ http:
 
 	# User
 	http localhost:8080/user 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/user
+
 #	http localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
 #	http POST http://localhost:8080/api/user name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
 #	http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'

@@ -9,6 +9,7 @@ package server
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 	authviews "resume/gen/auth/views"
@@ -24,6 +25,9 @@ func EncodeLoginResponse(encoder func(context.Context, http.ResponseWriter) goah
 		res := v.(*authviews.Authorized)
 		enc := encoder(ctx, w)
 		body := NewLoginResponseBody(res.Projected)
+		if res.Projected.Token != nil {
+			w.Header().Set("Authorization", *res.Projected.Token)
+		}
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}
@@ -51,5 +55,34 @@ func DecodeLoginRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp.D
 		payload := NewLoginPayload(&body)
 
 		return payload, nil
+	}
+}
+
+// EncodeLoginError returns an encoder for errors returned by the login auth
+// endpoint.
+func EncodeLoginError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "unauthorized":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewLoginUnauthorizedResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusUnauthorized)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
 	}
 }

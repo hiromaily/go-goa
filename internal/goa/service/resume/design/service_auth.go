@@ -28,17 +28,22 @@ var _ = Service("auth", func() {
 		})
 		Result(types.RTAuthorized)
 		// Use HTTP status 401 for 'Unauthorized' errors.
-		Error("unauthorized", String, "Credentials are invalid")
+
+		// FIXME: somehow MakeUnauthorized() is gone
+		// Note: this type of expression can't generate auth.MakeUnauthorized() function
+		//Error("unauthorized", String, "Credentials are invalid")
+		Error("unauthorized")
 
 		HTTP(func() {
 			POST("/login")
-			Response(StatusOK)
+			//Response(StatusOK)
+			Response(StatusOK, func() {
+				// mapping <variable-name:header-name>
+				Header("token:Authorization", String, "JWT token", func() {
+					Pattern("^Bearer [^ ]+$")
+				})
+			})
 			Response("unauthorized", StatusUnauthorized)
-			//Response(StatusOK, func() {
-			//	Header("Authorization", String, func() {
-			//		Pattern("^Bearer [^ ]+$")
-			//	})
-			//})
 		})
 	})
 

@@ -48,7 +48,7 @@ type LoginPayload struct {
 
 // MakeUnauthorized builds a goa.ServiceError from an error.
 func MakeUnauthorized(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "Unauthorized", false, false, false)
+	return goa.NewServiceError(err, "unauthorized", false, false, false)
 }
 
 // NewAuthorized initializes result type Authorized from viewed result type
