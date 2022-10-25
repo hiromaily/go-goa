@@ -49,7 +49,7 @@ type UserResponseIDCollection []*UserResponseID
 // HTTP response body.
 type GetUserResponseBody struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 	// E-mail of user
@@ -60,14 +60,14 @@ type GetUserResponseBody struct {
 // endpoint HTTP response body.
 type GetUserResponseBodyID struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
 // CreateUserResponseBody is the type of the "hy_user" service "createUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 	// E-mail of user
@@ -78,7 +78,7 @@ type CreateUserResponseBody struct {
 // endpoint HTTP response body.
 type CreateUserResponseBodyID struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
 // UserListNotFoundResponseBody is the type of the "hy_user" service "userList"
@@ -192,7 +192,7 @@ type DeleteUserNotFoundResponseBody struct {
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 	// E-mail of user
@@ -202,7 +202,7 @@ type UserResponse struct {
 // UserResponseID is used to define fields on response body types.
 type UserResponseID struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
 // NewUserResponseCollection builds the HTTP response body from the result of
@@ -229,7 +229,7 @@ func NewUserResponseIDCollection(res hyuserviews.UserCollectionView) UserRespons
 // "getUser" endpoint of the "hy_user" service.
 func NewGetUserResponseBody(res *hyuserviews.UserView) *GetUserResponseBody {
 	body := &GetUserResponseBody{
-		ID:       res.ID,
+		UserID:   res.UserID,
 		UserName: res.UserName,
 		Email:    res.Email,
 	}
@@ -240,7 +240,7 @@ func NewGetUserResponseBody(res *hyuserviews.UserView) *GetUserResponseBody {
 // the "getUser" endpoint of the "hy_user" service.
 func NewGetUserResponseBodyID(res *hyuserviews.UserView) *GetUserResponseBodyID {
 	body := &GetUserResponseBodyID{
-		ID: res.ID,
+		UserID: res.UserID,
 	}
 	return body
 }
@@ -249,7 +249,7 @@ func NewGetUserResponseBodyID(res *hyuserviews.UserView) *GetUserResponseBodyID 
 // the "createUser" endpoint of the "hy_user" service.
 func NewCreateUserResponseBody(res *hyuserviews.UserView) *CreateUserResponseBody {
 	body := &CreateUserResponseBody{
-		ID:       res.ID,
+		UserID:   res.UserID,
 		UserName: res.UserName,
 		Email:    res.Email,
 	}
@@ -260,7 +260,7 @@ func NewCreateUserResponseBody(res *hyuserviews.UserView) *CreateUserResponseBod
 // the "createUser" endpoint of the "hy_user" service.
 func NewCreateUserResponseBodyID(res *hyuserviews.UserView) *CreateUserResponseBodyID {
 	body := &CreateUserResponseBodyID{
-		ID: res.ID,
+		UserID: res.UserID,
 	}
 	return body
 }

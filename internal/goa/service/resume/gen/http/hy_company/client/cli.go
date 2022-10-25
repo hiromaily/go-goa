@@ -44,6 +44,12 @@ func BuildGetCompanyPayload(hyCompanyGetCompanyCompanyID string, hyCompanyGetCom
 		if err != nil {
 			return nil, fmt.Errorf("invalid value for companyID, must be INT")
 		}
+		if companyID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("companyID", companyID, 1, true))
+		}
+		if err != nil {
+			return nil, err
+		}
 	}
 	var token *string
 	{
@@ -52,7 +58,7 @@ func BuildGetCompanyPayload(hyCompanyGetCompanyCompanyID string, hyCompanyGetCom
 		}
 	}
 	v := &hycompany.GetCompanyPayload{}
-	v.CompanyID = &companyID
+	v.CompanyID = companyID
 	v.Token = token
 
 	return v, nil
@@ -116,23 +122,35 @@ func BuildUpdateCompanyPayload(hyCompanyUpdateCompanyBody string, hyCompanyUpdat
 		if err != nil {
 			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"address\": \"Shinagawa Tokyo\",\n      \"country_id\": 110,\n      \"name\": \"Company\"\n   }'")
 		}
-		if utf8.RuneCountInString(body.Name) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", body.Name, utf8.RuneCountInString(body.Name), 2, true))
+		if body.Name != nil {
+			if utf8.RuneCountInString(*body.Name) < 2 {
+				err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 2, true))
+			}
 		}
-		if utf8.RuneCountInString(body.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", body.Name, utf8.RuneCountInString(body.Name), 40, false))
+		if body.Name != nil {
+			if utf8.RuneCountInString(*body.Name) > 40 {
+				err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 40, false))
+			}
 		}
-		if body.CountryID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.country_id", body.CountryID, 1, true))
+		if body.CountryID != nil {
+			if *body.CountryID < 1 {
+				err = goa.MergeErrors(err, goa.InvalidRangeError("body.country_id", *body.CountryID, 1, true))
+			}
 		}
-		if body.CountryID > 999 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.country_id", body.CountryID, 999, false))
+		if body.CountryID != nil {
+			if *body.CountryID > 999 {
+				err = goa.MergeErrors(err, goa.InvalidRangeError("body.country_id", *body.CountryID, 999, false))
+			}
 		}
-		if utf8.RuneCountInString(body.Address) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.address", body.Address, utf8.RuneCountInString(body.Address), 2, true))
+		if body.Address != nil {
+			if utf8.RuneCountInString(*body.Address) < 2 {
+				err = goa.MergeErrors(err, goa.InvalidLengthError("body.address", *body.Address, utf8.RuneCountInString(*body.Address), 2, true))
+			}
 		}
-		if utf8.RuneCountInString(body.Address) > 80 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.address", body.Address, utf8.RuneCountInString(body.Address), 80, false))
+		if body.Address != nil {
+			if utf8.RuneCountInString(*body.Address) > 80 {
+				err = goa.MergeErrors(err, goa.InvalidLengthError("body.address", *body.Address, utf8.RuneCountInString(*body.Address), 80, false))
+			}
 		}
 		if err != nil {
 			return nil, err
@@ -146,6 +164,12 @@ func BuildUpdateCompanyPayload(hyCompanyUpdateCompanyBody string, hyCompanyUpdat
 		if err != nil {
 			return nil, fmt.Errorf("invalid value for companyID, must be INT")
 		}
+		if companyID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("companyID", companyID, 1, true))
+		}
+		if err != nil {
+			return nil, err
+		}
 	}
 	var token *string
 	{
@@ -158,7 +182,7 @@ func BuildUpdateCompanyPayload(hyCompanyUpdateCompanyBody string, hyCompanyUpdat
 		CountryID: body.CountryID,
 		Address:   body.Address,
 	}
-	v.CompanyID = &companyID
+	v.CompanyID = companyID
 	v.Token = token
 
 	return v, nil
@@ -176,6 +200,12 @@ func BuildDeleteCompanyPayload(hyCompanyDeleteCompanyCompanyID string, hyCompany
 		if err != nil {
 			return nil, fmt.Errorf("invalid value for companyID, must be INT")
 		}
+		if companyID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("companyID", companyID, 1, true))
+		}
+		if err != nil {
+			return nil, err
+		}
 	}
 	var token *string
 	{
@@ -184,7 +214,7 @@ func BuildDeleteCompanyPayload(hyCompanyDeleteCompanyCompanyID string, hyCompany
 		}
 	}
 	v := &hycompany.DeleteCompanyPayload{}
-	v.CompanyID = &companyID
+	v.CompanyID = companyID
 	v.Token = token
 
 	return v, nil

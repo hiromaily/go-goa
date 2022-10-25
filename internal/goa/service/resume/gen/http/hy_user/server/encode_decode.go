@@ -124,7 +124,7 @@ func DecodeGetUserRequest(mux goahttp.Muxer, decoder func(*http.Request) goahttp
 			params = mux.Vars(r)
 		)
 		{
-			userIDRaw := params["userID"]
+			userIDRaw := params["user_id"]
 			v, err2 := strconv.ParseInt(userIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("userID", userIDRaw, "integer"))
@@ -308,7 +308,7 @@ func DecodeUpdateUserRequest(mux goahttp.Muxer, decoder func(*http.Request) goah
 			params = mux.Vars(r)
 		)
 		{
-			userIDRaw := params["userID"]
+			userIDRaw := params["user_id"]
 			v, err2 := strconv.ParseInt(userIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("userID", userIDRaw, "integer"))
@@ -401,7 +401,7 @@ func DecodeDeleteUserRequest(mux goahttp.Muxer, decoder func(*http.Request) goah
 			params = mux.Vars(r)
 		)
 		{
-			userIDRaw := params["userID"]
+			userIDRaw := params["user_id"]
 			v, err2 := strconv.ParseInt(userIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("userID", userIDRaw, "integer"))
@@ -464,7 +464,7 @@ func EncodeDeleteUserError(encoder func(context.Context, http.ResponseWriter) go
 // *UserResponse from a value of type *hyuserviews.UserView.
 func marshalHyuserviewsUserViewToUserResponse(v *hyuserviews.UserView) *UserResponse {
 	res := &UserResponse{
-		ID:       v.ID,
+		UserID:   v.UserID,
 		UserName: v.UserName,
 		Email:    v.Email,
 	}
@@ -476,7 +476,7 @@ func marshalHyuserviewsUserViewToUserResponse(v *hyuserviews.UserView) *UserResp
 // *UserResponseID from a value of type *hyuserviews.UserView.
 func marshalHyuserviewsUserViewToUserResponseID(v *hyuserviews.UserView) *UserResponseID {
 	res := &UserResponseID{
-		ID: v.ID,
+		UserID: v.UserID,
 	}
 
 	return res

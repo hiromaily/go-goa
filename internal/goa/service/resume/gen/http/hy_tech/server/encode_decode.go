@@ -74,8 +74,6 @@ func EncodeGetTechResponse(encoder func(context.Context, http.ResponseWriter) go
 		switch res.View {
 		case "default", "":
 			body = NewGetTechResponseBody(res.Projected)
-		case "detailid":
-			body = NewGetTechResponseBodyDetailid(res.Projected)
 		case "id":
 			body = NewGetTechResponseBodyID(res.Projected)
 		case "idname":

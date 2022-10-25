@@ -83,7 +83,7 @@ func (u *userRepository) UserList() ([]*hyuser.User, error) {
 	converted := make([]*hyuser.User, len(items))
 	for i, item := range items {
 		converted[i] = &hyuser.User{
-			ID:       &item.ID,
+			UserID:   &item.ID,
 			UserName: &item.UserName,
 			Email:    &item.Email.String,
 		}
@@ -103,7 +103,7 @@ func (u *userRepository) GetUser(userID int) (*hyuser.User, error) {
 		return nil, errors.Wrap(err, "failed to call models.TUsers().One()")
 	}
 	return &hyuser.User{
-		ID:       &item.ID,
+		UserID:   &item.ID,
 		UserName: &item.UserName,
 		Email:    &item.Email.String,
 	}, nil

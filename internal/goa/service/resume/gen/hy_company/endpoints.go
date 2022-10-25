@@ -120,7 +120,12 @@ func NewCreateCompanyEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.End
 		if err != nil {
 			return nil, err
 		}
-		return nil, s.CreateCompany(ctx, p)
+		res, view, err := s.CreateCompany(ctx, p)
+		if err != nil {
+			return nil, err
+		}
+		vres := NewViewedCompany(res, view)
+		return vres, nil
 	}
 }
 

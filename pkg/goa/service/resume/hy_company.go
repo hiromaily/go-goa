@@ -73,7 +73,7 @@ func (s *hyCompanysrvc) GetCompany(ctx context.Context, p *hycompany.GetCompanyP
 }
 
 // Create new company
-func (s *hyCompanysrvc) CreateCompany(ctx context.Context, p *hycompany.CreateCompanyPayload) (err error) {
+func (s *hyCompanysrvc) CreateCompany(ctx context.Context, p *hycompany.CreateCompanyPayload) (res *hycompany.Company, view string, err error) {
 	//	svc := &m.Company{Db: c.ctx.Db}
 	//	companyID, err := svc.InsertCompany(ctx.Payload)
 	//	if err != nil {

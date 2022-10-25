@@ -55,12 +55,12 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"CompanyList", "GET", "/company"},
-			{"GetCompany", "GET", "/company/{company_id}"},
+			{"GetCompany", "GET", "/company/{companyID}"},
 			{"CreateCompany", "POST", "/company"},
-			{"UpdateCompany", "PUT", "/company/{company_id}"},
-			{"DeleteCompany", "DELETE", "/company/{company_id}"},
+			{"UpdateCompany", "PUT", "/company/{companyID}"},
+			{"DeleteCompany", "DELETE", "/company/{companyID}"},
 			{"CORS", "OPTIONS", "/company"},
-			{"CORS", "OPTIONS", "/company/{company_id}"},
+			{"CORS", "OPTIONS", "/company/{companyID}"},
 		},
 		CompanyList:   NewCompanyListHandler(e.CompanyList, mux, decoder, encoder, errhandler, formatter),
 		GetCompany:    NewGetCompanyHandler(e.GetCompany, mux, decoder, encoder, errhandler, formatter),
@@ -127,7 +127,7 @@ func NewCompanyListHandler(
 	var (
 		decodeRequest  = DecodeCompanyListRequest(mux, decoder)
 		encodeResponse = EncodeCompanyListResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeCompanyListError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -162,7 +162,7 @@ func MountGetCompanyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/company/{company_id}", f)
+	mux.Handle("GET", "/company/{companyID}", f)
 }
 
 // NewGetCompanyHandler creates a HTTP handler which loads the HTTP request and
@@ -178,7 +178,7 @@ func NewGetCompanyHandler(
 	var (
 		decodeRequest  = DecodeGetCompanyRequest(mux, decoder)
 		encodeResponse = EncodeGetCompanyResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetCompanyError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -229,7 +229,7 @@ func NewCreateCompanyHandler(
 	var (
 		decodeRequest  = DecodeCreateCompanyRequest(mux, decoder)
 		encodeResponse = EncodeCreateCompanyResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeCreateCompanyError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -264,7 +264,7 @@ func MountUpdateCompanyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("PUT", "/company/{company_id}", f)
+	mux.Handle("PUT", "/company/{companyID}", f)
 }
 
 // NewUpdateCompanyHandler creates a HTTP handler which loads the HTTP request
@@ -280,7 +280,7 @@ func NewUpdateCompanyHandler(
 	var (
 		decodeRequest  = DecodeUpdateCompanyRequest(mux, decoder)
 		encodeResponse = EncodeUpdateCompanyResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeUpdateCompanyError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -315,7 +315,7 @@ func MountDeleteCompanyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/company/{company_id}", f)
+	mux.Handle("DELETE", "/company/{companyID}", f)
 }
 
 // NewDeleteCompanyHandler creates a HTTP handler which loads the HTTP request
@@ -331,7 +331,7 @@ func NewDeleteCompanyHandler(
 	var (
 		decodeRequest  = DecodeDeleteCompanyRequest(mux, decoder)
 		encodeResponse = EncodeDeleteCompanyResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeDeleteCompanyError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -362,7 +362,7 @@ func NewDeleteCompanyHandler(
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleHyCompanyOrigin(h)
 	mux.Handle("OPTIONS", "/company", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/company/{company_id}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/company/{companyID}", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

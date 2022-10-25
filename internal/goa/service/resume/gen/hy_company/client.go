@@ -35,7 +35,7 @@ func NewClient(companyList, getCompany, createCompany, updateCompany, deleteComp
 
 // CompanyList calls the "companyList" endpoint of the "hy_company" service.
 // CompanyList may return the following errors:
-//   - "NoContent" (type *goa.ServiceError)
+//   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) CompanyList(ctx context.Context, p *CompanyListPayload) (res CompanyCollection, err error) {
@@ -49,9 +49,8 @@ func (c *Client) CompanyList(ctx context.Context, p *CompanyListPayload) (res Co
 
 // GetCompany calls the "getCompany" endpoint of the "hy_company" service.
 // GetCompany may return the following errors:
-//   - "NoContent" (type *goa.ServiceError)
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetCompany(ctx context.Context, p *GetCompanyPayload) (res *Company, err error) {
 	var ires interface{}
@@ -64,17 +63,22 @@ func (c *Client) GetCompany(ctx context.Context, p *GetCompanyPayload) (res *Com
 
 // CreateCompany calls the "createCompany" endpoint of the "hy_company" service.
 // CreateCompany may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
-func (c *Client) CreateCompany(ctx context.Context, p *CreateCompanyPayload) (err error) {
-	_, err = c.CreateCompanyEndpoint(ctx, p)
-	return
+func (c *Client) CreateCompany(ctx context.Context, p *CreateCompanyPayload) (res *Company, err error) {
+	var ires interface{}
+	ires, err = c.CreateCompanyEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*Company), nil
 }
 
 // UpdateCompany calls the "updateCompany" endpoint of the "hy_company" service.
 // UpdateCompany may return the following errors:
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) UpdateCompany(ctx context.Context, p *UpdateCompanyPayload) (err error) {
 	_, err = c.UpdateCompanyEndpoint(ctx, p)
@@ -83,8 +87,8 @@ func (c *Client) UpdateCompany(ctx context.Context, p *UpdateCompanyPayload) (er
 
 // DeleteCompany calls the "deleteCompany" endpoint of the "hy_company" service.
 // DeleteCompany may return the following errors:
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) DeleteCompany(ctx context.Context, p *DeleteCompanyPayload) (err error) {
 	_, err = c.DeleteCompanyEndpoint(ctx, p)

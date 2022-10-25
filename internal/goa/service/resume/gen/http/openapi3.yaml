@@ -83,7 +83,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                description: 'Response body may alternatively be one of #/components/schemas/CompanyResponseDetailidCollection, #/components/schemas/CompanyResponseIDCollection or #/components/schemas/CompanyResponseIdnameCollection'
+                                description: 'Response body may alternatively be one of #/components/schemas/CompanyResponseIDCollection or #/components/schemas/CompanyResponseIdnameCollection'
                                 $ref: '#/components/schemas/CompanyCollection'
                             example:
                                 - address: Shinagawa Tokyo
@@ -102,6 +102,12 @@ paths:
                                   is_hq: Est qui iure eligendi alias.
                                   name: Company
                                   updated_at: "2017-03-10T15:00:00Z"
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -122,14 +128,32 @@ paths:
                             country_id: 110
                             name: Company
             responses:
-                "200":
-                    description: OK response.
                 "201":
                     description: Created response.
+                    content:
+                        application/json:
+                            schema:
+                                description: 'Response body may alternatively be one of #/components/schemas/CompanyResponseID or #/components/schemas/CompanyResponseIdname'
+                                $ref: '#/components/schemas/Company'
+                            example:
+                                address: Shinagawa Tokyo
+                                company_id: 10
+                                country_name: Non aut quas corporis.
+                                created_at: "2017-03-10T15:00:00Z"
+                                id: 10
+                                is_hq: Ipsa expedita aut molestiae recusandae nisi quis.
+                                name: Company
+                                updated_at: "2017-03-10T15:00:00Z"
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /company/{company_id}:
+    /company/{companyID}:
         delete:
             tags:
                 - hy_company
@@ -137,19 +161,25 @@ paths:
             description: Delete company
             operationId: hy_company#deleteCompany
             parameters:
-                - name: company_id
+                - name: companyID
                   in: path
                   description: Company ID
                   required: true
                   schema:
                     type: integer
                     description: Company ID
-                    example: 7913414299811921262
-                    format: int64
-                  example: 339745344289456660
+                    example: 8079332751235964737
+                    minimum: 1
+                  example: 2262152883370296168
             responses:
                 "200":
                     description: OK response.
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -160,33 +190,39 @@ paths:
             description: Retrieve company with given company_id
             operationId: hy_company#getCompany
             parameters:
-                - name: company_id
+                - name: companyID
                   in: path
                   description: Company ID
                   required: true
                   schema:
                     type: integer
                     description: Company ID
-                    example: 5640647172011608606
-                    format: int64
-                  example: 3163300068779443068
+                    example: 1507398955339227956
+                    minimum: 1
+                  example: 537395788216632673
             responses:
                 "200":
                     description: OK response.
                     content:
                         application/json:
                             schema:
-                                description: 'Response body may alternatively be one of #/components/schemas/CompanyResponseDetailid, #/components/schemas/CompanyResponseID or #/components/schemas/CompanyResponseIdname'
+                                description: 'Response body may alternatively be one of #/components/schemas/CompanyResponseID or #/components/schemas/CompanyResponseIdname'
                                 $ref: '#/components/schemas/Company'
                             example:
                                 address: Shinagawa Tokyo
                                 company_id: 10
-                                country_name: Ducimus quo hic aut cumque dicta autem.
+                                country_name: Quo hic.
                                 created_at: "2017-03-10T15:00:00Z"
                                 id: 10
-                                is_hq: Quae sunt aut qui corporis molestiae.
+                                is_hq: Qui corporis molestiae qui.
                                 name: Company
                                 updated_at: "2017-03-10T15:00:00Z"
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -194,25 +230,25 @@ paths:
             tags:
                 - hy_company
             summary: updateCompany hy_company
-            description: Change company properties
+            description: Update company data
             operationId: hy_company#updateCompany
             parameters:
-                - name: company_id
+                - name: companyID
                   in: path
                   description: Company ID
                   required: true
                   schema:
                     type: integer
                     description: Company ID
-                    example: 1813871800037835769
-                    format: int64
-                  example: 5205654078207144836
+                    example: 4709205923878122757
+                    minimum: 1
+                  example: 1932835482810688546
             requestBody:
                 required: true
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/CreateCompanyRequestBody'
+                            $ref: '#/components/schemas/UpdateCompanyRequestBody'
                         example:
                             address: Shinagawa Tokyo
                             country_id: 110
@@ -220,6 +256,18 @@ paths:
             responses:
                 "200":
                     description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -304,9 +352,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 6988304720051856350
+                    example: 2919305021956086192
                     format: int64
-                  example: 2847978431605506771
+                  example: 2983360025939555954
             responses:
                 "200":
                     description: OK response.
@@ -327,24 +375,24 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 4571527033430832188
+                    example: 741071739224169298
                     format: int64
-                  example: 4190895503921200414
+                  example: 3556813992552060231
             responses:
                 "200":
                     description: OK response.
                     content:
                         application/json:
                             schema:
-                                description: 'Response body may alternatively be one of #/components/schemas/CompanyResponseDetailid, #/components/schemas/CompanyResponseID or #/components/schemas/CompanyResponseIdname'
+                                description: 'Response body may alternatively be one of #/components/schemas/CompanyResponseID or #/components/schemas/CompanyResponseIdname'
                                 $ref: '#/components/schemas/Company'
                             example:
                                 address: Shinagawa Tokyo
                                 company_id: 10
-                                country_name: Consectetur quasi sed qui.
+                                country_name: Doloribus et.
                                 created_at: "2017-03-10T15:00:00Z"
                                 id: 10
-                                is_hq: Doloremque est est et placeat dolorum deserunt.
+                                is_hq: Ad est ut.
                                 name: Company
                                 updated_at: "2017-03-10T15:00:00Z"
             security:
@@ -364,9 +412,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 396881324212913758
+                    example: 1929160346615187159
                     format: int64
-                  example: 1046919295188121970
+                  example: 4229942495117713676
             requestBody:
                 required: true
                 content:
@@ -399,27 +447,27 @@ paths:
                             example:
                                 - created_at: "2017-03-10T15:00:00Z"
                                   email: hy@gmail.com
-                                  id: 10
                                   password: xxxxxxxx
                                   updated_at: "2017-03-10T15:00:00Z"
+                                  user_id: 10
                                   user_name: Hiroki
                                 - created_at: "2017-03-10T15:00:00Z"
                                   email: hy@gmail.com
-                                  id: 10
                                   password: xxxxxxxx
                                   updated_at: "2017-03-10T15:00:00Z"
+                                  user_id: 10
                                   user_name: Hiroki
                                 - created_at: "2017-03-10T15:00:00Z"
                                   email: hy@gmail.com
-                                  id: 10
                                   password: xxxxxxxx
                                   updated_at: "2017-03-10T15:00:00Z"
+                                  user_id: 10
                                   user_name: Hiroki
                                 - created_at: "2017-03-10T15:00:00Z"
                                   email: hy@gmail.com
-                                  id: 10
                                   password: xxxxxxxx
                                   updated_at: "2017-03-10T15:00:00Z"
+                                  user_id: 10
                                   user_name: Hiroki
                 "404":
                     description: 'NotFound: Not Found response.'
@@ -457,9 +505,9 @@ paths:
                             example:
                                 created_at: "2017-03-10T15:00:00Z"
                                 email: hy@gmail.com
-                                id: 10
                                 password: xxxxxxxx
                                 updated_at: "2017-03-10T15:00:00Z"
+                                user_id: 10
                                 user_name: Hiroki
                 "400":
                     description: 'BadRequest: Bad Request response.'
@@ -470,7 +518,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /user/{userID}:
+    /user/{user_id}:
         delete:
             tags:
                 - hy_user
@@ -478,16 +526,16 @@ paths:
             description: Delete user
             operationId: hy_user#deleteUser
             parameters:
-                - name: userID
+                - name: user_id
                   in: path
                   description: User ID
                   required: true
                   schema:
                     type: integer
                     description: User ID
-                    example: 9079370171329166774
+                    example: 2215187889391118975
                     minimum: 1
-                  example: 1288301141656066467
+                  example: 1003376455700044036
             responses:
                 "200":
                     description: OK response.
@@ -507,16 +555,16 @@ paths:
             description: Get user by given user id
             operationId: hy_user#getUser
             parameters:
-                - name: userID
+                - name: user_id
                   in: path
                   description: User ID
                   required: true
                   schema:
                     type: integer
                     description: User ID
-                    example: 2575621331362584676
+                    example: 5499980164448884111
                     minimum: 1
-                  example: 1834942356353653981
+                  example: 5801123470601036307
             responses:
                 "200":
                     description: OK response.
@@ -528,9 +576,9 @@ paths:
                             example:
                                 created_at: "2017-03-10T15:00:00Z"
                                 email: hy@gmail.com
-                                id: 10
                                 password: xxxxxxxx
                                 updated_at: "2017-03-10T15:00:00Z"
+                                user_id: 10
                                 user_name: Hiroki
                 "404":
                     description: 'NotFound: Not Found response.'
@@ -548,16 +596,16 @@ paths:
             description: Update user data
             operationId: hy_user#updateUser
             parameters:
-                - name: userID
+                - name: user_id
                   in: path
                   description: User ID
                   required: true
                   schema:
                     type: integer
                     description: User ID
-                    example: 6452748538961127061
+                    example: 1588820762925935258
                     minimum: 1
-                  example: 5709384348704187234
+                  example: 3289647202823677554
             requestBody:
                 required: true
                 content:
@@ -601,9 +649,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 5989441150819645180
+                    example: 62964701397208874
                     minimum: 1
-                  example: 7745277364261132187
+                  example: 7146838793115541650
             responses:
                 "200":
                     description: OK response.
@@ -637,9 +685,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 1527676881617102183
+                    example: 6641294975826754124
                     minimum: 1
-                  example: 3416244926440088422
+                  example: 5513863194913407949
             responses:
                 "200":
                     description: OK response.
@@ -673,9 +721,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 7909492857951961546
+                    example: 407109767923665206
                     minimum: 1
-                  example: 6105886882736115680
+                  example: 7824537317039377914
             responses:
                 "200":
                     description: OK response.
@@ -741,7 +789,7 @@ components:
                     minimum: 1
                 country_name:
                     type: string
-                    example: Delectus labore aspernatur est.
+                    example: Sint corporis tempora.
                 created_at:
                     type: string
                     description: Datetime
@@ -754,7 +802,7 @@ components:
                     minimum: 1
                 is_hq:
                     type: string
-                    example: Itaque debitis hic.
+                    example: Sequi laudantium illum.
                 name:
                     type: string
                     description: Company name
@@ -770,15 +818,12 @@ components:
             example:
                 address: Shinagawa Tokyo
                 company_id: 10
-                country_name: Iusto architecto nesciunt et aut exercitationem.
+                country_name: Officia quidem sed odio mollitia.
                 created_at: "2017-03-10T15:00:00Z"
                 id: 10
-                is_hq: Corporis ut et eum ut provident fugiat.
+                is_hq: Architecto quia laudantium facilis ut quia.
                 name: Company
                 updated_at: "2017-03-10T15:00:00Z"
-            required:
-                - name
-                - address
         CompanyCollection:
             type: array
             items:
@@ -808,27 +853,6 @@ components:
                   is_hq: Est qui iure eligendi alias.
                   name: Company
                   updated_at: "2017-03-10T15:00:00Z"
-        CompanyResponseDetailid:
-            type: object
-            properties:
-                id:
-                    type: integer
-                    description: ID
-                    example: 10
-                    minimum: 1
-            description: A company information (detailid view)
-            example:
-                id: 10
-        CompanyResponseDetailidCollection:
-            type: array
-            items:
-                $ref: '#/components/schemas/CompanyResponseDetailid'
-            description: CompanyListResponseBody is the result type for an array of CompanyResponse (detailid view)
-            example:
-                - id: 10
-                - id: 10
-                - id: 10
-                - id: 10
         CompanyResponseID:
             type: object
             properties:
@@ -846,6 +870,7 @@ components:
                 $ref: '#/components/schemas/CompanyResponseID'
             description: CompanyListResponseBody is the result type for an array of CompanyResponse (id view)
             example:
+                - company_id: 10
                 - company_id: 10
                 - company_id: 10
         CompanyResponseIdname:
@@ -866,14 +891,16 @@ components:
             example:
                 company_id: 10
                 name: Company
-            required:
-                - name
         CompanyResponseIdnameCollection:
             type: array
             items:
                 $ref: '#/components/schemas/CompanyResponseIdname'
             description: CompanyListResponseBody is the result type for an array of CompanyResponse (idname view)
             example:
+                - company_id: 10
+                  name: Company
+                - company_id: 10
+                  name: Company
                 - company_id: 10
                   name: Company
                 - company_id: 10
@@ -974,7 +1001,7 @@ components:
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: false
+                    example: true
             example:
                 id: 3F1FKVRR
                 message: Value of ID must be an integer
@@ -1055,10 +1082,6 @@ components:
                   id: 10
                   name: Golang
                   updated_at: "2017-03-10T15:00:00Z"
-                - created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  name: Golang
-                  updated_at: "2017-03-10T15:00:00Z"
         TechResponseID:
             type: object
             properties:
@@ -1078,6 +1101,31 @@ components:
             example:
                 - id: 10
                 - id: 10
+        UpdateCompanyRequestBody:
+            type: object
+            properties:
+                address:
+                    type: string
+                    description: Company Address
+                    example: Shinagawa Tokyo
+                    minLength: 2
+                    maxLength: 80
+                country_id:
+                    type: integer
+                    description: Country ID
+                    example: 110
+                    minimum: 1
+                    maximum: 999
+                name:
+                    type: string
+                    description: Company name
+                    example: Company
+                    minLength: 2
+                    maxLength: 40
+            example:
+                address: Shinagawa Tokyo
+                country_id: 110
+                name: Company
         UpdateUserRequestBody:
             type: object
             properties:
@@ -1115,11 +1163,6 @@ components:
                     description: E-mail of user
                     example: hy@gmail.com
                     format: email
-                id:
-                    type: integer
-                    description: ID
-                    example: 10
-                    minimum: 1
                 password:
                     type: string
                     description: Password
@@ -1131,6 +1174,11 @@ components:
                     description: Datetime
                     example: "2017-03-10T15:00:00Z"
                     format: date-time
+                user_id:
+                    type: integer
+                    description: ID
+                    example: 10
+                    minimum: 1
                 user_name:
                     type: string
                     description: User name
@@ -1141,9 +1189,9 @@ components:
             example:
                 created_at: "2017-03-10T15:00:00Z"
                 email: hy@gmail.com
-                id: 10
                 password: xxxxxxxx
                 updated_at: "2017-03-10T15:00:00Z"
+                user_id: 10
                 user_name: Hiroki
         UserCollection:
             type: array
@@ -1152,48 +1200,43 @@ components:
             example:
                 - created_at: "2017-03-10T15:00:00Z"
                   email: hy@gmail.com
-                  id: 10
                   password: xxxxxxxx
                   updated_at: "2017-03-10T15:00:00Z"
+                  user_id: 10
                   user_name: Hiroki
                 - created_at: "2017-03-10T15:00:00Z"
                   email: hy@gmail.com
-                  id: 10
                   password: xxxxxxxx
                   updated_at: "2017-03-10T15:00:00Z"
+                  user_id: 10
                   user_name: Hiroki
                 - created_at: "2017-03-10T15:00:00Z"
                   email: hy@gmail.com
-                  id: 10
                   password: xxxxxxxx
                   updated_at: "2017-03-10T15:00:00Z"
-                  user_name: Hiroki
-                - created_at: "2017-03-10T15:00:00Z"
-                  email: hy@gmail.com
-                  id: 10
-                  password: xxxxxxxx
-                  updated_at: "2017-03-10T15:00:00Z"
+                  user_id: 10
                   user_name: Hiroki
         UserResponseID:
             type: object
             properties:
-                id:
+                user_id:
                     type: integer
                     description: ID
                     example: 10
                     minimum: 1
             description: User information (id view)
             example:
-                id: 10
+                user_id: 10
         UserResponseIDCollection:
             type: array
             items:
                 $ref: '#/components/schemas/UserResponseID'
             description: UserListResponseBody is the result type for an array of UserResponse (id view)
             example:
-                - id: 10
-                - id: 10
-                - id: 10
+                - user_id: 10
+                - user_id: 10
+                - user_id: 10
+                - user_id: 10
         Usertech:
             type: object
             properties:
@@ -1223,6 +1266,8 @@ components:
                   tech_name: Golang
                 - id: 10
                   tech_name: Golang
+                - id: 10
+                  tech_name: Golang
         UsertechResponseTech:
             type: object
             properties:
@@ -1243,6 +1288,7 @@ components:
                 $ref: '#/components/schemas/UsertechResponseTech'
             description: GetUserLikeTechResponseBody is the result type for an array of UsertechResponse (tech view)
             example:
+                - tech_name: Golang
                 - tech_name: Golang
                 - tech_name: Golang
                 - tech_name: Golang
@@ -1300,6 +1346,12 @@ components:
             items:
                 $ref: '#/components/schemas/Userworkhistory'
             example:
+                - company: Company
+                  country: nl
+                  description: '["Developed resume site for job seeking."]'
+                  techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+                  term: Jul 2017 - Aug 2017
+                  title: Developer
                 - company: Company
                   country: nl
                   description: '["Developed resume site for job seeking."]'

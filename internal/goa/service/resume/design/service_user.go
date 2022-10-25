@@ -15,6 +15,7 @@ var _ = Service(resourcePrefix+"user", func() {
 
 	Security(JWT)
 	HTTP(func() {
+		// BasePath
 		Path("/user")
 	})
 
@@ -41,15 +42,15 @@ var _ = Service(resourcePrefix+"user", func() {
 
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("userID", Int, "User ID", func() {
+			Attribute("user_id", Int, "User ID", func() {
 				Minimum(1)
 			})
-			Required("userID")
+			Required("user_id")
 		})
 		Result(types.RTUser)
 
 		HTTP(func() {
-			GET("/{userID}")
+			GET("/{user_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
 		})
@@ -81,15 +82,15 @@ var _ = Service(resourcePrefix+"user", func() {
 
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("userID", Int, "User ID", func() {
+			Attribute("user_id", Int, "User ID", func() {
 				Minimum(1)
 			})
 			Extend(types.PayloadUser)
-			Required("userID")
+			Required("user_id")
 		})
 
 		HTTP(func() {
-			PUT("/{userID}")
+			PUT("/{user_id}")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 			Response("NotFound", StatusNotFound)
@@ -101,14 +102,14 @@ var _ = Service(resourcePrefix+"user", func() {
 
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("userID", Int, "User ID", func() {
+			Attribute("user_id", Int, "User ID", func() {
 				Minimum(1)
 			})
-			Required("userID")
+			Required("user_id")
 		})
 
 		HTTP(func() {
-			DELETE("/{userID}")
+			DELETE("/{user_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
 		})

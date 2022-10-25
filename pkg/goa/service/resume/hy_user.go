@@ -90,6 +90,7 @@ func (s *hyUsersrvc) GetUser(ctx context.Context, p *hyuser.GetUserPayload) (res
 }
 
 // CreateUser creates new user
+// FIXME: only admin user can create user
 func (s *hyUsersrvc) CreateUser(ctx context.Context, p *hyuser.CreateUserPayload) (res *hyuser.User, view string, err error) {
 	log.Info().Msg("hyUser.createUser")
 
@@ -98,7 +99,7 @@ func (s *hyUsersrvc) CreateUser(ctx context.Context, p *hyuser.CreateUserPayload
 		return nil, "", errors.Wrap(err, "fail to call InsertUser()")
 	}
 	res = &hyuser.User{
-		ID: ptr.Int(userID),
+		UserID: ptr.Int(userID),
 	}
 	view = "id"
 
@@ -106,6 +107,7 @@ func (s *hyUsersrvc) CreateUser(ctx context.Context, p *hyuser.CreateUserPayload
 }
 
 // UpdateUser updates user
+// FIXME: only login user can update own information
 func (s *hyUsersrvc) UpdateUser(ctx context.Context, p *hyuser.UpdateUserPayload) (err error) {
 	log.Info().Msg("hyUser.updateUser")
 
@@ -128,6 +130,7 @@ func (s *hyUsersrvc) UpdateUser(ctx context.Context, p *hyuser.UpdateUserPayload
 }
 
 // DeleteUser deletes user
+// FIXME: only admin user can delete user
 func (s *hyUsersrvc) DeleteUser(ctx context.Context, p *hyuser.DeleteUserPayload) (err error) {
 	log.Info().Msg("hyUser.deleteUser")
 

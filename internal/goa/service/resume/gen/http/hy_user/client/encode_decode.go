@@ -517,7 +517,7 @@ func DecodeDeleteUserResponse(decoder func(*http.Response) goahttp.Decoder, rest
 // *hyuserviews.UserView from a value of type *UserResponse.
 func unmarshalUserResponseToHyuserviewsUserView(v *UserResponse) *hyuserviews.UserView {
 	res := &hyuserviews.UserView{
-		ID:        v.ID,
+		UserID:    v.UserID,
 		UserName:  v.UserName,
 		Email:     v.Email,
 		Password:  v.Password,

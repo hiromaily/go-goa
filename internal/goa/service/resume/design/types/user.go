@@ -44,7 +44,7 @@ var RTUser = ResultType("application/vnd.user+json", func() {
 	Reference(TypeFooter)
 
 	Attributes(func() {
-		Attribute("id", Int, "User ID", fieldID)
+		Attribute("user_id", Int, "User ID", fieldID)
 		Attribute("user_name")
 		Attribute("email")
 		Attribute("password")
@@ -57,14 +57,13 @@ var RTUser = ResultType("application/vnd.user+json", func() {
 
 	// View defines a rendering of the result type
 	View("default", func() {
-		Attribute("id")
+		Attribute("user_id")
 		Attribute("user_name")
 		Attribute("email")
 	})
 
 	View("id", func() {
-		Attribute("id")
-		Required("id")
+		Attribute("user_id")
 	})
 })
 

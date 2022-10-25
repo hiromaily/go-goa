@@ -6,94 +6,116 @@ import (
 	. "goa.design/goa/v3/dsl"
 )
 
+// ----------------------------------------------------------------------------
 // Service company
+// ----------------------------------------------------------------------------
+
 var _ = Service(resourcePrefix+"company", func() {
 	Description("The company service returns company data")
 
 	Security(JWT)
-	// BasePath
 	HTTP(func() {
+		// BasePath
 		Path("/company")
 	})
 
+	Error("NotFound")
+	Error("BadRequest")
+
 	Method("companyList", func() {
 		Description("List all companies")
-		Error("NoContent")
-		Error("BadRequest")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
 		})
 		Result(CollectionOf(types.RTCompany))
+
 		HTTP(func() {
 			GET("")
 			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 
 	Method("getCompany", func() {
 		Description("Retrieve company with given company_id")
-		Error("NoContent")
-		Error("BadRequest")
-		Error("NotFound")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("company_id", Int, "Company ID")
+			Attribute("companyID", Int, "Company ID", func() {
+				Minimum(1)
+			})
+			Required("companyID")
 		})
-		//Result(CollectionOf(types.RTCompany))
 		Result(types.RTCompany)
+
 		HTTP(func() {
-			GET("/{company_id}")
+			GET("/{companyID}")
 			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 
 	Method("createCompany", func() {
 		Description("Create new company")
-		Error("BadRequest")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
 			Extend(types.PayloadCompany)
 			Required("name", "country_id", "address")
 		})
+		Result(types.RTCompany)
+
 		HTTP(func() {
 			POST("")
-			Response(StatusOK)
 			Response(StatusCreated)
+			Response("BadRequest", StatusBadRequest)
 		})
 	})
 
 	Method("updateCompany", func() {
-		Description("Change company properties")
-		Error("BadRequest")
-		Error("NotFound")
+		Description("Update company data")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("company_id", Int, "Company ID")
+			Attribute("companyID", Int, "Company ID", func() {
+				Minimum(1)
+			})
 			Extend(types.PayloadCompany)
-			Required("name", "country_id", "address")
+			Required("companyID")
 		})
+
 		HTTP(func() {
-			PUT("/{company_id}")
+			PUT("/{companyID}")
 			Response(StatusOK)
+			Response("BadRequest", StatusBadRequest)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 
 	Method("deleteCompany", func() {
 		Description("Delete company")
-		Error("BadRequest")
-		Error("NotFound")
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("company_id", Int, "Company ID")
+			Attribute("companyID", Int, "Company ID", func() {
+				Minimum(1)
+			})
+			Required("companyID")
 		})
+
 		HTTP(func() {
-			DELETE("/{company_id}")
+			DELETE("/{companyID}")
 			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 })
 
+// ----------------------------------------------------------------------------
 // Service company branch
+// ----------------------------------------------------------------------------
+
 //var _ = Service(resourcePrefix+"companybranch", func() {
 //	Description("The company branch service returns company branch data")
 //

@@ -58,6 +58,9 @@ func EncodeCompanyListRequest(encoder func(*http.Request) goahttp.Encoder) func(
 // DecodeCompanyListResponse returns a decoder for responses returned by the
 // hy_company companyList endpoint. restoreBody controls whether the response
 // body should be restored after having been read.
+// DecodeCompanyListResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeCompanyListResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -90,6 +93,20 @@ func DecodeCompanyListResponse(decoder func(*http.Response) goahttp.Decoder, res
 			}
 			res := hycompany.NewCompanyCollection(vres)
 			return res, nil
+		case http.StatusNotFound:
+			var (
+				body CompanyListNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "companyList", err)
+			}
+			err = ValidateCompanyListNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "companyList", err)
+			}
+			return nil, NewCompanyListNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "companyList", resp.StatusCode, string(body))
@@ -108,9 +125,7 @@ func (c *Client) BuildGetCompanyRequest(ctx context.Context, v interface{}) (*ht
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_company", "getCompany", "*hycompany.GetCompanyPayload", v)
 		}
-		if p.CompanyID != nil {
-			companyID = *p.CompanyID
-		}
+		companyID = p.CompanyID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetCompanyHyCompanyPath(companyID)}
 	req, err := http.NewRequest("GET", u.String(), nil)
@@ -147,6 +162,9 @@ func EncodeGetCompanyRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // DecodeGetCompanyResponse returns a decoder for responses returned by the
 // hy_company getCompany endpoint. restoreBody controls whether the response
 // body should be restored after having been read.
+// DecodeGetCompanyResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeGetCompanyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -179,6 +197,20 @@ func DecodeGetCompanyResponse(decoder func(*http.Response) goahttp.Decoder, rest
 			}
 			res := hycompany.NewCompany(vres)
 			return res, nil
+		case http.StatusNotFound:
+			var (
+				body GetCompanyNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "getCompany", err)
+			}
+			err = ValidateGetCompanyNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "getCompany", err)
+			}
+			return nil, NewGetCompanyNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "getCompany", resp.StatusCode, string(body))
@@ -228,6 +260,9 @@ func EncodeCreateCompanyRequest(encoder func(*http.Request) goahttp.Encoder) fun
 // DecodeCreateCompanyResponse returns a decoder for responses returned by the
 // hy_company createCompany endpoint. restoreBody controls whether the response
 // body should be restored after having been read.
+// DecodeCreateCompanyResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
 func DecodeCreateCompanyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -243,8 +278,37 @@ func DecodeCreateCompanyResponse(decoder func(*http.Response) goahttp.Decoder, r
 			defer resp.Body.Close()
 		}
 		switch resp.StatusCode {
-		case http.StatusOK:
-			return nil, nil
+		case http.StatusCreated:
+			var (
+				body CreateCompanyResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "createCompany", err)
+			}
+			p := NewCreateCompanyCompanyCreated(&body)
+			view := resp.Header.Get("goa-view")
+			vres := &hycompanyviews.Company{Projected: p, View: view}
+			if err = hycompanyviews.ValidateCompany(vres); err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "createCompany", err)
+			}
+			res := hycompany.NewCompany(vres)
+			return res, nil
+		case http.StatusBadRequest:
+			var (
+				body CreateCompanyBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "createCompany", err)
+			}
+			err = ValidateCreateCompanyBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "createCompany", err)
+			}
+			return nil, NewCreateCompanyBadRequest(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "createCompany", resp.StatusCode, string(body))
@@ -263,9 +327,7 @@ func (c *Client) BuildUpdateCompanyRequest(ctx context.Context, v interface{}) (
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_company", "updateCompany", "*hycompany.UpdateCompanyPayload", v)
 		}
-		if p.CompanyID != nil {
-			companyID = *p.CompanyID
-		}
+		companyID = p.CompanyID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateCompanyHyCompanyPath(companyID)}
 	req, err := http.NewRequest("PUT", u.String(), nil)
@@ -306,6 +368,10 @@ func EncodeUpdateCompanyRequest(encoder func(*http.Request) goahttp.Encoder) fun
 // DecodeUpdateCompanyResponse returns a decoder for responses returned by the
 // hy_company updateCompany endpoint. restoreBody controls whether the response
 // body should be restored after having been read.
+// DecodeUpdateCompanyResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeUpdateCompanyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -323,6 +389,34 @@ func DecodeUpdateCompanyResponse(decoder func(*http.Response) goahttp.Decoder, r
 		switch resp.StatusCode {
 		case http.StatusOK:
 			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body UpdateCompanyBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "updateCompany", err)
+			}
+			err = ValidateUpdateCompanyBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "updateCompany", err)
+			}
+			return nil, NewUpdateCompanyBadRequest(&body)
+		case http.StatusNotFound:
+			var (
+				body UpdateCompanyNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "updateCompany", err)
+			}
+			err = ValidateUpdateCompanyNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "updateCompany", err)
+			}
+			return nil, NewUpdateCompanyNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "updateCompany", resp.StatusCode, string(body))
@@ -341,9 +435,7 @@ func (c *Client) BuildDeleteCompanyRequest(ctx context.Context, v interface{}) (
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_company", "deleteCompany", "*hycompany.DeleteCompanyPayload", v)
 		}
-		if p.CompanyID != nil {
-			companyID = *p.CompanyID
-		}
+		companyID = p.CompanyID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteCompanyHyCompanyPath(companyID)}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
@@ -380,6 +472,9 @@ func EncodeDeleteCompanyRequest(encoder func(*http.Request) goahttp.Encoder) fun
 // DecodeDeleteCompanyResponse returns a decoder for responses returned by the
 // hy_company deleteCompany endpoint. restoreBody controls whether the response
 // body should be restored after having been read.
+// DecodeDeleteCompanyResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeDeleteCompanyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -397,6 +492,20 @@ func DecodeDeleteCompanyResponse(decoder func(*http.Response) goahttp.Decoder, r
 		switch resp.StatusCode {
 		case http.StatusOK:
 			return nil, nil
+		case http.StatusNotFound:
+			var (
+				body DeleteCompanyNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "deleteCompany", err)
+			}
+			err = ValidateDeleteCompanyNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "deleteCompany", err)
+			}
+			return nil, NewDeleteCompanyNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "deleteCompany", resp.StatusCode, string(body))

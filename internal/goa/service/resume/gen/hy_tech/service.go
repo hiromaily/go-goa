@@ -25,7 +25,6 @@ type Service interface {
 	// get tech with given tech id
 	// The "view" return value must have one of the following views
 	//	- "default"
-	//	- "detailid": only company's detail id
 	//	- "id": only company's id
 	//	- "idname": only company's id and name
 	GetTech(context.Context, *GetTechPayload) (res *Company, view string, err error)
@@ -60,11 +59,11 @@ type Company struct {
 	// ID
 	CompanyID *int
 	// Company name
-	Name        string
+	Name        *string
 	IsHq        *string
 	CountryName *string
 	// Company Address
-	Address string
+	Address *string
 	// Datetime
 	CreatedAt *string
 	// Datetime
@@ -178,8 +177,6 @@ func NewCompany(vres *hytechviews.Company) *Company {
 	switch vres.View {
 	case "default", "":
 		res = newCompany(vres.Projected)
-	case "detailid":
-		res = newCompanyDetailid(vres.Projected)
 	case "id":
 		res = newCompanyID(vres.Projected)
 	case "idname":
@@ -196,9 +193,6 @@ func NewViewedCompany(res *Company, view string) *hytechviews.Company {
 	case "default", "":
 		p := newCompanyView(res)
 		vres = &hytechviews.Company{Projected: p, View: "default"}
-	case "detailid":
-		p := newCompanyViewDetailid(res)
-		vres = &hytechviews.Company{Projected: p, View: "detailid"}
 	case "id":
 		p := newCompanyViewID(res)
 		vres = &hytechviews.Company{Projected: p, View: "id"}
@@ -292,22 +286,10 @@ func newCompany(vres *hytechviews.CompanyView) *Company {
 	res := &Company{
 		ID:          vres.ID,
 		CompanyID:   vres.CompanyID,
+		Name:        vres.Name,
 		IsHq:        vres.IsHq,
 		CountryName: vres.CountryName,
-	}
-	if vres.Name != nil {
-		res.Name = *vres.Name
-	}
-	if vres.Address != nil {
-		res.Address = *vres.Address
-	}
-	return res
-}
-
-// newCompanyDetailid converts projected type Company to service type Company.
-func newCompanyDetailid(vres *hytechviews.CompanyView) *Company {
-	res := &Company{
-		ID: vres.ID,
+		Address:     vres.Address,
 	}
 	return res
 }
@@ -324,9 +306,7 @@ func newCompanyID(vres *hytechviews.CompanyView) *Company {
 func newCompanyIdname(vres *hytechviews.CompanyView) *Company {
 	res := &Company{
 		CompanyID: vres.CompanyID,
-	}
-	if vres.Name != nil {
-		res.Name = *vres.Name
+		Name:      vres.Name,
 	}
 	return res
 }
@@ -337,19 +317,10 @@ func newCompanyView(res *Company) *hytechviews.CompanyView {
 	vres := &hytechviews.CompanyView{
 		ID:          res.ID,
 		CompanyID:   res.CompanyID,
-		Name:        &res.Name,
+		Name:        res.Name,
 		IsHq:        res.IsHq,
 		CountryName: res.CountryName,
-		Address:     &res.Address,
-	}
-	return vres
-}
-
-// newCompanyViewDetailid projects result type Company to projected type
-// CompanyView using the "detailid" view.
-func newCompanyViewDetailid(res *Company) *hytechviews.CompanyView {
-	vres := &hytechviews.CompanyView{
-		ID: res.ID,
+		Address:     res.Address,
 	}
 	return vres
 }
@@ -368,7 +339,7 @@ func newCompanyViewID(res *Company) *hytechviews.CompanyView {
 func newCompanyViewIdname(res *Company) *hytechviews.CompanyView {
 	vres := &hytechviews.CompanyView{
 		CompanyID: res.CompanyID,
-		Name:      &res.Name,
+		Name:      res.Name,
 	}
 	return vres
 }

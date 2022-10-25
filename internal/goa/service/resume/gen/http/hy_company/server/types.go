@@ -41,10 +41,6 @@ type UpdateCompanyRequestBody struct {
 // "companyList" endpoint HTTP response body.
 type CompanyResponseCollection []*CompanyResponse
 
-// CompanyResponseDetailidCollection is the type of the "hy_company" service
-// "companyList" endpoint HTTP response body.
-type CompanyResponseDetailidCollection []*CompanyResponseDetailid
-
 // CompanyResponseIDCollection is the type of the "hy_company" service
 // "companyList" endpoint HTTP response body.
 type CompanyResponseIDCollection []*CompanyResponseID
@@ -61,18 +57,11 @@ type GetCompanyResponseBody struct {
 	// ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name        string  `form:"name" json:"name" xml:"name"`
+	Name        *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
-}
-
-// GetCompanyResponseBodyDetailid is the type of the "hy_company" service
-// "getCompany" endpoint HTTP response body.
-type GetCompanyResponseBodyDetailid struct {
-	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
 }
 
 // GetCompanyResponseBodyID is the type of the "hy_company" service
@@ -88,7 +77,146 @@ type GetCompanyResponseBodyIdname struct {
 	// ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+}
+
+// CreateCompanyResponseBody is the type of the "hy_company" service
+// "createCompany" endpoint HTTP response body.
+type CreateCompanyResponseBody struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	// Company name
+	Name        *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
+	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
+	// Company Address
+	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+}
+
+// CreateCompanyResponseBodyID is the type of the "hy_company" service
+// "createCompany" endpoint HTTP response body.
+type CreateCompanyResponseBodyID struct {
+	// ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+}
+
+// CreateCompanyResponseBodyIdname is the type of the "hy_company" service
+// "createCompany" endpoint HTTP response body.
+type CreateCompanyResponseBodyIdname struct {
+	// ID
+	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	// Company name
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+}
+
+// CompanyListNotFoundResponseBody is the type of the "hy_company" service
+// "companyList" endpoint HTTP response body for the "NotFound" error.
+type CompanyListNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetCompanyNotFoundResponseBody is the type of the "hy_company" service
+// "getCompany" endpoint HTTP response body for the "NotFound" error.
+type GetCompanyNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// CreateCompanyBadRequestResponseBody is the type of the "hy_company" service
+// "createCompany" endpoint HTTP response body for the "BadRequest" error.
+type CreateCompanyBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateCompanyBadRequestResponseBody is the type of the "hy_company" service
+// "updateCompany" endpoint HTTP response body for the "BadRequest" error.
+type UpdateCompanyBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateCompanyNotFoundResponseBody is the type of the "hy_company" service
+// "updateCompany" endpoint HTTP response body for the "NotFound" error.
+type UpdateCompanyNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// DeleteCompanyNotFoundResponseBody is the type of the "hy_company" service
+// "deleteCompany" endpoint HTTP response body for the "NotFound" error.
+type DeleteCompanyNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
 // CompanyResponse is used to define fields on response body types.
@@ -98,17 +226,11 @@ type CompanyResponse struct {
 	// ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name        string  `form:"name" json:"name" xml:"name"`
+	Name        *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// Company Address
-	Address string `form:"address" json:"address" xml:"address"`
-}
-
-// CompanyResponseDetailid is used to define fields on response body types.
-type CompanyResponseDetailid struct {
-	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
 }
 
 // CompanyResponseID is used to define fields on response body types.
@@ -122,7 +244,7 @@ type CompanyResponseIdname struct {
 	// ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name string `form:"name" json:"name" xml:"name"`
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 }
 
 // NewCompanyResponseCollection builds the HTTP response body from the result
@@ -131,16 +253,6 @@ func NewCompanyResponseCollection(res hycompanyviews.CompanyCollectionView) Comp
 	body := make([]*CompanyResponse, len(res))
 	for i, val := range res {
 		body[i] = marshalHycompanyviewsCompanyViewToCompanyResponse(val)
-	}
-	return body
-}
-
-// NewCompanyResponseDetailidCollection builds the HTTP response body from the
-// result of the "companyList" endpoint of the "hy_company" service.
-func NewCompanyResponseDetailidCollection(res hycompanyviews.CompanyCollectionView) CompanyResponseDetailidCollection {
-	body := make([]*CompanyResponseDetailid, len(res))
-	for i, val := range res {
-		body[i] = marshalHycompanyviewsCompanyViewToCompanyResponseDetailid(val)
 	}
 	return body
 }
@@ -171,19 +283,10 @@ func NewGetCompanyResponseBody(res *hycompanyviews.CompanyView) *GetCompanyRespo
 	body := &GetCompanyResponseBody{
 		ID:          res.ID,
 		CompanyID:   res.CompanyID,
-		Name:        *res.Name,
+		Name:        res.Name,
 		IsHq:        res.IsHq,
 		CountryName: res.CountryName,
-		Address:     *res.Address,
-	}
-	return body
-}
-
-// NewGetCompanyResponseBodyDetailid builds the HTTP response body from the
-// result of the "getCompany" endpoint of the "hy_company" service.
-func NewGetCompanyResponseBodyDetailid(res *hycompanyviews.CompanyView) *GetCompanyResponseBodyDetailid {
-	body := &GetCompanyResponseBodyDetailid{
-		ID: res.ID,
+		Address:     res.Address,
 	}
 	return body
 }
@@ -202,7 +305,124 @@ func NewGetCompanyResponseBodyID(res *hycompanyviews.CompanyView) *GetCompanyRes
 func NewGetCompanyResponseBodyIdname(res *hycompanyviews.CompanyView) *GetCompanyResponseBodyIdname {
 	body := &GetCompanyResponseBodyIdname{
 		CompanyID: res.CompanyID,
-		Name:      *res.Name,
+		Name:      res.Name,
+	}
+	return body
+}
+
+// NewCreateCompanyResponseBody builds the HTTP response body from the result
+// of the "createCompany" endpoint of the "hy_company" service.
+func NewCreateCompanyResponseBody(res *hycompanyviews.CompanyView) *CreateCompanyResponseBody {
+	body := &CreateCompanyResponseBody{
+		ID:          res.ID,
+		CompanyID:   res.CompanyID,
+		Name:        res.Name,
+		IsHq:        res.IsHq,
+		CountryName: res.CountryName,
+		Address:     res.Address,
+	}
+	return body
+}
+
+// NewCreateCompanyResponseBodyID builds the HTTP response body from the result
+// of the "createCompany" endpoint of the "hy_company" service.
+func NewCreateCompanyResponseBodyID(res *hycompanyviews.CompanyView) *CreateCompanyResponseBodyID {
+	body := &CreateCompanyResponseBodyID{
+		CompanyID: res.CompanyID,
+	}
+	return body
+}
+
+// NewCreateCompanyResponseBodyIdname builds the HTTP response body from the
+// result of the "createCompany" endpoint of the "hy_company" service.
+func NewCreateCompanyResponseBodyIdname(res *hycompanyviews.CompanyView) *CreateCompanyResponseBodyIdname {
+	body := &CreateCompanyResponseBodyIdname{
+		CompanyID: res.CompanyID,
+		Name:      res.Name,
+	}
+	return body
+}
+
+// NewCompanyListNotFoundResponseBody builds the HTTP response body from the
+// result of the "companyList" endpoint of the "hy_company" service.
+func NewCompanyListNotFoundResponseBody(res *goa.ServiceError) *CompanyListNotFoundResponseBody {
+	body := &CompanyListNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetCompanyNotFoundResponseBody builds the HTTP response body from the
+// result of the "getCompany" endpoint of the "hy_company" service.
+func NewGetCompanyNotFoundResponseBody(res *goa.ServiceError) *GetCompanyNotFoundResponseBody {
+	body := &GetCompanyNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewCreateCompanyBadRequestResponseBody builds the HTTP response body from
+// the result of the "createCompany" endpoint of the "hy_company" service.
+func NewCreateCompanyBadRequestResponseBody(res *goa.ServiceError) *CreateCompanyBadRequestResponseBody {
+	body := &CreateCompanyBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateCompanyBadRequestResponseBody builds the HTTP response body from
+// the result of the "updateCompany" endpoint of the "hy_company" service.
+func NewUpdateCompanyBadRequestResponseBody(res *goa.ServiceError) *UpdateCompanyBadRequestResponseBody {
+	body := &UpdateCompanyBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateCompanyNotFoundResponseBody builds the HTTP response body from the
+// result of the "updateCompany" endpoint of the "hy_company" service.
+func NewUpdateCompanyNotFoundResponseBody(res *goa.ServiceError) *UpdateCompanyNotFoundResponseBody {
+	body := &UpdateCompanyNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewDeleteCompanyNotFoundResponseBody builds the HTTP response body from the
+// result of the "deleteCompany" endpoint of the "hy_company" service.
+func NewDeleteCompanyNotFoundResponseBody(res *goa.ServiceError) *DeleteCompanyNotFoundResponseBody {
+	body := &DeleteCompanyNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
 	}
 	return body
 }
@@ -219,7 +439,7 @@ func NewCompanyListPayload(token *string) *hycompany.CompanyListPayload {
 // NewGetCompanyPayload builds a hy_company service getCompany endpoint payload.
 func NewGetCompanyPayload(companyID int, token *string) *hycompany.GetCompanyPayload {
 	v := &hycompany.GetCompanyPayload{}
-	v.CompanyID = &companyID
+	v.CompanyID = companyID
 	v.Token = token
 
 	return v
@@ -242,11 +462,11 @@ func NewCreateCompanyPayload(body *CreateCompanyRequestBody, token *string) *hyc
 // payload.
 func NewUpdateCompanyPayload(body *UpdateCompanyRequestBody, companyID int, token *string) *hycompany.UpdateCompanyPayload {
 	v := &hycompany.UpdateCompanyPayload{
-		Name:      *body.Name,
-		CountryID: *body.CountryID,
-		Address:   *body.Address,
+		Name:      body.Name,
+		CountryID: body.CountryID,
+		Address:   body.Address,
 	}
-	v.CompanyID = &companyID
+	v.CompanyID = companyID
 	v.Token = token
 
 	return v
@@ -256,7 +476,7 @@ func NewUpdateCompanyPayload(body *UpdateCompanyRequestBody, companyID int, toke
 // payload.
 func NewDeleteCompanyPayload(companyID int, token *string) *hycompany.DeleteCompanyPayload {
 	v := &hycompany.DeleteCompanyPayload{}
-	v.CompanyID = &companyID
+	v.CompanyID = companyID
 	v.Token = token
 
 	return v
@@ -310,15 +530,6 @@ func ValidateCreateCompanyRequestBody(body *CreateCompanyRequestBody) (err error
 // ValidateUpdateCompanyRequestBody runs the validations defined on
 // UpdateCompanyRequestBody
 func ValidateUpdateCompanyRequestBody(body *UpdateCompanyRequestBody) (err error) {
-	if body.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
-	}
-	if body.CountryID == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("country_id", "body"))
-	}
-	if body.Address == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("address", "body"))
-	}
 	if body.Name != nil {
 		if utf8.RuneCountInString(*body.Name) < 2 {
 			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 2, true))

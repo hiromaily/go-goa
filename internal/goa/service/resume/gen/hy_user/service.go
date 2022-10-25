@@ -102,7 +102,7 @@ type UpdateUserPayload struct {
 // User is the result type of the hy_user service getUser method.
 type User struct {
 	// ID
-	ID *int
+	UserID *int
 	// User name
 	UserName *string
 	// E-mail of user
@@ -232,7 +232,7 @@ func newUserCollectionViewID(res UserCollection) hyuserviews.UserCollectionView 
 // newUser converts projected type User to service type User.
 func newUser(vres *hyuserviews.UserView) *User {
 	res := &User{
-		ID:       vres.ID,
+		UserID:   vres.UserID,
 		UserName: vres.UserName,
 		Email:    vres.Email,
 	}
@@ -242,7 +242,7 @@ func newUser(vres *hyuserviews.UserView) *User {
 // newUserID converts projected type User to service type User.
 func newUserID(vres *hyuserviews.UserView) *User {
 	res := &User{
-		ID: vres.ID,
+		UserID: vres.UserID,
 	}
 	return res
 }
@@ -251,7 +251,7 @@ func newUserID(vres *hyuserviews.UserView) *User {
 // "default" view.
 func newUserView(res *User) *hyuserviews.UserView {
 	vres := &hyuserviews.UserView{
-		ID:       res.ID,
+		UserID:   res.UserID,
 		UserName: res.UserName,
 		Email:    res.Email,
 	}
@@ -262,7 +262,7 @@ func newUserView(res *User) *hyuserviews.UserView {
 // "id" view.
 func newUserViewID(res *User) *hyuserviews.UserView {
 	vres := &hyuserviews.UserView{
-		ID: res.ID,
+		UserID: res.UserID,
 	}
 	return vres
 }

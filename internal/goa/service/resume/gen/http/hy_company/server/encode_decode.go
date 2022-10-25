@@ -9,6 +9,7 @@ package server
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net/http"
 	hycompanyviews "resume/gen/hy_company/views"
@@ -30,8 +31,6 @@ func EncodeCompanyListResponse(encoder func(context.Context, http.ResponseWriter
 		switch res.View {
 		case "default", "":
 			body = NewCompanyResponseCollection(res.Projected)
-		case "detailid":
-			body = NewCompanyResponseDetailidCollection(res.Projected)
 		case "id":
 			body = NewCompanyResponseIDCollection(res.Projected)
 		case "idname":
@@ -66,6 +65,35 @@ func DecodeCompanyListRequest(mux goahttp.Muxer, decoder func(*http.Request) goa
 	}
 }
 
+// EncodeCompanyListError returns an encoder for errors returned by the
+// companyList hy_company endpoint.
+func EncodeCompanyListError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "NotFound":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewCompanyListNotFoundResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusNotFound)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
 // EncodeGetCompanyResponse returns an encoder for responses returned by the
 // hy_company getCompany endpoint.
 func EncodeGetCompanyResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
@@ -78,8 +106,6 @@ func EncodeGetCompanyResponse(encoder func(context.Context, http.ResponseWriter)
 		switch res.View {
 		case "default", "":
 			body = NewGetCompanyResponseBody(res.Projected)
-		case "detailid":
-			body = NewGetCompanyResponseBodyDetailid(res.Projected)
 		case "id":
 			body = NewGetCompanyResponseBodyID(res.Projected)
 		case "idname":
@@ -102,12 +128,15 @@ func DecodeGetCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) goah
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["company_id"]
+			companyIDRaw := params["companyID"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
 			}
 			companyID = int(v)
+		}
+		if companyID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("companyID", companyID, 1, true))
 		}
 		tokenRaw := r.Header.Get("Authorization")
 		if tokenRaw != "" {
@@ -129,12 +158,54 @@ func DecodeGetCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) goah
 	}
 }
 
+// EncodeGetCompanyError returns an encoder for errors returned by the
+// getCompany hy_company endpoint.
+func EncodeGetCompanyError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "NotFound":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewGetCompanyNotFoundResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusNotFound)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
 // EncodeCreateCompanyResponse returns an encoder for responses returned by the
 // hy_company createCompany endpoint.
 func EncodeCreateCompanyResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
-		w.WriteHeader(http.StatusOK)
-		return nil
+		res := v.(*hycompanyviews.Company)
+		w.Header().Set("goa-view", res.View)
+		ctx = context.WithValue(ctx, goahttp.ContentTypeKey, "application/json")
+		enc := encoder(ctx, w)
+		var body interface{}
+		switch res.View {
+		case "default", "":
+			body = NewCreateCompanyResponseBody(res.Projected)
+		case "id":
+			body = NewCreateCompanyResponseBodyID(res.Projected)
+		case "idname":
+			body = NewCreateCompanyResponseBodyIdname(res.Projected)
+		}
+		w.WriteHeader(http.StatusCreated)
+		return enc.Encode(body)
 	}
 }
 
@@ -178,6 +249,35 @@ func DecodeCreateCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 	}
 }
 
+// EncodeCreateCompanyError returns an encoder for errors returned by the
+// createCompany hy_company endpoint.
+func EncodeCreateCompanyError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "BadRequest":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewCreateCompanyBadRequestResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusBadRequest)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
 // EncodeUpdateCompanyResponse returns an encoder for responses returned by the
 // hy_company updateCompany endpoint.
 func EncodeUpdateCompanyResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
@@ -214,12 +314,15 @@ func DecodeUpdateCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["company_id"]
+			companyIDRaw := params["companyID"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
 			}
 			companyID = int(v)
+		}
+		if companyID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("companyID", companyID, 1, true))
 		}
 		tokenRaw := r.Header.Get("Authorization")
 		if tokenRaw != "" {
@@ -238,6 +341,48 @@ func DecodeUpdateCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 		}
 
 		return payload, nil
+	}
+}
+
+// EncodeUpdateCompanyError returns an encoder for errors returned by the
+// updateCompany hy_company endpoint.
+func EncodeUpdateCompanyError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "BadRequest":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewUpdateCompanyBadRequestResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusBadRequest)
+			return enc.Encode(body)
+		case "NotFound":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewUpdateCompanyNotFoundResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusNotFound)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
 	}
 }
 
@@ -262,12 +407,15 @@ func DecodeDeleteCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["company_id"]
+			companyIDRaw := params["companyID"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
 			}
 			companyID = int(v)
+		}
+		if companyID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("companyID", companyID, 1, true))
 		}
 		tokenRaw := r.Header.Get("Authorization")
 		if tokenRaw != "" {
@@ -289,27 +437,45 @@ func DecodeDeleteCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 	}
 }
 
+// EncodeDeleteCompanyError returns an encoder for errors returned by the
+// deleteCompany hy_company endpoint.
+func EncodeDeleteCompanyError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "NotFound":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewDeleteCompanyNotFoundResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusNotFound)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
 // marshalHycompanyviewsCompanyViewToCompanyResponse builds a value of type
 // *CompanyResponse from a value of type *hycompanyviews.CompanyView.
 func marshalHycompanyviewsCompanyViewToCompanyResponse(v *hycompanyviews.CompanyView) *CompanyResponse {
 	res := &CompanyResponse{
 		ID:          v.ID,
 		CompanyID:   v.CompanyID,
-		Name:        *v.Name,
+		Name:        v.Name,
 		IsHq:        v.IsHq,
 		CountryName: v.CountryName,
-		Address:     *v.Address,
-	}
-
-	return res
-}
-
-// marshalHycompanyviewsCompanyViewToCompanyResponseDetailid builds a value of
-// type *CompanyResponseDetailid from a value of type
-// *hycompanyviews.CompanyView.
-func marshalHycompanyviewsCompanyViewToCompanyResponseDetailid(v *hycompanyviews.CompanyView) *CompanyResponseDetailid {
-	res := &CompanyResponseDetailid{
-		ID: v.ID,
+		Address:     v.Address,
 	}
 
 	return res
@@ -330,7 +496,7 @@ func marshalHycompanyviewsCompanyViewToCompanyResponseID(v *hycompanyviews.Compa
 func marshalHycompanyviewsCompanyViewToCompanyResponseIdname(v *hycompanyviews.CompanyView) *CompanyResponseIdname {
 	res := &CompanyResponseIdname{
 		CompanyID: v.CompanyID,
-		Name:      *v.Name,
+		Name:      v.Name,
 	}
 
 	return res

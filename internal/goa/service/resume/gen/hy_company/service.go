@@ -20,20 +20,22 @@ type Service interface {
 	// List all companies
 	// The "view" return value must have one of the following views
 	//	- "default"
-	//	- "detailid": only company's detail id
 	//	- "id": only company's id
 	//	- "idname": only company's id and name
 	CompanyList(context.Context, *CompanyListPayload) (res CompanyCollection, view string, err error)
 	// Retrieve company with given company_id
 	// The "view" return value must have one of the following views
 	//	- "default"
-	//	- "detailid": only company's detail id
 	//	- "id": only company's id
 	//	- "idname": only company's id and name
 	GetCompany(context.Context, *GetCompanyPayload) (res *Company, view string, err error)
 	// Create new company
-	CreateCompany(context.Context, *CreateCompanyPayload) (err error)
-	// Change company properties
+	// The "view" return value must have one of the following views
+	//	- "default"
+	//	- "id": only company's id
+	//	- "idname": only company's id and name
+	CreateCompany(context.Context, *CreateCompanyPayload) (res *Company, view string, err error)
+	// Update company data
 	UpdateCompany(context.Context, *UpdateCompanyPayload) (err error)
 	// Delete company
 	DeleteCompany(context.Context, *DeleteCompanyPayload) (err error)
@@ -62,11 +64,11 @@ type Company struct {
 	// ID
 	CompanyID *int
 	// Company name
-	Name        string
+	Name        *string
 	IsHq        *string
 	CountryName *string
 	// Company Address
-	Address string
+	Address *string
 	// Datetime
 	CreatedAt *string
 	// Datetime
@@ -103,7 +105,7 @@ type DeleteCompanyPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// Company ID
-	CompanyID *int
+	CompanyID int
 }
 
 // GetCompanyPayload is the payload type of the hy_company service getCompany
@@ -112,7 +114,7 @@ type GetCompanyPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// Company ID
-	CompanyID *int
+	CompanyID int
 }
 
 // UpdateCompanyPayload is the payload type of the hy_company service
@@ -121,28 +123,23 @@ type UpdateCompanyPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// Company ID
-	CompanyID *int
+	CompanyID int
 	// Company name
-	Name string
+	Name *string
 	// Country ID
-	CountryID int
+	CountryID *int
 	// Company Address
-	Address string
-}
-
-// MakeNoContent builds a goa.ServiceError from an error.
-func MakeNoContent(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "NoContent", false, false, false)
-}
-
-// MakeBadRequest builds a goa.ServiceError from an error.
-func MakeBadRequest(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "BadRequest", false, false, false)
+	Address *string
 }
 
 // MakeNotFound builds a goa.ServiceError from an error.
 func MakeNotFound(err error) *goa.ServiceError {
 	return goa.NewServiceError(err, "NotFound", false, false, false)
+}
+
+// MakeBadRequest builds a goa.ServiceError from an error.
+func MakeBadRequest(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "BadRequest", false, false, false)
 }
 
 // NewCompanyCollection initializes result type CompanyCollection from viewed
@@ -152,8 +149,6 @@ func NewCompanyCollection(vres hycompanyviews.CompanyCollection) CompanyCollecti
 	switch vres.View {
 	case "default", "":
 		res = newCompanyCollection(vres.Projected)
-	case "detailid":
-		res = newCompanyCollectionDetailid(vres.Projected)
 	case "id":
 		res = newCompanyCollectionID(vres.Projected)
 	case "idname":
@@ -170,9 +165,6 @@ func NewViewedCompanyCollection(res CompanyCollection, view string) hycompanyvie
 	case "default", "":
 		p := newCompanyCollectionView(res)
 		vres = hycompanyviews.CompanyCollection{Projected: p, View: "default"}
-	case "detailid":
-		p := newCompanyCollectionViewDetailid(res)
-		vres = hycompanyviews.CompanyCollection{Projected: p, View: "detailid"}
 	case "id":
 		p := newCompanyCollectionViewID(res)
 		vres = hycompanyviews.CompanyCollection{Projected: p, View: "id"}
@@ -189,8 +181,6 @@ func NewCompany(vres *hycompanyviews.Company) *Company {
 	switch vres.View {
 	case "default", "":
 		res = newCompany(vres.Projected)
-	case "detailid":
-		res = newCompanyDetailid(vres.Projected)
 	case "id":
 		res = newCompanyID(vres.Projected)
 	case "idname":
@@ -207,9 +197,6 @@ func NewViewedCompany(res *Company, view string) *hycompanyviews.Company {
 	case "default", "":
 		p := newCompanyView(res)
 		vres = &hycompanyviews.Company{Projected: p, View: "default"}
-	case "detailid":
-		p := newCompanyViewDetailid(res)
-		vres = &hycompanyviews.Company{Projected: p, View: "detailid"}
 	case "id":
 		p := newCompanyViewID(res)
 		vres = &hycompanyviews.Company{Projected: p, View: "id"}
@@ -226,16 +213,6 @@ func newCompanyCollection(vres hycompanyviews.CompanyCollectionView) CompanyColl
 	res := make(CompanyCollection, len(vres))
 	for i, n := range vres {
 		res[i] = newCompany(n)
-	}
-	return res
-}
-
-// newCompanyCollectionDetailid converts projected type CompanyCollection to
-// service type CompanyCollection.
-func newCompanyCollectionDetailid(vres hycompanyviews.CompanyCollectionView) CompanyCollection {
-	res := make(CompanyCollection, len(vres))
-	for i, n := range vres {
-		res[i] = newCompanyDetailid(n)
 	}
 	return res
 }
@@ -270,16 +247,6 @@ func newCompanyCollectionView(res CompanyCollection) hycompanyviews.CompanyColle
 	return vres
 }
 
-// newCompanyCollectionViewDetailid projects result type CompanyCollection to
-// projected type CompanyCollectionView using the "detailid" view.
-func newCompanyCollectionViewDetailid(res CompanyCollection) hycompanyviews.CompanyCollectionView {
-	vres := make(hycompanyviews.CompanyCollectionView, len(res))
-	for i, n := range res {
-		vres[i] = newCompanyViewDetailid(n)
-	}
-	return vres
-}
-
 // newCompanyCollectionViewID projects result type CompanyCollection to
 // projected type CompanyCollectionView using the "id" view.
 func newCompanyCollectionViewID(res CompanyCollection) hycompanyviews.CompanyCollectionView {
@@ -305,22 +272,10 @@ func newCompany(vres *hycompanyviews.CompanyView) *Company {
 	res := &Company{
 		ID:          vres.ID,
 		CompanyID:   vres.CompanyID,
+		Name:        vres.Name,
 		IsHq:        vres.IsHq,
 		CountryName: vres.CountryName,
-	}
-	if vres.Name != nil {
-		res.Name = *vres.Name
-	}
-	if vres.Address != nil {
-		res.Address = *vres.Address
-	}
-	return res
-}
-
-// newCompanyDetailid converts projected type Company to service type Company.
-func newCompanyDetailid(vres *hycompanyviews.CompanyView) *Company {
-	res := &Company{
-		ID: vres.ID,
+		Address:     vres.Address,
 	}
 	return res
 }
@@ -337,9 +292,7 @@ func newCompanyID(vres *hycompanyviews.CompanyView) *Company {
 func newCompanyIdname(vres *hycompanyviews.CompanyView) *Company {
 	res := &Company{
 		CompanyID: vres.CompanyID,
-	}
-	if vres.Name != nil {
-		res.Name = *vres.Name
+		Name:      vres.Name,
 	}
 	return res
 }
@@ -350,19 +303,10 @@ func newCompanyView(res *Company) *hycompanyviews.CompanyView {
 	vres := &hycompanyviews.CompanyView{
 		ID:          res.ID,
 		CompanyID:   res.CompanyID,
-		Name:        &res.Name,
+		Name:        res.Name,
 		IsHq:        res.IsHq,
 		CountryName: res.CountryName,
-		Address:     &res.Address,
-	}
-	return vres
-}
-
-// newCompanyViewDetailid projects result type Company to projected type
-// CompanyView using the "detailid" view.
-func newCompanyViewDetailid(res *Company) *hycompanyviews.CompanyView {
-	vres := &hycompanyviews.CompanyView{
-		ID: res.ID,
+		Address:     res.Address,
 	}
 	return vres
 }
@@ -381,7 +325,7 @@ func newCompanyViewID(res *Company) *hycompanyviews.CompanyView {
 func newCompanyViewIdname(res *Company) *hycompanyviews.CompanyView {
 	vres := &hycompanyviews.CompanyView{
 		CompanyID: res.CompanyID,
-		Name:      &res.Name,
+		Name:      res.Name,
 	}
 	return vres
 }

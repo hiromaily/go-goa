@@ -53,7 +53,7 @@ func (r *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 		// return only companyID, name
 		converted[i] = &hycompany.Company{
 			CompanyID: &item.ID,
-			Name:      item.Name,
+			Name:      &item.Name,
 		}
 	}
 	return converted, nil

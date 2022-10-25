@@ -55,12 +55,12 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"UserList", "GET", "/user"},
-			{"GetUser", "GET", "/user/{userID}"},
+			{"GetUser", "GET", "/user/{user_id}"},
 			{"CreateUser", "POST", "/user"},
-			{"UpdateUser", "PUT", "/user/{userID}"},
-			{"DeleteUser", "DELETE", "/user/{userID}"},
+			{"UpdateUser", "PUT", "/user/{user_id}"},
+			{"DeleteUser", "DELETE", "/user/{user_id}"},
 			{"CORS", "OPTIONS", "/user"},
-			{"CORS", "OPTIONS", "/user/{userID}"},
+			{"CORS", "OPTIONS", "/user/{user_id}"},
 		},
 		UserList:   NewUserListHandler(e.UserList, mux, decoder, encoder, errhandler, formatter),
 		GetUser:    NewGetUserHandler(e.GetUser, mux, decoder, encoder, errhandler, formatter),
@@ -162,7 +162,7 @@ func MountGetUserHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/user/{userID}", f)
+	mux.Handle("GET", "/user/{user_id}", f)
 }
 
 // NewGetUserHandler creates a HTTP handler which loads the HTTP request and
@@ -264,7 +264,7 @@ func MountUpdateUserHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("PUT", "/user/{userID}", f)
+	mux.Handle("PUT", "/user/{user_id}", f)
 }
 
 // NewUpdateUserHandler creates a HTTP handler which loads the HTTP request and
@@ -315,7 +315,7 @@ func MountDeleteUserHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/user/{userID}", f)
+	mux.Handle("DELETE", "/user/{user_id}", f)
 }
 
 // NewDeleteUserHandler creates a HTTP handler which loads the HTTP request and
@@ -362,7 +362,7 @@ func NewDeleteUserHandler(
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleHyUserOrigin(h)
 	mux.Handle("OPTIONS", "/user", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/user/{userID}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/user/{user_id}", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

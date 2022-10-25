@@ -45,7 +45,7 @@ type UserListResponseBody []*UserResponse
 // HTTP response body.
 type GetUserResponseBody struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 	// E-mail of user
@@ -62,7 +62,7 @@ type GetUserResponseBody struct {
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 	// E-mail of user
@@ -186,7 +186,7 @@ type DeleteUserNotFoundResponseBody struct {
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
 	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 	// E-mail of user
@@ -251,7 +251,7 @@ func NewUserListNotFound(body *UserListNotFoundResponseBody) *goa.ServiceError {
 // HTTP "OK" response.
 func NewGetUserUserOK(body *GetUserResponseBody) *hyuserviews.UserView {
 	v := &hyuserviews.UserView{
-		ID:        body.ID,
+		UserID:    body.UserID,
 		UserName:  body.UserName,
 		Email:     body.Email,
 		Password:  body.Password,
@@ -280,7 +280,7 @@ func NewGetUserNotFound(body *GetUserNotFoundResponseBody) *goa.ServiceError {
 // result from a HTTP "Created" response.
 func NewCreateUserUserCreated(body *CreateUserResponseBody) *hyuserviews.UserView {
 	v := &hyuserviews.UserView{
-		ID:        body.ID,
+		UserID:    body.UserID,
 		UserName:  body.UserName,
 		Email:     body.Email,
 		Password:  body.Password,
@@ -497,9 +497,9 @@ func ValidateDeleteUserNotFoundResponseBody(body *DeleteUserNotFoundResponseBody
 
 // ValidateUserResponse runs the validations defined on UserResponse
 func ValidateUserResponse(body *UserResponse) (err error) {
-	if body.ID != nil {
-		if *body.ID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.id", *body.ID, 1, true))
+	if body.UserID != nil {
+		if *body.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("body.user_id", *body.UserID, 1, true))
 		}
 	}
 	if body.UserName != nil {

@@ -35,7 +35,7 @@ type UserCollectionView []*UserView
 // UserView is a type that runs validations on a projected type.
 type UserView struct {
 	// ID
-	ID *int
+	UserID *int
 	// User name
 	UserName *string
 	// E-mail of user
@@ -53,23 +53,23 @@ var (
 	// view name.
 	UserCollectionMap = map[string][]string{
 		"default": {
-			"id",
+			"user_id",
 			"user_name",
 			"email",
 		},
 		"id": {
-			"id",
+			"user_id",
 		},
 	}
 	// UserMap is a map indexing the attribute names of User by view name.
 	UserMap = map[string][]string{
 		"default": {
-			"id",
+			"user_id",
 			"user_name",
 			"email",
 		},
 		"id": {
-			"id",
+			"user_id",
 		},
 	}
 )
@@ -126,9 +126,9 @@ func ValidateUserCollectionViewID(result UserCollectionView) (err error) {
 // ValidateUserView runs the validations defined on UserView using the
 // "default" view.
 func ValidateUserView(result *UserView) (err error) {
-	if result.ID != nil {
-		if *result.ID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))
+	if result.UserID != nil {
+		if *result.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("result.user_id", *result.UserID, 1, true))
 		}
 	}
 	if result.UserName != nil {
@@ -150,9 +150,9 @@ func ValidateUserView(result *UserView) (err error) {
 // ValidateUserViewID runs the validations defined on UserView using the "id"
 // view.
 func ValidateUserViewID(result *UserView) (err error) {
-	if result.ID != nil {
-		if *result.ID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))
+	if result.UserID != nil {
+		if *result.UserID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("result.user_id", *result.UserID, 1, true))
 		}
 	}
 	return

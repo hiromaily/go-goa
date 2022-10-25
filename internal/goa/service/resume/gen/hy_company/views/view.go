@@ -63,9 +63,6 @@ var (
 			"country_name",
 			"address",
 		},
-		"detailid": {
-			"id",
-		},
 		"id": {
 			"company_id",
 		},
@@ -84,9 +81,6 @@ var (
 			"country_name",
 			"address",
 		},
-		"detailid": {
-			"id",
-		},
 		"id": {
 			"company_id",
 		},
@@ -103,14 +97,12 @@ func ValidateCompanyCollection(result CompanyCollection) (err error) {
 	switch result.View {
 	case "default", "":
 		err = ValidateCompanyCollectionView(result.Projected)
-	case "detailid":
-		err = ValidateCompanyCollectionViewDetailid(result.Projected)
 	case "id":
 		err = ValidateCompanyCollectionViewID(result.Projected)
 	case "idname":
 		err = ValidateCompanyCollectionViewIdname(result.Projected)
 	default:
-		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "detailid", "id", "idname"})
+		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "id", "idname"})
 	}
 	return
 }
@@ -121,14 +113,12 @@ func ValidateCompany(result *Company) (err error) {
 	switch result.View {
 	case "default", "":
 		err = ValidateCompanyView(result.Projected)
-	case "detailid":
-		err = ValidateCompanyViewDetailid(result.Projected)
 	case "id":
 		err = ValidateCompanyViewID(result.Projected)
 	case "idname":
 		err = ValidateCompanyViewIdname(result.Projected)
 	default:
-		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "detailid", "id", "idname"})
+		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "id", "idname"})
 	}
 	return
 }
@@ -138,17 +128,6 @@ func ValidateCompany(result *Company) (err error) {
 func ValidateCompanyCollectionView(result CompanyCollectionView) (err error) {
 	for _, item := range result {
 		if err2 := ValidateCompanyView(item); err2 != nil {
-			err = goa.MergeErrors(err, err2)
-		}
-	}
-	return
-}
-
-// ValidateCompanyCollectionViewDetailid runs the validations defined on
-// CompanyCollectionView using the "detailid" view.
-func ValidateCompanyCollectionViewDetailid(result CompanyCollectionView) (err error) {
-	for _, item := range result {
-		if err2 := ValidateCompanyViewDetailid(item); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
 	}
@@ -180,12 +159,6 @@ func ValidateCompanyCollectionViewIdname(result CompanyCollectionView) (err erro
 // ValidateCompanyView runs the validations defined on CompanyView using the
 // "default" view.
 func ValidateCompanyView(result *CompanyView) (err error) {
-	if result.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "result"))
-	}
-	if result.Address == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("address", "result"))
-	}
 	if result.ID != nil {
 		if *result.ID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))
@@ -219,17 +192,6 @@ func ValidateCompanyView(result *CompanyView) (err error) {
 	return
 }
 
-// ValidateCompanyViewDetailid runs the validations defined on CompanyView
-// using the "detailid" view.
-func ValidateCompanyViewDetailid(result *CompanyView) (err error) {
-	if result.ID != nil {
-		if *result.ID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))
-		}
-	}
-	return
-}
-
 // ValidateCompanyViewID runs the validations defined on CompanyView using the
 // "id" view.
 func ValidateCompanyViewID(result *CompanyView) (err error) {
@@ -244,9 +206,6 @@ func ValidateCompanyViewID(result *CompanyView) (err error) {
 // ValidateCompanyViewIdname runs the validations defined on CompanyView using
 // the "idname" view.
 func ValidateCompanyViewIdname(result *CompanyView) (err error) {
-	if result.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "result"))
-	}
 	if result.CompanyID != nil {
 		if *result.CompanyID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("result.company_id", *result.CompanyID, 1, true))
