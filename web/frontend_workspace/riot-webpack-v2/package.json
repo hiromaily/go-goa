@@ -21,7 +21,7 @@
     "riot-tag-loader": "^1.0.0",
     "riotjs-loader": "^4.0.0",
     "webpack": "^3.4.1",
-    "webpack-dev-server": "^2.6.1"
+    "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
     "riot": "^3.6.1",
