@@ -97,7 +97,7 @@ rerun: build run
 .PHONY: chk
 chk:
 	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http PUT http://localhost:8080/user/3 email=updateduser01@bar.com password=secret456 'Authorization: Bearer $(TOKEN)'
+	http DELETE http://localhost:8080/user/3 'Authorization: Bearer $(TOKEN)'
 	http localhost:8080/user 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: http
@@ -115,12 +115,11 @@ http:
 	http localhost:8080/user/10 'Authorization: Bearer $(TOKEN)'
 	http POST http://localhost:8080/user user_name=harry email=newuser01@foo.com password=secret123 'Authorization: Bearer $(TOKEN)'
 	http PUT http://localhost:8080/user/3 email=updateduser01@bar.com password=secret456 'Authorization: Bearer $(TOKEN)'
+	http DELETE http://localhost:8080/user/3 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: kouho
 kouho:
 	@echo test
-#	http PUT http://localhost:8080/api/user/1 name=Harry email=test@oo.bb 'Authorization: Bearer $(TOKEN)'
-#	http DELETE http://localhost:8080/api/user/1 'Authorization: Bearer $(TOKEN)'
 
 	# Company
 #	http localhost:8080/api/company 'Authorization: Bearer $(TOKEN)'

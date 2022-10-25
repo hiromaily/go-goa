@@ -73,7 +73,7 @@ type DeleteUserPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// User ID
-	UserID *int
+	UserID int
 }
 
 // GetUserPayload is the payload type of the hy_user service getUser method.

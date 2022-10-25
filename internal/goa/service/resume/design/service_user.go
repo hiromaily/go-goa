@@ -104,6 +104,7 @@ var _ = Service(resourcePrefix+"user", func() {
 			Attribute("userID", Int, "User ID", func() {
 				Minimum(1)
 			})
+			Required("userID")
 		})
 
 		HTTP(func() {

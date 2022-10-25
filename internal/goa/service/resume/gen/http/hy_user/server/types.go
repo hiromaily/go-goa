@@ -394,7 +394,7 @@ func NewUpdateUserPayload(body *UpdateUserRequestBody, userID int, token *string
 // NewDeleteUserPayload builds a hy_user service deleteUser endpoint payload.
 func NewDeleteUserPayload(userID int, token *string) *hyuser.DeleteUserPayload {
 	v := &hyuser.DeleteUserPayload{}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v

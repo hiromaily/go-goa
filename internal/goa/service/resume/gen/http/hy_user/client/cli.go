@@ -202,7 +202,7 @@ func BuildDeleteUserPayload(hyUserDeleteUserUserID string, hyUserDeleteUserToken
 		}
 	}
 	v := &hyuser.DeleteUserPayload{}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v, nil

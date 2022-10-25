@@ -20,6 +20,7 @@ type UserRepository interface {
 	Login(email, password string) (int, error)
 	UserList() ([]*hyuser.User, error)
 	GetUser(userID int) (*hyuser.User, error)
+	IsUser(userID int) (bool, error)
 	InsertUser(name, email, password string) (int, error)
 	UpdateUser(userID int, name, email, password string) (int, error)
 	DeleteUser(userID int) (int, error)
@@ -106,6 +107,20 @@ func (u *userRepository) GetUser(userID int) (*hyuser.User, error) {
 		UserName: &item.UserName,
 		Email:    &item.Email.String,
 	}, nil
+}
+
+func (u *userRepository) IsUser(userID int) (bool, error) {
+	ctx := context.Background()
+	q := []qm.QueryMod{
+		qm.Select("id"),
+		qm.Where("is_deleted=?", 0),
+		qm.And("id=?", userID),
+	}
+	_, err := models.TUsers(q...).One(ctx, u.dbConn)
+	if err != nil {
+		return false, errors.Wrap(err, "failed to call models.TUsers().One()")
+	}
+	return true, nil
 }
 
 func (u *userRepository) getUserByEmail(email string) (*models.TUser, error) {

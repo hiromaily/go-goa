@@ -435,9 +435,7 @@ func (c *Client) BuildDeleteUserRequest(ctx context.Context, v interface{}) (*ht
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_user", "deleteUser", "*hyuser.DeleteUserPayload", v)
 		}
-		if p.UserID != nil {
-			userID = *p.UserID
-		}
+		userID = p.UserID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteUserHyUserPath(userID)}
 	req, err := http.NewRequest("DELETE", u.String(), nil)

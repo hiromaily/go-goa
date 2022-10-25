@@ -9,7 +9,7 @@ import (
 	"goa.design/goa/v3/security"
 
 	"github.com/hiromaily/go-goa/pkg/jwts"
-	"github.com/hiromaily/go-goa/pkg/pointer"
+	ptr "github.com/hiromaily/go-goa/pkg/pointer"
 	"github.com/hiromaily/go-goa/pkg/repository"
 	hyuser "resume/gen/hy_user"
 )
@@ -98,37 +98,47 @@ func (s *hyUsersrvc) CreateUser(ctx context.Context, p *hyuser.CreateUserPayload
 		return nil, "", errors.Wrap(err, "fail to call InsertUser()")
 	}
 	res = &hyuser.User{
-		ID: pointer.Int(userID),
+		ID: ptr.Int(userID),
 	}
 	view = "id"
 
 	return
 }
 
-// Change user properties
+// UpdateUser updates user
 func (s *hyUsersrvc) UpdateUser(ctx context.Context, p *hyuser.UpdateUserPayload) (err error) {
-	//	svc := &m.User{Db: c.ctx.Db}
-	//	err := svc.UpdateUser(ctx.UserID, ctx.Payload)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	res := &app.UserID{ID: &ctx.UserID}
-	//	return ctx.OKId(res)
 	log.Info().Msg("hyUser.updateUser")
-	return
+
+	// Validate
+	if p.UserName == nil && p.Email == nil && p.Password == nil {
+		return hyuser.MakeBadRequest(errors.New("parameter is invalid"))
+	}
+
+	isUser, err := s.userRepo.IsUser(p.UserID)
+	if !isUser || err != nil {
+		return hyuser.MakeNotFound(errors.New("user not found"))
+	}
+
+	_, err = s.userRepo.UpdateUser(p.UserID, ptr.StringVal(p.UserName), ptr.StringVal(p.Email), ptr.StringVal(p.Password))
+	if err != nil {
+		return errors.Wrap(err, "fail to call UpdateUser()")
+	}
+
+	return nil
 }
 
-// Delete user
+// DeleteUser deletes user
 func (s *hyUsersrvc) DeleteUser(ctx context.Context, p *hyuser.DeleteUserPayload) (err error) {
-	//	svc := &m.User{Db: c.ctx.Db}
-	//	err := svc.DeleteUser(ctx.UserID)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	res := &app.UserID{ID: &ctx.UserID}
-	//	return ctx.OKId(res)
 	log.Info().Msg("hyUser.deleteUser")
+
+	isUser, err := s.userRepo.IsUser(p.UserID)
+	if !isUser || err != nil {
+		return hyuser.MakeNotFound(errors.New("user not found"))
+	}
+
+	if _, err := s.userRepo.DeleteUser(p.UserID); err != nil {
+		return errors.Wrap(err, "fail to call DeleteUser()")
+	}
+
 	return
 }
