@@ -35,7 +35,8 @@ func NewClient(userList, getUser, createUser, updateUser, deleteUser goa.Endpoin
 
 // UserList calls the "userList" endpoint of the "hy_user" service.
 // UserList may return the following errors:
-//   - "NoContent" (type *goa.ServiceError)
+//   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) UserList(ctx context.Context, p *UserListPayload) (res UserCollection, err error) {
 	var ires interface{}
@@ -49,6 +50,7 @@ func (c *Client) UserList(ctx context.Context, p *UserListPayload) (res UserColl
 // GetUser calls the "getUser" endpoint of the "hy_user" service.
 // GetUser may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetUser(ctx context.Context, p *GetUserPayload) (res *User, err error) {
 	var ires interface{}
@@ -61,17 +63,22 @@ func (c *Client) GetUser(ctx context.Context, p *GetUserPayload) (res *User, err
 
 // CreateUser calls the "createUser" endpoint of the "hy_user" service.
 // CreateUser may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
-func (c *Client) CreateUser(ctx context.Context, p *CreateUserPayload) (err error) {
-	_, err = c.CreateUserEndpoint(ctx, p)
-	return
+func (c *Client) CreateUser(ctx context.Context, p *CreateUserPayload) (res *User, err error) {
+	var ires interface{}
+	ires, err = c.CreateUserEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*User), nil
 }
 
 // UpdateUser calls the "updateUser" endpoint of the "hy_user" service.
 // UpdateUser may return the following errors:
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) UpdateUser(ctx context.Context, p *UpdateUserPayload) (err error) {
 	_, err = c.UpdateUserEndpoint(ctx, p)
@@ -81,6 +88,7 @@ func (c *Client) UpdateUser(ctx context.Context, p *UpdateUserPayload) (err erro
 // DeleteUser calls the "deleteUser" endpoint of the "hy_user" service.
 // DeleteUser may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) DeleteUser(ctx context.Context, p *DeleteUserPayload) (err error) {
 	_, err = c.DeleteUserEndpoint(ctx, p)

@@ -41,7 +41,7 @@ clean-example:
 	rm -rf resume resume-cli
 	rm -rf cmd
 	rm -rf auth.go health.go hy_company.go hy_tech.go hy_user.go
-	rm -rf hy_user_work_history.go hy_usertech.go public.go static.go
+	rm -rf hy_user_work_history.go hy_usertech.go static.go
 
 .PHONY: clean
 clean: clean-example

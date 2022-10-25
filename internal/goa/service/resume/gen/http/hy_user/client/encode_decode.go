@@ -59,7 +59,7 @@ func EncodeUserListRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 // hy_user userList endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
 // DecodeUserListResponse may return the following errors:
-//   - "NoContent" (type *goa.ServiceError): http.StatusNoContent
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
 //   - error: internal error
 func DecodeUserListResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
@@ -93,20 +93,20 @@ func DecodeUserListResponse(decoder func(*http.Response) goahttp.Decoder, restor
 			}
 			res := hyuser.NewUserCollection(vres)
 			return res, nil
-		case http.StatusNoContent:
+		case http.StatusNotFound:
 			var (
-				body UserListNoContentResponseBody
+				body UserListNotFoundResponseBody
 				err  error
 			)
 			err = decoder(resp).Decode(&body)
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("hy_user", "userList", err)
 			}
-			err = ValidateUserListNoContentResponseBody(&body)
+			err = ValidateUserListNotFoundResponseBody(&body)
 			if err != nil {
 				return nil, goahttp.ErrValidationError("hy_user", "userList", err)
 			}
-			return nil, NewUserListNoContent(&body)
+			return nil, NewUserListNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_user", "userList", resp.StatusCode, string(body))
@@ -125,9 +125,7 @@ func (c *Client) BuildGetUserRequest(ctx context.Context, v interface{}) (*http.
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_user", "getUser", "*hyuser.GetUserPayload", v)
 		}
-		if p.UserID != nil {
-			userID = *p.UserID
-		}
+		userID = p.UserID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetUserHyUserPath(userID)}
 	req, err := http.NewRequest("GET", u.String(), nil)
@@ -281,7 +279,22 @@ func DecodeCreateUserResponse(decoder func(*http.Response) goahttp.Decoder, rest
 		}
 		switch resp.StatusCode {
 		case http.StatusCreated:
-			return nil, nil
+			var (
+				body CreateUserResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_user", "createUser", err)
+			}
+			p := NewCreateUserUserCreated(&body)
+			view := resp.Header.Get("goa-view")
+			vres := &hyuserviews.User{Projected: p, View: view}
+			if err = hyuserviews.ValidateUser(vres); err != nil {
+				return nil, goahttp.ErrValidationError("hy_user", "createUser", err)
+			}
+			res := hyuser.NewUser(vres)
+			return res, nil
 		case http.StatusBadRequest:
 			var (
 				body CreateUserBadRequestResponseBody
@@ -314,9 +327,7 @@ func (c *Client) BuildUpdateUserRequest(ctx context.Context, v interface{}) (*ht
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_user", "updateUser", "*hyuser.UpdateUserPayload", v)
 		}
-		if p.UserID != nil {
-			userID = *p.UserID
-		}
+		userID = p.UserID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateUserHyUserPath(userID)}
 	req, err := http.NewRequest("PUT", u.String(), nil)

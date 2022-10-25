@@ -375,10 +375,10 @@ paths:
                     description: OK response.
                     schema:
                         $ref: '#/definitions/HyUserUserResponseCollection'
-                "204":
-                    description: No Content response.
+                "404":
+                    description: Not Found response.
                     schema:
-                        $ref: '#/definitions/HyUserUserListNoContentResponseBody'
+                        $ref: '#/definitions/HyUserUserListNotFoundResponseBody'
             schemes:
                 - http
             security:
@@ -389,6 +389,8 @@ paths:
             summary: createUser hy_user
             description: Create new user
             operationId: hy_user#createUser
+            produces:
+                - application/json
             parameters:
                 - name: Authorization
                   in: header
@@ -407,6 +409,8 @@ paths:
             responses:
                 "201":
                     description: Created response.
+                    schema:
+                        $ref: '#/definitions/HyUserCreateUserResponseBody'
                 "400":
                     description: Bad Request response.
                     schema:
@@ -1051,6 +1055,31 @@ definitions:
             - user_name
             - email
             - password
+    HyUserCreateUserResponseBody:
+        title: 'Mediatype identifier: application/vnd.user+json; view=default'
+        type: object
+        properties:
+            email:
+                type: string
+                description: E-mail of user
+                example: hy@gmail.com
+                format: email
+            id:
+                type: integer
+                description: ID
+                example: 10
+                minimum: 1
+            user_name:
+                type: string
+                description: User name
+                example: Hiroki
+                minLength: 2
+                maxLength: 20
+        description: CreateUserResponseBody result type (default view)
+        example:
+            email: hy@gmail.com
+            id: 10
+            user_name: Hiroki
     HyUserDeleteUserNotFoundResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -1162,9 +1191,6 @@ definitions:
             email: hy@gmail.com
             id: 10
             user_name: Hiroki
-        required:
-            - user_name
-            - email
     HyUserUpdateUserBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -1276,7 +1302,7 @@ definitions:
             email: hy@gmail.com
             password: xxxxxxxx
             user_name: Hiroki
-    HyUserUserListNoContentResponseBody:
+    HyUserUserListNotFoundResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
         properties:
@@ -1304,7 +1330,7 @@ definitions:
                 type: boolean
                 description: Is the error a timeout?
                 example: true
-        description: userList_NoContent_response_body result type (default view)
+        description: userList_NotFound_response_body result type (default view)
         example:
             fault: false
             id: 123abc
@@ -1413,14 +1439,11 @@ definitions:
                 example: Hiroki
                 minLength: 2
                 maxLength: 20
-        description: A user information (default view)
+        description: User information (default view)
         example:
             email: hy@gmail.com
             id: 10
             user_name: Hiroki
-        required:
-            - user_name
-            - email
     UsertechResponse:
         title: 'Mediatype identifier: application/vnd.usertech+json; view=default'
         type: object

@@ -73,7 +73,7 @@ func EncodeUserListError(encoder func(context.Context, http.ResponseWriter) goah
 			return encodeError(ctx, w, v)
 		}
 		switch en.GoaErrorName() {
-		case "NoContent":
+		case "NotFound":
 			var res *goa.ServiceError
 			errors.As(v, &res)
 			enc := encoder(ctx, w)
@@ -81,10 +81,10 @@ func EncodeUserListError(encoder func(context.Context, http.ResponseWriter) goah
 			if formatter != nil {
 				body = formatter(ctx, res)
 			} else {
-				body = NewUserListNoContentResponseBody(res)
+				body = NewUserListNotFoundResponseBody(res)
 			}
 			w.Header().Set("goa-error", res.GoaErrorName())
-			w.WriteHeader(http.StatusNoContent)
+			w.WriteHeader(http.StatusNotFound)
 			return enc.Encode(body)
 		default:
 			return encodeError(ctx, w, v)
@@ -187,8 +187,19 @@ func EncodeGetUserError(encoder func(context.Context, http.ResponseWriter) goaht
 // hy_user createUser endpoint.
 func EncodeCreateUserResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
 	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res := v.(*hyuserviews.User)
+		w.Header().Set("goa-view", res.View)
+		ctx = context.WithValue(ctx, goahttp.ContentTypeKey, "application/json")
+		enc := encoder(ctx, w)
+		var body interface{}
+		switch res.View {
+		case "default", "":
+			body = NewCreateUserResponseBody(res.Projected)
+		case "id":
+			body = NewCreateUserResponseBodyID(res.Projected)
+		}
 		w.WriteHeader(http.StatusCreated)
-		return nil
+		return enc.Encode(body)
 	}
 }
 
@@ -454,8 +465,8 @@ func EncodeDeleteUserError(encoder func(context.Context, http.ResponseWriter) go
 func marshalHyuserviewsUserViewToUserResponse(v *hyuserviews.UserView) *UserResponse {
 	res := &UserResponse{
 		ID:       v.ID,
-		UserName: *v.UserName,
-		Email:    *v.Email,
+		UserName: v.UserName,
+		Email:    v.Email,
 	}
 
 	return res

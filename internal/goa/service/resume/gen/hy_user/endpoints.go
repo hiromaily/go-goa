@@ -120,7 +120,12 @@ func NewCreateUserEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoi
 		if err != nil {
 			return nil, err
 		}
-		return nil, s.CreateUser(ctx, p)
+		res, view, err := s.CreateUser(ctx, p)
+		if err != nil {
+			return nil, err
+		}
+		vres := NewViewedUser(res, view)
+		return vres, nil
 	}
 }
 

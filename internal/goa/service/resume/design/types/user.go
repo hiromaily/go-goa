@@ -27,13 +27,13 @@ var fieldPassword = func() {
 // PayloadUser defines the data structure used in the create user request body
 var PayloadUser = Type("PayloadUser", func() {
 	Attribute("user_name", String, "User name", fieldUserName)
-	Attribute("email", String, "E-mail of user", fieldEmail)
-	Attribute("password", String, "Password", fieldPassword)
+	Attribute("email", String, "User E-mail", fieldEmail)
+	Attribute("password", String, "User password", fieldPassword)
 })
 
-// RTUser is the user resource result type.
+// RTUser is the user type for response
 var RTUser = ResultType("application/vnd.user+json", func() {
-	Description("A user information")
+	Description("User information")
 
 	ContentType("application/json")
 
@@ -52,11 +52,10 @@ var RTUser = ResultType("application/vnd.user+json", func() {
 		Attribute("updated_at")
 
 		// Required adds a "required" validation to the attribute.
-		Required("user_name", "email", "password")
+		//Required("user_name", "email", "password")
 	})
 
 	// View defines a rendering of the result type
-	// it may have multiple views　(change response pattern)
 	View("default", func() {
 		Attribute("id")
 		Attribute("user_name")
@@ -64,12 +63,12 @@ var RTUser = ResultType("application/vnd.user+json", func() {
 	})
 
 	View("id", func() {
-		Description("id is the view used for C U D")
 		Attribute("id")
+		Required("id")
 	})
 })
 
-// RTUserCompany is the user company resource result type.
+// RTUserCompany is the user company type for response
 // TODO: unimplemented
 var RTUserCompany = ResultType("application/vnd.usercomany+json", func() {
 	Description("A user who belongs to which companies")

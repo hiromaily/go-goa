@@ -58,9 +58,26 @@ type GetUserResponseBody struct {
 	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
-// UserListNoContentResponseBody is the type of the "hy_user" service
-// "userList" endpoint HTTP response body for the "NoContent" error.
-type UserListNoContentResponseBody struct {
+// CreateUserResponseBody is the type of the "hy_user" service "createUser"
+// endpoint HTTP response body.
+type CreateUserResponseBody struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// User name
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+	// E-mail of user
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+	// Password
+	Password *string `form:"password,omitempty" json:"password,omitempty" xml:"password,omitempty"`
+	// Datetime
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
+	// Datetime
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
+}
+
+// UserListNotFoundResponseBody is the type of the "hy_user" service "userList"
+// endpoint HTTP response body for the "NotFound" error.
+type UserListNotFoundResponseBody struct {
 	// Name is the name of this class of errors.
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -215,9 +232,9 @@ func NewUserListUserCollectionOK(body UserListResponseBody) hyuserviews.UserColl
 	return v
 }
 
-// NewUserListNoContent builds a hy_user service userList endpoint NoContent
+// NewUserListNotFound builds a hy_user service userList endpoint NotFound
 // error.
-func NewUserListNoContent(body *UserListNoContentResponseBody) *goa.ServiceError {
+func NewUserListNotFound(body *UserListNotFoundResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -254,6 +271,21 @@ func NewGetUserNotFound(body *GetUserNotFoundResponseBody) *goa.ServiceError {
 		Temporary: *body.Temporary,
 		Timeout:   *body.Timeout,
 		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewCreateUserUserCreated builds a "hy_user" service "createUser" endpoint
+// result from a HTTP "Created" response.
+func NewCreateUserUserCreated(body *CreateUserResponseBody) *hyuserviews.UserView {
+	v := &hyuserviews.UserView{
+		ID:        body.ID,
+		UserName:  body.UserName,
+		Email:     body.Email,
+		Password:  body.Password,
+		CreatedAt: body.CreatedAt,
+		UpdatedAt: body.UpdatedAt,
 	}
 
 	return v
@@ -319,9 +351,9 @@ func NewDeleteUserNotFound(body *DeleteUserNotFoundResponseBody) *goa.ServiceErr
 	return v
 }
 
-// ValidateUserListNoContentResponseBody runs the validations defined on
-// userList_NoContent_response_body
-func ValidateUserListNoContentResponseBody(body *UserListNoContentResponseBody) (err error) {
+// ValidateUserListNotFoundResponseBody runs the validations defined on
+// userList_NotFound_response_body
+func ValidateUserListNotFoundResponseBody(body *UserListNotFoundResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}
@@ -465,15 +497,6 @@ func ValidateDeleteUserNotFoundResponseBody(body *DeleteUserNotFoundResponseBody
 
 // ValidateUserResponse runs the validations defined on UserResponse
 func ValidateUserResponse(body *UserResponse) (err error) {
-	if body.UserName == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("user_name", "body"))
-	}
-	if body.Email == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("email", "body"))
-	}
-	if body.Password == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("password", "body"))
-	}
 	if body.ID != nil {
 		if *body.ID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("body.id", *body.ID, 1, true))

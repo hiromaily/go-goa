@@ -20,15 +20,18 @@ type Service interface {
 	// List all users
 	// The "view" return value must have one of the following views
 	//	- "default"
-	//	- "id": id is the view used for C U D
+	//	- "id"
 	UserList(context.Context, *UserListPayload) (res UserCollection, view string, err error)
 	// Get user by given user id
 	// The "view" return value must have one of the following views
 	//	- "default"
-	//	- "id": id is the view used for C U D
+	//	- "id"
 	GetUser(context.Context, *GetUserPayload) (res *User, view string, err error)
 	// Create new user
-	CreateUser(context.Context, *CreateUserPayload) (err error)
+	// The "view" return value must have one of the following views
+	//	- "default"
+	//	- "id"
+	CreateUser(context.Context, *CreateUserPayload) (res *User, view string, err error)
 	// Update user data
 	UpdateUser(context.Context, *UpdateUserPayload) (err error)
 	// Delete user
@@ -78,7 +81,7 @@ type GetUserPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// User ID
-	UserID *int
+	UserID int
 }
 
 // UpdateUserPayload is the payload type of the hy_user service updateUser
@@ -87,7 +90,7 @@ type UpdateUserPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// User ID
-	UserID *int
+	UserID int
 	// User name
 	UserName *string
 	// E-mail of user
@@ -101,11 +104,11 @@ type User struct {
 	// ID
 	ID *int
 	// User name
-	UserName string
+	UserName *string
 	// E-mail of user
-	Email string
+	Email *string
 	// Password
-	Password string
+	Password *string
 	// Datetime
 	CreatedAt *string
 	// Datetime
@@ -119,11 +122,6 @@ type UserCollection []*User
 type UserListPayload struct {
 	// JWT token used to perform authorization
 	Token *string
-}
-
-// MakeNoContent builds a goa.ServiceError from an error.
-func MakeNoContent(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "NoContent", false, false, false)
 }
 
 // MakeNotFound builds a goa.ServiceError from an error.
@@ -234,13 +232,9 @@ func newUserCollectionViewID(res UserCollection) hyuserviews.UserCollectionView 
 // newUser converts projected type User to service type User.
 func newUser(vres *hyuserviews.UserView) *User {
 	res := &User{
-		ID: vres.ID,
-	}
-	if vres.UserName != nil {
-		res.UserName = *vres.UserName
-	}
-	if vres.Email != nil {
-		res.Email = *vres.Email
+		ID:       vres.ID,
+		UserName: vres.UserName,
+		Email:    vres.Email,
 	}
 	return res
 }
@@ -258,8 +252,8 @@ func newUserID(vres *hyuserviews.UserView) *User {
 func newUserView(res *User) *hyuserviews.UserView {
 	vres := &hyuserviews.UserView{
 		ID:       res.ID,
-		UserName: &res.UserName,
-		Email:    &res.Email,
+		UserName: res.UserName,
+		Email:    res.Email,
 	}
 	return vres
 }

@@ -58,7 +58,7 @@ func BuildGetUserPayload(hyUserGetUserUserID string, hyUserGetUserToken string) 
 		}
 	}
 	v := &hyuser.GetUserPayload{}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v, nil
@@ -117,6 +117,32 @@ func BuildUpdateUserPayload(hyUserUpdateUserBody string, hyUserUpdateUserUserID 
 		if err != nil {
 			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"email\": \"hy@gmail.com\",\n      \"password\": \"xxxxxxxx\",\n      \"user_name\": \"Hiroki\"\n   }'")
 		}
+		if body.UserName != nil {
+			if utf8.RuneCountInString(*body.UserName) < 2 {
+				err = goa.MergeErrors(err, goa.InvalidLengthError("body.user_name", *body.UserName, utf8.RuneCountInString(*body.UserName), 2, true))
+			}
+		}
+		if body.UserName != nil {
+			if utf8.RuneCountInString(*body.UserName) > 20 {
+				err = goa.MergeErrors(err, goa.InvalidLengthError("body.user_name", *body.UserName, utf8.RuneCountInString(*body.UserName), 20, false))
+			}
+		}
+		if body.Email != nil {
+			err = goa.MergeErrors(err, goa.ValidateFormat("body.email", *body.Email, goa.FormatEmail))
+		}
+		if body.Password != nil {
+			if utf8.RuneCountInString(*body.Password) < 8 {
+				err = goa.MergeErrors(err, goa.InvalidLengthError("body.password", *body.Password, utf8.RuneCountInString(*body.Password), 8, true))
+			}
+		}
+		if body.Password != nil {
+			if utf8.RuneCountInString(*body.Password) > 20 {
+				err = goa.MergeErrors(err, goa.InvalidLengthError("body.password", *body.Password, utf8.RuneCountInString(*body.Password), 20, false))
+			}
+		}
+		if err != nil {
+			return nil, err
+		}
 	}
 	var userID int
 	{
@@ -144,7 +170,7 @@ func BuildUpdateUserPayload(hyUserUpdateUserBody string, hyUserUpdateUserUserID 
 		Email:    body.Email,
 		Password: body.Password,
 	}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v, nil

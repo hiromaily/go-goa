@@ -126,12 +126,6 @@ func ValidateUserCollectionViewID(result UserCollectionView) (err error) {
 // ValidateUserView runs the validations defined on UserView using the
 // "default" view.
 func ValidateUserView(result *UserView) (err error) {
-	if result.UserName == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("user_name", "result"))
-	}
-	if result.Email == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("email", "result"))
-	}
 	if result.ID != nil {
 		if *result.ID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))

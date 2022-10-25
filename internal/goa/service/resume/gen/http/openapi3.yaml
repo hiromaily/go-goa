@@ -421,8 +421,8 @@ paths:
                                   password: xxxxxxxx
                                   updated_at: "2017-03-10T15:00:00Z"
                                   user_name: Hiroki
-                "204":
-                    description: 'NoContent: No Content response.'
+                "404":
+                    description: 'NotFound: Not Found response.'
                     content:
                         application/vnd.goa.error:
                             schema:
@@ -449,6 +449,18 @@ paths:
             responses:
                 "201":
                     description: Created response.
+                    content:
+                        application/json:
+                            schema:
+                                description: 'Response body may alternatively be #/components/schemas/UserResponseID'
+                                $ref: '#/components/schemas/User'
+                            example:
+                                created_at: "2017-03-10T15:00:00Z"
+                                email: hy@gmail.com
+                                id: 10
+                                password: xxxxxxxx
+                                updated_at: "2017-03-10T15:00:00Z"
+                                user_name: Hiroki
                 "400":
                     description: 'BadRequest: Bad Request response.'
                     content:
@@ -1125,7 +1137,7 @@ components:
                     example: Hiroki
                     minLength: 2
                     maxLength: 20
-            description: A user information
+            description: User information
             example:
                 created_at: "2017-03-10T15:00:00Z"
                 email: hy@gmail.com
@@ -1133,10 +1145,6 @@ components:
                 password: xxxxxxxx
                 updated_at: "2017-03-10T15:00:00Z"
                 user_name: Hiroki
-            required:
-                - user_name
-                - email
-                - password
         UserCollection:
             type: array
             items:
@@ -1174,7 +1182,7 @@ components:
                     description: ID
                     example: 10
                     minimum: 1
-            description: A user information (id view)
+            description: User information (id view)
             example:
                 id: 10
         UserResponseIDCollection:

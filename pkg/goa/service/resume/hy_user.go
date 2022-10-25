@@ -2,12 +2,14 @@ package resumeapi
 
 import (
 	"context"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
 
 	"github.com/hiromaily/go-goa/pkg/jwts"
+	"github.com/hiromaily/go-goa/pkg/pointer"
 	"github.com/hiromaily/go-goa/pkg/repository"
 	hyuser "resume/gen/hy_user"
 )
@@ -52,7 +54,7 @@ func (s *hyUsersrvc) JWTAuth(ctx context.Context, token string, scheme *security
 	return ctx, nil
 }
 
-// List all users
+// UserList returns all users
 func (s *hyUsersrvc) UserList(ctx context.Context, p *hyuser.UserListPayload) (res hyuser.UserCollection, view string, err error) {
 	log.Info().Msg("hyUser.UserList")
 
@@ -61,48 +63,45 @@ func (s *hyUsersrvc) UserList(ctx context.Context, p *hyuser.UserListPayload) (r
 		return nil, "", errors.Wrap(err, "fail to call userRepo.UserList()")
 	}
 	if len(users) == 0 {
-		return nil, "", hyuser.MakeNoContent(errors.New("no user"))
+		return nil, "", hyuser.MakeNotFound(errors.New("user not found"))
 	}
 	res = users
-
 	view = "default"
+
 	return
 }
 
-// get user with given user id
+// GetUser returns user by given UserID
 func (s *hyUsersrvc) GetUser(ctx context.Context, p *hyuser.GetUserPayload) (res *hyuser.User, view string, err error) {
-	//	user := &app.User{}
-	//
-	//	svc := &m.User{Db: c.ctx.Db}
-	//	err := svc.GetUser(ctx.UserID, user)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	if user.ID == nil {
-	//		//404
-	//		return ctx.NotFound()
-	//	}
-	//
-	//	//res := &app.User{}
-	//	return ctx.OK(user)
-	res = &hyuser.User{}
-	view = "default"
 	log.Info().Msg("hyUser.getUser")
+
+	user, err := s.userRepo.GetUser(p.UserID)
+	if err != nil {
+		// Not Found
+		if strings.Contains(err.Error(), "no rows in result set") {
+			return nil, "", hyuser.MakeNotFound(errors.New("user not found"))
+		}
+		return nil, "", errors.Wrapf(err, "fail to call userRepo.GetUser(%d)", p.UserID)
+	}
+	res = user
+	view = "default"
+
 	return
 }
 
-// Create new user
-func (s *hyUsersrvc) CreateUser(ctx context.Context, p *hyuser.CreateUserPayload) (err error) {
-	//	svc := &m.User{Db: c.ctx.Db}
-	//	userID, err := svc.InsertUser(ctx.Payload) //*CreateUserHyUserPayload
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	res := &app.UserID{ID: &userID}
-	//	return ctx.OKId(res)
+// CreateUser creates new user
+func (s *hyUsersrvc) CreateUser(ctx context.Context, p *hyuser.CreateUserPayload) (res *hyuser.User, view string, err error) {
 	log.Info().Msg("hyUser.createUser")
+
+	userID, err := s.userRepo.InsertUser(p.UserName, p.Email, p.Password)
+	if err != nil {
+		return nil, "", errors.Wrap(err, "fail to call InsertUser()")
+	}
+	res = &hyuser.User{
+		ID: pointer.Int(userID),
+	}
+	view = "id"
+
 	return
 }
 

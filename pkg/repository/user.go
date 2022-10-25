@@ -83,8 +83,8 @@ func (u *userRepository) UserList() ([]*hyuser.User, error) {
 	for i, item := range items {
 		converted[i] = &hyuser.User{
 			ID:       &item.ID,
-			UserName: item.UserName,
-			Email:    item.Email.String,
+			UserName: &item.UserName,
+			Email:    &item.Email.String,
 		}
 	}
 	return converted, nil
@@ -103,8 +103,8 @@ func (u *userRepository) GetUser(userID int) (*hyuser.User, error) {
 	}
 	return &hyuser.User{
 		ID:       &item.ID,
-		UserName: item.UserName,
-		Email:    item.Email.String,
+		UserName: &item.UserName,
+		Email:    &item.Email.String,
 	}, nil
 }
 

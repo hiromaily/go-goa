@@ -13,9 +13,10 @@ Now it's under refactoring.
 
 
 ## Refactoring
-- [ ] clean up everything
-- [ ] switch CI from travisci to github action
-- [ ] rebuild front-end by latest React or Svelte
+- [ ] Clean up everything
+- [ ] Integrate to Firebase
+- [ ] Switch CI from travisci to github action
+- [ ] Rebuild front-end by latest React or Svelte
 
 
 ## Directory Structure

@@ -51,9 +51,9 @@ type GetUserResponseBody struct {
 	// ID
 	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	// User name
-	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 	// E-mail of user
-	Email string `form:"email" json:"email" xml:"email"`
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
 }
 
 // GetUserResponseBodyID is the type of the "hy_user" service "getUser"
@@ -63,9 +63,27 @@ type GetUserResponseBodyID struct {
 	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 }
 
-// UserListNoContentResponseBody is the type of the "hy_user" service
-// "userList" endpoint HTTP response body for the "NoContent" error.
-type UserListNoContentResponseBody struct {
+// CreateUserResponseBody is the type of the "hy_user" service "createUser"
+// endpoint HTTP response body.
+type CreateUserResponseBody struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// User name
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
+	// E-mail of user
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
+}
+
+// CreateUserResponseBodyID is the type of the "hy_user" service "createUser"
+// endpoint HTTP response body.
+type CreateUserResponseBodyID struct {
+	// ID
+	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+}
+
+// UserListNotFoundResponseBody is the type of the "hy_user" service "userList"
+// endpoint HTTP response body for the "NotFound" error.
+type UserListNotFoundResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -176,9 +194,9 @@ type UserResponse struct {
 	// ID
 	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	// User name
-	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
+	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
 	// E-mail of user
-	Email string `form:"email" json:"email" xml:"email"`
+	Email *string `form:"email,omitempty" json:"email,omitempty" xml:"email,omitempty"`
 }
 
 // UserResponseID is used to define fields on response body types.
@@ -212,8 +230,8 @@ func NewUserResponseIDCollection(res hyuserviews.UserCollectionView) UserRespons
 func NewGetUserResponseBody(res *hyuserviews.UserView) *GetUserResponseBody {
 	body := &GetUserResponseBody{
 		ID:       res.ID,
-		UserName: *res.UserName,
-		Email:    *res.Email,
+		UserName: res.UserName,
+		Email:    res.Email,
 	}
 	return body
 }
@@ -227,10 +245,30 @@ func NewGetUserResponseBodyID(res *hyuserviews.UserView) *GetUserResponseBodyID 
 	return body
 }
 
-// NewUserListNoContentResponseBody builds the HTTP response body from the
+// NewCreateUserResponseBody builds the HTTP response body from the result of
+// the "createUser" endpoint of the "hy_user" service.
+func NewCreateUserResponseBody(res *hyuserviews.UserView) *CreateUserResponseBody {
+	body := &CreateUserResponseBody{
+		ID:       res.ID,
+		UserName: res.UserName,
+		Email:    res.Email,
+	}
+	return body
+}
+
+// NewCreateUserResponseBodyID builds the HTTP response body from the result of
+// the "createUser" endpoint of the "hy_user" service.
+func NewCreateUserResponseBodyID(res *hyuserviews.UserView) *CreateUserResponseBodyID {
+	body := &CreateUserResponseBodyID{
+		ID: res.ID,
+	}
+	return body
+}
+
+// NewUserListNotFoundResponseBody builds the HTTP response body from the
 // result of the "userList" endpoint of the "hy_user" service.
-func NewUserListNoContentResponseBody(res *goa.ServiceError) *UserListNoContentResponseBody {
-	body := &UserListNoContentResponseBody{
+func NewUserListNotFoundResponseBody(res *goa.ServiceError) *UserListNotFoundResponseBody {
+	body := &UserListNotFoundResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -322,7 +360,7 @@ func NewUserListPayload(token *string) *hyuser.UserListPayload {
 // NewGetUserPayload builds a hy_user service getUser endpoint payload.
 func NewGetUserPayload(userID int, token *string) *hyuser.GetUserPayload {
 	v := &hyuser.GetUserPayload{}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v
@@ -347,7 +385,7 @@ func NewUpdateUserPayload(body *UpdateUserRequestBody, userID int, token *string
 		Email:    body.Email,
 		Password: body.Password,
 	}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v

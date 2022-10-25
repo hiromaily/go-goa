@@ -18,6 +18,9 @@ var _ = Service(resourcePrefix+"user", func() {
 		Path("/user")
 	})
 
+	Error("NotFound")
+	Error("BadRequest")
+
 	Method("userList", func() {
 		Description("List all users")
 
@@ -26,12 +29,10 @@ var _ = Service(resourcePrefix+"user", func() {
 		})
 		Result(CollectionOf(types.RTUser))
 
-		Error("NoContent")
-
 		HTTP(func() {
 			GET("")
 			Response(StatusOK)
-			Response("NoContent", StatusNoContent)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 
@@ -43,10 +44,9 @@ var _ = Service(resourcePrefix+"user", func() {
 			Attribute("userID", Int, "User ID", func() {
 				Minimum(1)
 			})
+			Required("userID")
 		})
 		Result(types.RTUser)
-
-		Error("NotFound")
 
 		HTTP(func() {
 			GET("/{userID}")
@@ -60,13 +60,14 @@ var _ = Service(resourcePrefix+"user", func() {
 
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			//Attribute("userID", Int, "User ID", func() {
-			//	Minimum(1)
-			//})
 			Extend(types.PayloadUser)
 			Required("user_name", "email", "password")
 		})
-		Error("BadRequest")
+		Result(types.RTUser)
+		//Result(types.RTUser, func() {
+		//	View("id")
+		//	Required("id")
+		//})
 
 		HTTP(func() {
 			POST("")
@@ -84,11 +85,8 @@ var _ = Service(resourcePrefix+"user", func() {
 				Minimum(1)
 			})
 			Extend(types.PayloadUser)
-			//Required("user_name", "email", "password")
+			Required("userID")
 		})
-
-		Error("BadRequest")
-		Error("NotFound")
 
 		HTTP(func() {
 			PUT("/{userID}")
@@ -107,8 +105,6 @@ var _ = Service(resourcePrefix+"user", func() {
 				Minimum(1)
 			})
 		})
-
-		Error("NotFound")
 
 		HTTP(func() {
 			DELETE("/{userID}")
