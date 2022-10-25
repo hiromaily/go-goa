@@ -3,6 +3,7 @@ package resumeapi
 import (
 	"context"
 
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
 
@@ -55,27 +56,15 @@ func (s *hyUsersrvc) JWTAuth(ctx context.Context, token string, scheme *security
 func (s *hyUsersrvc) UserList(ctx context.Context, p *hyuser.UserListPayload) (res hyuser.UserCollection, view string, err error) {
 	log.Info().Msg("hyUser.UserList")
 
-	//	//type User struct {
-	//	//	Email     string `form:"email" json:"email" xml:"email"`
-	//	//	UserName string `form:"user_name" json:"user_name" xml:"user_name"`
-	//	//	// User ID
-	//	//	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
-	//	//}
-	//	var users []*app.User
-	//
-	//	svc := &m.User{Db: c.ctx.Db}
-	//	err := svc.UserList(&users)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	if len(users) == 0 {
-	//		return ctx.NoContent()
-	//	}
-	//
-	//	//type UserCollection []*User
-	//	res := app.UserCollection(users)
-	//	return ctx.OK(res)
+	users, err := s.userRepo.UserList()
+	if err != nil {
+		return nil, "", errors.Wrap(err, "fail to call userRepo.UserList()")
+	}
+	if len(users) == 0 {
+		return nil, "", hyuser.MakeNoContent(errors.New("no user"))
+	}
+	res = users
+
 	view = "default"
 	return
 }
