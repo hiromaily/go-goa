@@ -17,7 +17,7 @@ paths:
         get:
             tags:
                 - static
-            summary: Download assets/
+            summary: Download docs/
             operationId: static#/assets/{*filepath}
             parameters:
                 - name: filepath

@@ -20,7 +20,7 @@ import (
 type Server struct {
 	Mounts []*MountPoint
 	CORS   http.Handler
-	Assets http.Handler
+	Docs   http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -47,18 +47,18 @@ func New(
 	encoder func(context.Context, http.ResponseWriter) goahttp.Encoder,
 	errhandler func(context.Context, http.ResponseWriter, error),
 	formatter func(ctx context.Context, err error) goahttp.Statuser,
-	fileSystemAssets http.FileSystem,
+	fileSystemDocs http.FileSystem,
 ) *Server {
-	if fileSystemAssets == nil {
-		fileSystemAssets = http.Dir(".")
+	if fileSystemDocs == nil {
+		fileSystemDocs = http.Dir(".")
 	}
 	return &Server{
 		Mounts: []*MountPoint{
 			{"CORS", "OPTIONS", "/assets/{*filepath}"},
-			{"assets/", "GET", "/assets"},
+			{"docs/", "GET", "/assets"},
 		},
-		CORS:   NewCORSHandler(),
-		Assets: http.FileServer(fileSystemAssets),
+		CORS: NewCORSHandler(),
+		Docs: http.FileServer(fileSystemDocs),
 	}
 }
 
@@ -76,7 +76,7 @@ func (s *Server) MethodNames() []string { return static.MethodNames[:] }
 // Mount configures the mux to serve the static endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountCORSHandler(mux, h.CORS)
-	MountAssets(mux, goahttp.Replace("/assets", "/assets/", h.Assets))
+	MountDocs(mux, goahttp.Replace("/assets", "/docs/", h.Docs))
 }
 
 // Mount configures the mux to serve the static endpoints.
@@ -84,8 +84,8 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 	Mount(mux, s)
 }
 
-// MountAssets configures the mux to serve GET request made to "/assets".
-func MountAssets(mux goahttp.Muxer, h http.Handler) {
+// MountDocs configures the mux to serve GET request made to "/assets".
+func MountDocs(mux goahttp.Muxer, h http.Handler) {
 	mux.Handle("GET", "/assets/", HandleStaticOrigin(h).ServeHTTP)
 	mux.Handle("GET", "/assets/*filepath", HandleStaticOrigin(h).ServeHTTP)
 }

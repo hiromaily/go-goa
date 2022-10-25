@@ -5,23 +5,23 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f207ca57e48e456389341fc41bb06951)](https://www.codacy.com/app/hiromaily2/go-goa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiromaily/go-goa&amp;utm_campaign=Badge_Grade)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/hiromaily/go-goa/master/LICENSE)
 
-`go-goa is example of [goa](https://github.com/goadesign/goa) framework for v3.  
+`go-goa` is example of [goa](https://github.com/goadesign/goa) framework for v3.  
 
 ## Current status
 This project has started since 2017 to study Golang and code is quite messy.
-Now it's under `refactoring`.
+Now it's under refactoring.
 
 
 ## Refactoring
 - [ ] clean up everything
-- [ ] switch travisci to github action
+- [ ] switch CI from travisci to github action
 - [ ] rebuild front-end by latest React or Svelte
 
 
 ## Directory Structure
 | Directory Name | Description                                           |
 |:---------------|:------------------------------------------------------|
-| assets         | assets for front-end                                  |
+| docs(assets)   | assets for front-end                                  |
 | build          | docker/gcp configuration files                        |
 | cmd            | main.go for cli/server                                |
 | config         | toml configuration files                              |

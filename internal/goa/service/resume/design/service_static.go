@@ -11,7 +11,8 @@ var _ = Service("static", func() {
 	cors.Origin("*", func() {
 		cors.Methods("GET", "OPTIONS")
 	})
-	Files("/assets/{*filepath}", "assets/")
+	// path, actual stored path
+	Files("/assets/{*filepath}", "docs/")
 	//Files("/openapi.json", "../gen/http/openapi.json")
 	//Files("/swagger-ui/*filepath", "resources/swagger-ui/dist/")
 	//Files("/swagger.json", "goa/swagger/swagger.json")
