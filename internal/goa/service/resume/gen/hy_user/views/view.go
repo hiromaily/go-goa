@@ -34,7 +34,7 @@ type UserCollectionView []*UserView
 
 // UserView is a type that runs validations on a projected type.
 type UserView struct {
-	// ID
+	// Key ID
 	UserID *int
 	// User name
 	UserName *string

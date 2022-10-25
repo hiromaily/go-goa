@@ -18,10 +18,10 @@ import (
 // CreateCompanyRequestBody is the type of the "hy_company" service
 // "createCompany" endpoint HTTP request body.
 type CreateCompanyRequestBody struct {
-	// Company name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// Country ID
 	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	// Company name
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
 }
@@ -29,10 +29,10 @@ type CreateCompanyRequestBody struct {
 // UpdateCompanyRequestBody is the type of the "hy_company" service
 // "updateCompany" endpoint HTTP request body.
 type UpdateCompanyRequestBody struct {
-	// Company name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// Country ID
 	CountryID *int `form:"country_id,omitempty" json:"country_id,omitempty" xml:"country_id,omitempty"`
+	// Company name
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
 }
@@ -52,13 +52,10 @@ type CompanyResponseIdnameCollection []*CompanyResponseIdname
 // GetCompanyResponseBody is the type of the "hy_company" service "getCompany"
 // endpoint HTTP response body.
 type GetCompanyResponseBody struct {
-	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name        *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
-	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
@@ -67,29 +64,26 @@ type GetCompanyResponseBody struct {
 // GetCompanyResponseBodyID is the type of the "hy_company" service
 // "getCompany" endpoint HTTP response body.
 type GetCompanyResponseBodyID struct {
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 }
 
 // GetCompanyResponseBodyIdname is the type of the "hy_company" service
 // "getCompany" endpoint HTTP response body.
 type GetCompanyResponseBodyIdname struct {
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 }
 
 // CreateCompanyResponseBody is the type of the "hy_company" service
 // "createCompany" endpoint HTTP response body.
 type CreateCompanyResponseBody struct {
-	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name        *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
-	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
@@ -98,17 +92,17 @@ type CreateCompanyResponseBody struct {
 // CreateCompanyResponseBodyID is the type of the "hy_company" service
 // "createCompany" endpoint HTTP response body.
 type CreateCompanyResponseBodyID struct {
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 }
 
 // CreateCompanyResponseBodyIdname is the type of the "hy_company" service
 // "createCompany" endpoint HTTP response body.
 type CreateCompanyResponseBodyIdname struct {
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 }
 
 // CompanyListNotFoundResponseBody is the type of the "hy_company" service
@@ -221,13 +215,10 @@ type DeleteCompanyNotFoundResponseBody struct {
 
 // CompanyResponse is used to define fields on response body types.
 type CompanyResponse struct {
-	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name        *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
-	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
@@ -235,16 +226,16 @@ type CompanyResponse struct {
 
 // CompanyResponseID is used to define fields on response body types.
 type CompanyResponseID struct {
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 }
 
 // CompanyResponseIdname is used to define fields on response body types.
 type CompanyResponseIdname struct {
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 }
 
 // NewCompanyResponseCollection builds the HTTP response body from the result
@@ -281,10 +272,8 @@ func NewCompanyResponseIdnameCollection(res hycompanyviews.CompanyCollectionView
 // the "getCompany" endpoint of the "hy_company" service.
 func NewGetCompanyResponseBody(res *hycompanyviews.CompanyView) *GetCompanyResponseBody {
 	body := &GetCompanyResponseBody{
-		ID:          res.ID,
 		CompanyID:   res.CompanyID,
-		Name:        res.Name,
-		IsHq:        res.IsHq,
+		CompanyName: res.CompanyName,
 		CountryName: res.CountryName,
 		Address:     res.Address,
 	}
@@ -304,8 +293,8 @@ func NewGetCompanyResponseBodyID(res *hycompanyviews.CompanyView) *GetCompanyRes
 // result of the "getCompany" endpoint of the "hy_company" service.
 func NewGetCompanyResponseBodyIdname(res *hycompanyviews.CompanyView) *GetCompanyResponseBodyIdname {
 	body := &GetCompanyResponseBodyIdname{
-		CompanyID: res.CompanyID,
-		Name:      res.Name,
+		CompanyID:   res.CompanyID,
+		CompanyName: res.CompanyName,
 	}
 	return body
 }
@@ -314,10 +303,8 @@ func NewGetCompanyResponseBodyIdname(res *hycompanyviews.CompanyView) *GetCompan
 // of the "createCompany" endpoint of the "hy_company" service.
 func NewCreateCompanyResponseBody(res *hycompanyviews.CompanyView) *CreateCompanyResponseBody {
 	body := &CreateCompanyResponseBody{
-		ID:          res.ID,
 		CompanyID:   res.CompanyID,
-		Name:        res.Name,
-		IsHq:        res.IsHq,
+		CompanyName: res.CompanyName,
 		CountryName: res.CountryName,
 		Address:     res.Address,
 	}
@@ -337,8 +324,8 @@ func NewCreateCompanyResponseBodyID(res *hycompanyviews.CompanyView) *CreateComp
 // result of the "createCompany" endpoint of the "hy_company" service.
 func NewCreateCompanyResponseBodyIdname(res *hycompanyviews.CompanyView) *CreateCompanyResponseBodyIdname {
 	body := &CreateCompanyResponseBodyIdname{
-		CompanyID: res.CompanyID,
-		Name:      res.Name,
+		CompanyID:   res.CompanyID,
+		CompanyName: res.CompanyName,
 	}
 	return body
 }
@@ -449,9 +436,9 @@ func NewGetCompanyPayload(companyID int, token *string) *hycompany.GetCompanyPay
 // payload.
 func NewCreateCompanyPayload(body *CreateCompanyRequestBody, token *string) *hycompany.CreateCompanyPayload {
 	v := &hycompany.CreateCompanyPayload{
-		Name:      *body.Name,
-		CountryID: *body.CountryID,
-		Address:   *body.Address,
+		CountryID:   *body.CountryID,
+		CompanyName: *body.CompanyName,
+		Address:     *body.Address,
 	}
 	v.Token = token
 
@@ -462,9 +449,9 @@ func NewCreateCompanyPayload(body *CreateCompanyRequestBody, token *string) *hyc
 // payload.
 func NewUpdateCompanyPayload(body *UpdateCompanyRequestBody, companyID int, token *string) *hycompany.UpdateCompanyPayload {
 	v := &hycompany.UpdateCompanyPayload{
-		Name:      body.Name,
-		CountryID: body.CountryID,
-		Address:   body.Address,
+		CountryID:   body.CountryID,
+		CompanyName: body.CompanyName,
+		Address:     body.Address,
 	}
 	v.CompanyID = companyID
 	v.Token = token
@@ -485,24 +472,14 @@ func NewDeleteCompanyPayload(companyID int, token *string) *hycompany.DeleteComp
 // ValidateCreateCompanyRequestBody runs the validations defined on
 // CreateCompanyRequestBody
 func ValidateCreateCompanyRequestBody(body *CreateCompanyRequestBody) (err error) {
-	if body.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	if body.CompanyName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("company_name", "body"))
 	}
 	if body.CountryID == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("country_id", "body"))
 	}
 	if body.Address == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("address", "body"))
-	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 2, true))
-		}
-	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 40, false))
-		}
 	}
 	if body.CountryID != nil {
 		if *body.CountryID < 1 {
@@ -512,6 +489,16 @@ func ValidateCreateCompanyRequestBody(body *CreateCompanyRequestBody) (err error
 	if body.CountryID != nil {
 		if *body.CountryID > 999 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("body.country_id", *body.CountryID, 999, false))
+		}
+	}
+	if body.CompanyName != nil {
+		if utf8.RuneCountInString(*body.CompanyName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.company_name", *body.CompanyName, utf8.RuneCountInString(*body.CompanyName), 2, true))
+		}
+	}
+	if body.CompanyName != nil {
+		if utf8.RuneCountInString(*body.CompanyName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.company_name", *body.CompanyName, utf8.RuneCountInString(*body.CompanyName), 40, false))
 		}
 	}
 	if body.Address != nil {
@@ -530,16 +517,6 @@ func ValidateCreateCompanyRequestBody(body *CreateCompanyRequestBody) (err error
 // ValidateUpdateCompanyRequestBody runs the validations defined on
 // UpdateCompanyRequestBody
 func ValidateUpdateCompanyRequestBody(body *UpdateCompanyRequestBody) (err error) {
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 2, true))
-		}
-	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 40, false))
-		}
-	}
 	if body.CountryID != nil {
 		if *body.CountryID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("body.country_id", *body.CountryID, 1, true))
@@ -548,6 +525,16 @@ func ValidateUpdateCompanyRequestBody(body *UpdateCompanyRequestBody) (err error
 	if body.CountryID != nil {
 		if *body.CountryID > 999 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("body.country_id", *body.CountryID, 999, false))
+		}
+	}
+	if body.CompanyName != nil {
+		if utf8.RuneCountInString(*body.CompanyName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.company_name", *body.CompanyName, utf8.RuneCountInString(*body.CompanyName), 2, true))
+		}
+	}
+	if body.CompanyName != nil {
+		if utf8.RuneCountInString(*body.CompanyName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.company_name", *body.CompanyName, utf8.RuneCountInString(*body.CompanyName), 40, false))
 		}
 	}
 	if body.Address != nil {

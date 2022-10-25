@@ -101,7 +101,7 @@ type UpdateUserPayload struct {
 
 // User is the result type of the hy_user service getUser method.
 type User struct {
-	// ID
+	// Key ID
 	UserID *int
 	// User name
 	UserName *string

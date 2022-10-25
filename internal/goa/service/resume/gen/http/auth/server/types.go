@@ -27,7 +27,7 @@ type LoginRequestBody struct {
 // LoginResponseBody is the type of the "auth" service "login" endpoint HTTP
 // response body.
 type LoginResponseBody struct {
-	// ID
+	// Key ID
 	ID int `form:"id" json:"id" xml:"id"`
 }
 

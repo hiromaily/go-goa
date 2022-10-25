@@ -48,7 +48,7 @@ type UserResponseIDCollection []*UserResponseID
 // GetUserResponseBody is the type of the "hy_user" service "getUser" endpoint
 // HTTP response body.
 type GetUserResponseBody struct {
-	// ID
+	// Key ID
 	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
@@ -59,14 +59,14 @@ type GetUserResponseBody struct {
 // GetUserResponseBodyID is the type of the "hy_user" service "getUser"
 // endpoint HTTP response body.
 type GetUserResponseBodyID struct {
-	// ID
+	// Key ID
 	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
 // CreateUserResponseBody is the type of the "hy_user" service "createUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
-	// ID
+	// Key ID
 	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
@@ -77,7 +77,7 @@ type CreateUserResponseBody struct {
 // CreateUserResponseBodyID is the type of the "hy_user" service "createUser"
 // endpoint HTTP response body.
 type CreateUserResponseBodyID struct {
-	// ID
+	// Key ID
 	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 
@@ -191,7 +191,7 @@ type DeleteUserNotFoundResponseBody struct {
 
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
-	// ID
+	// Key ID
 	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
@@ -201,7 +201,7 @@ type UserResponse struct {
 
 // UserResponseID is used to define fields on response body types.
 type UserResponseID struct {
-	// ID
+	// Key ID
 	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 }
 

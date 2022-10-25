@@ -88,19 +88,15 @@ paths:
                             example:
                                 - address: Shinagawa Tokyo
                                   company_id: 10
-                                  country_name: Ut quia exercitationem autem non nisi.
+                                  company_name: Company
+                                  country_name: Est qui iure eligendi alias.
                                   created_at: "2017-03-10T15:00:00Z"
-                                  id: 10
-                                  is_hq: Est qui iure eligendi alias.
-                                  name: Company
                                   updated_at: "2017-03-10T15:00:00Z"
                                 - address: Shinagawa Tokyo
                                   company_id: 10
-                                  country_name: Ut quia exercitationem autem non nisi.
+                                  company_name: Company
+                                  country_name: Est qui iure eligendi alias.
                                   created_at: "2017-03-10T15:00:00Z"
-                                  id: 10
-                                  is_hq: Est qui iure eligendi alias.
-                                  name: Company
                                   updated_at: "2017-03-10T15:00:00Z"
                 "404":
                     description: 'NotFound: Not Found response.'
@@ -125,8 +121,8 @@ paths:
                             $ref: '#/components/schemas/CreateCompanyRequestBody'
                         example:
                             address: Shinagawa Tokyo
+                            company_name: Company
                             country_id: 110
-                            name: Company
             responses:
                 "201":
                     description: Created response.
@@ -138,11 +134,9 @@ paths:
                             example:
                                 address: Shinagawa Tokyo
                                 company_id: 10
-                                country_name: Non aut quas corporis.
+                                company_name: Company
+                                country_name: Quis sit vel.
                                 created_at: "2017-03-10T15:00:00Z"
-                                id: 10
-                                is_hq: Ipsa expedita aut molestiae recusandae nisi quis.
-                                name: Company
                                 updated_at: "2017-03-10T15:00:00Z"
                 "400":
                     description: 'BadRequest: Bad Request response.'
@@ -153,7 +147,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /company/{companyID}:
+    /company/{company_id}:
         delete:
             tags:
                 - hy_company
@@ -161,16 +155,16 @@ paths:
             description: Delete company
             operationId: hy_company#deleteCompany
             parameters:
-                - name: companyID
+                - name: company_id
                   in: path
                   description: Company ID
                   required: true
                   schema:
                     type: integer
                     description: Company ID
-                    example: 8079332751235964737
+                    example: 5677236963017093104
                     minimum: 1
-                  example: 2262152883370296168
+                  example: 8166058884680761478
             responses:
                 "200":
                     description: OK response.
@@ -190,16 +184,16 @@ paths:
             description: Retrieve company with given company_id
             operationId: hy_company#getCompany
             parameters:
-                - name: companyID
+                - name: company_id
                   in: path
                   description: Company ID
                   required: true
                   schema:
                     type: integer
                     description: Company ID
-                    example: 1507398955339227956
+                    example: 4184350793505023335
                     minimum: 1
-                  example: 537395788216632673
+                  example: 7298225062677192023
             responses:
                 "200":
                     description: OK response.
@@ -211,11 +205,9 @@ paths:
                             example:
                                 address: Shinagawa Tokyo
                                 company_id: 10
-                                country_name: Quo hic.
+                                company_name: Company
+                                country_name: Qui reprehenderit aut.
                                 created_at: "2017-03-10T15:00:00Z"
-                                id: 10
-                                is_hq: Qui corporis molestiae qui.
-                                name: Company
                                 updated_at: "2017-03-10T15:00:00Z"
                 "404":
                     description: 'NotFound: Not Found response.'
@@ -233,16 +225,16 @@ paths:
             description: Update company data
             operationId: hy_company#updateCompany
             parameters:
-                - name: companyID
+                - name: company_id
                   in: path
                   description: Company ID
                   required: true
                   schema:
                     type: integer
                     description: Company ID
-                    example: 4709205923878122757
+                    example: 2367788905373487708
                     minimum: 1
-                  example: 1932835482810688546
+                  example: 6419065970720496558
             requestBody:
                 required: true
                 content:
@@ -251,8 +243,8 @@ paths:
                             $ref: '#/components/schemas/UpdateCompanyRequestBody'
                         example:
                             address: Shinagawa Tokyo
+                            company_name: Company
                             country_id: 110
-                            name: Company
             responses:
                 "200":
                     description: OK response.
@@ -304,14 +296,6 @@ paths:
                                   id: 10
                                   name: Golang
                                   updated_at: "2017-03-10T15:00:00Z"
-                                - created_at: "2017-03-10T15:00:00Z"
-                                  id: 10
-                                  name: Golang
-                                  updated_at: "2017-03-10T15:00:00Z"
-                                - created_at: "2017-03-10T15:00:00Z"
-                                  id: 10
-                                  name: Golang
-                                  updated_at: "2017-03-10T15:00:00Z"
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -352,9 +336,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 2919305021956086192
+                    example: 8003270703388328305
                     format: int64
-                  example: 2983360025939555954
+                  example: 4130396077049506307
             responses:
                 "200":
                     description: OK response.
@@ -375,9 +359,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 741071739224169298
+                    example: 7148851887236450792
                     format: int64
-                  example: 3556813992552060231
+                  example: 7429526940120957809
             responses:
                 "200":
                     description: OK response.
@@ -389,11 +373,9 @@ paths:
                             example:
                                 address: Shinagawa Tokyo
                                 company_id: 10
-                                country_name: Doloribus et.
+                                company_name: Company
+                                country_name: Quis voluptas non.
                                 created_at: "2017-03-10T15:00:00Z"
-                                id: 10
-                                is_hq: Ad est ut.
-                                name: Company
                                 updated_at: "2017-03-10T15:00:00Z"
             security:
                 - jwt_header_Authorization:
@@ -412,9 +394,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 1929160346615187159
+                    example: 3594416558187196043
                     format: int64
-                  example: 4229942495117713676
+                  example: 2206890179669570462
             requestBody:
                 required: true
                 content:
@@ -445,18 +427,6 @@ paths:
                                 description: 'Response body may alternatively be #/components/schemas/UserResponseIDCollection'
                                 $ref: '#/components/schemas/UserCollection'
                             example:
-                                - created_at: "2017-03-10T15:00:00Z"
-                                  email: hy@gmail.com
-                                  password: xxxxxxxx
-                                  updated_at: "2017-03-10T15:00:00Z"
-                                  user_id: 10
-                                  user_name: Hiroki
-                                - created_at: "2017-03-10T15:00:00Z"
-                                  email: hy@gmail.com
-                                  password: xxxxxxxx
-                                  updated_at: "2017-03-10T15:00:00Z"
-                                  user_id: 10
-                                  user_name: Hiroki
                                 - created_at: "2017-03-10T15:00:00Z"
                                   email: hy@gmail.com
                                   password: xxxxxxxx
@@ -533,9 +503,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 2215187889391118975
+                    example: 3172866413800060998
                     minimum: 1
-                  example: 1003376455700044036
+                  example: 5639337732304257506
             responses:
                 "200":
                     description: OK response.
@@ -562,9 +532,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 5499980164448884111
+                    example: 4639836790153810357
                     minimum: 1
-                  example: 5801123470601036307
+                  example: 9156148972279721235
             responses:
                 "200":
                     description: OK response.
@@ -603,9 +573,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 1588820762925935258
+                    example: 803202534870497674
                     minimum: 1
-                  example: 3289647202823677554
+                  example: 963218077044982780
             requestBody:
                 required: true
                 content:
@@ -649,9 +619,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 62964701397208874
+                    example: 8856826278083494555
                     minimum: 1
-                  example: 7146838793115541650
+                  example: 7740664151266896307
             responses:
                 "200":
                     description: OK response.
@@ -661,6 +631,8 @@ paths:
                                 description: 'Response body may alternatively be #/components/schemas/UsertechResponseTechCollection'
                                 $ref: '#/components/schemas/UsertechCollection'
                             example:
+                                - id: 10
+                                  tech_name: Golang
                                 - id: 10
                                   tech_name: Golang
                                 - id: 10
@@ -685,9 +657,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 6641294975826754124
+                    example: 2728230755377463616
                     minimum: 1
-                  example: 5513863194913407949
+                  example: 5633647381860274049
             responses:
                 "200":
                     description: OK response.
@@ -697,6 +669,8 @@ paths:
                                 description: 'Response body may alternatively be #/components/schemas/UsertechResponseTechCollection'
                                 $ref: '#/components/schemas/UsertechCollection'
                             example:
+                                - id: 10
+                                  tech_name: Golang
                                 - id: 10
                                   tech_name: Golang
                                 - id: 10
@@ -721,9 +695,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 407109767923665206
+                    example: 2495815827976346045
                     minimum: 1
-                  example: 7824537317039377914
+                  example: 6968908288167102051
             responses:
                 "200":
                     description: OK response.
@@ -732,12 +706,6 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/UserworkhistoryCollection'
                             example:
-                                - company: Company
-                                  country: nl
-                                  description: '["Developed resume site for job seeking."]'
-                                  techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
-                                  term: Jul 2017 - Aug 2017
-                                  title: Developer
                                 - company: Company
                                   country: nl
                                   description: '["Developed resume site for job seeking."]'
@@ -766,7 +734,7 @@ components:
             properties:
                 id:
                     type: integer
-                    description: ID
+                    description: Key ID
                     example: 10
                     minimum: 1
             example:
@@ -784,31 +752,23 @@ components:
                     maxLength: 80
                 company_id:
                     type: integer
-                    description: ID
+                    description: Key ID
                     example: 10
                     minimum: 1
-                country_name:
-                    type: string
-                    example: Sint corporis tempora.
-                created_at:
-                    type: string
-                    description: Datetime
-                    example: "2017-03-10T15:00:00Z"
-                    format: date-time
-                id:
-                    type: integer
-                    description: ID
-                    example: 10
-                    minimum: 1
-                is_hq:
-                    type: string
-                    example: Sequi laudantium illum.
-                name:
+                company_name:
                     type: string
                     description: Company name
                     example: Company
                     minLength: 2
                     maxLength: 40
+                country_name:
+                    type: string
+                    example: Iure distinctio.
+                created_at:
+                    type: string
+                    description: Datetime
+                    example: "2017-03-10T15:00:00Z"
+                    format: date-time
                 updated_at:
                     type: string
                     description: Datetime
@@ -818,11 +778,9 @@ components:
             example:
                 address: Shinagawa Tokyo
                 company_id: 10
-                country_name: Officia quidem sed odio mollitia.
+                company_name: Company
+                country_name: Facere dolorem itaque officiis iusto.
                 created_at: "2017-03-10T15:00:00Z"
-                id: 10
-                is_hq: Architecto quia laudantium facilis ut quia.
-                name: Company
                 updated_at: "2017-03-10T15:00:00Z"
         CompanyCollection:
             type: array
@@ -831,34 +789,28 @@ components:
             example:
                 - address: Shinagawa Tokyo
                   company_id: 10
-                  country_name: Ut quia exercitationem autem non nisi.
+                  company_name: Company
+                  country_name: Est qui iure eligendi alias.
                   created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  is_hq: Est qui iure eligendi alias.
-                  name: Company
                   updated_at: "2017-03-10T15:00:00Z"
                 - address: Shinagawa Tokyo
                   company_id: 10
-                  country_name: Ut quia exercitationem autem non nisi.
+                  company_name: Company
+                  country_name: Est qui iure eligendi alias.
                   created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  is_hq: Est qui iure eligendi alias.
-                  name: Company
                   updated_at: "2017-03-10T15:00:00Z"
                 - address: Shinagawa Tokyo
                   company_id: 10
-                  country_name: Ut quia exercitationem autem non nisi.
+                  company_name: Company
+                  country_name: Est qui iure eligendi alias.
                   created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  is_hq: Est qui iure eligendi alias.
-                  name: Company
                   updated_at: "2017-03-10T15:00:00Z"
         CompanyResponseID:
             type: object
             properties:
                 company_id:
                     type: integer
-                    description: ID
+                    description: Key ID
                     example: 10
                     minimum: 1
             description: A company information (id view)
@@ -873,15 +825,16 @@ components:
                 - company_id: 10
                 - company_id: 10
                 - company_id: 10
+                - company_id: 10
         CompanyResponseIdname:
             type: object
             properties:
                 company_id:
                     type: integer
-                    description: ID
+                    description: Key ID
                     example: 10
                     minimum: 1
-                name:
+                company_name:
                     type: string
                     description: Company name
                     example: Company
@@ -890,7 +843,7 @@ components:
             description: A company information (idname view)
             example:
                 company_id: 10
-                name: Company
+                company_name: Company
         CompanyResponseIdnameCollection:
             type: array
             items:
@@ -898,13 +851,13 @@ components:
             description: CompanyListResponseBody is the result type for an array of CompanyResponse (idname view)
             example:
                 - company_id: 10
-                  name: Company
+                  company_name: Company
                 - company_id: 10
-                  name: Company
+                  company_name: Company
                 - company_id: 10
-                  name: Company
+                  company_name: Company
                 - company_id: 10
-                  name: Company
+                  company_name: Company
         CreateCompanyRequestBody:
             type: object
             properties:
@@ -914,24 +867,24 @@ components:
                     example: Shinagawa Tokyo
                     minLength: 2
                     maxLength: 80
+                company_name:
+                    type: string
+                    description: Company name
+                    example: Company
+                    minLength: 2
+                    maxLength: 40
                 country_id:
                     type: integer
                     description: Country ID
                     example: 110
                     minimum: 1
                     maximum: 999
-                name:
-                    type: string
-                    description: Company name
-                    example: Company
-                    minLength: 2
-                    maxLength: 40
             example:
                 address: Shinagawa Tokyo
+                company_name: Company
                 country_id: 110
-                name: Company
             required:
-                - name
+                - company_name
                 - country_id
                 - address
         CreateTechRequestBody:
@@ -981,7 +934,7 @@ components:
                 fault:
                     type: boolean
                     description: Is the error a server-side fault?
-                    example: false
+                    example: true
                 id:
                     type: string
                     description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1001,7 +954,7 @@ components:
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: true
+                    example: false
             example:
                 id: 3F1FKVRR
                 message: Value of ID must be an integer
@@ -1043,7 +996,7 @@ components:
                     format: date-time
                 id:
                     type: integer
-                    description: ID
+                    description: Key ID
                     example: 10
                     minimum: 1
                 name:
@@ -1082,12 +1035,16 @@ components:
                   id: 10
                   name: Golang
                   updated_at: "2017-03-10T15:00:00Z"
+                - created_at: "2017-03-10T15:00:00Z"
+                  id: 10
+                  name: Golang
+                  updated_at: "2017-03-10T15:00:00Z"
         TechResponseID:
             type: object
             properties:
                 id:
                     type: integer
-                    description: ID
+                    description: Key ID
                     example: 10
                     minimum: 1
             description: A tech information (id view)
@@ -1110,22 +1067,22 @@ components:
                     example: Shinagawa Tokyo
                     minLength: 2
                     maxLength: 80
+                company_name:
+                    type: string
+                    description: Company name
+                    example: Company
+                    minLength: 2
+                    maxLength: 40
                 country_id:
                     type: integer
                     description: Country ID
                     example: 110
                     minimum: 1
                     maximum: 999
-                name:
-                    type: string
-                    description: Company name
-                    example: Company
-                    minLength: 2
-                    maxLength: 40
             example:
                 address: Shinagawa Tokyo
+                company_name: Company
                 country_id: 110
-                name: Company
         UpdateUserRequestBody:
             type: object
             properties:
@@ -1176,7 +1133,7 @@ components:
                     format: date-time
                 user_id:
                     type: integer
-                    description: ID
+                    description: Key ID
                     example: 10
                     minimum: 1
                 user_name:
@@ -1221,7 +1178,7 @@ components:
             properties:
                 user_id:
                     type: integer
-                    description: ID
+                    description: Key ID
                     example: 10
                     minimum: 1
             description: User information (id view)
@@ -1236,13 +1193,12 @@ components:
                 - user_id: 10
                 - user_id: 10
                 - user_id: 10
-                - user_id: 10
         Usertech:
             type: object
             properties:
                 id:
                     type: integer
-                    description: ID
+                    description: Key ID
                     example: 10
                     minimum: 1
                 tech_name:
@@ -1288,7 +1244,6 @@ components:
                 $ref: '#/components/schemas/UsertechResponseTech'
             description: GetUserLikeTechResponseBody is the result type for an array of UsertechResponse (tech view)
             example:
-                - tech_name: Golang
                 - tech_name: Golang
                 - tech_name: Golang
                 - tech_name: Golang

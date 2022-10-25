@@ -59,13 +59,10 @@ var MethodNames = [5]string{"companyList", "getCompany", "createCompany", "updat
 
 // Company is the result type of the hy_company service getCompany method.
 type Company struct {
-	// ID
-	ID *int
-	// ID
+	// Key ID
 	CompanyID *int
 	// Company name
-	Name        *string
-	IsHq        *string
+	CompanyName *string
 	CountryName *string
 	// Company Address
 	Address *string
@@ -91,10 +88,10 @@ type CompanyListPayload struct {
 type CreateCompanyPayload struct {
 	// JWT token used to perform authorization
 	Token *string
-	// Company name
-	Name string
 	// Country ID
 	CountryID int
+	// Company name
+	CompanyName string
 	// Company Address
 	Address string
 }
@@ -124,10 +121,10 @@ type UpdateCompanyPayload struct {
 	Token *string
 	// Company ID
 	CompanyID int
-	// Company name
-	Name *string
 	// Country ID
 	CountryID *int
+	// Company name
+	CompanyName *string
 	// Company Address
 	Address *string
 }
@@ -270,10 +267,8 @@ func newCompanyCollectionViewIdname(res CompanyCollection) hycompanyviews.Compan
 // newCompany converts projected type Company to service type Company.
 func newCompany(vres *hycompanyviews.CompanyView) *Company {
 	res := &Company{
-		ID:          vres.ID,
 		CompanyID:   vres.CompanyID,
-		Name:        vres.Name,
-		IsHq:        vres.IsHq,
+		CompanyName: vres.CompanyName,
 		CountryName: vres.CountryName,
 		Address:     vres.Address,
 	}
@@ -291,8 +286,8 @@ func newCompanyID(vres *hycompanyviews.CompanyView) *Company {
 // newCompanyIdname converts projected type Company to service type Company.
 func newCompanyIdname(vres *hycompanyviews.CompanyView) *Company {
 	res := &Company{
-		CompanyID: vres.CompanyID,
-		Name:      vres.Name,
+		CompanyID:   vres.CompanyID,
+		CompanyName: vres.CompanyName,
 	}
 	return res
 }
@@ -301,10 +296,8 @@ func newCompanyIdname(vres *hycompanyviews.CompanyView) *Company {
 // using the "default" view.
 func newCompanyView(res *Company) *hycompanyviews.CompanyView {
 	vres := &hycompanyviews.CompanyView{
-		ID:          res.ID,
 		CompanyID:   res.CompanyID,
-		Name:        res.Name,
-		IsHq:        res.IsHq,
+		CompanyName: res.CompanyName,
 		CountryName: res.CountryName,
 		Address:     res.Address,
 	}
@@ -324,8 +317,8 @@ func newCompanyViewID(res *Company) *hycompanyviews.CompanyView {
 // CompanyView using the "idname" view.
 func newCompanyViewIdname(res *Company) *hycompanyviews.CompanyView {
 	vres := &hycompanyviews.CompanyView{
-		CompanyID: res.CompanyID,
-		Name:      res.Name,
+		CompanyID:   res.CompanyID,
+		CompanyName: res.CompanyName,
 	}
 	return vres
 }

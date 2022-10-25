@@ -27,7 +27,7 @@ type UsertechCollectionView []*UsertechView
 
 // UsertechView is a type that runs validations on a projected type.
 type UsertechView struct {
-	// ID
+	// Key ID
 	ID *int
 	// Tech name
 	TechName *string

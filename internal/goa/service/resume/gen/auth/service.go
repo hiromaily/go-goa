@@ -34,7 +34,7 @@ var MethodNames = [1]string{"login"}
 type Authorized struct {
 	// JWT token
 	Token string
-	// ID
+	// Key ID
 	ID int
 }
 

@@ -120,7 +120,7 @@ paths:
                   schema:
                     $ref: '#/definitions/HyCompanyCreateCompanyRequestBody'
                     required:
-                        - name
+                        - company_name
                         - country_id
                         - address
             responses:
@@ -136,7 +136,7 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /company/{companyID}:
+    /company/{company_id}:
         get:
             tags:
                 - hy_company
@@ -146,7 +146,7 @@ paths:
             produces:
                 - application/json
             parameters:
-                - name: companyID
+                - name: company_id
                   in: path
                   description: Company ID
                   required: true
@@ -177,7 +177,7 @@ paths:
             description: Update company data
             operationId: hy_company#updateCompany
             parameters:
-                - name: companyID
+                - name: company_id
                   in: path
                   description: Company ID
                   required: true
@@ -215,7 +215,7 @@ paths:
             description: Delete company
             operationId: hy_company#deleteCompany
             parameters:
-                - name: companyID
+                - name: company_id
                   in: path
                   description: Company ID
                   required: true
@@ -657,7 +657,7 @@ definitions:
         properties:
             id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
         description: LoginResponseBody result type (default view)
@@ -672,7 +672,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -700,7 +700,7 @@ definitions:
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: true
-            timeout: true
+            timeout: false
         required:
             - name
             - id
@@ -720,34 +720,24 @@ definitions:
                 maxLength: 80
             company_id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
-            country_name:
-                type: string
-                example: Esse voluptatum sunt consequatur.
-            id:
-                type: integer
-                description: ID
-                example: 10
-                minimum: 1
-            is_hq:
-                type: string
-                example: Eum facilis quia veritatis dicta minima.
-            name:
+            company_name:
                 type: string
                 description: Company name
                 example: Company
                 minLength: 2
                 maxLength: 40
+            country_name:
+                type: string
+                example: Ipsa animi.
         description: A company information (default view)
         example:
             address: Shinagawa Tokyo
             company_id: 10
-            country_name: Et fuga omnis id qui debitis.
-            id: 10
-            is_hq: Quo consequatur aut dicta.
-            name: Company
+            company_name: Company
+            country_name: Officiis consectetur quidem quod sapiente quia.
     Error:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -755,7 +745,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -778,7 +768,7 @@ definitions:
                 example: false
         description: Error response result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -798,7 +788,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -814,18 +804,18 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: companyList_NotFound_response_body result type (default view)
         example:
             fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
+            temporary: true
             timeout: true
         required:
             - name
@@ -843,22 +833,12 @@ definitions:
         example:
             - address: Shinagawa Tokyo
               company_id: 10
-              country_name: Animi et.
-              id: 10
-              is_hq: Qui reprehenderit aut.
-              name: Company
+              company_name: Company
+              country_name: Libero praesentium facilis qui ut.
             - address: Shinagawa Tokyo
               company_id: 10
-              country_name: Animi et.
-              id: 10
-              is_hq: Qui reprehenderit aut.
-              name: Company
-            - address: Shinagawa Tokyo
-              company_id: 10
-              country_name: Animi et.
-              id: 10
-              is_hq: Qui reprehenderit aut.
-              name: Company
+              company_name: Company
+              country_name: Libero praesentium facilis qui ut.
     HyCompanyCreateCompanyBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -886,15 +866,15 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: createCompany_BadRequest_response_body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
-            timeout: true
+            temporary: false
+            timeout: false
         required:
             - name
             - id
@@ -912,24 +892,24 @@ definitions:
                 example: Shinagawa Tokyo
                 minLength: 2
                 maxLength: 80
+            company_name:
+                type: string
+                description: Company name
+                example: Company
+                minLength: 2
+                maxLength: 40
             country_id:
                 type: integer
                 description: Country ID
                 example: 110
                 minimum: 1
                 maximum: 999
-            name:
-                type: string
-                description: Company name
-                example: Company
-                minLength: 2
-                maxLength: 40
         example:
             address: Shinagawa Tokyo
+            company_name: Company
             country_id: 110
-            name: Company
         required:
-            - name
+            - company_name
             - country_id
             - address
     HyCompanyCreateCompanyResponseBody:
@@ -944,34 +924,24 @@ definitions:
                 maxLength: 80
             company_id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
-            country_name:
-                type: string
-                example: Sit dolorem quia distinctio temporibus ea ipsa.
-            id:
-                type: integer
-                description: ID
-                example: 10
-                minimum: 1
-            is_hq:
-                type: string
-                example: Ut et omnis.
-            name:
+            company_name:
                 type: string
                 description: Company name
                 example: Company
                 minLength: 2
                 maxLength: 40
+            country_name:
+                type: string
+                example: Pariatur numquam quibusdam mollitia.
         description: CreateCompanyResponseBody result type (default view)
         example:
             address: Shinagawa Tokyo
             company_id: 10
-            country_name: Adipisci et nesciunt dicta et est.
-            id: 10
-            is_hq: Temporibus officiis.
-            name: Company
+            company_name: Company
+            country_name: Facilis quia veritatis dicta.
     HyCompanyDeleteCompanyNotFoundResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -979,7 +949,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1006,8 +976,8 @@ definitions:
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: true
+            temporary: true
+            timeout: false
         required:
             - name
             - id
@@ -1022,7 +992,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1045,11 +1015,11 @@ definitions:
                 example: false
         description: getCompany_NotFound_response_body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
+            temporary: true
             timeout: true
         required:
             - name
@@ -1070,34 +1040,24 @@ definitions:
                 maxLength: 80
             company_id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
-            country_name:
-                type: string
-                example: Consequatur in reprehenderit eos.
-            id:
-                type: integer
-                description: ID
-                example: 10
-                minimum: 1
-            is_hq:
-                type: string
-                example: Perspiciatis ipsum dolore.
-            name:
+            company_name:
                 type: string
                 description: Company name
                 example: Company
                 minLength: 2
                 maxLength: 40
+            country_name:
+                type: string
+                example: A officia.
         description: GetCompanyResponseBody result type (default view)
         example:
             address: Shinagawa Tokyo
             company_id: 10
-            country_name: Odit eaque similique consectetur quasi.
-            id: 10
-            is_hq: Laboriosam quibusdam mollitia qui aut in eaque.
-            name: Company
+            company_name: Company
+            country_name: Cum laboriosam et nesciunt.
     HyCompanyUpdateCompanyBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -1105,7 +1065,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1121,18 +1081,18 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: updateCompany_BadRequest_response_body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: false
         required:
             - name
@@ -1168,15 +1128,15 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: updateCompany_NotFound_response_body result type (default view)
         example:
             fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
-            timeout: true
+            temporary: true
+            timeout: false
         required:
             - name
             - id
@@ -1194,22 +1154,22 @@ definitions:
                 example: Shinagawa Tokyo
                 minLength: 2
                 maxLength: 80
+            company_name:
+                type: string
+                description: Company name
+                example: Company
+                minLength: 2
+                maxLength: 40
             country_id:
                 type: integer
                 description: Country ID
                 example: 110
                 minimum: 1
                 maximum: 999
-            name:
-                type: string
-                description: Company name
-                example: Company
-                minLength: 2
-                maxLength: 40
         example:
             address: Shinagawa Tokyo
+            company_name: Company
             country_id: 110
-            name: Company
     HyTechCreateTechRequestBody:
         title: HyTechCreateTechRequestBody
         type: object
@@ -1236,34 +1196,24 @@ definitions:
                 maxLength: 80
             company_id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
-            country_name:
-                type: string
-                example: Corporis ut et eum ut provident fugiat.
-            id:
-                type: integer
-                description: ID
-                example: 10
-                minimum: 1
-            is_hq:
-                type: string
-                example: Delectus labore aspernatur est.
-            name:
+            company_name:
                 type: string
                 description: Company name
                 example: Company
                 minLength: 2
                 maxLength: 40
+            country_name:
+                type: string
+                example: Reprehenderit eos ea laboriosam quibusdam mollitia qui.
         description: GetTechResponseBody result type (default view)
         example:
             address: Shinagawa Tokyo
             company_id: 10
-            country_name: Beatae reprehenderit a quis consequuntur ea consequatur.
-            id: 10
-            is_hq: Iusto architecto nesciunt et aut exercitationem.
-            name: Company
+            company_name: Company
+            country_name: In eaque perspiciatis odit.
     HyTechTechResponseCollection:
         title: 'Mediatype identifier: application/vnd.tech+json; type=collection; view=default'
         type: array
@@ -1271,8 +1221,6 @@ definitions:
             $ref: '#/definitions/TechResponse'
         description: TechListResponseBody is the result type for an array of TechResponse (default view)
         example:
-            - id: 10
-              name: Golang
             - id: 10
               name: Golang
             - id: 10
@@ -1298,7 +1246,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1318,14 +1266,14 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: createUser_BadRequest_response_body result type (default view)
         example:
             fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: true
         required:
             - name
@@ -1374,7 +1322,7 @@ definitions:
                 format: email
             user_id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
             user_name:
@@ -1395,7 +1343,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1418,7 +1366,7 @@ definitions:
                 example: true
         description: deleteUser_NotFound_response_body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -1438,7 +1386,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1454,14 +1402,14 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
                 example: true
         description: getUser_NotFound_response_body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -1485,7 +1433,7 @@ definitions:
                 format: email
             user_id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
             user_name:
@@ -1506,7 +1454,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1522,14 +1470,14 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: false
+                example: true
             timeout:
                 type: boolean
                 description: Is the error a timeout?
                 example: true
         description: updateUser_BadRequest_response_body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -1549,7 +1497,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1633,14 +1581,14 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: userList_NotFound_response_body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -1685,6 +1633,12 @@ definitions:
               techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
               term: Jul 2017 - Aug 2017
               title: Developer
+            - company: Company
+              country: nl
+              description: '["Developed resume site for job seeking."]'
+              techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+              term: Jul 2017 - Aug 2017
+              title: Developer
     HyUsertechUsertechResponseCollection:
         title: 'Mediatype identifier: application/vnd.usertech+json; type=collection; view=default'
         type: array
@@ -1698,13 +1652,15 @@ definitions:
               tech_name: Golang
             - id: 10
               tech_name: Golang
+            - id: 10
+              tech_name: Golang
     TechResponse:
         title: 'Mediatype identifier: application/vnd.tech+json; view=default'
         type: object
         properties:
             id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
             name:
@@ -1730,7 +1686,7 @@ definitions:
                 format: email
             user_id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
             user_name:
@@ -1750,7 +1706,7 @@ definitions:
         properties:
             id:
                 type: integer
-                description: ID
+                description: Key ID
                 example: 10
                 minimum: 1
             tech_name:

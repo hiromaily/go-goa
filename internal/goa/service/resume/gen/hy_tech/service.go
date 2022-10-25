@@ -54,13 +54,10 @@ var MethodNames = [5]string{"techList", "getTech", "createTech", "updateTech", "
 
 // Company is the result type of the hy_tech service getTech method.
 type Company struct {
-	// ID
-	ID *int
-	// ID
+	// Key ID
 	CompanyID *int
 	// Company name
-	Name        *string
-	IsHq        *string
+	CompanyName *string
 	CountryName *string
 	// Company Address
 	Address *string
@@ -98,7 +95,7 @@ type GetTechPayload struct {
 
 // A tech information
 type Tech struct {
-	// ID
+	// Key ID
 	ID *int
 	// Tech name
 	Name string
@@ -284,10 +281,8 @@ func newTechViewID(res *Tech) *hytechviews.TechView {
 // newCompany converts projected type Company to service type Company.
 func newCompany(vres *hytechviews.CompanyView) *Company {
 	res := &Company{
-		ID:          vres.ID,
 		CompanyID:   vres.CompanyID,
-		Name:        vres.Name,
-		IsHq:        vres.IsHq,
+		CompanyName: vres.CompanyName,
 		CountryName: vres.CountryName,
 		Address:     vres.Address,
 	}
@@ -305,8 +300,8 @@ func newCompanyID(vres *hytechviews.CompanyView) *Company {
 // newCompanyIdname converts projected type Company to service type Company.
 func newCompanyIdname(vres *hytechviews.CompanyView) *Company {
 	res := &Company{
-		CompanyID: vres.CompanyID,
-		Name:      vres.Name,
+		CompanyID:   vres.CompanyID,
+		CompanyName: vres.CompanyName,
 	}
 	return res
 }
@@ -315,10 +310,8 @@ func newCompanyIdname(vres *hytechviews.CompanyView) *Company {
 // using the "default" view.
 func newCompanyView(res *Company) *hytechviews.CompanyView {
 	vres := &hytechviews.CompanyView{
-		ID:          res.ID,
 		CompanyID:   res.CompanyID,
-		Name:        res.Name,
-		IsHq:        res.IsHq,
+		CompanyName: res.CompanyName,
 		CountryName: res.CountryName,
 		Address:     res.Address,
 	}
@@ -338,8 +331,8 @@ func newCompanyViewID(res *Company) *hytechviews.CompanyView {
 // CompanyView using the "idname" view.
 func newCompanyViewIdname(res *Company) *hytechviews.CompanyView {
 	vres := &hytechviews.CompanyView{
-		CompanyID: res.CompanyID,
-		Name:      res.Name,
+		CompanyID:   res.CompanyID,
+		CompanyName: res.CompanyName,
 	}
 	return vres
 }

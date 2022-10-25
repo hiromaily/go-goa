@@ -23,7 +23,7 @@ type Authorized struct {
 type AuthorizedView struct {
 	// JWT token
 	Token *string
-	// ID
+	// Key ID
 	ID *int
 }
 

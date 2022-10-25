@@ -36,13 +36,10 @@ type TechListResponseBody []*TechResponse
 // GetTechResponseBody is the type of the "hy_tech" service "getTech" endpoint
 // HTTP response body.
 type GetTechResponseBody struct {
-	// ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
-	// ID
+	// Key ID
 	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
 	// Company name
-	Name        *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
-	IsHq        *string `form:"is_hq,omitempty" json:"is_hq,omitempty" xml:"is_hq,omitempty"`
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// Company Address
 	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
@@ -54,7 +51,7 @@ type GetTechResponseBody struct {
 
 // TechResponse is used to define fields on response body types.
 type TechResponse struct {
-	// ID
+	// Key ID
 	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	// Tech name
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
@@ -97,10 +94,8 @@ func NewTechListTechCollectionOK(body TechListResponseBody) hytechviews.TechColl
 // from a HTTP "OK" response.
 func NewGetTechCompanyOK(body *GetTechResponseBody) *hytechviews.CompanyView {
 	v := &hytechviews.CompanyView{
-		ID:          body.ID,
 		CompanyID:   body.CompanyID,
-		Name:        body.Name,
-		IsHq:        body.IsHq,
+		CompanyName: body.CompanyName,
 		CountryName: body.CountryName,
 		Address:     body.Address,
 		CreatedAt:   body.CreatedAt,

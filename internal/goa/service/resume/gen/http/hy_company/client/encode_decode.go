@@ -517,10 +517,8 @@ func DecodeDeleteCompanyResponse(decoder func(*http.Response) goahttp.Decoder, r
 // *hycompanyviews.CompanyView from a value of type *CompanyResponse.
 func unmarshalCompanyResponseToHycompanyviewsCompanyView(v *CompanyResponse) *hycompanyviews.CompanyView {
 	res := &hycompanyviews.CompanyView{
-		ID:          v.ID,
 		CompanyID:   v.CompanyID,
-		Name:        v.Name,
-		IsHq:        v.IsHq,
+		CompanyName: v.CompanyName,
 		CountryName: v.CountryName,
 		Address:     v.Address,
 		CreatedAt:   v.CreatedAt,

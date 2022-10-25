@@ -65,7 +65,7 @@ type GetUserLikeTechPayload struct {
 
 // A user information
 type Usertech struct {
-	// ID
+	// Key ID
 	ID *int
 	// Tech name
 	TechName string

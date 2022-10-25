@@ -24,7 +24,7 @@ type GetUserDisLikeTechResponseBody []*UsertechResponse
 
 // UsertechResponse is used to define fields on response body types.
 type UsertechResponse struct {
-	// ID
+	// Key ID
 	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	// Tech name
 	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`

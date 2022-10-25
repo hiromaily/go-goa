@@ -27,8 +27,8 @@ var fieldAddress = func() {
 
 // PayloadCompany defines the data structure used in the create company request body
 var PayloadCompany = Type("PayloadCompany", func() {
-	Attribute("name", String, "Company Name", fieldCompanyName)
 	Attribute("country_id", Int, "Country's ID", fieldCountryID)
+	Attribute("company_name", String, "Company Name", fieldCompanyName)
 	Attribute("address", String, "Address of company", fieldAddress)
 })
 
@@ -48,23 +48,19 @@ var RTCompany = ResultType("application/vnd.company+json", func() {
 	Reference(TypeFooter)     // created_at, updated_at
 
 	Attributes(func() {
-		Attribute("id", Int, "Company Detail ID", fieldID)
 		Attribute("company_id", Int, "Company ID", fieldID)
-		Attribute("name")
-		Attribute("is_hq")
+		Attribute("company_name")
 		Attribute("country_name")
 		Attribute("address")
 		Attribute("created_at")
 		Attribute("updated_at")
 
-		//Required("name", "address")
+		//Required("company_name", "address")
 	})
 
 	View("default", func() {
-		Attribute("id")
 		Attribute("company_id")
-		Attribute("name")
-		Attribute("is_hq")
+		Attribute("company_name")
 		Attribute("country_name")
 		Attribute("address")
 	})
@@ -77,6 +73,6 @@ var RTCompany = ResultType("application/vnd.company+json", func() {
 	View("idname", func() {
 		Description("only company's id and name")
 		Attribute("company_id")
-		Attribute("name")
+		Attribute("company_name")
 	})
 })

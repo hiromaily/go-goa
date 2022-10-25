@@ -52,8 +52,8 @@ func (r *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	for i, item := range items {
 		// return only companyID, name
 		converted[i] = &hycompany.Company{
-			CompanyID: &item.ID,
-			Name:      &item.Name,
+			CompanyID:   &item.ID,
+			CompanyName: &item.Name,
 		}
 	}
 	return converted, nil

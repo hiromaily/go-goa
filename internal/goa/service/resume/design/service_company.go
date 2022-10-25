@@ -42,15 +42,15 @@ var _ = Service(resourcePrefix+"company", func() {
 
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyID", Int, "Company ID", func() {
+			Attribute("company_id", Int, "Company ID", func() {
 				Minimum(1)
 			})
-			Required("companyID")
+			Required("company_id")
 		})
 		Result(types.RTCompany)
 
 		HTTP(func() {
-			GET("/{companyID}")
+			GET("/{company_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
 		})
@@ -62,7 +62,7 @@ var _ = Service(resourcePrefix+"company", func() {
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
 			Extend(types.PayloadCompany)
-			Required("name", "country_id", "address")
+			Required("company_name", "country_id", "address")
 		})
 		Result(types.RTCompany)
 
@@ -78,15 +78,15 @@ var _ = Service(resourcePrefix+"company", func() {
 
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyID", Int, "Company ID", func() {
+			Attribute("company_id", Int, "Company ID", func() {
 				Minimum(1)
 			})
 			Extend(types.PayloadCompany)
-			Required("companyID")
+			Required("company_id")
 		})
 
 		HTTP(func() {
-			PUT("/{companyID}")
+			PUT("/{company_id}")
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 			Response("NotFound", StatusNotFound)
@@ -98,14 +98,14 @@ var _ = Service(resourcePrefix+"company", func() {
 
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("companyID", Int, "Company ID", func() {
+			Attribute("company_id", Int, "Company ID", func() {
 				Minimum(1)
 			})
-			Required("companyID")
+			Required("company_id")
 		})
 
 		HTTP(func() {
-			DELETE("/{companyID}")
+			DELETE("/{company_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
 		})

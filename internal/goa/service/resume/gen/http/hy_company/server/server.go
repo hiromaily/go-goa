@@ -55,12 +55,12 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"CompanyList", "GET", "/company"},
-			{"GetCompany", "GET", "/company/{companyID}"},
+			{"GetCompany", "GET", "/company/{company_id}"},
 			{"CreateCompany", "POST", "/company"},
-			{"UpdateCompany", "PUT", "/company/{companyID}"},
-			{"DeleteCompany", "DELETE", "/company/{companyID}"},
+			{"UpdateCompany", "PUT", "/company/{company_id}"},
+			{"DeleteCompany", "DELETE", "/company/{company_id}"},
 			{"CORS", "OPTIONS", "/company"},
-			{"CORS", "OPTIONS", "/company/{companyID}"},
+			{"CORS", "OPTIONS", "/company/{company_id}"},
 		},
 		CompanyList:   NewCompanyListHandler(e.CompanyList, mux, decoder, encoder, errhandler, formatter),
 		GetCompany:    NewGetCompanyHandler(e.GetCompany, mux, decoder, encoder, errhandler, formatter),
@@ -162,7 +162,7 @@ func MountGetCompanyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/company/{companyID}", f)
+	mux.Handle("GET", "/company/{company_id}", f)
 }
 
 // NewGetCompanyHandler creates a HTTP handler which loads the HTTP request and
@@ -264,7 +264,7 @@ func MountUpdateCompanyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("PUT", "/company/{companyID}", f)
+	mux.Handle("PUT", "/company/{company_id}", f)
 }
 
 // NewUpdateCompanyHandler creates a HTTP handler which loads the HTTP request
@@ -315,7 +315,7 @@ func MountDeleteCompanyHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/company/{companyID}", f)
+	mux.Handle("DELETE", "/company/{company_id}", f)
 }
 
 // NewDeleteCompanyHandler creates a HTTP handler which loads the HTTP request
@@ -362,7 +362,7 @@ func NewDeleteCompanyHandler(
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleHyCompanyOrigin(h)
 	mux.Handle("OPTIONS", "/company", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/company/{companyID}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/company/{company_id}", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

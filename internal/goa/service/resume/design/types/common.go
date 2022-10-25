@@ -6,17 +6,17 @@ import (
 
 // Common
 var fieldID = func() {
-	Description("ID")
+	Description("Key ID")
 	Minimum(1)
 	Example(10)
 }
 
-var fieldFlg = func() {
-	Description("Flg")
-	MinLength(1)
-	MaxLength(1)
-	Example("1")
-}
+//var fieldFlg = func() {
+//	Description("1/0 flag ")
+//	MinLength(1)
+//	MaxLength(1)
+//	Example("1")
+//}
 
 var fieldDatetime = func() {
 	Description("Datetime")

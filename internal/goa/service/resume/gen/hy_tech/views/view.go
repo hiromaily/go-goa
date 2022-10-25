@@ -34,7 +34,7 @@ type TechCollectionView []*TechView
 
 // TechView is a type that runs validations on a projected type.
 type TechView struct {
-	// ID
+	// Key ID
 	ID *int
 	// Tech name
 	Name *string
@@ -46,13 +46,10 @@ type TechView struct {
 
 // CompanyView is a type that runs validations on a projected type.
 type CompanyView struct {
-	// ID
-	ID *int
-	// ID
+	// Key ID
 	CompanyID *int
 	// Company name
-	Name        *string
-	IsHq        *string
+	CompanyName *string
 	CountryName *string
 	// Company Address
 	Address *string
@@ -77,10 +74,8 @@ var (
 	// CompanyMap is a map indexing the attribute names of Company by view name.
 	CompanyMap = map[string][]string{
 		"default": {
-			"id",
 			"company_id",
-			"name",
-			"is_hq",
+			"company_name",
 			"country_name",
 			"address",
 		},
@@ -89,7 +84,7 @@ var (
 		},
 		"idname": {
 			"company_id",
-			"name",
+			"company_name",
 		},
 	}
 	// TechMap is a map indexing the attribute names of Tech by view name.
@@ -194,24 +189,19 @@ func ValidateTechViewID(result *TechView) (err error) {
 // ValidateCompanyView runs the validations defined on CompanyView using the
 // "default" view.
 func ValidateCompanyView(result *CompanyView) (err error) {
-	if result.ID != nil {
-		if *result.ID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))
-		}
-	}
 	if result.CompanyID != nil {
 		if *result.CompanyID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("result.company_id", *result.CompanyID, 1, true))
 		}
 	}
-	if result.Name != nil {
-		if utf8.RuneCountInString(*result.Name) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.name", *result.Name, utf8.RuneCountInString(*result.Name), 2, true))
+	if result.CompanyName != nil {
+		if utf8.RuneCountInString(*result.CompanyName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 2, true))
 		}
 	}
-	if result.Name != nil {
-		if utf8.RuneCountInString(*result.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.name", *result.Name, utf8.RuneCountInString(*result.Name), 40, false))
+	if result.CompanyName != nil {
+		if utf8.RuneCountInString(*result.CompanyName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 40, false))
 		}
 	}
 	if result.Address != nil {
@@ -246,14 +236,14 @@ func ValidateCompanyViewIdname(result *CompanyView) (err error) {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("result.company_id", *result.CompanyID, 1, true))
 		}
 	}
-	if result.Name != nil {
-		if utf8.RuneCountInString(*result.Name) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.name", *result.Name, utf8.RuneCountInString(*result.Name), 2, true))
+	if result.CompanyName != nil {
+		if utf8.RuneCountInString(*result.CompanyName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 2, true))
 		}
 	}
-	if result.Name != nil {
-		if utf8.RuneCountInString(*result.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.name", *result.Name, utf8.RuneCountInString(*result.Name), 40, false))
+	if result.CompanyName != nil {
+		if utf8.RuneCountInString(*result.CompanyName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 40, false))
 		}
 	}
 	return

@@ -44,7 +44,7 @@ type UserListResponseBody []*UserResponse
 // GetUserResponseBody is the type of the "hy_user" service "getUser" endpoint
 // HTTP response body.
 type GetUserResponseBody struct {
-	// ID
+	// Key ID
 	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
@@ -61,7 +61,7 @@ type GetUserResponseBody struct {
 // CreateUserResponseBody is the type of the "hy_user" service "createUser"
 // endpoint HTTP response body.
 type CreateUserResponseBody struct {
-	// ID
+	// Key ID
 	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`
@@ -185,7 +185,7 @@ type DeleteUserNotFoundResponseBody struct {
 
 // UserResponse is used to define fields on response body types.
 type UserResponse struct {
-	// ID
+	// Key ID
 	UserID *int `form:"user_id,omitempty" json:"user_id,omitempty" xml:"user_id,omitempty"`
 	// User name
 	UserName *string `form:"user_name,omitempty" json:"user_name,omitempty" xml:"user_name,omitempty"`

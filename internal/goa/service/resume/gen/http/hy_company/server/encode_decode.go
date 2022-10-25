@@ -128,7 +128,7 @@ func DecodeGetCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) goah
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["companyID"]
+			companyIDRaw := params["company_id"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
@@ -314,7 +314,7 @@ func DecodeUpdateCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["companyID"]
+			companyIDRaw := params["company_id"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
@@ -407,7 +407,7 @@ func DecodeDeleteCompanyRequest(mux goahttp.Muxer, decoder func(*http.Request) g
 			params = mux.Vars(r)
 		)
 		{
-			companyIDRaw := params["companyID"]
+			companyIDRaw := params["company_id"]
 			v, err2 := strconv.ParseInt(companyIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("companyID", companyIDRaw, "integer"))
@@ -470,10 +470,8 @@ func EncodeDeleteCompanyError(encoder func(context.Context, http.ResponseWriter)
 // *CompanyResponse from a value of type *hycompanyviews.CompanyView.
 func marshalHycompanyviewsCompanyViewToCompanyResponse(v *hycompanyviews.CompanyView) *CompanyResponse {
 	res := &CompanyResponse{
-		ID:          v.ID,
 		CompanyID:   v.CompanyID,
-		Name:        v.Name,
-		IsHq:        v.IsHq,
+		CompanyName: v.CompanyName,
 		CountryName: v.CountryName,
 		Address:     v.Address,
 	}
@@ -495,8 +493,8 @@ func marshalHycompanyviewsCompanyViewToCompanyResponseID(v *hycompanyviews.Compa
 // type *CompanyResponseIdname from a value of type *hycompanyviews.CompanyView.
 func marshalHycompanyviewsCompanyViewToCompanyResponseIdname(v *hycompanyviews.CompanyView) *CompanyResponseIdname {
 	res := &CompanyResponseIdname{
-		CompanyID: v.CompanyID,
-		Name:      v.Name,
+		CompanyID:   v.CompanyID,
+		CompanyName: v.CompanyName,
 	}
 
 	return res
