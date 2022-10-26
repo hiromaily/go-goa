@@ -2,8 +2,12 @@ package resumeapi
 
 import (
 	"context"
-	"fmt"
+	"github.com/hiromaily/go-goa/pkg/jwts"
+	ptr "github.com/hiromaily/go-goa/pkg/pointer"
+	hyuser "resume/gen/hy_user"
+	"strings"
 
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
 
@@ -14,18 +18,27 @@ import (
 // hy_company service example implementation.
 // The example methods log the requests and return zero values.
 type hyCompanysrvc struct {
+	jwt         jwts.JWTer
 	companyRepo repository.CompanyRepository
 }
 
 // NewHyCompany returns the hy_company service implementation.
-func NewHyCompany(companyRepo repository.CompanyRepository) hycompany.Service {
-	return &hyCompanysrvc{companyRepo}
+func NewHyCompany(jwt jwts.JWTer, companyRepo repository.CompanyRepository) hycompany.Service {
+	return &hyCompanysrvc{jwt, companyRepo}
 }
 
 // JWTAuth implements the authorization logic for service "hy_company" for the
 // "jwt" security scheme.
 func (s *hyCompanysrvc) JWTAuth(ctx context.Context, token string, scheme *security.JWTScheme) (context.Context, error) {
-	//
+	log.Info().
+		Str("token", token).
+		Strs("scheme.Scopes", scheme.Scopes).
+		Msg("hycompany.JWTAuth")
+
+	if err := s.jwt.ValidateToken(token); err != nil {
+		return ctx, err
+	}
+
 	// TBD: add authorization logic.
 	//
 	// In case of authorization failure this function should return
@@ -39,80 +52,98 @@ func (s *hyCompanysrvc) JWTAuth(ctx context.Context, token string, scheme *secur
 	//
 	//    return ctx, goa.PermanentError("unauthorized", "invalid token")
 	//
-	return ctx, fmt.Errorf("not implemented")
+	return ctx, nil
 }
 
-// List all companies
+// CompanyList returns all companies
 func (s *hyCompanysrvc) CompanyList(ctx context.Context, p *hycompany.CompanyListPayload) (res hycompany.CompanyCollection, view string, err error) {
-	//	var companies []*app.CompanyIdname
-	//
-	//	svc := &m.Company{Db: c.ctx.Db}
-	//	err := svc.CompanyList(&companies)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	if len(companies) == 0 {
-	//		return ctx.NoContent()
-	//	}
-	//
-	//	res := app.CompanyIdnameCollection(companies)
-	//	return ctx.OKIdname(res)
-
-	view = "default"
 	log.Info().Msg("hyCompany.companyList")
-	return
-}
 
-// Retrieve company with given company_id
-func (s *hyCompanysrvc) GetCompany(ctx context.Context, p *hycompany.GetCompanyPayload) (res *hycompany.Company, view string, err error) {
-	res = &hycompany.Company{}
+	companies, err := s.companyRepo.CompanyList()
+
+	if err != nil {
+		return nil, "", errors.Wrap(err, "fail to call companyRepo.UserList()")
+	}
+	if len(companies) == 0 {
+		return nil, "", hyuser.MakeNotFound(errors.New("user not found"))
+	}
+	res = companies
 	view = "default"
+
+	return
+}
+
+// GetCompany returns company by given company_id
+func (s *hyCompanysrvc) GetCompany(ctx context.Context, p *hycompany.GetCompanyPayload) (res *hycompany.Company, view string, err error) {
 	log.Info().Msg("hyCompany.getCompany")
+
+	company, err := s.companyRepo.GetCompany(p.CompanyID)
+	if err != nil {
+		// Not Found
+		if strings.Contains(err.Error(), "no rows in result set") {
+			return nil, "", hycompany.MakeNotFound(errors.New("user not found"))
+		}
+		return nil, "", errors.Wrapf(err, "fail to call companyRepo.GetCompany(%d)", p.CompanyID)
+	}
+	res = company
+	view = "default"
+
 	return
 }
 
-// Create new company
+// CreateCompany creates new company
+// FIXME: only admin user can create user
 func (s *hyCompanysrvc) CreateCompany(ctx context.Context, p *hycompany.CreateCompanyPayload) (res *hycompany.Company, view string, err error) {
-	//	svc := &m.Company{Db: c.ctx.Db}
-	//	companyID, err := svc.InsertCompany(ctx.Payload)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	res := &app.CompanyID{CompanyID: &companyID}
-	//	return ctx.OKId(res)
-
 	log.Info().Msg("hyCompany.createCompany")
+
+	companyID, err := s.companyRepo.InsertCompany(p.CompanyName, p.Address, int16(p.CountryID))
+	if err != nil {
+		return nil, "", errors.Wrap(err, "fail to call InsertUser()")
+	}
+	res = &hycompany.Company{
+		CompanyID: ptr.Int(companyID),
+	}
+	view = "id"
+
 	return
 }
 
-// Change company properties
+// UpdateCompany updates company
+// FIXME: only login user can update own information
 func (s *hyCompanysrvc) UpdateCompany(ctx context.Context, p *hycompany.UpdateCompanyPayload) (err error) {
-	//	svc := &m.Company{Db: c.ctx.Db}
-	//	err := svc.UpdateCompany(ctx.CompanyID, ctx.Payload)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	res := &app.CompanyID{CompanyID: &ctx.CompanyID}
-	//	return ctx.OKId(res)
-
 	log.Info().Msg("hyCompany.updateCompany")
+
+	// Validate
+	if p.CompanyName == nil && p.Address == nil && p.CountryID == nil {
+		return hycompany.MakeBadRequest(errors.New("parameter is invalid"))
+	}
+
+	isCompany, err := s.companyRepo.IsCompany(p.CompanyID)
+	if !isCompany || err != nil {
+		return hycompany.MakeNotFound(errors.New("company not found"))
+	}
+
+	_, err = s.companyRepo.UpdateCompany(p.CompanyID, ptr.StringVal(p.CompanyName), ptr.StringVal(p.Address), int16(ptr.IntVal(p.CountryID)))
+	if err != nil {
+		return errors.Wrap(err, "fail to call UpdateCompany()")
+	}
+
 	return
 }
 
-// Delete company
+// DeleteCompany deletes company
+// FIXME: only admin user can delete user
 func (s *hyCompanysrvc) DeleteCompany(ctx context.Context, p *hycompany.DeleteCompanyPayload) (err error) {
-	//	svc := &m.Company{Db: c.ctx.Db}
-	//	err := svc.DeleteCompany(ctx.CompanyID)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	res := &app.CompanyID{CompanyID: &ctx.CompanyID}
-	//	return ctx.OKId(res)
-
 	log.Info().Msg("hyCompany.deleteCompany")
+
+	isCompany, err := s.companyRepo.IsCompany(p.CompanyID)
+	if !isCompany || err != nil {
+		return hycompany.MakeNotFound(errors.New("company not found"))
+	}
+
+	if _, err := s.companyRepo.DeleteCompany(p.CompanyID); err != nil {
+		return errors.Wrap(err, "fail to call DeleteCompany()")
+	}
+
 	return
 }

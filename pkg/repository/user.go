@@ -116,11 +116,11 @@ func (u *userRepository) IsUser(userID int) (bool, error) {
 		qm.Where("is_deleted=?", 0),
 		qm.And("id=?", userID),
 	}
-	_, err := models.TUsers(q...).One(ctx, u.dbConn)
+	ret, err := models.TUsers(q...).Exists(ctx, u.dbConn)
 	if err != nil {
 		return false, errors.Wrap(err, "failed to call models.TUsers().One()")
 	}
-	return true, nil
+	return ret, nil
 }
 
 func (u *userRepository) getUserByEmail(email string) (*models.TUser, error) {

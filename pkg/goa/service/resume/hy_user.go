@@ -71,7 +71,7 @@ func (s *hyUsersrvc) UserList(ctx context.Context, p *hyuser.UserListPayload) (r
 	return
 }
 
-// GetUser returns user by given UserID
+// GetUser returns user by given user_id
 func (s *hyUsersrvc) GetUser(ctx context.Context, p *hyuser.GetUserPayload) (res *hyuser.User, view string, err error) {
 	log.Info().Msg("hyUser.getUser")
 

@@ -52,9 +52,9 @@ func (r *userWorkHistoryRepository) GetUserWorks(userID int) ([]*hyuserworkhisto
 		LEFT JOIN m_countries AS mc ON mc.id = cd.country_id
 		INNER JOIN t_techs tech ON JSON_CONTAINS(uwh.tech_ids, CAST(tech.id as json), '$')
 		WHERE uwh.delete_flg=?
-		AND cd.delete_flg=?
-		AND c.delete_flg=?
-		AND mc.delete_flg=?
+		AND cd.is_deleted=?
+		AND c.is_deleted=?
+		AND mc.is_deleted=?
 		AND uwh.user_id=?
 		GROUP BY uwh.id
 		ORDER BY uwh.started_at DESC

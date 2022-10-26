@@ -3,6 +3,8 @@ package repository
 import (
 	"context"
 	"database/sql"
+	ptr "github.com/hiromaily/go-goa/pkg/pointer"
+	"github.com/volatiletech/sqlboiler/v4/queries"
 	"time"
 
 	"github.com/pkg/errors"
@@ -17,6 +19,8 @@ import (
 // CompanyRepository interface
 type CompanyRepository interface {
 	CompanyList() ([]*hycompany.Company, error)
+	GetCompany(companyID int) (*hycompany.Company, error)
+	IsCompany(companyID int) (bool, error)
 	InsertCompany(name, address string, countryID int16) (int, error)
 	UpdateCompany(companyID int, name, address string, countryID int16) (int, error)
 	DeleteCompany(companyID int) (int, error)
@@ -35,12 +39,19 @@ func NewCompanyRepository(dbConn *sql.DB) CompanyRepository {
 	}
 }
 
+type CustomCompany struct {
+	CompanyID   int
+	CompanyName string
+	Address     string
+	CountryName string
+}
+
 func (r *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 	ctx := context.Background()
 
 	// sql := "SELECT id as company_id, name FROM t_companies WHERE delete_flg=?"
 	items, err := models.TCompanies(
-		qm.Select("id, name"),
+		qm.Select("id, name, address, country_id"),
 		qm.Where("is_deleted=?", 0),
 	).All(ctx, r.dbConn)
 	if err != nil {
@@ -54,9 +65,68 @@ func (r *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 		converted[i] = &hycompany.Company{
 			CompanyID:   &item.ID,
 			CompanyName: &item.Name,
+			Address:     item.Address.Ptr(),
 		}
 	}
 	return converted, nil
+}
+
+func (r *companyRepository) GetCompany(companyID int) (*hycompany.Company, error) {
+	var res CustomCompany
+
+	sql := `
+		SELECT cp.id as company_id, cp.name as company_name, cp.address, c.name as country_name
+		FROM t_company AS cp
+		LEFT JOIN m_country AS c ON cp.country_id = c.id
+		WHERE cp.id=?
+		AND cp.is_deleted=?
+		AND c.is_deleted=?
+	`
+	if err := queries.Raw(sql, companyID, "0", "0").Bind(context.Background(), r.dbConn, &res); err != nil {
+		return nil, errors.Wrapf(err, "failed to call queries.Raw(): %s", sql)
+	}
+
+	converted := &hycompany.Company{
+		CompanyID:   ptr.Int(res.CompanyID),
+		CompanyName: ptr.String(res.CompanyName),
+		CountryName: ptr.String(res.CountryName),
+		Address:     ptr.String(res.Address),
+	}
+	return converted, nil
+	//ctx := context.Background()
+	//q := []qm.QueryMod{
+	//	qm.Select("id, name, address, c.name as country_name"),
+	//	qm.From(u.tableName),
+	//	qm.LeftOuterJoin("m_country as c on t_company.country_id = c.id"),
+	//	qm.Where("is_deleted=?", 0),
+	//	qm.And("id=?", companyID),
+	//}
+	//item, err := models.TCompanies(q...).One(ctx, u.dbConn)
+	//if err != nil {
+	//	return nil, errors.Wrap(err, "failed to call models.TCompanies().One()")
+	//}
+	//
+	//return &hycompany.Company{
+	//	CompanyID:   &item.ID,
+	//	CompanyName: &item.Name,
+	//	CountryName: nil,
+	//	Address:     &item.Address.String,
+	//}, nil
+}
+
+func (r *companyRepository) IsCompany(companyID int) (bool, error) {
+	ctx := context.Background()
+	q := []qm.QueryMod{
+		qm.Select("id"),
+		qm.Where("is_deleted=?", 0),
+		qm.And("id=?", companyID),
+	}
+	ret, err := models.TCompanies(q...).Exists(ctx, r.dbConn)
+	if err != nil {
+		return false, errors.Wrap(err, "failed to call models.TCompanies().One()")
+	}
+
+	return ret, nil
 }
 
 func (r *companyRepository) getCompanyIDByName(name string) (int, error) {

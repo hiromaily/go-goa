@@ -98,12 +98,20 @@ rerun: build run
 chk:
 	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
 	http localhost:8080/company 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/company/7 'Authorization: Bearer $(TOKEN)'
+	#http POST http://localhost:8080/company company_name=Google country_id:=230 address=California 'Authorization: Bearer $(TOKEN)'
+	#http localhost:8080/company 'Authorization: Bearer $(TOKEN)'
+	#http PUT http://localhost:8080/company/1 name=Google country=America address=California 'Authorization: Bearer $(TOKEN)'
+	#http DELETE http://localhost:8080/company/1 'Authorization: Bearer $(TOKEN)'
+
 
 .PHONY: http-company
 http-company:
 	# Company
 	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	@echo wip
+	http localhost:8080/company 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/company/1 'Authorization: Bearer $(TOKEN)'
+	http POST http://localhost:8080/company company_name=Google country_id:=230 address=California 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: http-user
 http-user:
