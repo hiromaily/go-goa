@@ -58,6 +58,9 @@ func EncodeTechListRequest(encoder func(*http.Request) goahttp.Encoder) func(*ht
 // DecodeTechListResponse returns a decoder for responses returned by the
 // hy_tech techList endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeTechListResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeTechListResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -90,6 +93,20 @@ func DecodeTechListResponse(decoder func(*http.Response) goahttp.Decoder, restor
 			}
 			res := hytech.NewTechCollection(vres)
 			return res, nil
+		case http.StatusNotFound:
+			var (
+				body TechListNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_tech", "techList", err)
+			}
+			err = ValidateTechListNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_tech", "techList", err)
+			}
+			return nil, NewTechListNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_tech", "techList", resp.StatusCode, string(body))
@@ -108,9 +125,7 @@ func (c *Client) BuildGetTechRequest(ctx context.Context, v interface{}) (*http.
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_tech", "getTech", "*hytech.GetTechPayload", v)
 		}
-		if p.TechID != nil {
-			techID = *p.TechID
-		}
+		techID = p.TechID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetTechHyTechPath(techID)}
 	req, err := http.NewRequest("GET", u.String(), nil)
@@ -147,6 +162,9 @@ func EncodeGetTechRequest(encoder func(*http.Request) goahttp.Encoder) func(*htt
 // DecodeGetTechResponse returns a decoder for responses returned by the
 // hy_tech getTech endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeGetTechResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeGetTechResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -171,14 +189,28 @@ func DecodeGetTechResponse(decoder func(*http.Response) goahttp.Decoder, restore
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("hy_tech", "getTech", err)
 			}
-			p := NewGetTechCompanyOK(&body)
+			p := NewGetTechTechOK(&body)
 			view := resp.Header.Get("goa-view")
-			vres := &hytechviews.Company{Projected: p, View: view}
-			if err = hytechviews.ValidateCompany(vres); err != nil {
+			vres := &hytechviews.Tech{Projected: p, View: view}
+			if err = hytechviews.ValidateTech(vres); err != nil {
 				return nil, goahttp.ErrValidationError("hy_tech", "getTech", err)
 			}
-			res := hytech.NewCompany(vres)
+			res := hytech.NewTech(vres)
 			return res, nil
+		case http.StatusNotFound:
+			var (
+				body GetTechNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_tech", "getTech", err)
+			}
+			err = ValidateGetTechNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_tech", "getTech", err)
+			}
+			return nil, NewGetTechNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_tech", "getTech", resp.StatusCode, string(body))
@@ -228,6 +260,9 @@ func EncodeCreateTechRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // DecodeCreateTechResponse returns a decoder for responses returned by the
 // hy_tech createTech endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeCreateTechResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - error: internal error
 func DecodeCreateTechResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -244,7 +279,36 @@ func DecodeCreateTechResponse(decoder func(*http.Response) goahttp.Decoder, rest
 		}
 		switch resp.StatusCode {
 		case http.StatusOK:
-			return nil, nil
+			var (
+				body CreateTechOKResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_tech", "createTech", err)
+			}
+			p := NewCreateTechTechOK(&body)
+			view := resp.Header.Get("goa-view")
+			vres := &hytechviews.Tech{Projected: p, View: view}
+			if err = hytechviews.ValidateTech(vres); err != nil {
+				return nil, goahttp.ErrValidationError("hy_tech", "createTech", err)
+			}
+			res := hytech.NewTech(vres)
+			return res, nil
+		case http.StatusBadRequest:
+			var (
+				body CreateTechBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_tech", "createTech", err)
+			}
+			err = ValidateCreateTechBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_tech", "createTech", err)
+			}
+			return nil, NewCreateTechBadRequest(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_tech", "createTech", resp.StatusCode, string(body))
@@ -263,9 +327,7 @@ func (c *Client) BuildUpdateTechRequest(ctx context.Context, v interface{}) (*ht
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_tech", "updateTech", "*hytech.UpdateTechPayload", v)
 		}
-		if p.TechID != nil {
-			techID = *p.TechID
-		}
+		techID = p.TechID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: UpdateTechHyTechPath(techID)}
 	req, err := http.NewRequest("PUT", u.String(), nil)
@@ -306,6 +368,10 @@ func EncodeUpdateTechRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // DecodeUpdateTechResponse returns a decoder for responses returned by the
 // hy_tech updateTech endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeUpdateTechResponse may return the following errors:
+//   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeUpdateTechResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -323,6 +389,34 @@ func DecodeUpdateTechResponse(decoder func(*http.Response) goahttp.Decoder, rest
 		switch resp.StatusCode {
 		case http.StatusOK:
 			return nil, nil
+		case http.StatusBadRequest:
+			var (
+				body UpdateTechBadRequestResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_tech", "updateTech", err)
+			}
+			err = ValidateUpdateTechBadRequestResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_tech", "updateTech", err)
+			}
+			return nil, NewUpdateTechBadRequest(&body)
+		case http.StatusNotFound:
+			var (
+				body UpdateTechNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_tech", "updateTech", err)
+			}
+			err = ValidateUpdateTechNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_tech", "updateTech", err)
+			}
+			return nil, NewUpdateTechNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_tech", "updateTech", resp.StatusCode, string(body))
@@ -341,9 +435,7 @@ func (c *Client) BuildDeleteTechRequest(ctx context.Context, v interface{}) (*ht
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_tech", "deleteTech", "*hytech.DeleteTechPayload", v)
 		}
-		if p.TechID != nil {
-			techID = *p.TechID
-		}
+		techID = p.TechID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: DeleteTechHyTechPath(techID)}
 	req, err := http.NewRequest("DELETE", u.String(), nil)
@@ -380,6 +472,9 @@ func EncodeDeleteTechRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // DecodeDeleteTechResponse returns a decoder for responses returned by the
 // hy_tech deleteTech endpoint. restoreBody controls whether the response body
 // should be restored after having been read.
+// DecodeDeleteTechResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeDeleteTechResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -397,6 +492,20 @@ func DecodeDeleteTechResponse(decoder func(*http.Response) goahttp.Decoder, rest
 		switch resp.StatusCode {
 		case http.StatusOK:
 			return nil, nil
+		case http.StatusNotFound:
+			var (
+				body DeleteTechNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_tech", "deleteTech", err)
+			}
+			err = ValidateDeleteTechNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_tech", "deleteTech", err)
+			}
+			return nil, NewDeleteTechNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_tech", "deleteTech", resp.StatusCode, string(body))
@@ -408,8 +517,8 @@ func DecodeDeleteTechResponse(decoder func(*http.Response) goahttp.Decoder, rest
 // *hytechviews.TechView from a value of type *TechResponse.
 func unmarshalTechResponseToHytechviewsTechView(v *TechResponse) *hytechviews.TechView {
 	res := &hytechviews.TechView{
-		ID:        v.ID,
-		Name:      v.Name,
+		TechID:    v.TechID,
+		TechName:  v.TechName,
 		CreatedAt: v.CreatedAt,
 		UpdatedAt: v.UpdatedAt,
 	}

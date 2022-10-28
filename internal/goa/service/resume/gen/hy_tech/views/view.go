@@ -21,10 +21,10 @@ type TechCollection struct {
 	View string
 }
 
-// Company is the viewed result type that is projected based on a view.
-type Company struct {
+// Tech is the viewed result type that is projected based on a view.
+type Tech struct {
 	// Type to project
-	Projected *CompanyView
+	Projected *TechView
 	// View to render
 	View string
 }
@@ -35,24 +35,9 @@ type TechCollectionView []*TechView
 // TechView is a type that runs validations on a projected type.
 type TechView struct {
 	// Key ID
-	ID *int
+	TechID *int
 	// Tech name
-	Name *string
-	// Datetime
-	CreatedAt *string
-	// Datetime
-	UpdatedAt *string
-}
-
-// CompanyView is a type that runs validations on a projected type.
-type CompanyView struct {
-	// Key ID
-	CompanyID *int
-	// Company name
-	CompanyName *string
-	CountryName *string
-	// Company Address
-	Address *string
+	TechName *string
 	// Datetime
 	CreatedAt *string
 	// Datetime
@@ -64,37 +49,21 @@ var (
 	// view name.
 	TechCollectionMap = map[string][]string{
 		"default": {
-			"id",
-			"name",
+			"tech_id",
+			"tech_name",
 		},
 		"id": {
-			"id",
-		},
-	}
-	// CompanyMap is a map indexing the attribute names of Company by view name.
-	CompanyMap = map[string][]string{
-		"default": {
-			"company_id",
-			"company_name",
-			"country_name",
-			"address",
-		},
-		"id": {
-			"company_id",
-		},
-		"idname": {
-			"company_id",
-			"company_name",
+			"tech_id",
 		},
 	}
 	// TechMap is a map indexing the attribute names of Tech by view name.
 	TechMap = map[string][]string{
 		"default": {
-			"id",
-			"name",
+			"tech_id",
+			"tech_name",
 		},
 		"id": {
-			"id",
+			"tech_id",
 		},
 	}
 )
@@ -113,18 +82,15 @@ func ValidateTechCollection(result TechCollection) (err error) {
 	return
 }
 
-// ValidateCompany runs the validations defined on the viewed result type
-// Company.
-func ValidateCompany(result *Company) (err error) {
+// ValidateTech runs the validations defined on the viewed result type Tech.
+func ValidateTech(result *Tech) (err error) {
 	switch result.View {
 	case "default", "":
-		err = ValidateCompanyView(result.Projected)
+		err = ValidateTechView(result.Projected)
 	case "id":
-		err = ValidateCompanyViewID(result.Projected)
-	case "idname":
-		err = ValidateCompanyViewIdname(result.Projected)
+		err = ValidateTechViewID(result.Projected)
 	default:
-		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "id", "idname"})
+		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "id"})
 	}
 	return
 }
@@ -154,22 +120,19 @@ func ValidateTechCollectionViewID(result TechCollectionView) (err error) {
 // ValidateTechView runs the validations defined on TechView using the
 // "default" view.
 func ValidateTechView(result *TechView) (err error) {
-	if result.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "result"))
-	}
-	if result.ID != nil {
-		if *result.ID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))
+	if result.TechID != nil {
+		if *result.TechID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("result.tech_id", *result.TechID, 1, true))
 		}
 	}
-	if result.Name != nil {
-		if utf8.RuneCountInString(*result.Name) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.name", *result.Name, utf8.RuneCountInString(*result.Name), 1, true))
+	if result.TechName != nil {
+		if utf8.RuneCountInString(*result.TechName) < 1 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.tech_name", *result.TechName, utf8.RuneCountInString(*result.TechName), 1, true))
 		}
 	}
-	if result.Name != nil {
-		if utf8.RuneCountInString(*result.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.name", *result.Name, utf8.RuneCountInString(*result.Name), 40, false))
+	if result.TechName != nil {
+		if utf8.RuneCountInString(*result.TechName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.tech_name", *result.TechName, utf8.RuneCountInString(*result.TechName), 40, false))
 		}
 	}
 	return
@@ -178,72 +141,9 @@ func ValidateTechView(result *TechView) (err error) {
 // ValidateTechViewID runs the validations defined on TechView using the "id"
 // view.
 func ValidateTechViewID(result *TechView) (err error) {
-	if result.ID != nil {
-		if *result.ID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))
-		}
-	}
-	return
-}
-
-// ValidateCompanyView runs the validations defined on CompanyView using the
-// "default" view.
-func ValidateCompanyView(result *CompanyView) (err error) {
-	if result.CompanyID != nil {
-		if *result.CompanyID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.company_id", *result.CompanyID, 1, true))
-		}
-	}
-	if result.CompanyName != nil {
-		if utf8.RuneCountInString(*result.CompanyName) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 2, true))
-		}
-	}
-	if result.CompanyName != nil {
-		if utf8.RuneCountInString(*result.CompanyName) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 40, false))
-		}
-	}
-	if result.Address != nil {
-		if utf8.RuneCountInString(*result.Address) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.address", *result.Address, utf8.RuneCountInString(*result.Address), 2, true))
-		}
-	}
-	if result.Address != nil {
-		if utf8.RuneCountInString(*result.Address) > 80 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.address", *result.Address, utf8.RuneCountInString(*result.Address), 80, false))
-		}
-	}
-	return
-}
-
-// ValidateCompanyViewID runs the validations defined on CompanyView using the
-// "id" view.
-func ValidateCompanyViewID(result *CompanyView) (err error) {
-	if result.CompanyID != nil {
-		if *result.CompanyID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.company_id", *result.CompanyID, 1, true))
-		}
-	}
-	return
-}
-
-// ValidateCompanyViewIdname runs the validations defined on CompanyView using
-// the "idname" view.
-func ValidateCompanyViewIdname(result *CompanyView) (err error) {
-	if result.CompanyID != nil {
-		if *result.CompanyID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("result.company_id", *result.CompanyID, 1, true))
-		}
-	}
-	if result.CompanyName != nil {
-		if utf8.RuneCountInString(*result.CompanyName) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 2, true))
-		}
-	}
-	if result.CompanyName != nil {
-		if utf8.RuneCountInString(*result.CompanyName) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 40, false))
+	if result.TechID != nil {
+		if *result.TechID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("result.tech_id", *result.TechID, 1, true))
 		}
 	}
 	return

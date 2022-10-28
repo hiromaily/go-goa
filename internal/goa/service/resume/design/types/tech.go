@@ -13,7 +13,7 @@ var fieldTechName = func() {
 
 // PayloadTech defines the data structure used in the create tech request body
 var PayloadTech = Type("PayloadTech", func() {
-	Attribute("name", String, "Tech Name", fieldTechName)
+	Attribute("tech_name", String, "Tech Name", fieldTechName)
 })
 
 // RTTech is the tech resource result type.
@@ -26,21 +26,21 @@ var RTTech = ResultType("application/vnd.tech+json", func() {
 	Reference(TypeFooter)
 
 	Attributes(func() {
-		Attribute("id", Int, "Tech ID", fieldID)
-		Attribute("name")
+		Attribute("tech_id", Int, "Tech ID", fieldID)
+		Attribute("tech_name")
 		Attribute("created_at")
 		Attribute("updated_at")
 
-		Required("name")
+		//Required("tech_name")
 	})
 
 	View("default", func() {
-		Attribute("id")
-		Attribute("name")
+		Attribute("tech_id")
+		Attribute("tech_name")
 	})
 
 	View("id", func() {
-		Description("id is the view used for C U D")
-		Attribute("id")
+		Description("only tech's id")
+		Attribute("tech_id")
 	})
 })

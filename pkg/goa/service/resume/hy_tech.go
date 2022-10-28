@@ -2,7 +2,7 @@ package resumeapi
 
 import (
 	"context"
-	"fmt"
+	"github.com/hiromaily/go-goa/pkg/jwts"
 
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
@@ -14,35 +14,31 @@ import (
 // hy_tech service example implementation.
 // The example methods log the requests and return zero values.
 type hyTechsrvc struct {
+	jwt      jwts.JWTer
 	techRepo repository.TechRepository
 }
 
 // NewHyTech returns the hy_tech service implementation.
-func NewHyTech(techRepo repository.TechRepository) hytech.Service {
-	return &hyTechsrvc{techRepo}
+func NewHyTech(jwt jwts.JWTer, techRepo repository.TechRepository) hytech.Service {
+	return &hyTechsrvc{jwt, techRepo}
 }
 
 // JWTAuth implements the authorization logic for service "hy_tech" for the
 // "jwt" security scheme.
 func (s *hyTechsrvc) JWTAuth(ctx context.Context, token string, scheme *security.JWTScheme) (context.Context, error) {
-	//
-	// TBD: add authorization logic.
-	//
-	// In case of authorization failure this function should return
-	// one of the generated error structs, e.g.:
-	//
-	//    return ctx, myservice.MakeUnauthorizedError("invalid token")
-	//
-	// Alternatively this function may return an instance of
-	// goa.ServiceError with a Name field value that matches one of
-	// the design error names, e.g:
-	//
-	//    return ctx, goa.PermanentError("unauthorized", "invalid token")
-	//
-	return ctx, fmt.Errorf("not implemented")
+	log.Info().
+		Str("token", token).
+		Strs("scheme.Scopes", scheme.Scopes).
+		Msg("hyTech.JWTAuth")
+
+	if err := s.jwt.ValidateToken(token); err != nil {
+		return ctx, err
+	}
+
+	return ctx, nil
 }
 
-// List all techs
+// TechList returns all techs
 func (s *hyTechsrvc) TechList(ctx context.Context, p *hytech.TechListPayload) (res hytech.TechCollection, view string, err error) {
 	//	var techs []*app.Tech
 	//

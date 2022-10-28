@@ -19,14 +19,14 @@ import (
 // endpoint HTTP request body.
 type CreateTechRequestBody struct {
 	// Tech name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
 }
 
 // UpdateTechRequestBody is the type of the "hy_tech" service "updateTech"
 // endpoint HTTP request body.
 type UpdateTechRequestBody struct {
 	// Tech name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
 }
 
 // TechResponseCollection is the type of the "hy_tech" service "techList"
@@ -41,42 +41,154 @@ type TechResponseIDCollection []*TechResponseID
 // HTTP response body.
 type GetTechResponseBody struct {
 	// Key ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Company name
-	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
-	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
-	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
+	// Tech name
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
 }
 
 // GetTechResponseBodyID is the type of the "hy_tech" service "getTech"
 // endpoint HTTP response body.
 type GetTechResponseBodyID struct {
 	// Key ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
 }
 
-// GetTechResponseBodyIdname is the type of the "hy_tech" service "getTech"
+// CreateTechOKResponseBody is the type of the "hy_tech" service "createTech"
 // endpoint HTTP response body.
-type GetTechResponseBodyIdname struct {
+type CreateTechOKResponseBody struct {
 	// Key ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Company name
-	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
+	// Tech name
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
+}
+
+// CreateTechOKResponseBodyID is the type of the "hy_tech" service "createTech"
+// endpoint HTTP response body.
+type CreateTechOKResponseBodyID struct {
+	// Key ID
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
+}
+
+// TechListNotFoundResponseBody is the type of the "hy_tech" service "techList"
+// endpoint HTTP response body for the "NotFound" error.
+type TechListNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// GetTechNotFoundResponseBody is the type of the "hy_tech" service "getTech"
+// endpoint HTTP response body for the "NotFound" error.
+type GetTechNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// CreateTechBadRequestResponseBody is the type of the "hy_tech" service
+// "createTech" endpoint HTTP response body for the "BadRequest" error.
+type CreateTechBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateTechBadRequestResponseBody is the type of the "hy_tech" service
+// "updateTech" endpoint HTTP response body for the "BadRequest" error.
+type UpdateTechBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// UpdateTechNotFoundResponseBody is the type of the "hy_tech" service
+// "updateTech" endpoint HTTP response body for the "NotFound" error.
+type UpdateTechNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// DeleteTechNotFoundResponseBody is the type of the "hy_tech" service
+// "deleteTech" endpoint HTTP response body for the "NotFound" error.
+type DeleteTechNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
 // TechResponse is used to define fields on response body types.
 type TechResponse struct {
 	// Key ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
 	// Tech name
-	Name string `form:"name" json:"name" xml:"name"`
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
 }
 
 // TechResponseID is used to define fields on response body types.
 type TechResponseID struct {
 	// Key ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
 }
 
 // NewTechResponseCollection builds the HTTP response body from the result of
@@ -101,31 +213,122 @@ func NewTechResponseIDCollection(res hytechviews.TechCollectionView) TechRespons
 
 // NewGetTechResponseBody builds the HTTP response body from the result of the
 // "getTech" endpoint of the "hy_tech" service.
-func NewGetTechResponseBody(res *hytechviews.CompanyView) *GetTechResponseBody {
+func NewGetTechResponseBody(res *hytechviews.TechView) *GetTechResponseBody {
 	body := &GetTechResponseBody{
-		CompanyID:   res.CompanyID,
-		CompanyName: res.CompanyName,
-		CountryName: res.CountryName,
-		Address:     res.Address,
+		TechID:   res.TechID,
+		TechName: res.TechName,
 	}
 	return body
 }
 
 // NewGetTechResponseBodyID builds the HTTP response body from the result of
 // the "getTech" endpoint of the "hy_tech" service.
-func NewGetTechResponseBodyID(res *hytechviews.CompanyView) *GetTechResponseBodyID {
+func NewGetTechResponseBodyID(res *hytechviews.TechView) *GetTechResponseBodyID {
 	body := &GetTechResponseBodyID{
-		CompanyID: res.CompanyID,
+		TechID: res.TechID,
 	}
 	return body
 }
 
-// NewGetTechResponseBodyIdname builds the HTTP response body from the result
+// NewCreateTechOKResponseBody builds the HTTP response body from the result of
+// the "createTech" endpoint of the "hy_tech" service.
+func NewCreateTechOKResponseBody(res *hytechviews.TechView) *CreateTechOKResponseBody {
+	body := &CreateTechOKResponseBody{
+		TechID:   res.TechID,
+		TechName: res.TechName,
+	}
+	return body
+}
+
+// NewCreateTechOKResponseBodyID builds the HTTP response body from the result
+// of the "createTech" endpoint of the "hy_tech" service.
+func NewCreateTechOKResponseBodyID(res *hytechviews.TechView) *CreateTechOKResponseBodyID {
+	body := &CreateTechOKResponseBodyID{
+		TechID: res.TechID,
+	}
+	return body
+}
+
+// NewTechListNotFoundResponseBody builds the HTTP response body from the
+// result of the "techList" endpoint of the "hy_tech" service.
+func NewTechListNotFoundResponseBody(res *goa.ServiceError) *TechListNotFoundResponseBody {
+	body := &TechListNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetTechNotFoundResponseBody builds the HTTP response body from the result
 // of the "getTech" endpoint of the "hy_tech" service.
-func NewGetTechResponseBodyIdname(res *hytechviews.CompanyView) *GetTechResponseBodyIdname {
-	body := &GetTechResponseBodyIdname{
-		CompanyID:   res.CompanyID,
-		CompanyName: res.CompanyName,
+func NewGetTechNotFoundResponseBody(res *goa.ServiceError) *GetTechNotFoundResponseBody {
+	body := &GetTechNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewCreateTechBadRequestResponseBody builds the HTTP response body from the
+// result of the "createTech" endpoint of the "hy_tech" service.
+func NewCreateTechBadRequestResponseBody(res *goa.ServiceError) *CreateTechBadRequestResponseBody {
+	body := &CreateTechBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateTechBadRequestResponseBody builds the HTTP response body from the
+// result of the "updateTech" endpoint of the "hy_tech" service.
+func NewUpdateTechBadRequestResponseBody(res *goa.ServiceError) *UpdateTechBadRequestResponseBody {
+	body := &UpdateTechBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewUpdateTechNotFoundResponseBody builds the HTTP response body from the
+// result of the "updateTech" endpoint of the "hy_tech" service.
+func NewUpdateTechNotFoundResponseBody(res *goa.ServiceError) *UpdateTechNotFoundResponseBody {
+	body := &UpdateTechNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewDeleteTechNotFoundResponseBody builds the HTTP response body from the
+// result of the "deleteTech" endpoint of the "hy_tech" service.
+func NewDeleteTechNotFoundResponseBody(res *goa.ServiceError) *DeleteTechNotFoundResponseBody {
+	body := &DeleteTechNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
 	}
 	return body
 }
@@ -141,7 +344,7 @@ func NewTechListPayload(token *string) *hytech.TechListPayload {
 // NewGetTechPayload builds a hy_tech service getTech endpoint payload.
 func NewGetTechPayload(techID int, token *string) *hytech.GetTechPayload {
 	v := &hytech.GetTechPayload{}
-	v.TechID = &techID
+	v.TechID = techID
 	v.Token = token
 
 	return v
@@ -150,7 +353,7 @@ func NewGetTechPayload(techID int, token *string) *hytech.GetTechPayload {
 // NewCreateTechPayload builds a hy_tech service createTech endpoint payload.
 func NewCreateTechPayload(body *CreateTechRequestBody, token *string) *hytech.CreateTechPayload {
 	v := &hytech.CreateTechPayload{
-		Name: *body.Name,
+		TechName: *body.TechName,
 	}
 	v.Token = token
 
@@ -160,9 +363,9 @@ func NewCreateTechPayload(body *CreateTechRequestBody, token *string) *hytech.Cr
 // NewUpdateTechPayload builds a hy_tech service updateTech endpoint payload.
 func NewUpdateTechPayload(body *UpdateTechRequestBody, techID int, token *string) *hytech.UpdateTechPayload {
 	v := &hytech.UpdateTechPayload{
-		Name: *body.Name,
+		TechName: *body.TechName,
 	}
-	v.TechID = &techID
+	v.TechID = techID
 	v.Token = token
 
 	return v
@@ -171,7 +374,7 @@ func NewUpdateTechPayload(body *UpdateTechRequestBody, techID int, token *string
 // NewDeleteTechPayload builds a hy_tech service deleteTech endpoint payload.
 func NewDeleteTechPayload(techID int, token *string) *hytech.DeleteTechPayload {
 	v := &hytech.DeleteTechPayload{}
-	v.TechID = &techID
+	v.TechID = techID
 	v.Token = token
 
 	return v
@@ -180,17 +383,17 @@ func NewDeleteTechPayload(techID int, token *string) *hytech.DeleteTechPayload {
 // ValidateCreateTechRequestBody runs the validations defined on
 // CreateTechRequestBody
 func ValidateCreateTechRequestBody(body *CreateTechRequestBody) (err error) {
-	if body.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	if body.TechName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("tech_name", "body"))
 	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 1, true))
+	if body.TechName != nil {
+		if utf8.RuneCountInString(*body.TechName) < 1 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", *body.TechName, utf8.RuneCountInString(*body.TechName), 1, true))
 		}
 	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 40, false))
+	if body.TechName != nil {
+		if utf8.RuneCountInString(*body.TechName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", *body.TechName, utf8.RuneCountInString(*body.TechName), 40, false))
 		}
 	}
 	return
@@ -199,17 +402,17 @@ func ValidateCreateTechRequestBody(body *CreateTechRequestBody) (err error) {
 // ValidateUpdateTechRequestBody runs the validations defined on
 // UpdateTechRequestBody
 func ValidateUpdateTechRequestBody(body *UpdateTechRequestBody) (err error) {
-	if body.Name == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	if body.TechName == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("tech_name", "body"))
 	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 1, true))
+	if body.TechName != nil {
+		if utf8.RuneCountInString(*body.TechName) < 1 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", *body.TechName, utf8.RuneCountInString(*body.TechName), 1, true))
 		}
 	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 40, false))
+	if body.TechName != nil {
+		if utf8.RuneCountInString(*body.TechName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", *body.TechName, utf8.RuneCountInString(*body.TechName), 40, false))
 		}
 	}
 	return

@@ -35,7 +35,7 @@ func NewClient(techList, getTech, createTech, updateTech, deleteTech goa.Endpoin
 
 // TechList calls the "techList" endpoint of the "hy_tech" service.
 // TechList may return the following errors:
-//   - "NoContent" (type *goa.ServiceError)
+//   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) TechList(ctx context.Context, p *TechListPayload) (res TechCollection, err error) {
@@ -49,31 +49,36 @@ func (c *Client) TechList(ctx context.Context, p *TechListPayload) (res TechColl
 
 // GetTech calls the "getTech" endpoint of the "hy_tech" service.
 // GetTech may return the following errors:
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
-func (c *Client) GetTech(ctx context.Context, p *GetTechPayload) (res *Company, err error) {
+func (c *Client) GetTech(ctx context.Context, p *GetTechPayload) (res *Tech, err error) {
 	var ires interface{}
 	ires, err = c.GetTechEndpoint(ctx, p)
 	if err != nil {
 		return
 	}
-	return ires.(*Company), nil
+	return ires.(*Tech), nil
 }
 
 // CreateTech calls the "createTech" endpoint of the "hy_tech" service.
 // CreateTech may return the following errors:
+//   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
-func (c *Client) CreateTech(ctx context.Context, p *CreateTechPayload) (err error) {
-	_, err = c.CreateTechEndpoint(ctx, p)
-	return
+func (c *Client) CreateTech(ctx context.Context, p *CreateTechPayload) (res *Tech, err error) {
+	var ires interface{}
+	ires, err = c.CreateTechEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(*Tech), nil
 }
 
 // UpdateTech calls the "updateTech" endpoint of the "hy_tech" service.
 // UpdateTech may return the following errors:
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) UpdateTech(ctx context.Context, p *UpdateTechPayload) (err error) {
 	_, err = c.UpdateTechEndpoint(ctx, p)
@@ -82,8 +87,8 @@ func (c *Client) UpdateTech(ctx context.Context, p *UpdateTechPayload) (err erro
 
 // DeleteTech calls the "deleteTech" endpoint of the "hy_tech" service.
 // DeleteTech may return the following errors:
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) DeleteTech(ctx context.Context, p *DeleteTechPayload) (err error) {
 	_, err = c.DeleteTechEndpoint(ctx, p)

@@ -141,7 +141,7 @@ paths:
             tags:
                 - hy_company
             summary: getCompany hy_company
-            description: Retrieve company with given company_id
+            description: returns company by given company_id
             operationId: hy_company#getCompany
             produces:
                 - application/json
@@ -266,6 +266,10 @@ paths:
                     description: OK response.
                     schema:
                         $ref: '#/definitions/HyTechTechResponseCollection'
+                "404":
+                    description: Not Found response.
+                    schema:
+                        $ref: '#/definitions/HyTechTechListNotFoundResponseBody'
             schemes:
                 - http
             security:
@@ -276,6 +280,8 @@ paths:
             summary: createTech hy_tech
             description: Create new tech
             operationId: hy_tech#createTech
+            produces:
+                - application/json
             parameters:
                 - name: Authorization
                   in: header
@@ -288,31 +294,40 @@ paths:
                   schema:
                     $ref: '#/definitions/HyTechCreateTechRequestBody'
                     required:
-                        - name
+                        - tech_name
             responses:
                 "200":
                     description: OK response.
+                    schema:
+                        $ref: '#/definitions/HyTechCreateTechOKResponseBody'
                 "201":
                     description: Created response.
+                    schema:
+                        $ref: '#/definitions/HyTechCreateTechCreatedResponseBody'
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/HyTechCreateTechBadRequestResponseBody'
             schemes:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /tech/{techID}:
+    /tech/{tech_id}:
         get:
             tags:
                 - hy_tech
             summary: getTech hy_tech
-            description: get tech with given tech id
+            description: returns tech by given tech id
             operationId: hy_tech#getTech
             produces:
                 - application/json
             parameters:
-                - name: techID
+                - name: tech_id
                   in: path
                   description: Tech ID
                   required: true
                   type: integer
+                  minimum: 1
                 - name: Authorization
                   in: header
                   description: JWT token used to perform authorization
@@ -323,6 +338,10 @@ paths:
                     description: OK response.
                     schema:
                         $ref: '#/definitions/HyTechGetTechResponseBody'
+                "404":
+                    description: Not Found response.
+                    schema:
+                        $ref: '#/definitions/HyTechGetTechNotFoundResponseBody'
             schemes:
                 - http
             security:
@@ -331,14 +350,15 @@ paths:
             tags:
                 - hy_tech
             summary: updateTech hy_tech
-            description: Change tech properties
+            description: Update tech data
             operationId: hy_tech#updateTech
             parameters:
-                - name: techID
+                - name: tech_id
                   in: path
                   description: Tech ID
                   required: true
                   type: integer
+                  minimum: 1
                 - name: Authorization
                   in: header
                   description: JWT token used to perform authorization
@@ -350,10 +370,18 @@ paths:
                   schema:
                     $ref: '#/definitions/HyTechUpdateTechRequestBody'
                     required:
-                        - name
+                        - tech_name
             responses:
                 "200":
                     description: OK response.
+                "400":
+                    description: Bad Request response.
+                    schema:
+                        $ref: '#/definitions/HyTechUpdateTechBadRequestResponseBody'
+                "404":
+                    description: Not Found response.
+                    schema:
+                        $ref: '#/definitions/HyTechUpdateTechNotFoundResponseBody'
             schemes:
                 - http
             security:
@@ -365,11 +393,12 @@ paths:
             description: Delete tech
             operationId: hy_tech#deleteTech
             parameters:
-                - name: techID
+                - name: tech_id
                   in: path
                   description: Tech ID
                   required: true
                   type: integer
+                  minimum: 1
                 - name: Authorization
                   in: header
                   description: JWT token used to perform authorization
@@ -378,6 +407,10 @@ paths:
             responses:
                 "200":
                     description: OK response.
+                "404":
+                    description: Not Found response.
+                    schema:
+                        $ref: '#/definitions/HyTechDeleteTechNotFoundResponseBody'
             schemes:
                 - http
             security:
@@ -672,7 +705,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -688,7 +721,7 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
@@ -700,7 +733,7 @@ definitions:
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: true
-            timeout: false
+            timeout: true
         required:
             - name
             - id
@@ -731,13 +764,13 @@ definitions:
                 maxLength: 40
             country_name:
                 type: string
-                example: Ipsa animi.
+                example: Voluptatum et consequatur ad.
         description: A company information (default view)
         example:
             address: Shinagawa Tokyo
             company_id: 10
             company_name: Company
-            country_name: Officiis consectetur quidem quod sapiente quia.
+            country_name: Et ipsa.
     Error:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -761,14 +794,14 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
                 example: false
         description: Error response result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -788,7 +821,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -804,18 +837,18 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: companyList_NotFound_response_body result type (default view)
         example:
             fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: true
         required:
             - name
@@ -839,6 +872,14 @@ definitions:
               company_id: 10
               company_name: Company
               country_name: Libero praesentium facilis qui ut.
+            - address: Shinagawa Tokyo
+              company_id: 10
+              company_name: Company
+              country_name: Libero praesentium facilis qui ut.
+            - address: Shinagawa Tokyo
+              company_id: 10
+              company_name: Company
+              country_name: Libero praesentium facilis qui ut.
     HyCompanyCreateCompanyBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -846,7 +887,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -866,14 +907,14 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: createCompany_BadRequest_response_body result type (default view)
         example:
             fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
+            temporary: true
             timeout: false
         required:
             - name
@@ -935,13 +976,13 @@ definitions:
                 maxLength: 40
             country_name:
                 type: string
-                example: Pariatur numquam quibusdam mollitia.
+                example: Ut non.
         description: CreateCompanyResponseBody result type (default view)
         example:
             address: Shinagawa Tokyo
             company_id: 10
             company_name: Company
-            country_name: Facilis quia veritatis dicta.
+            country_name: Voluptatem quasi pariatur.
     HyCompanyDeleteCompanyNotFoundResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -949,7 +990,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -965,11 +1006,11 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: deleteCompany_NotFound_response_body result type (default view)
         example:
             fault: true
@@ -992,7 +1033,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1008,7 +1049,7 @@ definitions:
             temporary:
                 type: boolean
                 description: Is the error temporary?
-                example: true
+                example: false
             timeout:
                 type: boolean
                 description: Is the error a timeout?
@@ -1051,13 +1092,13 @@ definitions:
                 maxLength: 40
             country_name:
                 type: string
-                example: A officia.
+                example: Laboriosam rerum beatae dicta eveniet exercitationem non.
         description: GetCompanyResponseBody result type (default view)
         example:
             address: Shinagawa Tokyo
             company_id: 10
             company_name: Company
-            country_name: Cum laboriosam et nesciunt.
+            country_name: A officia.
     HyCompanyUpdateCompanyBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
@@ -1085,15 +1126,15 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: updateCompany_BadRequest_response_body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: false
-            timeout: false
+            timeout: true
         required:
             - name
             - id
@@ -1108,7 +1149,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1128,15 +1169,15 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: updateCompany_NotFound_response_body result type (default view)
         example:
             fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
-            timeout: false
+            temporary: false
+            timeout: true
         required:
             - name
             - id
@@ -1170,50 +1211,249 @@ definitions:
             address: Shinagawa Tokyo
             company_name: Company
             country_id: 110
+    HyTechCreateTechBadRequestResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: createTech_BadRequest_response_body result type (default view)
+        example:
+            fault: false
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    HyTechCreateTechCreatedResponseBody:
+        title: 'Mediatype identifier: application/vnd.tech+json; view=default'
+        type: object
+        properties:
+            tech_id:
+                type: integer
+                description: Key ID
+                example: 10
+                minimum: 1
+            tech_name:
+                type: string
+                description: Tech name
+                example: Golang
+                minLength: 1
+                maxLength: 40
+        description: CreateTechCreatedResponseBody result type (default view)
+        example:
+            tech_id: 10
+            tech_name: Golang
+    HyTechCreateTechOKResponseBody:
+        title: 'Mediatype identifier: application/vnd.tech+json; view=default'
+        type: object
+        properties:
+            tech_id:
+                type: integer
+                description: Key ID
+                example: 10
+                minimum: 1
+            tech_name:
+                type: string
+                description: Tech name
+                example: Golang
+                minLength: 1
+                maxLength: 40
+        description: CreateTechOKResponseBody result type (default view)
+        example:
+            tech_id: 10
+            tech_name: Golang
     HyTechCreateTechRequestBody:
         title: HyTechCreateTechRequestBody
         type: object
         properties:
-            name:
+            tech_name:
                 type: string
                 description: Tech name
                 example: Golang
                 minLength: 1
                 maxLength: 40
         example:
-            name: Golang
+            tech_name: Golang
         required:
-            - name
-    HyTechGetTechResponseBody:
-        title: 'Mediatype identifier: application/vnd.company+json; view=default'
+            - tech_name
+    HyTechDeleteTechNotFoundResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
         properties:
-            address:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
                 type: string
-                description: Company Address
-                example: Shinagawa Tokyo
-                minLength: 2
-                maxLength: 80
-            company_id:
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: deleteTech_NotFound_response_body result type (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: true
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    HyTechGetTechNotFoundResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: getTech_NotFound_response_body result type (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    HyTechGetTechResponseBody:
+        title: 'Mediatype identifier: application/vnd.tech+json; view=default'
+        type: object
+        properties:
+            tech_id:
                 type: integer
                 description: Key ID
                 example: 10
                 minimum: 1
-            company_name:
+            tech_name:
                 type: string
-                description: Company name
-                example: Company
-                minLength: 2
+                description: Tech name
+                example: Golang
+                minLength: 1
                 maxLength: 40
-            country_name:
-                type: string
-                example: Reprehenderit eos ea laboriosam quibusdam mollitia qui.
         description: GetTechResponseBody result type (default view)
         example:
-            address: Shinagawa Tokyo
-            company_id: 10
-            company_name: Company
-            country_name: In eaque perspiciatis odit.
+            tech_id: 10
+            tech_name: Golang
+    HyTechTechListNotFoundResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: techList_NotFound_response_body result type (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: true
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
     HyTechTechResponseCollection:
         title: 'Mediatype identifier: application/vnd.tech+json; type=collection; view=default'
         type: array
@@ -1221,25 +1461,13 @@ definitions:
             $ref: '#/definitions/TechResponse'
         description: TechListResponseBody is the result type for an array of TechResponse (default view)
         example:
-            - id: 10
-              name: Golang
-            - id: 10
-              name: Golang
-    HyTechUpdateTechRequestBody:
-        title: HyTechUpdateTechRequestBody
-        type: object
-        properties:
-            name:
-                type: string
-                description: Tech name
-                example: Golang
-                minLength: 1
-                maxLength: 40
-        example:
-            name: Golang
-        required:
-            - name
-    HyUserCreateUserBadRequestResponseBody:
+            - tech_id: 10
+              tech_name: Golang
+            - tech_id: 10
+              tech_name: Golang
+            - tech_id: 10
+              tech_name: Golang
+    HyTechUpdateTechBadRequestResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'
         type: object
         properties:
@@ -1266,10 +1494,110 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
+                example: false
+        description: updateTech_BadRequest_response_body result type (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    HyTechUpdateTechNotFoundResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: false
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: true
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
+                example: true
+        description: updateTech_NotFound_response_body result type (default view)
+        example:
+            fault: true
+            id: 123abc
+            message: parameter 'p' must be an integer
+            name: bad_request
+            temporary: false
+            timeout: false
+        required:
+            - name
+            - id
+            - message
+            - temporary
+            - timeout
+            - fault
+    HyTechUpdateTechRequestBody:
+        title: HyTechUpdateTechRequestBody
+        type: object
+        properties:
+            tech_name:
+                type: string
+                description: Tech name
+                example: Golang
+                minLength: 1
+                maxLength: 40
+        example:
+            tech_name: Golang
+        required:
+            - tech_name
+    HyUserCreateUserBadRequestResponseBody:
+        title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+        type: object
+        properties:
+            fault:
+                type: boolean
+                description: Is the error a server-side fault?
+                example: true
+            id:
+                type: string
+                description: ID is a unique identifier for this particular occurrence of the problem.
+                example: 123abc
+            message:
+                type: string
+                description: Message is a human-readable explanation specific to this occurrence of the problem.
+                example: parameter 'p' must be an integer
+            name:
+                type: string
+                description: Name is the name of this class of errors.
+                example: bad_request
+            temporary:
+                type: boolean
+                description: Is the error temporary?
+                example: false
+            timeout:
+                type: boolean
+                description: Is the error a timeout?
                 example: true
         description: createUser_BadRequest_response_body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
@@ -1363,14 +1691,14 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: deleteUser_NotFound_response_body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
+            temporary: false
             timeout: true
         required:
             - name
@@ -1406,15 +1734,15 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: true
+                example: false
         description: getUser_NotFound_response_body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: true
-            timeout: true
+            temporary: false
+            timeout: false
         required:
             - name
             - id
@@ -1454,7 +1782,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: false
+                example: true
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1477,11 +1805,11 @@ definitions:
                 example: true
         description: updateUser_BadRequest_response_body result type (default view)
         example:
-            fault: false
+            fault: true
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
-            temporary: false
+            temporary: true
             timeout: false
         required:
             - name
@@ -1497,7 +1825,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1517,15 +1845,15 @@ definitions:
             timeout:
                 type: boolean
                 description: Is the error a timeout?
-                example: false
+                example: true
         description: updateUser_NotFound_response_body result type (default view)
         example:
-            fault: true
+            fault: false
             id: 123abc
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: false
-            timeout: true
+            timeout: false
         required:
             - name
             - id
@@ -1565,7 +1893,7 @@ definitions:
             fault:
                 type: boolean
                 description: Is the error a server-side fault?
-                example: true
+                example: false
             id:
                 type: string
                 description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1593,7 +1921,7 @@ definitions:
             message: parameter 'p' must be an integer
             name: bad_request
             temporary: true
-            timeout: false
+            timeout: true
         required:
             - name
             - id
@@ -1639,6 +1967,12 @@ definitions:
               techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
               term: Jul 2017 - Aug 2017
               title: Developer
+            - company: Company
+              country: nl
+              description: '["Developed resume site for job seeking."]'
+              techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
+              term: Jul 2017 - Aug 2017
+              title: Developer
     HyUsertechUsertechResponseCollection:
         title: 'Mediatype identifier: application/vnd.usertech+json; type=collection; view=default'
         type: array
@@ -1658,12 +1992,12 @@ definitions:
         title: 'Mediatype identifier: application/vnd.tech+json; view=default'
         type: object
         properties:
-            id:
+            tech_id:
                 type: integer
                 description: Key ID
                 example: 10
                 minimum: 1
-            name:
+            tech_name:
                 type: string
                 description: Tech name
                 example: Golang
@@ -1671,10 +2005,8 @@ definitions:
                 maxLength: 40
         description: A tech information (default view)
         example:
-            id: 10
-            name: Golang
-        required:
-            - name
+            tech_id: 10
+            tech_name: Golang
     UserResponse:
         title: 'Mediatype identifier: application/vnd.user+json; view=default'
         type: object

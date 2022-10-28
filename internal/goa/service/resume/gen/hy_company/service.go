@@ -23,7 +23,7 @@ type Service interface {
 	//	- "id": only company's id
 	//	- "idname": only company's id and name
 	CompanyList(context.Context, *CompanyListPayload) (res CompanyCollection, view string, err error)
-	// Retrieve company with given company_id
+	// returns company by given company_id
 	// The "view" return value must have one of the following views
 	//	- "default"
 	//	- "id": only company's id

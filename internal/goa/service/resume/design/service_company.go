@@ -38,7 +38,7 @@ var _ = Service(resourcePrefix+"company", func() {
 	})
 
 	Method("getCompany", func() {
-		Description("Retrieve company with given company_id")
+		Description("returns company by given company_id")
 
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")

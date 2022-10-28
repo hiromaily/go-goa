@@ -15,22 +15,24 @@ import (
 	"goa.design/goa/v3/security"
 )
 
-// The company service returns company data
+// The tech service returns tech data
 type Service interface {
 	// List all techs
 	// The "view" return value must have one of the following views
 	//	- "default"
-	//	- "id": id is the view used for C U D
+	//	- "id": only tech's id
 	TechList(context.Context, *TechListPayload) (res TechCollection, view string, err error)
-	// get tech with given tech id
+	// returns tech by given tech id
 	// The "view" return value must have one of the following views
 	//	- "default"
-	//	- "id": only company's id
-	//	- "idname": only company's id and name
-	GetTech(context.Context, *GetTechPayload) (res *Company, view string, err error)
+	//	- "id": only tech's id
+	GetTech(context.Context, *GetTechPayload) (res *Tech, view string, err error)
 	// Create new tech
-	CreateTech(context.Context, *CreateTechPayload) (err error)
-	// Change tech properties
+	// The "view" return value must have one of the following views
+	//	- "default"
+	//	- "id": only tech's id
+	CreateTech(context.Context, *CreateTechPayload) (res *Tech, view string, err error)
+	// Update tech data
 	UpdateTech(context.Context, *UpdateTechPayload) (err error)
 	// Delete tech
 	DeleteTech(context.Context, *DeleteTechPayload) (err error)
@@ -52,28 +54,13 @@ const ServiceName = "hy_tech"
 // MethodKey key.
 var MethodNames = [5]string{"techList", "getTech", "createTech", "updateTech", "deleteTech"}
 
-// Company is the result type of the hy_tech service getTech method.
-type Company struct {
-	// Key ID
-	CompanyID *int
-	// Company name
-	CompanyName *string
-	CountryName *string
-	// Company Address
-	Address *string
-	// Datetime
-	CreatedAt *string
-	// Datetime
-	UpdatedAt *string
-}
-
 // CreateTechPayload is the payload type of the hy_tech service createTech
 // method.
 type CreateTechPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// Tech name
-	Name string
+	TechName string
 }
 
 // DeleteTechPayload is the payload type of the hy_tech service deleteTech
@@ -82,7 +69,7 @@ type DeleteTechPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// Tech ID
-	TechID *int
+	TechID int
 }
 
 // GetTechPayload is the payload type of the hy_tech service getTech method.
@@ -90,15 +77,15 @@ type GetTechPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// Tech ID
-	TechID *int
+	TechID int
 }
 
-// A tech information
+// Tech is the result type of the hy_tech service getTech method.
 type Tech struct {
 	// Key ID
-	ID *int
+	TechID *int
 	// Tech name
-	Name string
+	TechName *string
 	// Datetime
 	CreatedAt *string
 	// Datetime
@@ -120,24 +107,19 @@ type UpdateTechPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// Tech ID
-	TechID *int
+	TechID int
 	// Tech name
-	Name string
-}
-
-// MakeNoContent builds a goa.ServiceError from an error.
-func MakeNoContent(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "NoContent", false, false, false)
-}
-
-// MakeBadRequest builds a goa.ServiceError from an error.
-func MakeBadRequest(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "BadRequest", false, false, false)
+	TechName string
 }
 
 // MakeNotFound builds a goa.ServiceError from an error.
 func MakeNotFound(err error) *goa.ServiceError {
 	return goa.NewServiceError(err, "NotFound", false, false, false)
+}
+
+// MakeBadRequest builds a goa.ServiceError from an error.
+func MakeBadRequest(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "BadRequest", false, false, false)
 }
 
 // NewTechCollection initializes result type TechCollection from viewed result
@@ -168,34 +150,29 @@ func NewViewedTechCollection(res TechCollection, view string) hytechviews.TechCo
 	return vres
 }
 
-// NewCompany initializes result type Company from viewed result type Company.
-func NewCompany(vres *hytechviews.Company) *Company {
-	var res *Company
+// NewTech initializes result type Tech from viewed result type Tech.
+func NewTech(vres *hytechviews.Tech) *Tech {
+	var res *Tech
 	switch vres.View {
 	case "default", "":
-		res = newCompany(vres.Projected)
+		res = newTech(vres.Projected)
 	case "id":
-		res = newCompanyID(vres.Projected)
-	case "idname":
-		res = newCompanyIdname(vres.Projected)
+		res = newTechID(vres.Projected)
 	}
 	return res
 }
 
-// NewViewedCompany initializes viewed result type Company from result type
-// Company using the given view.
-func NewViewedCompany(res *Company, view string) *hytechviews.Company {
-	var vres *hytechviews.Company
+// NewViewedTech initializes viewed result type Tech from result type Tech
+// using the given view.
+func NewViewedTech(res *Tech, view string) *hytechviews.Tech {
+	var vres *hytechviews.Tech
 	switch view {
 	case "default", "":
-		p := newCompanyView(res)
-		vres = &hytechviews.Company{Projected: p, View: "default"}
+		p := newTechView(res)
+		vres = &hytechviews.Tech{Projected: p, View: "default"}
 	case "id":
-		p := newCompanyViewID(res)
-		vres = &hytechviews.Company{Projected: p, View: "id"}
-	case "idname":
-		p := newCompanyViewIdname(res)
-		vres = &hytechviews.Company{Projected: p, View: "idname"}
+		p := newTechViewID(res)
+		vres = &hytechviews.Tech{Projected: p, View: "id"}
 	}
 	return vres
 }
@@ -243,10 +220,8 @@ func newTechCollectionViewID(res TechCollection) hytechviews.TechCollectionView 
 // newTech converts projected type Tech to service type Tech.
 func newTech(vres *hytechviews.TechView) *Tech {
 	res := &Tech{
-		ID: vres.ID,
-	}
-	if vres.Name != nil {
-		res.Name = *vres.Name
+		TechID:   vres.TechID,
+		TechName: vres.TechName,
 	}
 	return res
 }
@@ -254,7 +229,7 @@ func newTech(vres *hytechviews.TechView) *Tech {
 // newTechID converts projected type Tech to service type Tech.
 func newTechID(vres *hytechviews.TechView) *Tech {
 	res := &Tech{
-		ID: vres.ID,
+		TechID: vres.TechID,
 	}
 	return res
 }
@@ -263,8 +238,8 @@ func newTechID(vres *hytechviews.TechView) *Tech {
 // "default" view.
 func newTechView(res *Tech) *hytechviews.TechView {
 	vres := &hytechviews.TechView{
-		ID:   res.ID,
-		Name: &res.Name,
+		TechID:   res.TechID,
+		TechName: res.TechName,
 	}
 	return vres
 }
@@ -273,66 +248,7 @@ func newTechView(res *Tech) *hytechviews.TechView {
 // "id" view.
 func newTechViewID(res *Tech) *hytechviews.TechView {
 	vres := &hytechviews.TechView{
-		ID: res.ID,
-	}
-	return vres
-}
-
-// newCompany converts projected type Company to service type Company.
-func newCompany(vres *hytechviews.CompanyView) *Company {
-	res := &Company{
-		CompanyID:   vres.CompanyID,
-		CompanyName: vres.CompanyName,
-		CountryName: vres.CountryName,
-		Address:     vres.Address,
-	}
-	return res
-}
-
-// newCompanyID converts projected type Company to service type Company.
-func newCompanyID(vres *hytechviews.CompanyView) *Company {
-	res := &Company{
-		CompanyID: vres.CompanyID,
-	}
-	return res
-}
-
-// newCompanyIdname converts projected type Company to service type Company.
-func newCompanyIdname(vres *hytechviews.CompanyView) *Company {
-	res := &Company{
-		CompanyID:   vres.CompanyID,
-		CompanyName: vres.CompanyName,
-	}
-	return res
-}
-
-// newCompanyView projects result type Company to projected type CompanyView
-// using the "default" view.
-func newCompanyView(res *Company) *hytechviews.CompanyView {
-	vres := &hytechviews.CompanyView{
-		CompanyID:   res.CompanyID,
-		CompanyName: res.CompanyName,
-		CountryName: res.CountryName,
-		Address:     res.Address,
-	}
-	return vres
-}
-
-// newCompanyViewID projects result type Company to projected type CompanyView
-// using the "id" view.
-func newCompanyViewID(res *Company) *hytechviews.CompanyView {
-	vres := &hytechviews.CompanyView{
-		CompanyID: res.CompanyID,
-	}
-	return vres
-}
-
-// newCompanyViewIdname projects result type Company to projected type
-// CompanyView using the "idname" view.
-func newCompanyViewIdname(res *Company) *hytechviews.CompanyView {
-	vres := &hytechviews.CompanyView{
-		CompanyID:   res.CompanyID,
-		CompanyName: res.CompanyName,
+		TechID: res.TechID,
 	}
 	return vres
 }

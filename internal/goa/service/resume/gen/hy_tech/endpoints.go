@@ -96,7 +96,7 @@ func NewGetTechEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint 
 		if err != nil {
 			return nil, err
 		}
-		vres := NewViewedCompany(res, view)
+		vres := NewViewedTech(res, view)
 		return vres, nil
 	}
 }
@@ -120,7 +120,12 @@ func NewCreateTechEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoi
 		if err != nil {
 			return nil, err
 		}
-		return nil, s.CreateTech(ctx, p)
+		res, view, err := s.CreateTech(ctx, p)
+		if err != nil {
+			return nil, err
+		}
+		vres := NewViewedTech(res, view)
+		return vres, nil
 	}
 }
 

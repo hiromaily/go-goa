@@ -55,12 +55,12 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"TechList", "GET", "/tech"},
-			{"GetTech", "GET", "/tech/{techID}"},
+			{"GetTech", "GET", "/tech/{tech_id}"},
 			{"CreateTech", "POST", "/tech"},
-			{"UpdateTech", "PUT", "/tech/{techID}"},
-			{"DeleteTech", "DELETE", "/tech/{techID}"},
+			{"UpdateTech", "PUT", "/tech/{tech_id}"},
+			{"DeleteTech", "DELETE", "/tech/{tech_id}"},
 			{"CORS", "OPTIONS", "/tech"},
-			{"CORS", "OPTIONS", "/tech/{techID}"},
+			{"CORS", "OPTIONS", "/tech/{tech_id}"},
 		},
 		TechList:   NewTechListHandler(e.TechList, mux, decoder, encoder, errhandler, formatter),
 		GetTech:    NewGetTechHandler(e.GetTech, mux, decoder, encoder, errhandler, formatter),
@@ -127,7 +127,7 @@ func NewTechListHandler(
 	var (
 		decodeRequest  = DecodeTechListRequest(mux, decoder)
 		encodeResponse = EncodeTechListResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeTechListError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -162,7 +162,7 @@ func MountGetTechHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/tech/{techID}", f)
+	mux.Handle("GET", "/tech/{tech_id}", f)
 }
 
 // NewGetTechHandler creates a HTTP handler which loads the HTTP request and
@@ -178,7 +178,7 @@ func NewGetTechHandler(
 	var (
 		decodeRequest  = DecodeGetTechRequest(mux, decoder)
 		encodeResponse = EncodeGetTechResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetTechError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -229,7 +229,7 @@ func NewCreateTechHandler(
 	var (
 		decodeRequest  = DecodeCreateTechRequest(mux, decoder)
 		encodeResponse = EncodeCreateTechResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeCreateTechError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -264,7 +264,7 @@ func MountUpdateTechHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("PUT", "/tech/{techID}", f)
+	mux.Handle("PUT", "/tech/{tech_id}", f)
 }
 
 // NewUpdateTechHandler creates a HTTP handler which loads the HTTP request and
@@ -280,7 +280,7 @@ func NewUpdateTechHandler(
 	var (
 		decodeRequest  = DecodeUpdateTechRequest(mux, decoder)
 		encodeResponse = EncodeUpdateTechResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeUpdateTechError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -315,7 +315,7 @@ func MountDeleteTechHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("DELETE", "/tech/{techID}", f)
+	mux.Handle("DELETE", "/tech/{tech_id}", f)
 }
 
 // NewDeleteTechHandler creates a HTTP handler which loads the HTTP request and
@@ -331,7 +331,7 @@ func NewDeleteTechHandler(
 	var (
 		decodeRequest  = DecodeDeleteTechRequest(mux, decoder)
 		encodeResponse = EncodeDeleteTechResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeDeleteTechError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -362,7 +362,7 @@ func NewDeleteTechHandler(
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleHyTechOrigin(h)
 	mux.Handle("OPTIONS", "/tech", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/tech/{techID}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/tech/{tech_id}", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

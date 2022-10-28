@@ -44,6 +44,12 @@ func BuildGetTechPayload(hyTechGetTechTechID string, hyTechGetTechToken string) 
 		if err != nil {
 			return nil, fmt.Errorf("invalid value for techID, must be INT")
 		}
+		if techID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("techID", techID, 1, true))
+		}
+		if err != nil {
+			return nil, err
+		}
 	}
 	var token *string
 	{
@@ -52,7 +58,7 @@ func BuildGetTechPayload(hyTechGetTechTechID string, hyTechGetTechToken string) 
 		}
 	}
 	v := &hytech.GetTechPayload{}
-	v.TechID = &techID
+	v.TechID = techID
 	v.Token = token
 
 	return v, nil
@@ -66,13 +72,13 @@ func BuildCreateTechPayload(hyTechCreateTechBody string, hyTechCreateTechToken s
 	{
 		err = json.Unmarshal([]byte(hyTechCreateTechBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"name\": \"Golang\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tech_name\": \"Golang\"\n   }'")
 		}
-		if utf8.RuneCountInString(body.Name) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", body.Name, utf8.RuneCountInString(body.Name), 1, true))
+		if utf8.RuneCountInString(body.TechName) < 1 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", body.TechName, utf8.RuneCountInString(body.TechName), 1, true))
 		}
-		if utf8.RuneCountInString(body.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", body.Name, utf8.RuneCountInString(body.Name), 40, false))
+		if utf8.RuneCountInString(body.TechName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", body.TechName, utf8.RuneCountInString(body.TechName), 40, false))
 		}
 		if err != nil {
 			return nil, err
@@ -85,7 +91,7 @@ func BuildCreateTechPayload(hyTechCreateTechBody string, hyTechCreateTechToken s
 		}
 	}
 	v := &hytech.CreateTechPayload{
-		Name: body.Name,
+		TechName: body.TechName,
 	}
 	v.Token = token
 
@@ -100,13 +106,13 @@ func BuildUpdateTechPayload(hyTechUpdateTechBody string, hyTechUpdateTechTechID 
 	{
 		err = json.Unmarshal([]byte(hyTechUpdateTechBody), &body)
 		if err != nil {
-			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"name\": \"Golang\"\n   }'")
+			return nil, fmt.Errorf("invalid JSON for body, \nerror: %s, \nexample of valid JSON:\n%s", err, "'{\n      \"tech_name\": \"Golang\"\n   }'")
 		}
-		if utf8.RuneCountInString(body.Name) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", body.Name, utf8.RuneCountInString(body.Name), 1, true))
+		if utf8.RuneCountInString(body.TechName) < 1 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", body.TechName, utf8.RuneCountInString(body.TechName), 1, true))
 		}
-		if utf8.RuneCountInString(body.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", body.Name, utf8.RuneCountInString(body.Name), 40, false))
+		if utf8.RuneCountInString(body.TechName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", body.TechName, utf8.RuneCountInString(body.TechName), 40, false))
 		}
 		if err != nil {
 			return nil, err
@@ -120,6 +126,12 @@ func BuildUpdateTechPayload(hyTechUpdateTechBody string, hyTechUpdateTechTechID 
 		if err != nil {
 			return nil, fmt.Errorf("invalid value for techID, must be INT")
 		}
+		if techID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("techID", techID, 1, true))
+		}
+		if err != nil {
+			return nil, err
+		}
 	}
 	var token *string
 	{
@@ -128,9 +140,9 @@ func BuildUpdateTechPayload(hyTechUpdateTechBody string, hyTechUpdateTechTechID 
 		}
 	}
 	v := &hytech.UpdateTechPayload{
-		Name: body.Name,
+		TechName: body.TechName,
 	}
-	v.TechID = &techID
+	v.TechID = techID
 	v.Token = token
 
 	return v, nil
@@ -148,6 +160,12 @@ func BuildDeleteTechPayload(hyTechDeleteTechTechID string, hyTechDeleteTechToken
 		if err != nil {
 			return nil, fmt.Errorf("invalid value for techID, must be INT")
 		}
+		if techID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("techID", techID, 1, true))
+		}
+		if err != nil {
+			return nil, err
+		}
 	}
 	var token *string
 	{
@@ -156,7 +174,7 @@ func BuildDeleteTechPayload(hyTechDeleteTechTechID string, hyTechDeleteTechToken
 		}
 	}
 	v := &hytech.DeleteTechPayload{}
-	v.TechID = &techID
+	v.TechID = techID
 	v.Token = token
 
 	return v, nil

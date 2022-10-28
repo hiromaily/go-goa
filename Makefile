@@ -130,18 +130,6 @@ http-user:
 .PHONY: kouho
 kouho:
 	@echo test
-
-	# Company
-#	http localhost:8080/api/company 'Authorization: Bearer $(TOKEN)'
-#	http localhost:8080/api/company/1 'Authorization: Bearer $(TOKEN)'
-#	http POST http://localhost:8080/api/company name=Google country=America address=California 'Authorization: Bearer $(TOKEN)'
-#	http PUT http://localhost:8080/api/company/1 name=Google country=America address=California 'Authorization: Bearer $(TOKEN)'
-#	http DELETE http://localhost:8080/api/company/1 'Authorization: Bearer $(TOKEN)'
-
-	#http POST localhost:8080/login email=aaa@aaa.com password=secret-secret
-	#http localhost:8080/company
-	#http localhost:8080/company/1
-
 	# Static files
 	#http localhost:8080/
 	#http localhost:8080/swagger/swagger.json

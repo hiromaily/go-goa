@@ -19,14 +19,14 @@ import (
 // endpoint HTTP request body.
 type CreateTechRequestBody struct {
 	// Tech name
-	Name string `form:"name" json:"name" xml:"name"`
+	TechName string `form:"tech_name" json:"tech_name" xml:"tech_name"`
 }
 
 // UpdateTechRequestBody is the type of the "hy_tech" service "updateTech"
 // endpoint HTTP request body.
 type UpdateTechRequestBody struct {
 	// Tech name
-	Name string `form:"name" json:"name" xml:"name"`
+	TechName string `form:"tech_name" json:"tech_name" xml:"tech_name"`
 }
 
 // TechListResponseBody is the type of the "hy_tech" service "techList"
@@ -37,24 +37,155 @@ type TechListResponseBody []*TechResponse
 // HTTP response body.
 type GetTechResponseBody struct {
 	// Key ID
-	CompanyID *int `form:"company_id,omitempty" json:"company_id,omitempty" xml:"company_id,omitempty"`
-	// Company name
-	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
-	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
-	// Company Address
-	Address *string `form:"address,omitempty" json:"address,omitempty" xml:"address,omitempty"`
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
+	// Tech name
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
 	// Datetime
 	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
 	// Datetime
 	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
 }
 
+// CreateTechOKResponseBody is the type of the "hy_tech" service "createTech"
+// endpoint HTTP response body.
+type CreateTechOKResponseBody struct {
+	// Key ID
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
+	// Tech name
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
+	// Datetime
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
+	// Datetime
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
+}
+
+// TechListNotFoundResponseBody is the type of the "hy_tech" service "techList"
+// endpoint HTTP response body for the "NotFound" error.
+type TechListNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// GetTechNotFoundResponseBody is the type of the "hy_tech" service "getTech"
+// endpoint HTTP response body for the "NotFound" error.
+type GetTechNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// CreateTechBadRequestResponseBody is the type of the "hy_tech" service
+// "createTech" endpoint HTTP response body for the "BadRequest" error.
+type CreateTechBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// UpdateTechBadRequestResponseBody is the type of the "hy_tech" service
+// "updateTech" endpoint HTTP response body for the "BadRequest" error.
+type UpdateTechBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// UpdateTechNotFoundResponseBody is the type of the "hy_tech" service
+// "updateTech" endpoint HTTP response body for the "NotFound" error.
+type UpdateTechNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// DeleteTechNotFoundResponseBody is the type of the "hy_tech" service
+// "deleteTech" endpoint HTTP response body for the "NotFound" error.
+type DeleteTechNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
 // TechResponse is used to define fields on response body types.
 type TechResponse struct {
 	// Key ID
-	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
 	// Tech name
-	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
+	// Datetime
+	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
+	// Datetime
+	UpdatedAt *string `form:"updated_at,omitempty" json:"updated_at,omitempty" xml:"updated_at,omitempty"`
+}
+
+// CreateTechCreatedResponseBody is used to define fields on response body
+// types.
+type CreateTechCreatedResponseBody struct {
+	// Key ID
+	TechID *int `form:"tech_id,omitempty" json:"tech_id,omitempty" xml:"tech_id,omitempty"`
+	// Tech name
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
 	// Datetime
 	CreatedAt *string `form:"created_at,omitempty" json:"created_at,omitempty" xml:"created_at,omitempty"`
 	// Datetime
@@ -65,7 +196,7 @@ type TechResponse struct {
 // the "createTech" endpoint of the "hy_tech" service.
 func NewCreateTechRequestBody(p *hytech.CreateTechPayload) *CreateTechRequestBody {
 	body := &CreateTechRequestBody{
-		Name: p.Name,
+		TechName: p.TechName,
 	}
 	return body
 }
@@ -74,7 +205,7 @@ func NewCreateTechRequestBody(p *hytech.CreateTechPayload) *CreateTechRequestBod
 // the "updateTech" endpoint of the "hy_tech" service.
 func NewUpdateTechRequestBody(p *hytech.UpdateTechPayload) *UpdateTechRequestBody {
 	body := &UpdateTechRequestBody{
-		Name: p.Name,
+		TechName: p.TechName,
 	}
 	return body
 }
@@ -90,39 +221,307 @@ func NewTechListTechCollectionOK(body TechListResponseBody) hytechviews.TechColl
 	return v
 }
 
-// NewGetTechCompanyOK builds a "hy_tech" service "getTech" endpoint result
-// from a HTTP "OK" response.
-func NewGetTechCompanyOK(body *GetTechResponseBody) *hytechviews.CompanyView {
-	v := &hytechviews.CompanyView{
-		CompanyID:   body.CompanyID,
-		CompanyName: body.CompanyName,
-		CountryName: body.CountryName,
-		Address:     body.Address,
-		CreatedAt:   body.CreatedAt,
-		UpdatedAt:   body.UpdatedAt,
+// NewTechListNotFound builds a hy_tech service techList endpoint NotFound
+// error.
+func NewTechListNotFound(body *TechListNotFoundResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
 	}
 
 	return v
 }
 
-// ValidateTechResponse runs the validations defined on TechResponse
-func ValidateTechResponse(body *TechResponse) (err error) {
+// NewGetTechTechOK builds a "hy_tech" service "getTech" endpoint result from a
+// HTTP "OK" response.
+func NewGetTechTechOK(body *GetTechResponseBody) *hytechviews.TechView {
+	v := &hytechviews.TechView{
+		TechID:    body.TechID,
+		TechName:  body.TechName,
+		CreatedAt: body.CreatedAt,
+		UpdatedAt: body.UpdatedAt,
+	}
+
+	return v
+}
+
+// NewGetTechNotFound builds a hy_tech service getTech endpoint NotFound error.
+func NewGetTechNotFound(body *GetTechNotFoundResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewCreateTechTechOK builds a "hy_tech" service "createTech" endpoint result
+// from a HTTP "OK" response.
+func NewCreateTechTechOK(body *CreateTechOKResponseBody) *hytechviews.TechView {
+	v := &hytechviews.TechView{
+		TechID:    body.TechID,
+		TechName:  body.TechName,
+		CreatedAt: body.CreatedAt,
+		UpdatedAt: body.UpdatedAt,
+	}
+
+	return v
+}
+
+// NewCreateTechBadRequest builds a hy_tech service createTech endpoint
+// BadRequest error.
+func NewCreateTechBadRequest(body *CreateTechBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewUpdateTechBadRequest builds a hy_tech service updateTech endpoint
+// BadRequest error.
+func NewUpdateTechBadRequest(body *UpdateTechBadRequestResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewUpdateTechNotFound builds a hy_tech service updateTech endpoint NotFound
+// error.
+func NewUpdateTechNotFound(body *UpdateTechNotFoundResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewDeleteTechNotFound builds a hy_tech service deleteTech endpoint NotFound
+// error.
+func NewDeleteTechNotFound(body *DeleteTechNotFoundResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// ValidateTechListNotFoundResponseBody runs the validations defined on
+// techList_NotFound_response_body
+func ValidateTechListNotFoundResponseBody(body *TechListNotFoundResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}
-	if body.ID != nil {
-		if *body.ID < 1 {
-			err = goa.MergeErrors(err, goa.InvalidRangeError("body.id", *body.ID, 1, true))
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateGetTechNotFoundResponseBody runs the validations defined on
+// getTech_NotFound_response_body
+func ValidateGetTechNotFoundResponseBody(body *GetTechNotFoundResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateCreateTechBadRequestResponseBody runs the validations defined on
+// createTech_BadRequest_response_body
+func ValidateCreateTechBadRequestResponseBody(body *CreateTechBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateUpdateTechBadRequestResponseBody runs the validations defined on
+// updateTech_BadRequest_response_body
+func ValidateUpdateTechBadRequestResponseBody(body *UpdateTechBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateUpdateTechNotFoundResponseBody runs the validations defined on
+// updateTech_NotFound_response_body
+func ValidateUpdateTechNotFoundResponseBody(body *UpdateTechNotFoundResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateDeleteTechNotFoundResponseBody runs the validations defined on
+// deleteTech_NotFound_response_body
+func ValidateDeleteTechNotFoundResponseBody(body *DeleteTechNotFoundResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateTechResponse runs the validations defined on TechResponse
+func ValidateTechResponse(body *TechResponse) (err error) {
+	if body.TechID != nil {
+		if *body.TechID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("body.tech_id", *body.TechID, 1, true))
 		}
 	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) < 1 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 1, true))
+	if body.TechName != nil {
+		if utf8.RuneCountInString(*body.TechName) < 1 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", *body.TechName, utf8.RuneCountInString(*body.TechName), 1, true))
 		}
 	}
-	if body.Name != nil {
-		if utf8.RuneCountInString(*body.Name) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.name", *body.Name, utf8.RuneCountInString(*body.Name), 40, false))
+	if body.TechName != nil {
+		if utf8.RuneCountInString(*body.TechName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", *body.TechName, utf8.RuneCountInString(*body.TechName), 40, false))
+		}
+	}
+	if body.CreatedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.created_at", *body.CreatedAt, goa.FormatDateTime))
+	}
+	if body.UpdatedAt != nil {
+		err = goa.MergeErrors(err, goa.ValidateFormat("body.updated_at", *body.UpdatedAt, goa.FormatDateTime))
+	}
+	return
+}
+
+// ValidateCreateTechCreatedResponseBody runs the validations defined on
+// CreateTechCreatedResponseBody
+func ValidateCreateTechCreatedResponseBody(body *CreateTechCreatedResponseBody) (err error) {
+	if body.TechID != nil {
+		if *body.TechID < 1 {
+			err = goa.MergeErrors(err, goa.InvalidRangeError("body.tech_id", *body.TechID, 1, true))
+		}
+	}
+	if body.TechName != nil {
+		if utf8.RuneCountInString(*body.TechName) < 1 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", *body.TechName, utf8.RuneCountInString(*body.TechName), 1, true))
+		}
+	}
+	if body.TechName != nil {
+		if utf8.RuneCountInString(*body.TechName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.tech_name", *body.TechName, utf8.RuneCountInString(*body.TechName), 40, false))
 		}
 	}
 	if body.CreatedAt != nil {

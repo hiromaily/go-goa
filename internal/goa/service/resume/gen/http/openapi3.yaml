@@ -162,9 +162,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 5677236963017093104
+                    example: 5633647381860274049
                     minimum: 1
-                  example: 8166058884680761478
+                  example: 8856826278083494555
             responses:
                 "200":
                     description: OK response.
@@ -181,7 +181,7 @@ paths:
             tags:
                 - hy_company
             summary: getCompany hy_company
-            description: Retrieve company with given company_id
+            description: returns company by given company_id
             operationId: hy_company#getCompany
             parameters:
                 - name: company_id
@@ -191,9 +191,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 4184350793505023335
+                    example: 963218077044982780
                     minimum: 1
-                  example: 7298225062677192023
+                  example: 3172866413800060998
             responses:
                 "200":
                     description: OK response.
@@ -232,9 +232,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 2367788905373487708
+                    example: 5639337732304257506
                     minimum: 1
-                  example: 6419065970720496558
+                  example: 2728230755377463616
             requestBody:
                 required: true
                 content:
@@ -289,13 +289,19 @@ paths:
                                 $ref: '#/components/schemas/TechCollection'
                             example:
                                 - created_at: "2017-03-10T15:00:00Z"
-                                  id: 10
-                                  name: Golang
+                                  tech_id: 10
+                                  tech_name: Golang
                                   updated_at: "2017-03-10T15:00:00Z"
                                 - created_at: "2017-03-10T15:00:00Z"
-                                  id: 10
-                                  name: Golang
+                                  tech_id: 10
+                                  tech_name: Golang
                                   updated_at: "2017-03-10T15:00:00Z"
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -312,16 +318,42 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateTechRequestBody'
                         example:
-                            name: Golang
+                            tech_name: Golang
             responses:
                 "200":
                     description: OK response.
+                    content:
+                        application/json:
+                            schema:
+                                description: 'Response body may alternatively be #/components/schemas/TechResponseID'
+                                $ref: '#/components/schemas/Tech'
+                            example:
+                                created_at: "2017-03-10T15:00:00Z"
+                                tech_id: 10
+                                tech_name: Golang
+                                updated_at: "2017-03-10T15:00:00Z"
                 "201":
                     description: Created response.
+                    content:
+                        application/json:
+                            schema:
+                                description: 'Response body may alternatively be #/components/schemas/TechResponseID'
+                                $ref: '#/components/schemas/Tech'
+                            example:
+                                created_at: "2017-03-10T15:00:00Z"
+                                tech_id: 10
+                                tech_name: Golang
+                                updated_at: "2017-03-10T15:00:00Z"
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /tech/{techID}:
+    /tech/{tech_id}:
         delete:
             tags:
                 - hy_tech
@@ -329,19 +361,25 @@ paths:
             description: Delete tech
             operationId: hy_tech#deleteTech
             parameters:
-                - name: techID
+                - name: tech_id
                   in: path
                   description: Tech ID
                   required: true
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 8003270703388328305
-                    format: int64
-                  example: 4130396077049506307
+                    example: 6205512398408249821
+                    minimum: 1
+                  example: 3701071496368509414
             responses:
                 "200":
                     description: OK response.
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -349,34 +387,38 @@ paths:
             tags:
                 - hy_tech
             summary: getTech hy_tech
-            description: get tech with given tech id
+            description: returns tech by given tech id
             operationId: hy_tech#getTech
             parameters:
-                - name: techID
+                - name: tech_id
                   in: path
                   description: Tech ID
                   required: true
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 7148851887236450792
-                    format: int64
-                  example: 7429526940120957809
+                    example: 7740664151266896307
+                    minimum: 1
+                  example: 2495815827976346045
             responses:
                 "200":
                     description: OK response.
                     content:
                         application/json:
                             schema:
-                                description: 'Response body may alternatively be one of #/components/schemas/CompanyResponseID or #/components/schemas/CompanyResponseIdname'
-                                $ref: '#/components/schemas/Company'
+                                description: 'Response body may alternatively be #/components/schemas/TechResponseID'
+                                $ref: '#/components/schemas/Tech'
                             example:
-                                address: Shinagawa Tokyo
-                                company_id: 10
-                                company_name: Company
-                                country_name: Quis voluptas non.
                                 created_at: "2017-03-10T15:00:00Z"
+                                tech_id: 10
+                                tech_name: Golang
                                 updated_at: "2017-03-10T15:00:00Z"
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -384,19 +426,19 @@ paths:
             tags:
                 - hy_tech
             summary: updateTech hy_tech
-            description: Change tech properties
+            description: Update tech data
             operationId: hy_tech#updateTech
             parameters:
-                - name: techID
+                - name: tech_id
                   in: path
                   description: Tech ID
                   required: true
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 3594416558187196043
-                    format: int64
-                  example: 2206890179669570462
+                    example: 6968908288167102051
+                    minimum: 1
+                  example: 1532314570247062039
             requestBody:
                 required: true
                 content:
@@ -404,10 +446,22 @@ paths:
                         schema:
                             $ref: '#/components/schemas/CreateTechRequestBody'
                         example:
-                            name: Golang
+                            tech_name: Golang
             responses:
                 "200":
                     description: OK response.
+                "400":
+                    description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -503,9 +557,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 3172866413800060998
+                    example: 2442878704078016207
                     minimum: 1
-                  example: 5639337732304257506
+                  example: 174707256933496808
             responses:
                 "200":
                     description: OK response.
@@ -532,9 +586,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 4639836790153810357
+                    example: 7375778327793873337
                     minimum: 1
-                  example: 9156148972279721235
+                  example: 614694957858244944
             responses:
                 "200":
                     description: OK response.
@@ -573,9 +627,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 803202534870497674
+                    example: 766181467878029624
                     minimum: 1
-                  example: 963218077044982780
+                  example: 9132443853158385424
             requestBody:
                 required: true
                 content:
@@ -619,9 +673,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 8856826278083494555
+                    example: 1813871800037835770
                     minimum: 1
-                  example: 7740664151266896307
+                  example: 5205654078207144837
             responses:
                 "200":
                     description: OK response.
@@ -657,9 +711,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 2728230755377463616
+                    example: 5640647172011608607
                     minimum: 1
-                  example: 5633647381860274049
+                  example: 3163300068779443069
             responses:
                 "200":
                     description: OK response.
@@ -695,9 +749,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 2495815827976346045
+                    example: 7913414299811921263
                     minimum: 1
-                  example: 6968908288167102051
+                  example: 339745344289456661
             responses:
                 "200":
                     description: OK response.
@@ -763,7 +817,7 @@ components:
                     maxLength: 40
                 country_name:
                     type: string
-                    example: Iure distinctio.
+                    example: Doloremque beatae itaque.
                 created_at:
                     type: string
                     description: Datetime
@@ -779,7 +833,7 @@ components:
                 address: Shinagawa Tokyo
                 company_id: 10
                 company_name: Company
-                country_name: Facere dolorem itaque officiis iusto.
+                country_name: Hic eum delectus labore.
                 created_at: "2017-03-10T15:00:00Z"
                 updated_at: "2017-03-10T15:00:00Z"
         CompanyCollection:
@@ -890,16 +944,16 @@ components:
         CreateTechRequestBody:
             type: object
             properties:
-                name:
+                tech_name:
                     type: string
                     description: Tech name
                     example: Golang
                     minLength: 1
                     maxLength: 40
             example:
-                name: Golang
+                tech_name: Golang
             required:
-                - name
+                - tech_name
         CreateUserRequestBody:
             type: object
             properties:
@@ -954,7 +1008,7 @@ components:
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
-                    example: false
+                    example: true
             example:
                 id: 3F1FKVRR
                 message: Value of ID must be an integer
@@ -994,12 +1048,12 @@ components:
                     description: Datetime
                     example: "2017-03-10T15:00:00Z"
                     format: date-time
-                id:
+                tech_id:
                     type: integer
                     description: Key ID
                     example: 10
                     minimum: 1
-                name:
+                tech_name:
                     type: string
                     description: Tech name
                     example: Golang
@@ -1013,51 +1067,51 @@ components:
             description: A tech information
             example:
                 created_at: "2017-03-10T15:00:00Z"
-                id: 10
-                name: Golang
+                tech_id: 10
+                tech_name: Golang
                 updated_at: "2017-03-10T15:00:00Z"
-            required:
-                - name
         TechCollection:
             type: array
             items:
                 $ref: '#/components/schemas/Tech'
             example:
                 - created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  name: Golang
+                  tech_id: 10
+                  tech_name: Golang
                   updated_at: "2017-03-10T15:00:00Z"
                 - created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  name: Golang
+                  tech_id: 10
+                  tech_name: Golang
                   updated_at: "2017-03-10T15:00:00Z"
                 - created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  name: Golang
+                  tech_id: 10
+                  tech_name: Golang
                   updated_at: "2017-03-10T15:00:00Z"
                 - created_at: "2017-03-10T15:00:00Z"
-                  id: 10
-                  name: Golang
+                  tech_id: 10
+                  tech_name: Golang
                   updated_at: "2017-03-10T15:00:00Z"
         TechResponseID:
             type: object
             properties:
-                id:
+                tech_id:
                     type: integer
                     description: Key ID
                     example: 10
                     minimum: 1
             description: A tech information (id view)
             example:
-                id: 10
+                tech_id: 10
         TechResponseIDCollection:
             type: array
             items:
                 $ref: '#/components/schemas/TechResponseID'
             description: TechListResponseBody is the result type for an array of TechResponse (id view)
             example:
-                - id: 10
-                - id: 10
+                - tech_id: 10
+                - tech_id: 10
+                - tech_id: 10
+                - tech_id: 10
         UpdateCompanyRequestBody:
             type: object
             properties:
@@ -1193,6 +1247,7 @@ components:
                 - user_id: 10
                 - user_id: 10
                 - user_id: 10
+                - user_id: 10
         Usertech:
             type: object
             properties:
@@ -1222,8 +1277,6 @@ components:
                   tech_name: Golang
                 - id: 10
                   tech_name: Golang
-                - id: 10
-                  tech_name: Golang
         UsertechResponseTech:
             type: object
             properties:
@@ -1244,6 +1297,7 @@ components:
                 $ref: '#/components/schemas/UsertechResponseTech'
             description: GetUserLikeTechResponseBody is the result type for an array of UsertechResponse (tech view)
             example:
+                - tech_name: Golang
                 - tech_name: Golang
                 - tech_name: Golang
                 - tech_name: Golang
@@ -1313,18 +1367,6 @@ components:
                   techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
                   term: Jul 2017 - Aug 2017
                   title: Developer
-                - company: Company
-                  country: nl
-                  description: '["Developed resume site for job seeking."]'
-                  techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
-                  term: Jul 2017 - Aug 2017
-                  title: Developer
-                - company: Company
-                  country: nl
-                  description: '["Developed resume site for job seeking."]'
-                  techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
-                  term: Jul 2017 - Aug 2017
-                  title: Developer
     securitySchemes:
         jwt_header_Authorization:
             type: http
@@ -1337,7 +1379,7 @@ tags:
     - name: static
       description: The static service returns static files
     - name: hy_tech
-      description: The company service returns company data
+      description: The tech service returns tech data
     - name: hy_user
       description: The user service returns user data
     - name: hy_usertech
