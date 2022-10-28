@@ -1,5 +1,6 @@
 assets/**
 build/**
 configs/**
+docs/**
 scripts/**
 web/**

@@ -3,5 +3,6 @@
 !assets/
 !build/
 !configs/
+!docs/
 !web/
 !Makefile

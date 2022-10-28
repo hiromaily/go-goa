@@ -6,6 +6,7 @@ run:
     - assets
     - build
     - configs
+    - docs
     - internal/goa/service/resume/gen
     - scripts
     - web
