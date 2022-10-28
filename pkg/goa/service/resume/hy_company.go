@@ -2,15 +2,14 @@ package resumeapi
 
 import (
 	"context"
-	"github.com/hiromaily/go-goa/pkg/jwts"
-	ptr "github.com/hiromaily/go-goa/pkg/pointer"
-	hyuser "resume/gen/hy_user"
 	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
 
+	"github.com/hiromaily/go-goa/pkg/jwts"
+	ptr "github.com/hiromaily/go-goa/pkg/pointer"
 	"github.com/hiromaily/go-goa/pkg/repository"
 	hycompany "resume/gen/hy_company"
 )
@@ -65,7 +64,7 @@ func (s *hyCompanysrvc) CompanyList(ctx context.Context, p *hycompany.CompanyLis
 		return nil, "", errors.Wrap(err, "fail to call companyRepo.UserList()")
 	}
 	if len(companies) == 0 {
-		return nil, "", hyuser.MakeNotFound(errors.New("user not found"))
+		return nil, "", hycompany.MakeNotFound(errors.New("company not found"))
 	}
 	res = companies
 	view = "default"
@@ -81,7 +80,7 @@ func (s *hyCompanysrvc) GetCompany(ctx context.Context, p *hycompany.GetCompanyP
 	if err != nil {
 		// Not Found
 		if strings.Contains(err.Error(), "no rows in result set") {
-			return nil, "", hycompany.MakeNotFound(errors.New("user not found"))
+			return nil, "", hycompany.MakeNotFound(errors.New("company not found"))
 		}
 		return nil, "", errors.Wrapf(err, "fail to call companyRepo.GetCompany(%d)", p.CompanyID)
 	}
@@ -98,7 +97,7 @@ func (s *hyCompanysrvc) CreateCompany(ctx context.Context, p *hycompany.CreateCo
 
 	companyID, err := s.companyRepo.InsertCompany(p.CompanyName, p.Address, int16(p.CountryID))
 	if err != nil {
-		return nil, "", errors.Wrap(err, "fail to call InsertUser()")
+		return nil, "", errors.Wrap(err, "fail to call InsertCompany()")
 	}
 	res = &hycompany.Company{
 		CompanyID: ptr.Int(companyID),
@@ -111,7 +110,7 @@ func (s *hyCompanysrvc) CreateCompany(ctx context.Context, p *hycompany.CreateCo
 // UpdateCompany updates company
 // FIXME: only login user can update own information
 func (s *hyCompanysrvc) UpdateCompany(ctx context.Context, p *hycompany.UpdateCompanyPayload) (err error) {
-	log.Info().Msg("hyCompany.updateCompany")
+	log.Info().Str("CompanyName", ptr.StringVal(p.CompanyName)).Str("Address", ptr.StringVal(p.Address)).Int("CountryID", ptr.IntVal(p.CountryID)).Msg("hyCompany.updateCompany")
 
 	// Validate
 	if p.CompanyName == nil && p.Address == nil && p.CountryID == nil {

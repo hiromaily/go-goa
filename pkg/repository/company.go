@@ -58,10 +58,8 @@ func (r *companyRepository) CompanyList() ([]*hycompany.Company, error) {
 		return nil, errors.Wrap(err, "failed to call models.TCompanies().All()")
 	}
 
-	// convert []*models.TCompany to []*hycompany.Company
 	converted := make([]*hycompany.Company, len(items))
 	for i, item := range items {
-		// return only companyID, name
 		converted[i] = &hycompany.Company{
 			CompanyID:   &item.ID,
 			CompanyName: &item.Name,
