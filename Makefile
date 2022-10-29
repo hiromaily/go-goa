@@ -5,6 +5,8 @@ currentVer=$(shell go version | awk '{print $3}' | sed -e "s/go//" | cut -d'.' -
 PROJECT_ROOT=${GOPATH}/src/github.com/hiromaily/go-goa
 TOMLPATH=${PROJECT_ROOT}/configs/settings.toml
 
+ENDPOINT=localhost:8080/api
+
 ###############################################################################
 # Initialization
 ###############################################################################
@@ -77,16 +79,18 @@ build-all: build build-client
 
 .PHONY: build
 build:
+	go build -v -o ${GOPATH}/bin/goa-file-server ./cmd/fileserver/server/...
 	go build -v -o ${GOPATH}/bin/goa-server ./cmd/resume/server/...
-
-.PHONY: build-client
-build-client:
 	go build -v -o ${GOPATH}/bin/goa-client ./cmd/resume/cli/...
 
 .PHONY: run
 run:
 	#go run -race ./cmd/resume/server/... -conf ./configs/settings.toml
 	goa-server -conf ./configs/settings.toml
+
+.PHONY: run-file
+run-file:
+	goa-file-server
 
 .PHONY: rerun
 rerun: build run
@@ -95,57 +99,67 @@ rerun: build run
 # httpie [WIP]
 ###############################################################################
 .PHONY: chk
-chk:
-	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http localhost:8080/user/1/workhistory 'Authorization: Bearer $(TOKEN)'
+chk: http-login
+	http $(ENDPOINT)/user/1/workhistory 'Authorization: Bearer $(TOKEN)'
+
+# Login
+# when displaying response body
+#http --body POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password
+#$(eval TOKEN := $(shell http --body POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g'))
+# when displaying response headers
+#http --headers POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password
+#$(eval TOKEN := $(shell http --headers POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+.PHONY: http-login
+http-login:
+	$(eval TOKEN := $(shell http --headers POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+
+.PHONY: static
+static:
+	# Static files
+	http localhost:8080/assets/index.html
+	http http://localhost:8080/openapi.json
+	http http://localhost:8080/openapi3.json
+
+.PHONY: http-health
+http-health:
+	http $(ENDPOINT)/health
 
 .PHONY: http-user
-http-user:
-	# Login
-	# when displaying response body
-	#http --body POST http://localhost:8080/auth/login email=hiroki@goa.com password=password
-	#$(eval TOKEN := $(shell http --body POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g'))
-	# when displaying response headers
-	#http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password
-	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+http-user: http-login
 	# User
-	http localhost:8080/user 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/user/1 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/user/10 'Authorization: Bearer $(TOKEN)'
-	http POST http://localhost:8080/user user_name=harry email=newuser01@foo.com password=secret123 'Authorization: Bearer $(TOKEN)'
-	http PUT http://localhost:8080/user/4 email=updateduser01@bar.com password=secret456 'Authorization: Bearer $(TOKEN)'
-	http DELETE http://localhost:8080/user/4 'Authorization: Bearer $(TOKEN)'
+	http $(ENDPOINT)/user 'Authorization: Bearer $(TOKEN)'
+	http $(ENDPOINT)/user/1 'Authorization: Bearer $(TOKEN)'
+	http POST $(ENDPOINT)/user user_name=harry email=newuser01@foo.com password=secret123 'Authorization: Bearer $(TOKEN)'
+	http PUT $(ENDPOINT)/user/5 email=updateduser01@bar.com password=secret456 'Authorization: Bearer $(TOKEN)'
+	http DELETE $(ENDPOINT)/user/5 'Authorization: Bearer $(TOKEN)'
+	http $(ENDPOINT)/user/5 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: http-tech
-http-tech:
+http-tech: http-login
 	# Tech
-	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http localhost:8080/tech 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/tech/1 'Authorization: Bearer $(TOKEN)'
-	http POST http://localhost:8080/tech tech_name='New Tech' 'Authorization: Bearer $(TOKEN)'
-	http PUT http://localhost:8080/tech/133 tech_name='Old Tech' 'Authorization: Bearer $(TOKEN)'
-	http DELETE http://localhost:8080/tech/133 'Authorization: Bearer $(TOKEN)'
+	http $(ENDPOINT)/tech 'Authorization: Bearer $(TOKEN)'
+	http $(ENDPOINT)/tech/1 'Authorization: Bearer $(TOKEN)'
+	http POST $(ENDPOINT)/tech tech_name='New Tech' 'Authorization: Bearer $(TOKEN)'
+	http PUT $(ENDPOINT)/tech/133 tech_name='Old Tech' 'Authorization: Bearer $(TOKEN)'
+	http DELETE $(ENDPOINT)/tech/133 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: http-usertech
-http-usertech:
-	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http localhost:8080/user/1/liketech 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/user/1/disliketech 'Authorization: Bearer $(TOKEN)'
+http-usertech: http-login
+	http $(ENDPOINT)/user/1/liketech 'Authorization: Bearer $(TOKEN)'
+	http $(ENDPOINT)/user/1/disliketech 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: http-userworkhistory
-http-userworkhistory:
-	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http localhost:8080/user/1/workhistory 'Authorization: Bearer $(TOKEN)'
+http-userworkhistory: http-login
+	http $(ENDPOINT)/user/1/workhistory 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: http-company
-http-company:
+http-company: http-login
 	# Company
-	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http localhost:8080/company 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/company/1 'Authorization: Bearer $(TOKEN)'
-	http POST http://localhost:8080/company company_name=Google country_id:=230 address=California 'Authorization: Bearer $(TOKEN)'
-	http PUT http://localhost:8080/company/7 company_name=Google3 address=Tokyo country_id:=10 'Authorization: Bearer $(TOKEN)'
-	http DELETE http://localhost:8080/company/7 'Authorization: Bearer $(TOKEN)'
+	http $(ENDPOINT)/company 'Authorization: Bearer $(TOKEN)'
+	http $(ENDPOINT)/company/1 'Authorization: Bearer $(TOKEN)'
+	http POST $(ENDPOINT)/company company_name=Google country_id:=230 address=California 'Authorization: Bearer $(TOKEN)'
+	http PUT $(ENDPOINT)/company/7 company_name=Google3 address=Tokyo country_id:=10 'Authorization: Bearer $(TOKEN)'
+	http DELETE $(ENDPOINT)/company/7 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: kouho
 kouho:

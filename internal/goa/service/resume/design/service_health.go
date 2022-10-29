@@ -7,6 +7,11 @@ import (
 var _ = Service("health", func() {
 	Description("health check")
 
+	HTTP(func() {
+		// BasePath
+		Path(baseAPIDir)
+	})
+
 	Method("health", func() {
 		NoSecurity()
 		HTTP(func() {
@@ -15,16 +20,3 @@ var _ = Service("health", func() {
 		})
 	})
 })
-
-//var _ = Resource("health", func() {
-//
-//	BasePath("/_ah")
-//
-//	Action("health", func() {
-//		Routing(
-//			GET("/health"),
-//		)
-//		Description("Perform health check.")
-//		Response(OK, "text/plain")
-//	})
-//})

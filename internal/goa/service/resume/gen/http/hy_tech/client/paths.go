@@ -13,25 +13,25 @@ import (
 
 // TechListHyTechPath returns the URL path to the hy_tech service techList HTTP endpoint.
 func TechListHyTechPath() string {
-	return "/tech"
+	return "/api/tech"
 }
 
 // GetTechHyTechPath returns the URL path to the hy_tech service getTech HTTP endpoint.
 func GetTechHyTechPath(techID int) string {
-	return fmt.Sprintf("/tech/%v", techID)
+	return fmt.Sprintf("/api/tech/%v", techID)
 }
 
 // CreateTechHyTechPath returns the URL path to the hy_tech service createTech HTTP endpoint.
 func CreateTechHyTechPath() string {
-	return "/tech"
+	return "/api/tech"
 }
 
 // UpdateTechHyTechPath returns the URL path to the hy_tech service updateTech HTTP endpoint.
 func UpdateTechHyTechPath(techID int) string {
-	return fmt.Sprintf("/tech/%v", techID)
+	return fmt.Sprintf("/api/tech/%v", techID)
 }
 
 // DeleteTechHyTechPath returns the URL path to the hy_tech service deleteTech HTTP endpoint.
 func DeleteTechHyTechPath(techID int) string {
-	return fmt.Sprintf("/tech/%v", techID)
+	return fmt.Sprintf("/api/tech/%v", techID)
 }

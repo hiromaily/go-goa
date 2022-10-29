@@ -1,6 +1,7 @@
 package design
 
 import (
+	"fmt"
 	"resume/design/types"
 
 	. "goa.design/goa/v3/dsl"
@@ -15,7 +16,7 @@ var _ = Service("auth", func() {
 
 	HTTP(func() { // HTTP mapping for error responses
 		// base path
-		Path("/auth")
+		Path(fmt.Sprintf("%s/auth", baseAPIDir))
 	})
 
 	Method("login", func() {

@@ -9,5 +9,5 @@ package client
 
 // LoginAuthPath returns the URL path to the auth service login HTTP endpoint.
 func LoginAuthPath() string {
-	return "/auth/login"
+	return "/api/auth/login"
 }

@@ -9,5 +9,5 @@ package server
 
 // HealthHealthPath returns the URL path to the health service health HTTP endpoint.
 func HealthHealthPath() string {
-	return "/health"
+	return "/api/health"
 }

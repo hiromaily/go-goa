@@ -21,7 +21,6 @@ type Server struct {
 	Mounts             []*MountPoint
 	GetUserLikeTech    http.Handler
 	GetUserDisLikeTech http.Handler
-	CORS               http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -53,12 +52,9 @@ func New(
 		Mounts: []*MountPoint{
 			{"GetUserLikeTech", "GET", "/user/{user_id}/liketech"},
 			{"GetUserDisLikeTech", "GET", "/user/{user_id}/disliketech"},
-			{"CORS", "OPTIONS", "/user/{user_id}/liketech"},
-			{"CORS", "OPTIONS", "/user/{user_id}/disliketech"},
 		},
 		GetUserLikeTech:    NewGetUserLikeTechHandler(e.GetUserLikeTech, mux, decoder, encoder, errhandler, formatter),
 		GetUserDisLikeTech: NewGetUserDisLikeTechHandler(e.GetUserDisLikeTech, mux, decoder, encoder, errhandler, formatter),
-		CORS:               NewCORSHandler(),
 	}
 }
 
@@ -69,7 +65,6 @@ func (s *Server) Service() string { return "hy_usertech" }
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.GetUserLikeTech = m(s.GetUserLikeTech)
 	s.GetUserDisLikeTech = m(s.GetUserDisLikeTech)
-	s.CORS = m(s.CORS)
 }
 
 // MethodNames returns the methods served.
@@ -79,7 +74,6 @@ func (s *Server) MethodNames() []string { return hyusertech.MethodNames[:] }
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountGetUserLikeTechHandler(mux, h.GetUserLikeTech)
 	MountGetUserDisLikeTechHandler(mux, h.GetUserDisLikeTech)
-	MountCORSHandler(mux, h.CORS)
 }
 
 // Mount configures the mux to serve the hy_usertech endpoints.
@@ -90,7 +84,7 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 // MountGetUserLikeTechHandler configures the mux to serve the "hy_usertech"
 // service "getUserLikeTech" endpoint.
 func MountGetUserLikeTechHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := HandleHyUsertechOrigin(h).(http.HandlerFunc)
+	f, ok := h.(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -141,7 +135,7 @@ func NewGetUserLikeTechHandler(
 // MountGetUserDisLikeTechHandler configures the mux to serve the "hy_usertech"
 // service "getUserDisLikeTech" endpoint.
 func MountGetUserDisLikeTechHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := HandleHyUsertechOrigin(h).(http.HandlerFunc)
+	f, ok := h.(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -186,35 +180,5 @@ func NewGetUserDisLikeTechHandler(
 		if err := encodeResponse(ctx, w, res); err != nil {
 			errhandler(ctx, w, err)
 		}
-	})
-}
-
-// MountCORSHandler configures the mux to serve the CORS endpoints for the
-// service hy_usertech.
-func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
-	h = HandleHyUsertechOrigin(h)
-	mux.Handle("OPTIONS", "/user/{user_id}/liketech", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/user/{user_id}/disliketech", h.ServeHTTP)
-}
-
-// NewCORSHandler creates a HTTP handler which returns a simple 200 response.
-func NewCORSHandler() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(200)
-	})
-}
-
-// HandleHyUsertechOrigin applies the CORS response headers corresponding to
-// the origin for the service hy_usertech.
-func HandleHyUsertechOrigin(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		origin := r.Header.Get("Origin")
-		if origin == "" {
-			// Not a CORS request
-			h.ServeHTTP(w, r)
-			return
-		}
-		h.ServeHTTP(w, r)
-		return
 	})
 }

@@ -1,6 +1,7 @@
 package design
 
 import (
+	"fmt"
 	"resume/design/types"
 
 	. "goa.design/goa/v3/dsl"
@@ -16,7 +17,7 @@ var _ = Service(resourcePrefix+"tech", func() {
 	Security(JWT)
 	HTTP(func() {
 		// BasePath
-		Path("/tech")
+		Path(fmt.Sprintf("%s/tech", baseAPIDir))
 	})
 
 	Error("NotFound")

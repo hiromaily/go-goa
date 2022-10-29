@@ -13,6 +13,7 @@ import (
 var (
 	resourcePrefix = "hy_"
 	domain         = "localhost"
+	baseAPIDir     = "/api"
 )
 
 // API
@@ -32,6 +33,7 @@ var _ = API("resume", func() {
 		Description("goa README")
 		URL("https://github.com/goadesign/goa")
 	})
+
 	// CORS policy: https://github.com/goadesign/plugins/tree/v3/cors
 	// - Sets CORS response headers for requests with Origin header matching the regular expression ".*domain.*"
 	//cors.Origin(fmt.Sprintf("/%s/", domain), func() {
@@ -43,18 +45,29 @@ var _ = API("resume", func() {
 
 	// Server
 	// this name can be used as directory name after generated in cmd
-	Server("resume", func() {
+	Server("fileServer", func() {
 		Host("localhost", func() {
 			URI("http://localhost:8080")
+		})
+		// List the services hosted by this server.
+		Services("static")
+	})
+
+	Server("resume", func() {
+		Host("localhost", func() {
+			URI("http://localhost:8090")
 			URI("grpc://localhost:9090")
 		})
 		// List the services hosted by this server.
 		Services("auth", resourcePrefix+"company", "health", resourcePrefix+"tech",
 			resourcePrefix+"user", resourcePrefix+"usertech", resourcePrefix+"userWorkHistory")
 	})
+
 	// HTTP: https://pkg.go.dev/goa.design/goa/v3/dsl#HTTP
 	HTTP(func() {
 		// MIME type support
 		Consumes("application/json", "application/xml")
+		// BasePath, but this affects on Files settings
+		//Path("/api")
 	})
 })

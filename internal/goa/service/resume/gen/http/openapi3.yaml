@@ -12,24 +12,9 @@ info:
     version: "1.0"
 servers:
     - url: http://localhost:8080
+    - url: http://localhost:8090
 paths:
-    /assets/{*filepath}:
-        get:
-            tags:
-                - static
-            summary: Download docs/
-            operationId: static#/assets/{*filepath}
-            parameters:
-                - name: filepath
-                  in: path
-                  description: Relative file path
-                  required: true
-            responses:
-                "200":
-                    description: File not found
-                "404":
-                    description: File not found
-    /auth/login:
+    /api/auth/login:
         post:
             tags:
                 - auth
@@ -70,7 +55,7 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /company:
+    /api/company:
         get:
             tags:
                 - hy_company
@@ -147,7 +132,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /company/{company_id}:
+    /api/company/{company_id}:
         delete:
             tags:
                 - hy_company
@@ -263,7 +248,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /health:
+    /api/health:
         get:
             tags:
                 - health
@@ -272,7 +257,7 @@ paths:
             responses:
                 "200":
                     description: OK response.
-    /tech:
+    /api/tech:
         get:
             tags:
                 - hy_tech
@@ -353,7 +338,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /tech/{tech_id}:
+    /api/tech/{tech_id}:
         delete:
             tags:
                 - hy_tech
@@ -465,7 +450,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /user:
+    /api/user:
         get:
             tags:
                 - hy_user
@@ -542,7 +527,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /user/{user_id}:
+    /api/user/{user_id}:
         delete:
             tags:
                 - hy_user
@@ -658,6 +643,40 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
+    /assets/{*filepath}:
+        get:
+            tags:
+                - static
+            summary: Download ./docs/
+            operationId: static#/assets/{*filepath}
+            parameters:
+                - name: filepath
+                  in: path
+                  description: Relative file path
+                  required: true
+            responses:
+                "200":
+                    description: File not found
+                "404":
+                    description: File not found
+    /openapi.json:
+        get:
+            tags:
+                - static
+            summary: Download ./internal/goa/service/resume/gen/http/openapi.json
+            operationId: static#/openapi.json
+            responses:
+                "200":
+                    description: File downloaded
+    /openapi3.json:
+        get:
+            tags:
+                - static
+            summary: Download ./internal/goa/service/resume/gen/http/openapi3.json
+            operationId: static#/openapi3.json
+            responses:
+                "200":
+                    description: File downloaded
     /user/{user_id}/disliketech:
         get:
             tags:
@@ -1382,6 +1401,8 @@ tags:
       description: The auth service performs login with JWT
     - name: hy_company
       description: The company service returns company data
+    - name: health
+      description: health check
     - name: static
       description: The static service returns static files
     - name: hy_tech
@@ -1392,5 +1413,3 @@ tags:
       description: The usertech service returns user's tech data
     - name: hy_userWorkHistory
       description: The user work history service returns user working history data
-    - name: health
-      description: health check

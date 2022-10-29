@@ -13,25 +13,25 @@ import (
 
 // CompanyListHyCompanyPath returns the URL path to the hy_company service companyList HTTP endpoint.
 func CompanyListHyCompanyPath() string {
-	return "/company"
+	return "/api/company"
 }
 
 // GetCompanyHyCompanyPath returns the URL path to the hy_company service getCompany HTTP endpoint.
 func GetCompanyHyCompanyPath(companyID int) string {
-	return fmt.Sprintf("/company/%v", companyID)
+	return fmt.Sprintf("/api/company/%v", companyID)
 }
 
 // CreateCompanyHyCompanyPath returns the URL path to the hy_company service createCompany HTTP endpoint.
 func CreateCompanyHyCompanyPath() string {
-	return "/company"
+	return "/api/company"
 }
 
 // UpdateCompanyHyCompanyPath returns the URL path to the hy_company service updateCompany HTTP endpoint.
 func UpdateCompanyHyCompanyPath(companyID int) string {
-	return fmt.Sprintf("/company/%v", companyID)
+	return fmt.Sprintf("/api/company/%v", companyID)
 }
 
 // DeleteCompanyHyCompanyPath returns the URL path to the hy_company service deleteCompany HTTP endpoint.
 func DeleteCompanyHyCompanyPath(companyID int) string {
-	return fmt.Sprintf("/company/%v", companyID)
+	return fmt.Sprintf("/api/company/%v", companyID)
 }

@@ -19,30 +19,7 @@ produces:
     - application/xml
     - application/gob
 paths:
-    /assets/{filepath}:
-        get:
-            tags:
-                - static
-            summary: Download docs/
-            operationId: static#/assets/{*filepath}
-            parameters:
-                - name: filepath
-                  in: path
-                  description: Relative file path
-                  required: true
-                  type: string
-            responses:
-                "200":
-                    description: File downloaded
-                    schema:
-                        type: file
-                "404":
-                    description: File not found
-                    schema:
-                        $ref: '#/definitions/Error'
-            schemes:
-                - http
-    /auth/login:
+    /api/auth/login:
         post:
             tags:
                 - auth
@@ -74,7 +51,7 @@ paths:
                         $ref: '#/definitions/AuthLoginUnauthorizedResponseBody'
             schemes:
                 - http
-    /company:
+    /api/company:
         get:
             tags:
                 - hy_company
@@ -136,7 +113,7 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /company/{company_id}:
+    /api/company/{company_id}:
         get:
             tags:
                 - hy_company
@@ -237,7 +214,7 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /health:
+    /api/health:
         get:
             tags:
                 - health
@@ -248,7 +225,7 @@ paths:
                     description: OK response.
             schemes:
                 - http
-    /tech:
+    /api/tech:
         get:
             tags:
                 - hy_tech
@@ -312,7 +289,7 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /tech/{tech_id}:
+    /api/tech/{tech_id}:
         get:
             tags:
                 - hy_tech
@@ -415,7 +392,7 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /user:
+    /api/user:
         get:
             tags:
                 - hy_user
@@ -477,7 +454,7 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /user/{user_id}:
+    /api/user/{user_id}:
         get:
             tags:
                 - hy_user
@@ -578,6 +555,55 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
+    /assets/{filepath}:
+        get:
+            tags:
+                - static
+            summary: Download ./docs/
+            operationId: static#/assets/{*filepath}
+            parameters:
+                - name: filepath
+                  in: path
+                  description: Relative file path
+                  required: true
+                  type: string
+            responses:
+                "200":
+                    description: File downloaded
+                    schema:
+                        type: file
+                "404":
+                    description: File not found
+                    schema:
+                        $ref: '#/definitions/Error'
+            schemes:
+                - http
+    /openapi.json:
+        get:
+            tags:
+                - static
+            summary: Download ./internal/goa/service/resume/gen/http/openapi.json
+            operationId: static#/openapi.json
+            responses:
+                "200":
+                    description: File downloaded
+                    schema:
+                        type: file
+            schemes:
+                - http
+    /openapi3.json:
+        get:
+            tags:
+                - static
+            summary: Download ./internal/goa/service/resume/gen/http/openapi3.json
+            operationId: static#/openapi3.json
+            responses:
+                "200":
+                    description: File downloaded
+                    schema:
+                        type: file
+            schemes:
+                - http
     /user/{user_id}/disliketech:
         get:
             tags:
