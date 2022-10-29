@@ -10,10 +10,12 @@ package server
 import (
 	"context"
 	"net/http"
+	"regexp"
 	hyuser "resume/gen/hy_user"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/plugins/v3/cors"
 )
 
 // Server lists the hy_user service endpoint HTTP handlers.
@@ -24,6 +26,7 @@ type Server struct {
 	CreateUser http.Handler
 	UpdateUser http.Handler
 	DeleteUser http.Handler
+	CORS       http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -58,12 +61,15 @@ func New(
 			{"CreateUser", "POST", "/api/user"},
 			{"UpdateUser", "PUT", "/api/user/{user_id}"},
 			{"DeleteUser", "DELETE", "/api/user/{user_id}"},
+			{"CORS", "OPTIONS", "/api/user"},
+			{"CORS", "OPTIONS", "/api/user/{user_id}"},
 		},
 		UserList:   NewUserListHandler(e.UserList, mux, decoder, encoder, errhandler, formatter),
 		GetUser:    NewGetUserHandler(e.GetUser, mux, decoder, encoder, errhandler, formatter),
 		CreateUser: NewCreateUserHandler(e.CreateUser, mux, decoder, encoder, errhandler, formatter),
 		UpdateUser: NewUpdateUserHandler(e.UpdateUser, mux, decoder, encoder, errhandler, formatter),
 		DeleteUser: NewDeleteUserHandler(e.DeleteUser, mux, decoder, encoder, errhandler, formatter),
+		CORS:       NewCORSHandler(),
 	}
 }
 
@@ -77,6 +83,7 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.CreateUser = m(s.CreateUser)
 	s.UpdateUser = m(s.UpdateUser)
 	s.DeleteUser = m(s.DeleteUser)
+	s.CORS = m(s.CORS)
 }
 
 // MethodNames returns the methods served.
@@ -89,6 +96,7 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountCreateUserHandler(mux, h.CreateUser)
 	MountUpdateUserHandler(mux, h.UpdateUser)
 	MountDeleteUserHandler(mux, h.DeleteUser)
+	MountCORSHandler(mux, h.CORS)
 }
 
 // Mount configures the mux to serve the hy_user endpoints.
@@ -99,7 +107,7 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 // MountUserListHandler configures the mux to serve the "hy_user" service
 // "userList" endpoint.
 func MountUserListHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyUserOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -150,7 +158,7 @@ func NewUserListHandler(
 // MountGetUserHandler configures the mux to serve the "hy_user" service
 // "getUser" endpoint.
 func MountGetUserHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyUserOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -201,7 +209,7 @@ func NewGetUserHandler(
 // MountCreateUserHandler configures the mux to serve the "hy_user" service
 // "createUser" endpoint.
 func MountCreateUserHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyUserOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -252,7 +260,7 @@ func NewCreateUserHandler(
 // MountUpdateUserHandler configures the mux to serve the "hy_user" service
 // "updateUser" endpoint.
 func MountUpdateUserHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyUserOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -303,7 +311,7 @@ func NewUpdateUserHandler(
 // MountDeleteUserHandler configures the mux to serve the "hy_user" service
 // "deleteUser" endpoint.
 func MountDeleteUserHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyUserOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -348,5 +356,49 @@ func NewDeleteUserHandler(
 		if err := encodeResponse(ctx, w, res); err != nil {
 			errhandler(ctx, w, err)
 		}
+	})
+}
+
+// MountCORSHandler configures the mux to serve the CORS endpoints for the
+// service hy_user.
+func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
+	h = HandleHyUserOrigin(h)
+	mux.Handle("OPTIONS", "/api/user", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/api/user/{user_id}", h.ServeHTTP)
+}
+
+// NewCORSHandler creates a HTTP handler which returns a simple 200 response.
+func NewCORSHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+	})
+}
+
+// HandleHyUserOrigin applies the CORS response headers corresponding to the
+// origin for the service hy_user.
+func HandleHyUserOrigin(h http.Handler) http.Handler {
+	spec0 := regexp.MustCompile("localhost")
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			h.ServeHTTP(w, r)
+			return
+		}
+		if cors.MatchOriginRegexp(origin, spec0) {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Vary", "Origin")
+			w.Header().Set("Access-Control-Max-Age", "600")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+				w.Header().Set("Access-Control-Allow-Headers", "*")
+			}
+			h.ServeHTTP(w, r)
+			return
+		}
+		h.ServeHTTP(w, r)
+		return
 	})
 }

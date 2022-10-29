@@ -1,8 +1,10 @@
 package design
 
 import (
+	"fmt"
+
 	. "goa.design/goa/v3/dsl"
-	//cors "goa.design/plugins/v3/cors/dsl"
+	cors "goa.design/plugins/v3/cors/dsl"
 )
 
 // Reference
@@ -36,12 +38,12 @@ var _ = API("resume", func() {
 
 	// CORS policy: https://github.com/goadesign/plugins/tree/v3/cors
 	// - Sets CORS response headers for requests with Origin header matching the regular expression ".*domain.*"
-	//cors.Origin(fmt.Sprintf("/%s/", domain), func() {
-	//	cors.Headers("*")
-	//	cors.Methods("GET", "POST", "PUT", "PATCH", "DELETE")
-	//	cors.MaxAge(600)
-	//	cors.Credentials()
-	//})
+	cors.Origin(fmt.Sprintf("/%s/", domain), func() {
+		cors.Headers("*")
+		cors.Methods("GET", "POST", "PUT", "PATCH", "DELETE")
+		cors.MaxAge(600)
+		cors.Credentials()
+	})
 
 	// Server
 	// this name can be used as directory name after generated in cmd

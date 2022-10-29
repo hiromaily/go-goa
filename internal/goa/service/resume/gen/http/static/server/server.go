@@ -10,14 +10,17 @@ package server
 import (
 	"context"
 	"net/http"
+	"regexp"
 	static "resume/gen/static"
 
 	goahttp "goa.design/goa/v3/http"
+	"goa.design/plugins/v3/cors"
 )
 
 // Server lists the static service endpoint HTTP handlers.
 type Server struct {
 	Mounts                                      []*MountPoint
+	CORS                                        http.Handler
 	Docs                                        http.Handler
 	InternalGoaServiceResumeGenHTTPOpenapiJSON  http.Handler
 	InternalGoaServiceResumeGenHTTPOpenapi3JSON http.Handler
@@ -62,10 +65,14 @@ func New(
 	}
 	return &Server{
 		Mounts: []*MountPoint{
+			{"CORS", "OPTIONS", "/{*filepath}"},
+			{"CORS", "OPTIONS", "/openapi.json"},
+			{"CORS", "OPTIONS", "/openapi3.json"},
 			{"./docs/", "GET", "/"},
 			{"./internal/goa/service/resume/gen/http/openapi.json", "GET", "/openapi.json"},
 			{"./internal/goa/service/resume/gen/http/openapi3.json", "GET", "/openapi3.json"},
 		},
+		CORS: NewCORSHandler(),
 		Docs: http.FileServer(fileSystemDocs),
 		InternalGoaServiceResumeGenHTTPOpenapiJSON:  http.FileServer(fileSystemInternalGoaServiceResumeGenHTTPOpenapiJSON),
 		InternalGoaServiceResumeGenHTTPOpenapi3JSON: http.FileServer(fileSystemInternalGoaServiceResumeGenHTTPOpenapi3JSON),
@@ -77,6 +84,7 @@ func (s *Server) Service() string { return "static" }
 
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
+	s.CORS = m(s.CORS)
 }
 
 // MethodNames returns the methods served.
@@ -84,6 +92,7 @@ func (s *Server) MethodNames() []string { return static.MethodNames[:] }
 
 // Mount configures the mux to serve the static endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
+	MountCORSHandler(mux, h.CORS)
 	MountDocs(mux, goahttp.Replace("/", "/./docs/", h.Docs))
 	MountInternalGoaServiceResumeGenHTTPOpenapiJSON(mux, goahttp.Replace("", "/./internal/goa/service/resume/gen/http/openapi.json", h.InternalGoaServiceResumeGenHTTPOpenapiJSON))
 	MountInternalGoaServiceResumeGenHTTPOpenapi3JSON(mux, goahttp.Replace("", "/./internal/goa/service/resume/gen/http/openapi3.json", h.InternalGoaServiceResumeGenHTTPOpenapi3JSON))
@@ -96,18 +105,63 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 
 // MountDocs configures the mux to serve GET request made to "/".
 func MountDocs(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/", h.ServeHTTP)
-	mux.Handle("GET", "/*filepath", h.ServeHTTP)
+	mux.Handle("GET", "/", HandleStaticOrigin(h).ServeHTTP)
+	mux.Handle("GET", "/*filepath", HandleStaticOrigin(h).ServeHTTP)
 }
 
 // MountInternalGoaServiceResumeGenHTTPOpenapiJSON configures the mux to serve
 // GET request made to "/openapi.json".
 func MountInternalGoaServiceResumeGenHTTPOpenapiJSON(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/openapi.json", h.ServeHTTP)
+	mux.Handle("GET", "/openapi.json", HandleStaticOrigin(h).ServeHTTP)
 }
 
 // MountInternalGoaServiceResumeGenHTTPOpenapi3JSON configures the mux to serve
 // GET request made to "/openapi3.json".
 func MountInternalGoaServiceResumeGenHTTPOpenapi3JSON(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/openapi3.json", h.ServeHTTP)
+	mux.Handle("GET", "/openapi3.json", HandleStaticOrigin(h).ServeHTTP)
+}
+
+// MountCORSHandler configures the mux to serve the CORS endpoints for the
+// service static.
+func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
+	h = HandleStaticOrigin(h)
+	mux.Handle("OPTIONS", "/{*filepath}", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/openapi.json", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/openapi3.json", h.ServeHTTP)
+}
+
+// NewCORSHandler creates a HTTP handler which returns a simple 200 response.
+func NewCORSHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+	})
+}
+
+// HandleStaticOrigin applies the CORS response headers corresponding to the
+// origin for the service static.
+func HandleStaticOrigin(h http.Handler) http.Handler {
+	spec0 := regexp.MustCompile("localhost")
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			h.ServeHTTP(w, r)
+			return
+		}
+		if cors.MatchOriginRegexp(origin, spec0) {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Vary", "Origin")
+			w.Header().Set("Access-Control-Max-Age", "600")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+				w.Header().Set("Access-Control-Allow-Headers", "*")
+			}
+			h.ServeHTTP(w, r)
+			return
+		}
+		h.ServeHTTP(w, r)
+		return
+	})
 }

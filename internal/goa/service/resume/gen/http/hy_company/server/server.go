@@ -10,10 +10,12 @@ package server
 import (
 	"context"
 	"net/http"
+	"regexp"
 	hycompany "resume/gen/hy_company"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/plugins/v3/cors"
 )
 
 // Server lists the hy_company service endpoint HTTP handlers.
@@ -24,6 +26,7 @@ type Server struct {
 	CreateCompany http.Handler
 	UpdateCompany http.Handler
 	DeleteCompany http.Handler
+	CORS          http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -58,12 +61,15 @@ func New(
 			{"CreateCompany", "POST", "/api/company"},
 			{"UpdateCompany", "PUT", "/api/company/{company_id}"},
 			{"DeleteCompany", "DELETE", "/api/company/{company_id}"},
+			{"CORS", "OPTIONS", "/api/company"},
+			{"CORS", "OPTIONS", "/api/company/{company_id}"},
 		},
 		CompanyList:   NewCompanyListHandler(e.CompanyList, mux, decoder, encoder, errhandler, formatter),
 		GetCompany:    NewGetCompanyHandler(e.GetCompany, mux, decoder, encoder, errhandler, formatter),
 		CreateCompany: NewCreateCompanyHandler(e.CreateCompany, mux, decoder, encoder, errhandler, formatter),
 		UpdateCompany: NewUpdateCompanyHandler(e.UpdateCompany, mux, decoder, encoder, errhandler, formatter),
 		DeleteCompany: NewDeleteCompanyHandler(e.DeleteCompany, mux, decoder, encoder, errhandler, formatter),
+		CORS:          NewCORSHandler(),
 	}
 }
 
@@ -77,6 +83,7 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.CreateCompany = m(s.CreateCompany)
 	s.UpdateCompany = m(s.UpdateCompany)
 	s.DeleteCompany = m(s.DeleteCompany)
+	s.CORS = m(s.CORS)
 }
 
 // MethodNames returns the methods served.
@@ -89,6 +96,7 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountCreateCompanyHandler(mux, h.CreateCompany)
 	MountUpdateCompanyHandler(mux, h.UpdateCompany)
 	MountDeleteCompanyHandler(mux, h.DeleteCompany)
+	MountCORSHandler(mux, h.CORS)
 }
 
 // Mount configures the mux to serve the hy_company endpoints.
@@ -99,7 +107,7 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 // MountCompanyListHandler configures the mux to serve the "hy_company" service
 // "companyList" endpoint.
 func MountCompanyListHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyCompanyOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -150,7 +158,7 @@ func NewCompanyListHandler(
 // MountGetCompanyHandler configures the mux to serve the "hy_company" service
 // "getCompany" endpoint.
 func MountGetCompanyHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyCompanyOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -201,7 +209,7 @@ func NewGetCompanyHandler(
 // MountCreateCompanyHandler configures the mux to serve the "hy_company"
 // service "createCompany" endpoint.
 func MountCreateCompanyHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyCompanyOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -252,7 +260,7 @@ func NewCreateCompanyHandler(
 // MountUpdateCompanyHandler configures the mux to serve the "hy_company"
 // service "updateCompany" endpoint.
 func MountUpdateCompanyHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyCompanyOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -303,7 +311,7 @@ func NewUpdateCompanyHandler(
 // MountDeleteCompanyHandler configures the mux to serve the "hy_company"
 // service "deleteCompany" endpoint.
 func MountDeleteCompanyHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyCompanyOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -348,5 +356,49 @@ func NewDeleteCompanyHandler(
 		if err := encodeResponse(ctx, w, res); err != nil {
 			errhandler(ctx, w, err)
 		}
+	})
+}
+
+// MountCORSHandler configures the mux to serve the CORS endpoints for the
+// service hy_company.
+func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
+	h = HandleHyCompanyOrigin(h)
+	mux.Handle("OPTIONS", "/api/company", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/api/company/{company_id}", h.ServeHTTP)
+}
+
+// NewCORSHandler creates a HTTP handler which returns a simple 200 response.
+func NewCORSHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+	})
+}
+
+// HandleHyCompanyOrigin applies the CORS response headers corresponding to the
+// origin for the service hy_company.
+func HandleHyCompanyOrigin(h http.Handler) http.Handler {
+	spec0 := regexp.MustCompile("localhost")
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			h.ServeHTTP(w, r)
+			return
+		}
+		if cors.MatchOriginRegexp(origin, spec0) {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Vary", "Origin")
+			w.Header().Set("Access-Control-Max-Age", "600")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+				w.Header().Set("Access-Control-Allow-Headers", "*")
+			}
+			h.ServeHTTP(w, r)
+			return
+		}
+		h.ServeHTTP(w, r)
+		return
 	})
 }

@@ -10,16 +10,19 @@ package server
 import (
 	"context"
 	"net/http"
+	"regexp"
 	auth "resume/gen/auth"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/plugins/v3/cors"
 )
 
 // Server lists the auth service endpoint HTTP handlers.
 type Server struct {
 	Mounts []*MountPoint
 	Login  http.Handler
+	CORS   http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -50,8 +53,10 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"Login", "POST", "/api/auth/login"},
+			{"CORS", "OPTIONS", "/api/auth/login"},
 		},
 		Login: NewLoginHandler(e.Login, mux, decoder, encoder, errhandler, formatter),
+		CORS:  NewCORSHandler(),
 	}
 }
 
@@ -61,6 +66,7 @@ func (s *Server) Service() string { return "auth" }
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.Login = m(s.Login)
+	s.CORS = m(s.CORS)
 }
 
 // MethodNames returns the methods served.
@@ -69,6 +75,7 @@ func (s *Server) MethodNames() []string { return auth.MethodNames[:] }
 // Mount configures the mux to serve the auth endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountLoginHandler(mux, h.Login)
+	MountCORSHandler(mux, h.CORS)
 }
 
 // Mount configures the mux to serve the auth endpoints.
@@ -79,7 +86,7 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 // MountLoginHandler configures the mux to serve the "auth" service "login"
 // endpoint.
 func MountLoginHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleAuthOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -124,5 +131,48 @@ func NewLoginHandler(
 		if err := encodeResponse(ctx, w, res); err != nil {
 			errhandler(ctx, w, err)
 		}
+	})
+}
+
+// MountCORSHandler configures the mux to serve the CORS endpoints for the
+// service auth.
+func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
+	h = HandleAuthOrigin(h)
+	mux.Handle("OPTIONS", "/api/auth/login", h.ServeHTTP)
+}
+
+// NewCORSHandler creates a HTTP handler which returns a simple 200 response.
+func NewCORSHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+	})
+}
+
+// HandleAuthOrigin applies the CORS response headers corresponding to the
+// origin for the service auth.
+func HandleAuthOrigin(h http.Handler) http.Handler {
+	spec0 := regexp.MustCompile("localhost")
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			h.ServeHTTP(w, r)
+			return
+		}
+		if cors.MatchOriginRegexp(origin, spec0) {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Vary", "Origin")
+			w.Header().Set("Access-Control-Max-Age", "600")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+				w.Header().Set("Access-Control-Allow-Headers", "*")
+			}
+			h.ServeHTTP(w, r)
+			return
+		}
+		h.ServeHTTP(w, r)
+		return
 	})
 }

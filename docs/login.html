@@ -140,7 +140,9 @@ function login() {
     //aaaa1@test.jp
     //password
 
-    let url = '/api/auth/login';
+    let host = 'http://localhost:8090'
+
+    let url = host + '/api/auth/login';
     let payload = {
         email: $('input[name="email"]').val(),
         password: $('input[name="password"]').val()

@@ -10,10 +10,12 @@ package server
 import (
 	"context"
 	"net/http"
+	"regexp"
 	hytech "resume/gen/hy_tech"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/plugins/v3/cors"
 )
 
 // Server lists the hy_tech service endpoint HTTP handlers.
@@ -24,6 +26,7 @@ type Server struct {
 	CreateTech http.Handler
 	UpdateTech http.Handler
 	DeleteTech http.Handler
+	CORS       http.Handler
 }
 
 // MountPoint holds information about the mounted endpoints.
@@ -58,12 +61,15 @@ func New(
 			{"CreateTech", "POST", "/api/tech"},
 			{"UpdateTech", "PUT", "/api/tech/{tech_id}"},
 			{"DeleteTech", "DELETE", "/api/tech/{tech_id}"},
+			{"CORS", "OPTIONS", "/api/tech"},
+			{"CORS", "OPTIONS", "/api/tech/{tech_id}"},
 		},
 		TechList:   NewTechListHandler(e.TechList, mux, decoder, encoder, errhandler, formatter),
 		GetTech:    NewGetTechHandler(e.GetTech, mux, decoder, encoder, errhandler, formatter),
 		CreateTech: NewCreateTechHandler(e.CreateTech, mux, decoder, encoder, errhandler, formatter),
 		UpdateTech: NewUpdateTechHandler(e.UpdateTech, mux, decoder, encoder, errhandler, formatter),
 		DeleteTech: NewDeleteTechHandler(e.DeleteTech, mux, decoder, encoder, errhandler, formatter),
+		CORS:       NewCORSHandler(),
 	}
 }
 
@@ -77,6 +83,7 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.CreateTech = m(s.CreateTech)
 	s.UpdateTech = m(s.UpdateTech)
 	s.DeleteTech = m(s.DeleteTech)
+	s.CORS = m(s.CORS)
 }
 
 // MethodNames returns the methods served.
@@ -89,6 +96,7 @@ func Mount(mux goahttp.Muxer, h *Server) {
 	MountCreateTechHandler(mux, h.CreateTech)
 	MountUpdateTechHandler(mux, h.UpdateTech)
 	MountDeleteTechHandler(mux, h.DeleteTech)
+	MountCORSHandler(mux, h.CORS)
 }
 
 // Mount configures the mux to serve the hy_tech endpoints.
@@ -99,7 +107,7 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 // MountTechListHandler configures the mux to serve the "hy_tech" service
 // "techList" endpoint.
 func MountTechListHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyTechOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -150,7 +158,7 @@ func NewTechListHandler(
 // MountGetTechHandler configures the mux to serve the "hy_tech" service
 // "getTech" endpoint.
 func MountGetTechHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyTechOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -201,7 +209,7 @@ func NewGetTechHandler(
 // MountCreateTechHandler configures the mux to serve the "hy_tech" service
 // "createTech" endpoint.
 func MountCreateTechHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyTechOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -252,7 +260,7 @@ func NewCreateTechHandler(
 // MountUpdateTechHandler configures the mux to serve the "hy_tech" service
 // "updateTech" endpoint.
 func MountUpdateTechHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyTechOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -303,7 +311,7 @@ func NewUpdateTechHandler(
 // MountDeleteTechHandler configures the mux to serve the "hy_tech" service
 // "deleteTech" endpoint.
 func MountDeleteTechHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := HandleHyTechOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
@@ -348,5 +356,49 @@ func NewDeleteTechHandler(
 		if err := encodeResponse(ctx, w, res); err != nil {
 			errhandler(ctx, w, err)
 		}
+	})
+}
+
+// MountCORSHandler configures the mux to serve the CORS endpoints for the
+// service hy_tech.
+func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
+	h = HandleHyTechOrigin(h)
+	mux.Handle("OPTIONS", "/api/tech", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/api/tech/{tech_id}", h.ServeHTTP)
+}
+
+// NewCORSHandler creates a HTTP handler which returns a simple 200 response.
+func NewCORSHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+	})
+}
+
+// HandleHyTechOrigin applies the CORS response headers corresponding to the
+// origin for the service hy_tech.
+func HandleHyTechOrigin(h http.Handler) http.Handler {
+	spec0 := regexp.MustCompile("localhost")
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			h.ServeHTTP(w, r)
+			return
+		}
+		if cors.MatchOriginRegexp(origin, spec0) {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Vary", "Origin")
+			w.Header().Set("Access-Control-Max-Age", "600")
+			w.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+				w.Header().Set("Access-Control-Allow-Headers", "*")
+			}
+			h.ServeHTTP(w, r)
+			return
+		}
+		h.ServeHTTP(w, r)
+		return
 	})
 }

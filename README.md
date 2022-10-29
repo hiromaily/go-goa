@@ -58,14 +58,11 @@ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 - generate files by `goa gen`
 
 ## Server
-### API Server
+### Database
+- run MySQL first
 ```
-go build -v -o ${GOPATH}/bin/goa-server ./cmd/resume/server/...
-goa-server -conf ./configs/settings.toml
+docker compose mysql -d
 ```
-
-### API List
-
 
 ### File Server
 ```
@@ -74,6 +71,33 @@ goa-file-server
 ```
 - access
   - `http://localhost:8080/`
+  - `http://localhost:8080/login.html` (hiroki@goa.com / password)
+
+### Resume API Server
+```
+go build -v -o ${GOPATH}/bin/goa-server ./cmd/resume/server/...
+goa-server -conf ./configs/settings.toml
+```
+
+### Resume API List
+- health
+  - `http://localhost:8090/api/health`
+- auth
+  - `http://localhost:8090/api/auth/login`
+- tech
+  - `http://localhost:8090/api/tech`
+  - `http://localhost:8090/api/tech/1`
+- company
+  - `http://localhost:8090/api/company`
+  - `http://localhost:8090/api/company/1`
+- user
+  - `http://localhost:8090/api/user`
+  - `http://localhost:8090/api/user/1`
+- user tech
+  - `http://localhost:8090/api/user/1/liketech`
+  - `http://localhost:8090/api/user/1/disliketech`
+- user work history
+  - `http://localhost:8090/api/user/1/workhistory`
 
 
 ## Performance

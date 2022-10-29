@@ -1,3 +1,5 @@
+var host = 'http://localhost:8090';
+
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3620,11 +3622,11 @@ var riot = __webpack_require__(0);
 //src: src/tag/admin/main.tag
 riot.tag2('main', '<admin if="{tag===\'admin\'}"></admin> <user if="{tag===\'user\'}"></user> <user_detail if="{tag===\'user_detail\'}"></user_detail> <company if="{tag===\'company\'}"></company> <tech if="{tag===\'tech\'}"></tech>', '', '', function (opts) {
     var self = this;
-    self.data = {
-        user: { element: 'user', url: '/api/user' },
-        user_detail: { element: 'user_detail', url: '/api/user/' },
-        company: { element: 'company', url: '/api/company' },
-        tech: { element: 'tech', url: '/api/tech' }
+  self.data = {
+        user: { element: 'user', url: host+'/api/user' },
+        user_detail: { element: 'user_detail', url: host+'/api/user/' },
+        company: { element: 'company', url: host+'/api/company' },
+        tech: { element: 'tech', url: host+'/api/tech' }
     };
     if (window.debugMode == 1) {
         self.data.user.url = '/json/userlist.json';
@@ -3648,7 +3650,7 @@ riot.tag2('main', '<admin if="{tag===\'admin\'}"></admin> <user if="{tag===\'use
         self.edit = true;
 
         if (window.debugMode != 1) {
-            self.data[self.tag].url = '/api/user/' + id;
+            self.data[self.tag].url = host+'/api/user/' + id;
         }
 
         self.callAPI(self.data[self.tag]);
@@ -3738,7 +3740,7 @@ riot.tag2('company', '<div class="ui container" style="margin-bottom: 50px;"> <h
         var res = confirm('Are you sure to delete this company?');
         if (!res) return;
 
-        var url = '/api/company/' + e.item.id;
+        var url = host+'/api/company/' + e.item.id;
         var payload = {};
         var fn = function fn(json) {
             if (json.status && json.status != 200 || !json.id) {
@@ -3784,7 +3786,7 @@ riot.tag2('company', '<div class="ui container" style="margin-bottom: 50px;"> <h
 
         if (e.target.dataset.mode == "add") {
 
-            var url = '/api/company';
+            var url = host+'/api/company';
             var payload = {
                 name: $('input[name="name"]').val()
             };
@@ -3809,7 +3811,7 @@ riot.tag2('company', '<div class="ui container" style="margin-bottom: 50px;"> <h
             rg.callAPI(url, payload, 'POST', fn, null);
         } else {
 
-            var _url = '/api/company/' + e.target.dataset.id;
+            var _url = host+'/api/company/' + e.target.dataset.id;
             var _payload = {
                 name: $('input[name="name"]').val()
             };
@@ -3878,7 +3880,7 @@ riot.tag2('tech', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
         var res = confirm('Are you sure to delete this tech?');
         if (!res) return;
 
-        var url = '/api/tech/' + e.item.id;
+        var url = host+'/api/tech/' + e.item.id;
         var payload = {};
         var fn = function fn(json) {
             if (json.status && json.status != 200 || !json.id) {
@@ -3924,7 +3926,7 @@ riot.tag2('tech', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
 
         if (e.target.dataset.mode == "add") {
 
-            var url = '/api/tech';
+            var url = host+'/api/tech';
             var payload = {
                 name: $('input[name="name"]').val()
             };
@@ -3949,7 +3951,7 @@ riot.tag2('tech', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
             rg.callAPI(url, payload, 'POST', fn, null);
         } else {
 
-            var _url = '/api/tech/' + e.target.dataset.id;
+            var _url = host+'/api/tech/' + e.target.dataset.id;
             var _payload = {
                 name: $('input[name="name"]').val()
             };
@@ -4044,7 +4046,7 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
         var res = confirm('Are you sure to delete this user?');
         if (!res) return;
 
-        var url = '/api/user/' + e.item.id;
+        var url = host+'/api/user/' + e.item.id;
         var payload = {};
         var fn = function fn(json, obj) {
             if (json.status && json.status != 200 || !json.id) {
@@ -4095,7 +4097,7 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
 
         if (e.target.dataset.mode == "add") {
 
-            var url = '/api/user';
+            var url = host+'/api/user';
             var payload = {
                 user_name: $('input[name="user_name"]').val(),
                 email: $('input[name="email"]').val(),
@@ -4122,7 +4124,7 @@ riot.tag2('user', '<div class="ui container" style="margin-bottom: 50px;"> <h3 c
             rg.callAPI(url, payload, 'POST', fn, null);
         } else {
 
-            var _url = '/api/user/' + e.target.dataset.id;
+            var _url = host+'/api/user/' + e.target.dataset.id;
             var _payload = {
                 user_name: $('input[name="user_name"]').val(),
                 email: $('input[name="email"]').val(),
