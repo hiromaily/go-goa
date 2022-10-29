@@ -6,13 +6,14 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	staticsvr "resume/gen/http/static/server"
 	"sync"
 	"time"
 
 	goahttp "goa.design/goa/v3/http"
 	httpmdlwr "goa.design/goa/v3/http/middleware"
 	"goa.design/goa/v3/middleware"
+
+	staticsvr "resume/gen/http/static/server"
 )
 
 // handleHTTPServer starts configures and starts a HTTP server on the given
