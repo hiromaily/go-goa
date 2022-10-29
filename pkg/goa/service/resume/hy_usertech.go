@@ -2,13 +2,12 @@ package resumeapi
 
 import (
 	"context"
-	"github.com/hiromaily/go-goa/pkg/jwts"
-	hycompany "resume/gen/hy_company"
 
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
 
+	"github.com/hiromaily/go-goa/pkg/jwts"
 	"github.com/hiromaily/go-goa/pkg/repository"
 	hyusertech "resume/gen/hy_usertech"
 )
@@ -62,19 +61,21 @@ func (s *hyUsertechsrvc) GetUserDisLikeTech(ctx context.Context, p *hyusertech.G
 	return s.getUserTech(userTechs)
 }
 
-func (s *hyUsertechsrvc) getUserTech(userTechs []string) (res hyusertech.UsertechCollection, view string, err error) {
+func (s *hyUsertechsrvc) getUserTech(userTechs []repository.UserTech) (res hyusertech.UsertechCollection, view string, err error) {
 	log.Info().Msg("hyUsertech.getUserTech")
-
+	
 	if len(userTechs) == 0 {
-		return nil, "", hycompany.MakeNotFound(errors.New("company not found"))
+		return nil, "", hyusertech.MakeNotFound(errors.New("user tech not found"))
 	}
 	// convert
-	for i, tech := range userTechs {
-		// []*Usertech
-		res[i] = &hyusertech.Usertech{
-			TechName: &tech,
+	techs := make([]*hyusertech.Usertech, len(userTechs))
+	for i, _ := range userTechs {
+		techs[i] = &hyusertech.Usertech{
+			ID:       &userTechs[i].ID,
+			TechName: &userTechs[i].Name,
 		}
 	}
+	res = techs
 	view = "techName"
 
 	return

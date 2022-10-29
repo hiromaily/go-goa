@@ -11,8 +11,8 @@ import (
 
 // UserTechRepository interface
 type UserTechRepository interface {
-	GetUserLikeTechs(userID int) ([]string, error)
-	GetUserDisLikeTechs(userID int) ([]string, error)
+	GetUserLikeTechs(userID int) ([]UserTech, error)
+	GetUserDisLikeTechs(userID int) ([]UserTech, error)
 }
 
 type userTechRepository struct {
@@ -30,12 +30,17 @@ func NewUserTechRepository(dbConn *sql.DB) UserTechRepository {
 	}
 }
 
-func (r *userTechRepository) getUserTechs(userID int, tableName string) ([]string, error) {
+type UserTech struct {
+	ID   int    `boil:"tech_id" json:"tech_id"`
+	Name string `boil:"tech_name" json:"tech_name"`
+}
+
+func (r *userTechRepository) getUserTechs(userID int, tableName string) ([]UserTech, error) {
 	var (
-		res []string
+		res []UserTech
 		sql = fmt.Sprintf(`
 		SELECT
-		  t.name as tech_name
+		  lt.tech_id, t.name as tech_name
 		FROM %s as lt
 		  LEFT JOIN t_tech AS t ON lt.tech_id = t.id
 		WHERE lt.is_deleted="0"
@@ -49,10 +54,10 @@ func (r *userTechRepository) getUserTechs(userID int, tableName string) ([]strin
 	return res, nil
 }
 
-func (r *userTechRepository) GetUserLikeTechs(userID int) ([]string, error) {
+func (r *userTechRepository) GetUserLikeTechs(userID int) ([]UserTech, error) {
 	return r.getUserTechs(userID, r.tableNameLike)
 }
 
-func (r *userTechRepository) GetUserDisLikeTechs(userID int) ([]string, error) {
+func (r *userTechRepository) GetUserDisLikeTechs(userID int) ([]UserTech, error) {
 	return r.getUserTechs(userID, r.tableNameDisLike)
 }

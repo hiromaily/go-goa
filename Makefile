@@ -97,29 +97,7 @@ rerun: build run
 .PHONY: chk
 chk:
 	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http localhost:8080/tech/133 'Authorization: Bearer $(TOKEN)'
-	http DELETE http://localhost:8080/tech/133 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/tech/133 'Authorization: Bearer $(TOKEN)'
-
-.PHONY: http-tech
-http-tech:
-	# Tech
-	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http localhost:8080/tech 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/tech/1 'Authorization: Bearer $(TOKEN)'
-	http POST http://localhost:8080/tech tech_name='New Tech' 'Authorization: Bearer $(TOKEN)'
-	http PUT http://localhost:8080/tech/133 tech_name='Old Tech' 'Authorization: Bearer $(TOKEN)'
-	http DELETE http://localhost:8080/tech/133 'Authorization: Bearer $(TOKEN)'
-
-.PHONY: http-company
-http-company:
-	# Company
-	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http localhost:8080/company 'Authorization: Bearer $(TOKEN)'
-	http localhost:8080/company/1 'Authorization: Bearer $(TOKEN)'
-	http POST http://localhost:8080/company company_name=Google country_id:=230 address=California 'Authorization: Bearer $(TOKEN)'
-	http PUT http://localhost:8080/company/7 company_name=Google3 address=Tokyo country_id:=10 'Authorization: Bearer $(TOKEN)'
-	http DELETE http://localhost:8080/company/7 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/user/1/disliketech 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: http-user
 http-user:
@@ -137,6 +115,32 @@ http-user:
 	http POST http://localhost:8080/user user_name=harry email=newuser01@foo.com password=secret123 'Authorization: Bearer $(TOKEN)'
 	http PUT http://localhost:8080/user/4 email=updateduser01@bar.com password=secret456 'Authorization: Bearer $(TOKEN)'
 	http DELETE http://localhost:8080/user/4 'Authorization: Bearer $(TOKEN)'
+
+.PHONY: http-tech
+http-tech:
+	# Tech
+	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+	http localhost:8080/tech 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/tech/1 'Authorization: Bearer $(TOKEN)'
+	http POST http://localhost:8080/tech tech_name='New Tech' 'Authorization: Bearer $(TOKEN)'
+	http PUT http://localhost:8080/tech/133 tech_name='Old Tech' 'Authorization: Bearer $(TOKEN)'
+	http DELETE http://localhost:8080/tech/133 'Authorization: Bearer $(TOKEN)'
+
+.PHONY: http-usertech
+http-usertech:
+	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+	http localhost:8080/user/1/liketech 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/user/1/disliketech 'Authorization: Bearer $(TOKEN)'
+
+.PHONY: http-company
+http-company:
+	# Company
+	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+	http localhost:8080/company 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/company/1 'Authorization: Bearer $(TOKEN)'
+	http POST http://localhost:8080/company company_name=Google country_id:=230 address=California 'Authorization: Bearer $(TOKEN)'
+	http PUT http://localhost:8080/company/7 company_name=Google3 address=Tokyo country_id:=10 'Authorization: Bearer $(TOKEN)'
+	http DELETE http://localhost:8080/company/7 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: kouho
 kouho:
