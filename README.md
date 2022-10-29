@@ -57,29 +57,23 @@ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 - modify `design` files
 - generate files by `goa gen`
 
+## Server
+### API Server
+```
+go build -v -o ${GOPATH}/bin/goa-server ./cmd/resume/server/...
+goa-server -conf ./configs/settings.toml
+```
 
-## API List (outdated)
-* ctrl=Health action=Health route=GET /api/_ah/health
-* ctrl=Public files=goa/swagger/swagger.json route=GET /swagger.json
-* ctrl=Public files=public/ route=GET /*filepath
-* ctrl=Public files=resources/swagger-ui/dist/ route=GET /swagger-ui/*filepath
-* ctrl=Public files=public/index.html route=GET /
-* ctrl=Public files=resources/swagger-ui/dist/index.html route=GET /swagger-ui/
-* ctrl=Auth action=Login route=POST /api/auth/login
-* ctrl=HyUser action=CreateUser route=POST /api/user security=jwt
-* ctrl=HyUser action=DeleteUser route=DELETE /api/user/:userID security=jwt
-* ctrl=HyUser action=GetUser route=GET /api/user/:userID security=jwt
-* ctrl=HyUser action=UpdateUser route=PUT /api/user/:userID security=jwt
-* ctrl=HyUser action=UserList route=GET /api/user security=jwt
-* ctrl=HyCompany action=CompanyList route=GET /api/company security=jwt
-* ctrl=HyCompany action=CreateCompany route=POST /api/company security=jwt
-* ctrl=HyCompany action=DeleteCompany route=DELETE /api/company/:companyID security=jwt
-* ctrl=HyCompany action=GetCompanyGroup route=GET /api/company/:companyID security=jwt
-* ctrl=HyCompany action=UpdateCompany route=PUT /api/company/:companyID security=jwt
-* ctrl=HyCompanybranch action=CreateCompanyBranch route=POST /api/company/branch/:ID security=jwt
-* ctrl=HyCompanybranch action=DeleteCompanyBranch route=DELETE /api/company/branch/:ID security=jwt
-* ctrl=HyCompanybranch action=GetCompanyBranch route=GET /api/company/branch/:ID security=jwt
-* ctrl=HyCompanybranch action=UpdateCompanyBranch route=PUT /api/company/branch/:ID security=jwt
+### API List
+
+
+### File Server
+```
+go build -v -o ${GOPATH}/bin/goa-file-server ./cmd/fileserver/server/...
+goa-file-server
+```
+- access
+  - `http://localhost:8080/`
 
 
 ## Performance

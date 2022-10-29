@@ -50,8 +50,8 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"GetUserLikeTech", "GET", "/user/{user_id}/liketech"},
-			{"GetUserDisLikeTech", "GET", "/user/{user_id}/disliketech"},
+			{"GetUserLikeTech", "GET", "/api/user/{user_id}/liketech"},
+			{"GetUserDisLikeTech", "GET", "/api/user/{user_id}/disliketech"},
 		},
 		GetUserLikeTech:    NewGetUserLikeTechHandler(e.GetUserLikeTech, mux, decoder, encoder, errhandler, formatter),
 		GetUserDisLikeTech: NewGetUserDisLikeTechHandler(e.GetUserDisLikeTech, mux, decoder, encoder, errhandler, formatter),
@@ -90,7 +90,7 @@ func MountGetUserLikeTechHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/user/{user_id}/liketech", f)
+	mux.Handle("GET", "/api/user/{user_id}/liketech", f)
 }
 
 // NewGetUserLikeTechHandler creates a HTTP handler which loads the HTTP
@@ -141,7 +141,7 @@ func MountGetUserDisLikeTechHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/user/{user_id}/disliketech", f)
+	mux.Handle("GET", "/api/user/{user_id}/disliketech", f)
 }
 
 // NewGetUserDisLikeTechHandler creates a HTTP handler which loads the HTTP

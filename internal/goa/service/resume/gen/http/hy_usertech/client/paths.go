@@ -13,10 +13,10 @@ import (
 
 // GetUserLikeTechHyUsertechPath returns the URL path to the hy_usertech service getUserLikeTech HTTP endpoint.
 func GetUserLikeTechHyUsertechPath(userID int) string {
-	return fmt.Sprintf("/user/%v/liketech", userID)
+	return fmt.Sprintf("/api/user/%v/liketech", userID)
 }
 
 // GetUserDisLikeTechHyUsertechPath returns the URL path to the hy_usertech service getUserDisLikeTech HTTP endpoint.
 func GetUserDisLikeTechHyUsertechPath(userID int) string {
-	return fmt.Sprintf("/user/%v/disliketech", userID)
+	return fmt.Sprintf("/api/user/%v/disliketech", userID)
 }

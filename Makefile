@@ -5,7 +5,7 @@ currentVer=$(shell go version | awk '{print $3}' | sed -e "s/go//" | cut -d'.' -
 PROJECT_ROOT=${GOPATH}/src/github.com/hiromaily/go-goa
 TOMLPATH=${PROJECT_ROOT}/configs/settings.toml
 
-ENDPOINT=localhost:8080/api
+ENDPOINT=localhost:8090/api
 
 ###############################################################################
 # Initialization

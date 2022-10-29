@@ -14,7 +14,7 @@ var _ = Service("static", func() {
 	//})
 
 	// URL path, actual stored file path in server
-	Files("/assets/{*filepath}", "./docs/")
+	Files("/{*filepath}", "./docs/")
 
 	Files("/openapi.json", "./internal/goa/service/resume/gen/http/openapi.json")
 	Files("/openapi3.json", "./internal/goa/service/resume/gen/http/openapi3.json")

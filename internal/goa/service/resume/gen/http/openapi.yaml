@@ -19,6 +19,29 @@ produces:
     - application/xml
     - application/gob
 paths:
+    /{filepath}:
+        get:
+            tags:
+                - static
+            summary: Download ./docs/
+            operationId: static#/{*filepath}
+            parameters:
+                - name: filepath
+                  in: path
+                  description: Relative file path
+                  required: true
+                  type: string
+            responses:
+                "200":
+                    description: File downloaded
+                    schema:
+                        type: file
+                "404":
+                    description: File not found
+                    schema:
+                        $ref: '#/definitions/Error'
+            schemes:
+                - http
     /api/auth/login:
         post:
             tags:
@@ -555,56 +578,7 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /assets/{filepath}:
-        get:
-            tags:
-                - static
-            summary: Download ./docs/
-            operationId: static#/assets/{*filepath}
-            parameters:
-                - name: filepath
-                  in: path
-                  description: Relative file path
-                  required: true
-                  type: string
-            responses:
-                "200":
-                    description: File downloaded
-                    schema:
-                        type: file
-                "404":
-                    description: File not found
-                    schema:
-                        $ref: '#/definitions/Error'
-            schemes:
-                - http
-    /openapi.json:
-        get:
-            tags:
-                - static
-            summary: Download ./internal/goa/service/resume/gen/http/openapi.json
-            operationId: static#/openapi.json
-            responses:
-                "200":
-                    description: File downloaded
-                    schema:
-                        type: file
-            schemes:
-                - http
-    /openapi3.json:
-        get:
-            tags:
-                - static
-            summary: Download ./internal/goa/service/resume/gen/http/openapi3.json
-            operationId: static#/openapi3.json
-            responses:
-                "200":
-                    description: File downloaded
-                    schema:
-                        type: file
-            schemes:
-                - http
-    /user/{user_id}/disliketech:
+    /api/user/{user_id}/disliketech:
         get:
             tags:
                 - hy_usertech
@@ -636,7 +610,7 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /user/{user_id}/liketech:
+    /api/user/{user_id}/liketech:
         get:
             tags:
                 - hy_usertech
@@ -668,7 +642,7 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
-    /user/{user_id}/workhistory:
+    /api/user/{user_id}/workhistory:
         get:
             tags:
                 - hy_userWorkHistory
@@ -700,6 +674,32 @@ paths:
                 - http
             security:
                 - jwt_header_Authorization: []
+    /openapi.json:
+        get:
+            tags:
+                - static
+            summary: Download ./internal/goa/service/resume/gen/http/openapi.json
+            operationId: static#/openapi.json
+            responses:
+                "200":
+                    description: File downloaded
+                    schema:
+                        type: file
+            schemes:
+                - http
+    /openapi3.json:
+        get:
+            tags:
+                - static
+            summary: Download ./internal/goa/service/resume/gen/http/openapi3.json
+            operationId: static#/openapi3.json
+            responses:
+                "200":
+                    description: File downloaded
+                    schema:
+                        type: file
+            schemes:
+                - http
 definitions:
     AuthLoginRequestBody:
         title: AuthLoginRequestBody

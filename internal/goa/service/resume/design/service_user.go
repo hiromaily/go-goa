@@ -126,7 +126,7 @@ var _ = Service(resourcePrefix+"usertech", func() {
 
 	Security(JWT)
 	HTTP(func() {
-		Path("/user")
+		Path(fmt.Sprintf("%s/user", baseAPIDir))
 	})
 
 	Error("NotFound")
@@ -180,7 +180,7 @@ var _ = Service(resourcePrefix+"userWorkHistory", func() {
 
 	Security(JWT)
 	HTTP(func() {
-		Path("/user")
+		Path(fmt.Sprintf("%s/user", baseAPIDir))
 	})
 
 	Error("NotFound")

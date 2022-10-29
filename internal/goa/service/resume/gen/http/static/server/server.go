@@ -62,7 +62,7 @@ func New(
 	}
 	return &Server{
 		Mounts: []*MountPoint{
-			{"./docs/", "GET", "/assets"},
+			{"./docs/", "GET", "/"},
 			{"./internal/goa/service/resume/gen/http/openapi.json", "GET", "/openapi.json"},
 			{"./internal/goa/service/resume/gen/http/openapi3.json", "GET", "/openapi3.json"},
 		},
@@ -84,7 +84,7 @@ func (s *Server) MethodNames() []string { return static.MethodNames[:] }
 
 // Mount configures the mux to serve the static endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
-	MountDocs(mux, goahttp.Replace("/assets", "/./docs/", h.Docs))
+	MountDocs(mux, goahttp.Replace("/", "/./docs/", h.Docs))
 	MountInternalGoaServiceResumeGenHTTPOpenapiJSON(mux, goahttp.Replace("", "/./internal/goa/service/resume/gen/http/openapi.json", h.InternalGoaServiceResumeGenHTTPOpenapiJSON))
 	MountInternalGoaServiceResumeGenHTTPOpenapi3JSON(mux, goahttp.Replace("", "/./internal/goa/service/resume/gen/http/openapi3.json", h.InternalGoaServiceResumeGenHTTPOpenapi3JSON))
 }
@@ -94,10 +94,10 @@ func (s *Server) Mount(mux goahttp.Muxer) {
 	Mount(mux, s)
 }
 
-// MountDocs configures the mux to serve GET request made to "/assets".
+// MountDocs configures the mux to serve GET request made to "/".
 func MountDocs(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/assets/", h.ServeHTTP)
-	mux.Handle("GET", "/assets/*filepath", h.ServeHTTP)
+	mux.Handle("GET", "/", h.ServeHTTP)
+	mux.Handle("GET", "/*filepath", h.ServeHTTP)
 }
 
 // MountInternalGoaServiceResumeGenHTTPOpenapiJSON configures the mux to serve

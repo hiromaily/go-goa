@@ -49,7 +49,7 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"GetUserWorkHistory", "GET", "/user/{user_id}/workhistory"},
+			{"GetUserWorkHistory", "GET", "/api/user/{user_id}/workhistory"},
 		},
 		GetUserWorkHistory: NewGetUserWorkHistoryHandler(e.GetUserWorkHistory, mux, decoder, encoder, errhandler, formatter),
 	}
@@ -85,7 +85,7 @@ func MountGetUserWorkHistoryHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/user/{user_id}/workhistory", f)
+	mux.Handle("GET", "/api/user/{user_id}/workhistory", f)
 }
 
 // NewGetUserWorkHistoryHandler creates a HTTP handler which loads the HTTP

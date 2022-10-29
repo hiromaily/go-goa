@@ -14,6 +14,22 @@ servers:
     - url: http://localhost:8080
     - url: http://localhost:8090
 paths:
+    /{*filepath}:
+        get:
+            tags:
+                - static
+            summary: Download ./docs/
+            operationId: static#/{*filepath}
+            parameters:
+                - name: filepath
+                  in: path
+                  description: Relative file path
+                  required: true
+            responses:
+                "200":
+                    description: File not found
+                "404":
+                    description: File not found
     /api/auth/login:
         post:
             tags:
@@ -643,41 +659,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /assets/{*filepath}:
-        get:
-            tags:
-                - static
-            summary: Download ./docs/
-            operationId: static#/assets/{*filepath}
-            parameters:
-                - name: filepath
-                  in: path
-                  description: Relative file path
-                  required: true
-            responses:
-                "200":
-                    description: File not found
-                "404":
-                    description: File not found
-    /openapi.json:
-        get:
-            tags:
-                - static
-            summary: Download ./internal/goa/service/resume/gen/http/openapi.json
-            operationId: static#/openapi.json
-            responses:
-                "200":
-                    description: File downloaded
-    /openapi3.json:
-        get:
-            tags:
-                - static
-            summary: Download ./internal/goa/service/resume/gen/http/openapi3.json
-            operationId: static#/openapi3.json
-            responses:
-                "200":
-                    description: File downloaded
-    /user/{user_id}/disliketech:
+    /api/user/{user_id}/disliketech:
         get:
             tags:
                 - hy_usertech
@@ -721,7 +703,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /user/{user_id}/liketech:
+    /api/user/{user_id}/liketech:
         get:
             tags:
                 - hy_usertech
@@ -765,7 +747,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /user/{user_id}/workhistory:
+    /api/user/{user_id}/workhistory:
         get:
             tags:
                 - hy_userWorkHistory
@@ -818,6 +800,24 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
+    /openapi.json:
+        get:
+            tags:
+                - static
+            summary: Download ./internal/goa/service/resume/gen/http/openapi.json
+            operationId: static#/openapi.json
+            responses:
+                "200":
+                    description: File downloaded
+    /openapi3.json:
+        get:
+            tags:
+                - static
+            summary: Download ./internal/goa/service/resume/gen/http/openapi3.json
+            operationId: static#/openapi3.json
+            responses:
+                "200":
+                    description: File downloaded
 components:
     schemas:
         Authorized:

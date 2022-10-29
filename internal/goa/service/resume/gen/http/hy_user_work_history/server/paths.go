@@ -13,5 +13,5 @@ import (
 
 // GetUserWorkHistoryHyUserWorkHistoryPath returns the URL path to the hy_userWorkHistory service getUserWorkHistory HTTP endpoint.
 func GetUserWorkHistoryHyUserWorkHistoryPath(userID int) string {
-	return fmt.Sprintf("/user/%v/workhistory", userID)
+	return fmt.Sprintf("/api/user/%v/workhistory", userID)
 }
