@@ -6,6 +6,9 @@
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/hiromaily/go-goa/master/LICENSE)
 
 `go-goa` is example of [goa](https://github.com/goadesign/goa) framework for v3.  
+The example site consists of file server and API server.
+
+![Example Resume Site](resume.png "example resume site")
 
 ## Current status
 This project has started since 2017 to study Golang and code is quite messy.
