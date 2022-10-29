@@ -2,7 +2,7 @@ package design
 
 import (
 	. "goa.design/goa/v3/dsl"
-	//cors "goa.design/plugins/v3/cors/dsl"
+	// cors "goa.design/plugins/v3/cors/dsl"
 )
 
 var _ = Service("static", func() {

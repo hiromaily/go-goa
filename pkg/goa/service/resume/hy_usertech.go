@@ -69,7 +69,7 @@ func (s *hyUsertechsrvc) getUserTech(userTechs []repository.UserTech) (res hyuse
 	}
 	// convert
 	techs := make([]*hyusertech.Usertech, len(userTechs))
-	for i, _ := range userTechs {
+	for i := range userTechs {
 		techs[i] = &hyusertech.Usertech{
 			ID:       &userTechs[i].ID,
 			TechName: &userTechs[i].Name,

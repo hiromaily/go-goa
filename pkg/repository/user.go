@@ -62,7 +62,7 @@ func (u *userRepository) Login(email, password string) (int, error) {
 	}
 
 	// check
-	//log.Debug().Msg(u.hash.Hash(password))
+	// log.Debug().Msg(u.hash.Hash(password))
 	if user.Password != u.hash.Hash(password) {
 		return 0, errors.Errorf("password is invalid")
 	}

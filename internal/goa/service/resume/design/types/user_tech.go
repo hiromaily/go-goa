@@ -22,7 +22,7 @@ var RTUserTech = ResultType("application/vnd.usertech+json", func() {
 		Attribute("tech_name")
 
 		// Required adds a "required" validation to the attribute.
-		//Required("tech_name")
+		// Required("tech_name")
 	})
 
 	View("default", func() {

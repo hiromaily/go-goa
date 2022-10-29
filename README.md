@@ -19,7 +19,7 @@ Now it's under refactoring.
 - [ ] Clean up everything
 - [ ] Integrate to Firebase
 - [ ] Switch CI from travisci to github action
-- [ ] Rebuild front-end by latest React or Svelte
+- [ ] Rebuild front-end by latest Next.js(React) or Svelte
 
 
 ## Directory Structure
@@ -59,6 +59,7 @@ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 - `cd internal/goa/service/resume`
 - modify `design` files
 - generate files by `goa gen`
+
 
 ## Server
 ### Database

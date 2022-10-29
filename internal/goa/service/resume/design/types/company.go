@@ -55,7 +55,7 @@ var RTCompany = ResultType("application/vnd.company+json", func() {
 		Attribute("created_at")
 		Attribute("updated_at")
 
-		//Required("company_name", "address")
+		// Required("company_name", "address")
 	})
 
 	View("default", func() {

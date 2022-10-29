@@ -52,7 +52,7 @@ var RTUser = ResultType("application/vnd.user+json", func() {
 		Attribute("updated_at")
 
 		// Required adds a "required" validation to the attribute.
-		//Required("user_name", "email", "password")
+		// Required("user_name", "email", "password")
 	})
 
 	// View defines a rendering of the result type

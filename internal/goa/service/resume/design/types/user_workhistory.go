@@ -62,7 +62,7 @@ var RTUserWorkHistory = ResultType("application/vnd.userworkhistory+json", func(
 		Attribute("description")
 		Attribute("techs")
 
-		//Required("title", "company_name", "country_name")
+		// Required("title", "company_name", "country_name")
 	})
 
 	View("default", func() {

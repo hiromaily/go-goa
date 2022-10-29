@@ -50,7 +50,7 @@ lint:
 	golangci-lint run
 
 #.PHONY: lint-fix
-#lint-fix:
+#lint-fix: imports
 #	golangci-lint run --fix
 
 .PHONY: cache-clean

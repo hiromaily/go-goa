@@ -70,6 +70,6 @@ var _ = API("resume", func() {
 		// MIME type support
 		Consumes("application/json", "application/xml")
 		// BasePath, but this affects on Files settings
-		//Path("/api")
+		// Path("/api")
 	})
 })

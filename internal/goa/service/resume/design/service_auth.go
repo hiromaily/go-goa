@@ -31,12 +31,12 @@ var _ = Service("auth", func() {
 
 		// FIXME: somehow MakeUnauthorized() is gone
 		// Note: this type of expression can't generate auth.MakeUnauthorized() function
-		//Error("unauthorized", String, "Credentials are invalid")
+		// Error("unauthorized", String, "Credentials are invalid")
 		Error("Unauthorized")
 
 		HTTP(func() {
 			POST("/login")
-			//Response(StatusOK)
+			// Response(StatusOK)
 			Response(StatusOK, func() {
 				// mapping <variable-name:header-name>
 				Header("token:Authorization", String, "JWT token", func() {

@@ -46,7 +46,6 @@ func (s *hyTechsrvc) TechList(ctx context.Context, p *hytech.TechListPayload) (r
 	log.Info().Msg("hyTech.techList")
 
 	techs, err := s.techRepo.TechList()
-
 	if err != nil {
 		return nil, "", errors.Wrap(err, "fail to call techRepo.UserList()")
 	}

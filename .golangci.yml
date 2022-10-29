@@ -31,7 +31,7 @@ linters-settings:
 #  exclude-use-default: false
 
 linters:
-  #disable-all: true
+  disable-all: true
   enable:
     - errcheck
     - gosimple
@@ -40,10 +40,10 @@ linters:
     - staticcheck
     - typecheck
     - unused
-    - goimports # somehow it conflicts with gofumpt
+    #- goimports # somehow it conflicts with gofumpt
     - misspell
-  disable:
-    - gofumpt
+  #disable:
+  #  - gofumpt
   presets:
     # only next presets exist: (bugs|complexity|format|performance|style|unused)
     - format

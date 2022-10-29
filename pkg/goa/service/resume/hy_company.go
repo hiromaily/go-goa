@@ -46,7 +46,6 @@ func (s *hyCompanysrvc) CompanyList(ctx context.Context, p *hycompany.CompanyLis
 	log.Info().Msg("hyCompany.companyList")
 
 	companies, err := s.companyRepo.CompanyList()
-
 	if err != nil {
 		return nil, "", errors.Wrap(err, "fail to call companyRepo.UserList()")
 	}

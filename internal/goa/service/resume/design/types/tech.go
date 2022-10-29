@@ -31,7 +31,7 @@ var RTTech = ResultType("application/vnd.tech+json", func() {
 		Attribute("created_at")
 		Attribute("updated_at")
 
-		//Required("tech_name")
+		// Required("tech_name")
 	})
 
 	View("default", func() {

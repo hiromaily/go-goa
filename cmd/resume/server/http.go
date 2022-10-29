@@ -63,7 +63,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, authEndpoints *auth.Endpo
 		hyUserServer            *hyusersvr.Server
 		hyUsertechServer        *hyusertechsvr.Server
 		hyUserWorkHistoryServer *hyuserworkhistorysvr.Server
-		//staticServer            *staticsvr.Server
+		// staticServer            *staticsvr.Server
 	)
 	{
 		eh := errorHandler(logger)
@@ -74,7 +74,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, authEndpoints *auth.Endpo
 		hyUserServer = hyusersvr.New(hyUserEndpoints, mux, dec, enc, eh, nil)
 		hyUsertechServer = hyusertechsvr.New(hyUsertechEndpoints, mux, dec, enc, eh, nil)
 		hyUserWorkHistoryServer = hyuserworkhistorysvr.New(hyUserWorkHistoryEndpoints, mux, dec, enc, eh, nil)
-		//staticServer = staticsvr.New(nil, mux, dec, enc, eh, nil, nil)
+		// staticServer = staticsvr.New(nil, mux, dec, enc, eh, nil, nil)
 		if debug {
 			servers := goahttp.Servers{
 				authServer,
@@ -84,7 +84,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, authEndpoints *auth.Endpo
 				hyUserServer,
 				hyUsertechServer,
 				hyUserWorkHistoryServer,
-				//staticServer,
+				// staticServer,
 			}
 			servers.Use(httpmdlwr.Debug(mux, os.Stdout))
 		}
@@ -97,7 +97,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, authEndpoints *auth.Endpo
 	hyusersvr.Mount(mux, hyUserServer)
 	hyusertechsvr.Mount(mux, hyUsertechServer)
 	hyuserworkhistorysvr.Mount(mux, hyUserWorkHistoryServer)
-	//staticsvr.Mount(mux, staticServer)
+	// staticsvr.Mount(mux, staticServer)
 
 	// Wrap the multiplexer with additional middlewares. Middlewares mounted
 	// here apply to all the service endpoints.

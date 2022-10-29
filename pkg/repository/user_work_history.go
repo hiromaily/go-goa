@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 
 	"github.com/pkg/errors"
+	"github.com/rs/zerolog/log"
 	"github.com/volatiletech/sqlboiler/v4/queries"
 
 	hyuserworkhistory "resume/gen/hy_user_work_history"
@@ -81,8 +82,12 @@ func (r *userWorkHistoryRepository) GetUserWorks(userID int) ([]*hyuserworkhisto
 	converted := make([]*hyuserworkhistory.Userworkhistory, len(items))
 	for i, item := range items {
 		var descriptions, techs []interface{}
-		json.Unmarshal([]byte(item.Description), &descriptions)
-		json.Unmarshal([]byte(item.Techs), &techs)
+		if err := json.Unmarshal([]byte(item.Description), &descriptions); err != nil {
+			log.Err(err)
+		}
+		if err := json.Unmarshal([]byte(item.Techs), &techs); err != nil {
+			log.Err(err)
+		}
 
 		converted[i] = &hyuserworkhistory.Userworkhistory{
 			Title:       &item.Title,
