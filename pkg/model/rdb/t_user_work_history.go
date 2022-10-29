@@ -28,8 +28,8 @@ type TUserWorkHistory struct { // id
 	ID int `boil:"id" json:"id" toml:"id" yaml:"id"`
 	// user id
 	UserID int `boil:"user_id" json:"user_id" toml:"user_id" yaml:"user_id"`
-	// company branch id
-	CompanyBranchID int `boil:"company_branch_id" json:"company_branch_id" toml:"company_branch_id" yaml:"company_branch_id"`
+	// company id
+	CompanyID int `boil:"company_id" json:"company_id" toml:"company_id" yaml:"company_id"`
 	// title
 	Title string `boil:"title" json:"title" toml:"title" yaml:"title"`
 	// description
@@ -52,55 +52,55 @@ type TUserWorkHistory struct { // id
 }
 
 var TUserWorkHistoryColumns = struct {
-	ID              string
-	UserID          string
-	CompanyBranchID string
-	Title           string
-	Description     string
-	TechIds         string
-	StartedAt       string
-	EndedAt         string
-	IsDeleted       string
-	CreatedAt       string
-	UpdatedAt       string
+	ID          string
+	UserID      string
+	CompanyID   string
+	Title       string
+	Description string
+	TechIds     string
+	StartedAt   string
+	EndedAt     string
+	IsDeleted   string
+	CreatedAt   string
+	UpdatedAt   string
 }{
-	ID:              "id",
-	UserID:          "user_id",
-	CompanyBranchID: "company_branch_id",
-	Title:           "title",
-	Description:     "description",
-	TechIds:         "tech_ids",
-	StartedAt:       "started_at",
-	EndedAt:         "ended_at",
-	IsDeleted:       "is_deleted",
-	CreatedAt:       "created_at",
-	UpdatedAt:       "updated_at",
+	ID:          "id",
+	UserID:      "user_id",
+	CompanyID:   "company_id",
+	Title:       "title",
+	Description: "description",
+	TechIds:     "tech_ids",
+	StartedAt:   "started_at",
+	EndedAt:     "ended_at",
+	IsDeleted:   "is_deleted",
+	CreatedAt:   "created_at",
+	UpdatedAt:   "updated_at",
 }
 
 var TUserWorkHistoryTableColumns = struct {
-	ID              string
-	UserID          string
-	CompanyBranchID string
-	Title           string
-	Description     string
-	TechIds         string
-	StartedAt       string
-	EndedAt         string
-	IsDeleted       string
-	CreatedAt       string
-	UpdatedAt       string
+	ID          string
+	UserID      string
+	CompanyID   string
+	Title       string
+	Description string
+	TechIds     string
+	StartedAt   string
+	EndedAt     string
+	IsDeleted   string
+	CreatedAt   string
+	UpdatedAt   string
 }{
-	ID:              "t_user_work_history.id",
-	UserID:          "t_user_work_history.user_id",
-	CompanyBranchID: "t_user_work_history.company_branch_id",
-	Title:           "t_user_work_history.title",
-	Description:     "t_user_work_history.description",
-	TechIds:         "t_user_work_history.tech_ids",
-	StartedAt:       "t_user_work_history.started_at",
-	EndedAt:         "t_user_work_history.ended_at",
-	IsDeleted:       "t_user_work_history.is_deleted",
-	CreatedAt:       "t_user_work_history.created_at",
-	UpdatedAt:       "t_user_work_history.updated_at",
+	ID:          "t_user_work_history.id",
+	UserID:      "t_user_work_history.user_id",
+	CompanyID:   "t_user_work_history.company_id",
+	Title:       "t_user_work_history.title",
+	Description: "t_user_work_history.description",
+	TechIds:     "t_user_work_history.tech_ids",
+	StartedAt:   "t_user_work_history.started_at",
+	EndedAt:     "t_user_work_history.ended_at",
+	IsDeleted:   "t_user_work_history.is_deleted",
+	CreatedAt:   "t_user_work_history.created_at",
+	UpdatedAt:   "t_user_work_history.updated_at",
 }
 
 // Generated where
@@ -127,29 +127,29 @@ func (w whereHelpertypes_JSON) GTE(x types.JSON) qm.QueryMod {
 }
 
 var TUserWorkHistoryWhere = struct {
-	ID              whereHelperint
-	UserID          whereHelperint
-	CompanyBranchID whereHelperint
-	Title           whereHelperstring
-	Description     whereHelpertypes_JSON
-	TechIds         whereHelpertypes_JSON
-	StartedAt       whereHelpernull_Time
-	EndedAt         whereHelpernull_Time
-	IsDeleted       whereHelpernull_String
-	CreatedAt       whereHelpernull_Time
-	UpdatedAt       whereHelpernull_Time
+	ID          whereHelperint
+	UserID      whereHelperint
+	CompanyID   whereHelperint
+	Title       whereHelperstring
+	Description whereHelpertypes_JSON
+	TechIds     whereHelpertypes_JSON
+	StartedAt   whereHelpernull_Time
+	EndedAt     whereHelpernull_Time
+	IsDeleted   whereHelpernull_String
+	CreatedAt   whereHelpernull_Time
+	UpdatedAt   whereHelpernull_Time
 }{
-	ID:              whereHelperint{field: "`t_user_work_history`.`id`"},
-	UserID:          whereHelperint{field: "`t_user_work_history`.`user_id`"},
-	CompanyBranchID: whereHelperint{field: "`t_user_work_history`.`company_branch_id`"},
-	Title:           whereHelperstring{field: "`t_user_work_history`.`title`"},
-	Description:     whereHelpertypes_JSON{field: "`t_user_work_history`.`description`"},
-	TechIds:         whereHelpertypes_JSON{field: "`t_user_work_history`.`tech_ids`"},
-	StartedAt:       whereHelpernull_Time{field: "`t_user_work_history`.`started_at`"},
-	EndedAt:         whereHelpernull_Time{field: "`t_user_work_history`.`ended_at`"},
-	IsDeleted:       whereHelpernull_String{field: "`t_user_work_history`.`is_deleted`"},
-	CreatedAt:       whereHelpernull_Time{field: "`t_user_work_history`.`created_at`"},
-	UpdatedAt:       whereHelpernull_Time{field: "`t_user_work_history`.`updated_at`"},
+	ID:          whereHelperint{field: "`t_user_work_history`.`id`"},
+	UserID:      whereHelperint{field: "`t_user_work_history`.`user_id`"},
+	CompanyID:   whereHelperint{field: "`t_user_work_history`.`company_id`"},
+	Title:       whereHelperstring{field: "`t_user_work_history`.`title`"},
+	Description: whereHelpertypes_JSON{field: "`t_user_work_history`.`description`"},
+	TechIds:     whereHelpertypes_JSON{field: "`t_user_work_history`.`tech_ids`"},
+	StartedAt:   whereHelpernull_Time{field: "`t_user_work_history`.`started_at`"},
+	EndedAt:     whereHelpernull_Time{field: "`t_user_work_history`.`ended_at`"},
+	IsDeleted:   whereHelpernull_String{field: "`t_user_work_history`.`is_deleted`"},
+	CreatedAt:   whereHelpernull_Time{field: "`t_user_work_history`.`created_at`"},
+	UpdatedAt:   whereHelpernull_Time{field: "`t_user_work_history`.`updated_at`"},
 }
 
 // TUserWorkHistoryRels is where relationship names are stored.
@@ -169,8 +169,8 @@ func (*tUserWorkHistoryR) NewStruct() *tUserWorkHistoryR {
 type tUserWorkHistoryL struct{}
 
 var (
-	tUserWorkHistoryAllColumns            = []string{"id", "user_id", "company_branch_id", "title", "description", "tech_ids", "started_at", "ended_at", "is_deleted", "created_at", "updated_at"}
-	tUserWorkHistoryColumnsWithoutDefault = []string{"user_id", "company_branch_id", "title", "description", "tech_ids", "started_at", "ended_at"}
+	tUserWorkHistoryAllColumns            = []string{"id", "user_id", "company_id", "title", "description", "tech_ids", "started_at", "ended_at", "is_deleted", "created_at", "updated_at"}
+	tUserWorkHistoryColumnsWithoutDefault = []string{"user_id", "company_id", "title", "description", "tech_ids", "started_at", "ended_at"}
 	tUserWorkHistoryColumnsWithDefault    = []string{"id", "is_deleted", "created_at", "updated_at"}
 	tUserWorkHistoryPrimaryKeyColumns     = []string{"id"}
 	tUserWorkHistoryGeneratedColumns      = []string{}

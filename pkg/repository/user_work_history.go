@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 
 	"github.com/pkg/errors"
 	"github.com/volatiletech/sqlboiler/v4/queries"
@@ -38,7 +39,7 @@ func (r *userWorkHistoryRepository) GetUserWorks(userID int) ([]*hyuserworkhisto
 		Techs       string
 	}
 
-	var res []Work
+	var items []Work
 	// var res []*hyuserworkhistory.Userworkhistory
 
 	sql := `
@@ -47,12 +48,10 @@ func (r *userWorkHistoryRepository) GetUserWorks(userID int) ([]*hyuserworkhisto
 			uwh.description,
 			CONCAT('[', GROUP_CONCAT(JSON_OBJECT('name', tech.name)), ']') as techs
 		FROM t_user_work_history AS uwh
-		LEFT JOIN t_company_detail AS cd ON uwh.company_branch_id = cd.id
-		LEFT JOIN t_companies AS c ON c.id = cd.company_id
-		LEFT JOIN m_countries AS mc ON mc.id = cd.country_id
-		INNER JOIN t_techs tech ON JSON_CONTAINS(uwh.tech_ids, CAST(tech.id as json), '$')
-		WHERE uwh.delete_flg=?
-		AND cd.is_deleted=?
+		LEFT JOIN t_company AS c ON uwh.company_id = c.id
+		LEFT JOIN m_country AS mc ON c.country_id = mc.id
+		INNER JOIN t_tech AS tech ON JSON_CONTAINS(uwh.tech_ids, CAST(tech.id as json), '$')
+		WHERE uwh.is_deleted=?
 		AND c.is_deleted=?
 		AND mc.is_deleted=?
 		AND uwh.user_id=?
@@ -60,12 +59,41 @@ func (r *userWorkHistoryRepository) GetUserWorks(userID int) ([]*hyuserworkhisto
 		ORDER BY uwh.started_at DESC
 	`
 
-	if err := queries.Raw(sql, "0", "0", "0", "0", userID).Bind(context.Background(), r.dbConn, &res); err != nil {
+	if err := queries.Raw(sql, "0", "0", "0", userID).Bind(context.Background(), r.dbConn, &items); err != nil {
 		return nil, errors.Wrapf(err, "failed to call queries.Raw(): %s", sql)
 	}
 
-	// TODO: convert
-	return nil, nil
+	//type Userworkhistory struct {
+	//	// Job Title
+	//	Title *string
+	//	// Company name
+	//	CompanyName *string
+	//	// Country code
+	//	CountryName *string
+	//	// worked period
+	//	Term *string
+	//	// job description
+	//	Description interface{}
+	//	// used techs
+	//	Techs interface{}
+	//}
+
+	converted := make([]*hyuserworkhistory.Userworkhistory, len(items))
+	for i, item := range items {
+		var descriptions, techs []interface{}
+		json.Unmarshal([]byte(item.Description), &descriptions)
+		json.Unmarshal([]byte(item.Techs), &techs)
+
+		converted[i] = &hyuserworkhistory.Userworkhistory{
+			Title:       &item.Title,
+			CompanyName: &item.Company,
+			CountryName: &item.Country,
+			Term:        &item.Term,
+			Description: descriptions,
+			Techs:       techs,
+		}
+	}
+	return converted, nil
 }
 
 //func (m *UserWorkHistory) GetUserWorks(userID int, userWorks *[]*app.Userworkhistory) error {

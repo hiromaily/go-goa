@@ -5,7 +5,7 @@ output = "./pkg/model/rdb"
 [mysql]
 dbname = "go-goa"
 host = "localhost"
-port = 13306
+port = 3306
 user = "root"
 pass = "root"
 sslmode = "false"

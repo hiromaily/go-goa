@@ -63,7 +63,7 @@ func (s *hyUsertechsrvc) GetUserDisLikeTech(ctx context.Context, p *hyusertech.G
 
 func (s *hyUsertechsrvc) getUserTech(userTechs []repository.UserTech) (res hyusertech.UsertechCollection, view string, err error) {
 	log.Info().Msg("hyUsertech.getUserTech")
-	
+
 	if len(userTechs) == 0 {
 		return nil, "", hyusertech.MakeNotFound(errors.New("user tech not found"))
 	}

@@ -82,7 +82,8 @@ INSERT INTO `t_company` VALUES
   (3,'2Gears',155,'Molslaan 111 NL-2611 RK Delft','0',now(),now()),
   (4,'Hugo.events',155,'Keienbergweg 97 1101 GG Amsterdam','0',now(),now()),
   (5,'J-Stream Inc.',110,'Shibuya-ku, Tokyo','0',now(),now()),
-  (6,'PROTERAS Co., Ltd.',110,'Minato-ku, Tokyo','0',now(),now());
+  (6,'PROTERAS Co., Ltd.',110,'Minato-ku, Tokyo','0',now(),now()),
+  (7,'Japanese SIer',110,'Minato-ku, Tokyo','0',now(),now());
 /*!40000 ALTER TABLE `t_company` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -256,7 +257,7 @@ DROP TABLE IF EXISTS `t_user_work_history`;
 CREATE TABLE `t_user_work_history` (
   `id`          int(11) NOT NULL AUTO_INCREMENT COMMENT'id',
   `user_id`     int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'user id',
-  `company_branch_id`  int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'company branch id',
+  `company_id`  int(11) COLLATE utf8_unicode_ci NOT NULL COMMENT'company id',
   `title`       varchar(40) COLLATE utf8_unicode_ci NOT NULL COMMENT'title',
   `description` json NOT NULL COMMENT'description',
   `tech_ids`    json NOT NULL COMMENT'tech ids',
@@ -275,15 +276,15 @@ CREATE TABLE `t_user_work_history` (
 LOCK TABLES `t_user_work_history` WRITE;
 /*!40000 ALTER TABLE `t_user_work_history` DISABLE KEYS */;
 INSERT INTO `t_user_work_history` VALUES
-  (null,1,10,'Golang Developer',
+  (null,1,2,'Golang Developer',
    '["Developping hotel booking web service on <a>Microservice Architecture</a> communicating by <a>gRPC</a>."]',
    '[1,30,83,84,88,131,132]',
    '2017-12-10','2018-06-30','0',now(),now()),
-  (null,1,2,'Developer for this resume site',
+  (null,1,1,'Developer for this resume site',
    '["Developed resume site for job seeking."]',
    '[2,33,39,50,70,72,90,91,80]',
    '2017-07-16','2017-08-08','0',now(),now()),
-  (null,1,6,'Full Stack Engineer',
+  (null,1,3,'Full Stack Engineer',
    '["Developed <a>fin-tech</a> related resources management web application both front-end and back-end.","Setting <a>Docker</a> configuration."]',
    '[7,31,34,70,60,51,110]',
    '2016-12-20','2017-07-15','0',now(),now()),
@@ -327,15 +328,15 @@ INSERT INTO `t_user_work_history` VALUES
    '["Developed EC site for music data protected by <a>Microsoft DRM</a>."]',
    '[24,30,56,62,100]',
    '2009-01-01','2009-11-30','0',now(),now()),
-  (null,1,7,'Application Engineer',
+  (null,1,5,'Application Engineer',
    '["Developed various video players using <a>Flash</a>, <a>Silverlight</a>, <a>Javascript</a> and <a>BittorrentDNA</a> for P2P on the web and Nintendo Wii Platform.", "Managed and developed podcast portal site including optimizing database performance.", "Developed <a>Microsoft DRM</a> management system packaging video and issuing license using <a>ASP.NET(C#)</a>.", "Developed billing API of credit card and electronic money on movie download sites."]',
    '[24,3,17,20,30,55,51,62,61,100]',
    '2007-01-01','2008-12-31','0',now(),now()),
-  (null,1,8,'Application Engineer',
+  (null,1,6,'Application Engineer',
    '["Managed entire projects including planning and proposal, negotiation, system requirement definition, estimates of developement, progress management.", "Developed video contributing software using C++, Flash.", "Developed EC site for video using PHP, MySQL.", "Developed billing API of credit card and electronic money on movie download sites."]',
    '[3,17,14,50]',
    '2005-04-01','2006-11-30','0',now(),now()),
-  (null,1,9,'Junior Software Engineer',
+  (null,1,7,'Junior Software Engineer',
    '["Developed car auction system using VB, C, Java."]',
    '[26,27,13,57]',
    '2002-09-01','2005-03-31','0',now(),now());

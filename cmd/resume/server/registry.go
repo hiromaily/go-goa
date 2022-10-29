@@ -77,15 +77,12 @@ func (r *registry) NewHyUserTech() hyusertech.Service {
 }
 
 func (r *registry) NewHyUserWorkHistory() hyuserworkhistory.Service {
-	return resume.NewHyUserWorkHistory(r.newUserWorkHistoryRepo())
+	return resume.NewHyUserWorkHistory(r.newJWT(), r.newUserWorkHistoryRepo())
 }
 
 func (r *registry) NewHealth() health.Service {
 	return resume.NewHealth()
 }
-
-// TODO
-// hyUserWorkHistorySvc = resume.NewHyUserWorkHistory(logger, db)
 
 //func (r *registry) newLogger() *zap.Logger {
 //	if r.logger == nil {

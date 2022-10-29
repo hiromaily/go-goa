@@ -97,7 +97,7 @@ rerun: build run
 .PHONY: chk
 chk:
 	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
-	http localhost:8080/user/1/disliketech 'Authorization: Bearer $(TOKEN)'
+	http localhost:8080/user/1/workhistory 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: http-user
 http-user:
@@ -131,6 +131,11 @@ http-usertech:
 	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
 	http localhost:8080/user/1/liketech 'Authorization: Bearer $(TOKEN)'
 	http localhost:8080/user/1/disliketech 'Authorization: Bearer $(TOKEN)'
+
+.PHONY: http-userworkhistory
+http-userworkhistory:
+	$(eval TOKEN := $(shell http --headers POST http://localhost:8080/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+	http localhost:8080/user/1/workhistory 'Authorization: Bearer $(TOKEN)'
 
 .PHONY: http-company
 http-company:
