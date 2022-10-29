@@ -2,11 +2,14 @@ package resumeapi
 
 import (
 	"context"
-	"github.com/hiromaily/go-goa/pkg/jwts"
+	"strings"
 
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
 
+	"github.com/hiromaily/go-goa/pkg/jwts"
+	ptr "github.com/hiromaily/go-goa/pkg/pointer"
 	"github.com/hiromaily/go-goa/pkg/repository"
 	hytech "resume/gen/hy_tech"
 )
@@ -40,89 +43,93 @@ func (s *hyTechsrvc) JWTAuth(ctx context.Context, token string, scheme *security
 
 // TechList returns all techs
 func (s *hyTechsrvc) TechList(ctx context.Context, p *hytech.TechListPayload) (res hytech.TechCollection, view string, err error) {
-	//	var techs []*app.Tech
-	//
-	//	svc := &m.Tech{Db: c.ctx.Db}
-	//	err := svc.TechList(&techs)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	if len(techs) == 0 {
-	//		return ctx.NoContent()
-	//	}
-	//
-	//	res := app.TechCollection(techs)
-	//	return ctx.OK(res)
-	view = "default"
 	log.Info().Msg("hyTech.techList")
-	return
-}
 
-// get tech with given tech id
-func (s *hyTechsrvc) GetTech(ctx context.Context, p *hytech.GetTechPayload) (res *hytech.Company, view string, err error) {
-	//	tech := &app.Tech{}
-	//
-	//	svc := &m.Tech{Db: c.ctx.Db}
-	//	err := svc.GetTech(ctx.TechID, tech)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	if tech.ID == nil {
-	//		//404
-	//		return ctx.NotFound()
-	//	}
-	//
-	//	return ctx.OK(tech)
+	techs, err := s.techRepo.TechList()
 
-	res = &hytech.Company{}
+	if err != nil {
+		return nil, "", errors.Wrap(err, "fail to call techRepo.UserList()")
+	}
+	if len(techs) == 0 {
+		return nil, "", hytech.MakeNotFound(errors.New("tech not found"))
+	}
+	res = techs
 	view = "default"
+
+	return
+}
+
+// GetTech　returns tech by given tech id
+func (s *hyTechsrvc) GetTech(ctx context.Context, p *hytech.GetTechPayload) (res *hytech.Tech, view string, err error) {
 	log.Info().Msg("hyTech.getTech")
+
+	tech, err := s.techRepo.GetTech(p.TechID)
+	if err != nil {
+		// Not Found
+		if strings.Contains(err.Error(), "no rows in result set") {
+			return nil, "", hytech.MakeNotFound(errors.New("tech not found"))
+		}
+		return nil, "", errors.Wrapf(err, "fail to call techRepo.GetTech(%d)", p.TechID)
+	}
+	res = tech
+	view = "default"
+
 	return
 }
 
-// Create new tech
-func (s *hyTechsrvc) CreateTech(ctx context.Context, p *hytech.CreateTechPayload) (err error) {
-	//	svc := &m.Tech{Db: c.ctx.Db}
-	//	techID, err := svc.InsertTech(ctx.Payload)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	res := &app.TechID{ID: &techID}
-	//	return ctx.OKId(res)
-
+// CreateTech creates new tech
+// FIXME: only admin user can create user
+func (s *hyTechsrvc) CreateTech(ctx context.Context, p *hytech.CreateTechPayload) (res *hytech.Tech, view string, err error) {
 	log.Info().Msg("hyTech.createTech")
+
+	techID, err := s.techRepo.InsertTech(p.TechName)
+	if err != nil {
+		return nil, "", errors.Wrap(err, "fail to call InsertTech()")
+	}
+	res = &hytech.Tech{
+		TechID: ptr.Int(techID),
+	}
+	view = "id"
+
 	return
 }
 
-// Change tech properties
+// UpdateTech updates tech data
+// FIXME: only login user can update own information
 func (s *hyTechsrvc) UpdateTech(ctx context.Context, p *hytech.UpdateTechPayload) (err error) {
-	//	svc := &m.Tech{Db: c.ctx.Db}
-	//	err := svc.UpdateTech(ctx.TechID, ctx.Payload)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	res := &app.TechID{ID: &ctx.TechID}
-	//	return ctx.OKId(res)
-
 	log.Info().Msg("hyTech.updateTech")
+
+	// Validate
+	if p.TechName == "" {
+		return hytech.MakeBadRequest(errors.New("parameter is invalid"))
+	}
+
+	isTech, err := s.techRepo.IsTech(p.TechID)
+	if !isTech || err != nil {
+		return hytech.MakeNotFound(errors.New("tech not found"))
+	}
+
+	_, err = s.techRepo.UpdateTech(p.TechID, p.TechName)
+	if err != nil {
+		return errors.Wrap(err, "fail to call UpdateTech()")
+	}
+
 	return
 }
 
-// Delete tech
+// DeleteTech deletes tech data
+// FIXME: only admin user can delete user
 func (s *hyTechsrvc) DeleteTech(ctx context.Context, p *hytech.DeleteTechPayload) (err error) {
-	//	svc := &m.Tech{Db: c.ctx.Db}
-	//	err := svc.DeleteTech(ctx.TechID)
-	//	if err != nil {
-	//		return err
-	//	}
-	//
-	//	res := &app.TechID{ID: &ctx.TechID}
-	//	return ctx.OKId(res)
-
 	log.Info().Msg("hyTech.deleteTech")
+
+	isTech, err := s.techRepo.IsTech(p.TechID)
+	if !isTech || err != nil {
+		return hytech.MakeNotFound(errors.New("tech not found"))
+	}
+
+	if _, err := s.techRepo.DeleteTech(p.TechID); err != nil {
+		return errors.Wrap(err, "fail to call DeleteTech()")
+	}
+
 	return
 }

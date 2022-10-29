@@ -69,7 +69,7 @@ func (r *registry) NewHyCompany() hycompany.Service {
 }
 
 func (r *registry) NewHyTech() hytech.Service {
-	return resume.NewHyTech(r.newTechRepo())
+	return resume.NewHyTech(r.newJWT(), r.newTechRepo())
 }
 
 func (r *registry) NewHyUserTech() hyusertech.Service {

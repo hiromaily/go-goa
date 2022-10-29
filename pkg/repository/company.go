@@ -3,16 +3,16 @@ package repository
 import (
 	"context"
 	"database/sql"
-	ptr "github.com/hiromaily/go-goa/pkg/pointer"
-	"github.com/volatiletech/sqlboiler/v4/queries"
 	"time"
 
 	"github.com/pkg/errors"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
+	"github.com/volatiletech/sqlboiler/v4/queries"
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 
 	models "github.com/hiromaily/go-goa/pkg/model/rdb"
+	ptr "github.com/hiromaily/go-goa/pkg/pointer"
 	hycompany "resume/gen/hy_company"
 )
 

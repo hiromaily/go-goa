@@ -18,6 +18,7 @@ import (
 type TechRepository interface {
 	TechList() ([]*hytech.Tech, error)
 	GetTech(techID int) (*hytech.Tech, error)
+	IsTech(techID int) (bool, error)
 	InsertTech(name string) (int, error)
 	UpdateTech(techID int, name string) (int, error)
 	DeleteTech(techID int) (int, error)
@@ -50,8 +51,8 @@ func (r *techRepository) TechList() ([]*hytech.Tech, error) {
 	converted := make([]*hytech.Tech, len(items))
 	for i, item := range items {
 		converted[i] = &hytech.Tech{
-			ID:   &item.ID,
-			Name: item.Name,
+			TechID:   &item.ID,
+			TechName: &item.Name,
 		}
 	}
 	return converted, nil
@@ -70,9 +71,24 @@ func (r *techRepository) GetTech(techID int) (*hytech.Tech, error) {
 		return nil, errors.Wrap(err, "failed to call models.TTechs().One()")
 	}
 	return &hytech.Tech{
-		ID:   &item.ID,
-		Name: item.Name,
+		TechID:   &item.ID,
+		TechName: &item.Name,
 	}, nil
+}
+
+func (r *techRepository) IsTech(techID int) (bool, error) {
+	ctx := context.Background()
+	q := []qm.QueryMod{
+		qm.Select("id"),
+		qm.Where("is_deleted=?", 0),
+		qm.And("id=?", techID),
+	}
+	ret, err := models.TTeches(q...).Exists(ctx, r.dbConn)
+	if err != nil {
+		return false, errors.Wrap(err, "failed to call models.TTeches().One()")
+	}
+
+	return ret, nil
 }
 
 func (r *techRepository) getTechByName(name string) (*models.TTech, error) {
