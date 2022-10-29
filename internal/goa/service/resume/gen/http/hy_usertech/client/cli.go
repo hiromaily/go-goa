@@ -41,7 +41,7 @@ func BuildGetUserLikeTechPayload(hyUsertechGetUserLikeTechUserID string, hyUsert
 		}
 	}
 	v := &hyusertech.GetUserLikeTechPayload{}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v, nil
@@ -73,7 +73,7 @@ func BuildGetUserDisLikeTechPayload(hyUsertechGetUserDisLikeTechUserID string, h
 		}
 	}
 	v := &hyusertech.GetUserDisLikeTechPayload{}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v, nil

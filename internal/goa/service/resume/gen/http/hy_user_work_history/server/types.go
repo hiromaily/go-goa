@@ -10,11 +10,32 @@ package server
 import (
 	hyuserworkhistory "resume/gen/hy_user_work_history"
 	hyuserworkhistoryviews "resume/gen/hy_user_work_history/views"
+
+	goa "goa.design/goa/v3/pkg"
 )
 
 // UserworkhistoryResponseCollection is the type of the "hy_userWorkHistory"
 // service "getUserWorkHistory" endpoint HTTP response body.
 type UserworkhistoryResponseCollection []*UserworkhistoryResponse
+
+// GetUserWorkHistoryNotFoundResponseBody is the type of the
+// "hy_userWorkHistory" service "getUserWorkHistory" endpoint HTTP response
+// body for the "NotFound" error.
+type GetUserWorkHistoryNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
 
 // UserworkhistoryResponse is used to define fields on response body types.
 type UserworkhistoryResponse struct {
@@ -43,11 +64,26 @@ func NewUserworkhistoryResponseCollection(res hyuserworkhistoryviews.Userworkhis
 	return body
 }
 
+// NewGetUserWorkHistoryNotFoundResponseBody builds the HTTP response body from
+// the result of the "getUserWorkHistory" endpoint of the "hy_userWorkHistory"
+// service.
+func NewGetUserWorkHistoryNotFoundResponseBody(res *goa.ServiceError) *GetUserWorkHistoryNotFoundResponseBody {
+	body := &GetUserWorkHistoryNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewGetUserWorkHistoryPayload builds a hy_userWorkHistory service
 // getUserWorkHistory endpoint payload.
 func NewGetUserWorkHistoryPayload(userID int, token *string) *hyuserworkhistory.GetUserWorkHistoryPayload {
 	v := &hyuserworkhistory.GetUserWorkHistoryPayload{}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v

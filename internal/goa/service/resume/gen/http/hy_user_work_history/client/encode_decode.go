@@ -32,9 +32,7 @@ func (c *Client) BuildGetUserWorkHistoryRequest(ctx context.Context, v interface
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_userWorkHistory", "getUserWorkHistory", "*hyuserworkhistory.GetUserWorkHistoryPayload", v)
 		}
-		if p.UserID != nil {
-			userID = *p.UserID
-		}
+		userID = p.UserID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetUserWorkHistoryHyUserWorkHistoryPath(userID)}
 	req, err := http.NewRequest("GET", u.String(), nil)
@@ -71,6 +69,9 @@ func EncodeGetUserWorkHistoryRequest(encoder func(*http.Request) goahttp.Encoder
 // DecodeGetUserWorkHistoryResponse returns a decoder for responses returned by
 // the hy_userWorkHistory getUserWorkHistory endpoint. restoreBody controls
 // whether the response body should be restored after having been read.
+// DecodeGetUserWorkHistoryResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeGetUserWorkHistoryResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -103,6 +104,20 @@ func DecodeGetUserWorkHistoryResponse(decoder func(*http.Response) goahttp.Decod
 			}
 			res := hyuserworkhistory.NewUserworkhistoryCollection(vres)
 			return res, nil
+		case http.StatusNotFound:
+			var (
+				body GetUserWorkHistoryNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_userWorkHistory", "getUserWorkHistory", err)
+			}
+			err = ValidateGetUserWorkHistoryNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_userWorkHistory", "getUserWorkHistory", err)
+			}
+			return nil, NewGetUserWorkHistoryNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_userWorkHistory", "getUserWorkHistory", resp.StatusCode, string(body))

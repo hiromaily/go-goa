@@ -41,7 +41,7 @@ func BuildGetUserWorkHistoryPayload(hyUserWorkHistoryGetUserWorkHistoryUserID st
 		}
 	}
 	v := &hyuserworkhistory.GetUserWorkHistoryPayload{}
-	v.UserID = &userID
+	v.UserID = userID
 	v.Token = token
 
 	return v, nil

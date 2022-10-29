@@ -31,9 +31,7 @@ func (c *Client) BuildGetUserLikeTechRequest(ctx context.Context, v interface{})
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_usertech", "getUserLikeTech", "*hyusertech.GetUserLikeTechPayload", v)
 		}
-		if p.UserID != nil {
-			userID = *p.UserID
-		}
+		userID = p.UserID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetUserLikeTechHyUsertechPath(userID)}
 	req, err := http.NewRequest("GET", u.String(), nil)
@@ -70,6 +68,9 @@ func EncodeGetUserLikeTechRequest(encoder func(*http.Request) goahttp.Encoder) f
 // DecodeGetUserLikeTechResponse returns a decoder for responses returned by
 // the hy_usertech getUserLikeTech endpoint. restoreBody controls whether the
 // response body should be restored after having been read.
+// DecodeGetUserLikeTechResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeGetUserLikeTechResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -102,6 +103,20 @@ func DecodeGetUserLikeTechResponse(decoder func(*http.Response) goahttp.Decoder,
 			}
 			res := hyusertech.NewUsertechCollection(vres)
 			return res, nil
+		case http.StatusNotFound:
+			var (
+				body GetUserLikeTechNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_usertech", "getUserLikeTech", err)
+			}
+			err = ValidateGetUserLikeTechNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_usertech", "getUserLikeTech", err)
+			}
+			return nil, NewGetUserLikeTechNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_usertech", "getUserLikeTech", resp.StatusCode, string(body))
@@ -121,9 +136,7 @@ func (c *Client) BuildGetUserDisLikeTechRequest(ctx context.Context, v interface
 		if !ok {
 			return nil, goahttp.ErrInvalidType("hy_usertech", "getUserDisLikeTech", "*hyusertech.GetUserDisLikeTechPayload", v)
 		}
-		if p.UserID != nil {
-			userID = *p.UserID
-		}
+		userID = p.UserID
 	}
 	u := &url.URL{Scheme: c.scheme, Host: c.host, Path: GetUserDisLikeTechHyUsertechPath(userID)}
 	req, err := http.NewRequest("GET", u.String(), nil)
@@ -160,6 +173,9 @@ func EncodeGetUserDisLikeTechRequest(encoder func(*http.Request) goahttp.Encoder
 // DecodeGetUserDisLikeTechResponse returns a decoder for responses returned by
 // the hy_usertech getUserDisLikeTech endpoint. restoreBody controls whether
 // the response body should be restored after having been read.
+// DecodeGetUserDisLikeTechResponse may return the following errors:
+//   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - error: internal error
 func DecodeGetUserDisLikeTechResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
 		if restoreBody {
@@ -192,6 +208,20 @@ func DecodeGetUserDisLikeTechResponse(decoder func(*http.Response) goahttp.Decod
 			}
 			res := hyusertech.NewUsertechCollection(vres)
 			return res, nil
+		case http.StatusNotFound:
+			var (
+				body GetUserDisLikeTechNotFoundResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_usertech", "getUserDisLikeTech", err)
+			}
+			err = ValidateGetUserDisLikeTechNotFoundResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_usertech", "getUserDisLikeTech", err)
+			}
+			return nil, NewGetUserDisLikeTechNotFound(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_usertech", "getUserDisLikeTech", resp.StatusCode, string(body))

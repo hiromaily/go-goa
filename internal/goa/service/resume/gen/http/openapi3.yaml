@@ -162,9 +162,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 5633647381860274049
+                    example: 1046919295188121971
                     minimum: 1
-                  example: 8856826278083494555
+                  example: 6988304720051856351
             responses:
                 "200":
                     description: OK response.
@@ -191,9 +191,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 963218077044982780
+                    example: 339745344289456661
                     minimum: 1
-                  example: 3172866413800060998
+                  example: 4571527033430832189
             responses:
                 "200":
                     description: OK response.
@@ -232,9 +232,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 5639337732304257506
+                    example: 4190895503921200415
                     minimum: 1
-                  example: 2728230755377463616
+                  example: 396881324212913759
             requestBody:
                 required: true
                 content:
@@ -368,9 +368,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 6205512398408249821
+                    example: 5709384348704187234
                     minimum: 1
-                  example: 3701071496368509414
+                  example: 9079370171329166774
             responses:
                 "200":
                     description: OK response.
@@ -397,9 +397,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 7740664151266896307
+                    example: 2847978431605506772
                     minimum: 1
-                  example: 2495815827976346045
+                  example: 2575621331362584676
             responses:
                 "200":
                     description: OK response.
@@ -436,9 +436,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 6968908288167102051
+                    example: 1834942356353653981
                     minimum: 1
-                  example: 1532314570247062039
+                  example: 6452748538961127061
             requestBody:
                 required: true
                 content:
@@ -557,9 +557,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 2442878704078016207
+                    example: 7745277364261132187
                     minimum: 1
-                  example: 174707256933496808
+                  example: 7909492857951961546
             responses:
                 "200":
                     description: OK response.
@@ -586,9 +586,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 7375778327793873337
+                    example: 1288301141656066467
                     minimum: 1
-                  example: 614694957858244944
+                  example: 1527676881617102183
             responses:
                 "200":
                     description: OK response.
@@ -627,9 +627,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 766181467878029624
+                    example: 3416244926440088422
                     minimum: 1
-                  example: 9132443853158385424
+                  example: 5989441150819645180
             requestBody:
                 required: true
                 content:
@@ -658,7 +658,7 @@ paths:
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /user/{userID}/disliketech:
+    /user/{user_id}/disliketech:
         get:
             tags:
                 - hy_usertech
@@ -666,16 +666,16 @@ paths:
             description: get user's dislike techs
             operationId: hy_usertech#getUserDisLikeTech
             parameters:
-                - name: userID
+                - name: user_id
                   in: path
                   description: User ID
                   required: true
                   schema:
                     type: integer
                     description: User ID
-                    example: 1813871800037835770
+                    example: 3869040641015927670
                     minimum: 1
-                  example: 5205654078207144837
+                  example: 2429748020324554069
             responses:
                 "200":
                     description: OK response.
@@ -693,10 +693,16 @@ paths:
                                   tech_name: Golang
                                 - id: 10
                                   tech_name: Golang
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /user/{userID}/liketech:
+    /user/{user_id}/liketech:
         get:
             tags:
                 - hy_usertech
@@ -704,16 +710,16 @@ paths:
             description: get user's favorite techs
             operationId: hy_usertech#getUserLikeTech
             parameters:
-                - name: userID
+                - name: user_id
                   in: path
                   description: User ID
                   required: true
                   schema:
                     type: integer
                     description: User ID
-                    example: 5640647172011608607
+                    example: 6105886882736115680
                     minimum: 1
-                  example: 3163300068779443069
+                  example: 156287551336088560
             responses:
                 "200":
                     description: OK response.
@@ -731,10 +737,16 @@ paths:
                                   tech_name: Golang
                                 - id: 10
                                   tech_name: Golang
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
-    /user/{userID}/workhistory:
+    /user/{user_id}/workhistory:
         get:
             tags:
                 - hy_userWorkHistory
@@ -742,16 +754,16 @@ paths:
             description: get user's work history
             operationId: hy_userWorkHistory#getUserWorkHistory
             parameters:
-                - name: userID
+                - name: user_id
                   in: path
                   description: User ID
                   required: true
                   schema:
                     type: integer
                     description: User ID
-                    example: 7913414299811921263
+                    example: 220270010374292935
                     minimum: 1
-                  example: 339745344289456661
+                  example: 5823852514308063432
             responses:
                 "200":
                     description: OK response.
@@ -778,6 +790,12 @@ paths:
                                   techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
                                   term: Jul 2017 - Aug 2017
                                   title: Developer
+                "404":
+                    description: 'NotFound: Not Found response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -817,7 +835,7 @@ components:
                     maxLength: 40
                 country_name:
                     type: string
-                    example: Doloremque beatae itaque.
+                    example: Esse iusto architecto nesciunt et.
                 created_at:
                     type: string
                     description: Datetime
@@ -833,7 +851,7 @@ components:
                 address: Shinagawa Tokyo
                 company_id: 10
                 company_name: Company
-                country_name: Hic eum delectus labore.
+                country_name: Exercitationem animi beatae reprehenderit a quis consequuntur.
                 created_at: "2017-03-10T15:00:00Z"
                 updated_at: "2017-03-10T15:00:00Z"
         CompanyCollection:
@@ -841,6 +859,12 @@ components:
             items:
                 $ref: '#/components/schemas/Company'
             example:
+                - address: Shinagawa Tokyo
+                  company_id: 10
+                  company_name: Company
+                  country_name: Est qui iure eligendi alias.
+                  created_at: "2017-03-10T15:00:00Z"
+                  updated_at: "2017-03-10T15:00:00Z"
                 - address: Shinagawa Tokyo
                   company_id: 10
                   company_name: Company
@@ -879,7 +903,6 @@ components:
                 - company_id: 10
                 - company_id: 10
                 - company_id: 10
-                - company_id: 10
         CompanyResponseIdname:
             type: object
             properties:
@@ -904,10 +927,6 @@ components:
                 $ref: '#/components/schemas/CompanyResponseIdname'
             description: CompanyListResponseBody is the result type for an array of CompanyResponse (idname view)
             example:
-                - company_id: 10
-                  company_name: Company
-                - company_id: 10
-                  company_name: Company
                 - company_id: 10
                   company_name: Company
                 - company_id: 10
@@ -1004,7 +1023,7 @@ components:
                 temporary:
                     type: boolean
                     description: Is the error temporary?
-                    example: true
+                    example: false
                 timeout:
                     type: boolean
                     description: Is the error a timeout?
@@ -1087,10 +1106,6 @@ components:
                   tech_id: 10
                   tech_name: Golang
                   updated_at: "2017-03-10T15:00:00Z"
-                - created_at: "2017-03-10T15:00:00Z"
-                  tech_id: 10
-                  tech_name: Golang
-                  updated_at: "2017-03-10T15:00:00Z"
         TechResponseID:
             type: object
             properties:
@@ -1108,7 +1123,6 @@ components:
                 $ref: '#/components/schemas/TechResponseID'
             description: TechListResponseBody is the result type for an array of TechResponse (id view)
             example:
-                - tech_id: 10
                 - tech_id: 10
                 - tech_id: 10
                 - tech_id: 10
@@ -1246,8 +1260,6 @@ components:
             example:
                 - user_id: 10
                 - user_id: 10
-                - user_id: 10
-                - user_id: 10
         Usertech:
             type: object
             properties:
@@ -1273,6 +1285,8 @@ components:
             items:
                 $ref: '#/components/schemas/Usertech'
             example:
+                - id: 10
+                  tech_name: Golang
                 - id: 10
                   tech_name: Golang
                 - id: 10
@@ -1383,8 +1397,8 @@ tags:
     - name: hy_user
       description: The user service returns user data
     - name: hy_usertech
-      description: The user service returns user data
+      description: The usertech service returns user's tech data
     - name: hy_userWorkHistory
-      description: The user service returns user data
+      description: The user work history service returns user working history data
     - name: health
       description: health check

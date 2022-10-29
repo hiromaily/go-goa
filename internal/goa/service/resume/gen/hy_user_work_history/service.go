@@ -15,7 +15,7 @@ import (
 	"goa.design/goa/v3/security"
 )
 
-// The user service returns user data
+// The user work history service returns user working history data
 type Service interface {
 	// get user's work history
 	GetUserWorkHistory(context.Context, *GetUserWorkHistoryPayload) (res UserworkhistoryCollection, err error)
@@ -43,7 +43,7 @@ type GetUserWorkHistoryPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// User ID
-	UserID *int
+	UserID int
 }
 
 // A user information
@@ -66,19 +66,14 @@ type Userworkhistory struct {
 // service getUserWorkHistory method.
 type UserworkhistoryCollection []*Userworkhistory
 
-// MakeBadRequest builds a goa.ServiceError from an error.
-func MakeBadRequest(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "BadRequest", false, false, false)
-}
-
 // MakeNotFound builds a goa.ServiceError from an error.
 func MakeNotFound(err error) *goa.ServiceError {
 	return goa.NewServiceError(err, "NotFound", false, false, false)
 }
 
-// MakeUnauthorized builds a goa.ServiceError from an error.
-func MakeUnauthorized(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "Unauthorized", false, false, false)
+// MakeBadRequest builds a goa.ServiceError from an error.
+func MakeBadRequest(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "BadRequest", false, false, false)
 }
 
 // NewUserworkhistoryCollection initializes result type

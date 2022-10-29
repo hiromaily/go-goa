@@ -50,8 +50,8 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"GetUserWorkHistory", "GET", "/user/{userID}/workhistory"},
-			{"CORS", "OPTIONS", "/user/{userID}/workhistory"},
+			{"GetUserWorkHistory", "GET", "/user/{user_id}/workhistory"},
+			{"CORS", "OPTIONS", "/user/{user_id}/workhistory"},
 		},
 		GetUserWorkHistory: NewGetUserWorkHistoryHandler(e.GetUserWorkHistory, mux, decoder, encoder, errhandler, formatter),
 		CORS:               NewCORSHandler(),
@@ -90,7 +90,7 @@ func MountGetUserWorkHistoryHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/user/{userID}/workhistory", f)
+	mux.Handle("GET", "/user/{user_id}/workhistory", f)
 }
 
 // NewGetUserWorkHistoryHandler creates a HTTP handler which loads the HTTP
@@ -107,7 +107,7 @@ func NewGetUserWorkHistoryHandler(
 	var (
 		decodeRequest  = DecodeGetUserWorkHistoryRequest(mux, decoder)
 		encodeResponse = EncodeGetUserWorkHistoryResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetUserWorkHistoryError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -137,7 +137,7 @@ func NewGetUserWorkHistoryHandler(
 // service hy_userWorkHistory.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleHyUserWorkHistoryOrigin(h)
-	mux.Handle("OPTIONS", "/user/{userID}/workhistory", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/user/{user_id}/workhistory", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

@@ -15,7 +15,7 @@ import (
 	"goa.design/goa/v3/security"
 )
 
-// The user service returns user data
+// The usertech service returns user's tech data
 type Service interface {
 	// get user's favorite techs
 	// The "view" return value must have one of the following views
@@ -51,7 +51,7 @@ type GetUserDisLikeTechPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// User ID
-	UserID *int
+	UserID int
 }
 
 // GetUserLikeTechPayload is the payload type of the hy_usertech service
@@ -60,7 +60,7 @@ type GetUserLikeTechPayload struct {
 	// JWT token used to perform authorization
 	Token *string
 	// User ID
-	UserID *int
+	UserID int
 }
 
 // A user information
@@ -75,19 +75,14 @@ type Usertech struct {
 // getUserLikeTech method.
 type UsertechCollection []*Usertech
 
-// MakeBadRequest builds a goa.ServiceError from an error.
-func MakeBadRequest(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "BadRequest", false, false, false)
-}
-
 // MakeNotFound builds a goa.ServiceError from an error.
 func MakeNotFound(err error) *goa.ServiceError {
 	return goa.NewServiceError(err, "NotFound", false, false, false)
 }
 
-// MakeUnauthorized builds a goa.ServiceError from an error.
-func MakeUnauthorized(err error) *goa.ServiceError {
-	return goa.NewServiceError(err, "Unauthorized", false, false, false)
+// MakeBadRequest builds a goa.ServiceError from an error.
+func MakeBadRequest(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "BadRequest", false, false, false)
 }
 
 // NewUsertechCollection initializes result type UsertechCollection from viewed

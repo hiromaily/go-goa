@@ -9,6 +9,7 @@ package server
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	hyuserworkhistoryviews "resume/gen/hy_user_work_history/views"
 	"strconv"
@@ -42,7 +43,7 @@ func DecodeGetUserWorkHistoryRequest(mux goahttp.Muxer, decoder func(*http.Reque
 			params = mux.Vars(r)
 		)
 		{
-			userIDRaw := params["userID"]
+			userIDRaw := params["user_id"]
 			v, err2 := strconv.ParseInt(userIDRaw, 10, strconv.IntSize)
 			if err2 != nil {
 				err = goa.MergeErrors(err, goa.InvalidFieldTypeError("userID", userIDRaw, "integer"))
@@ -69,6 +70,35 @@ func DecodeGetUserWorkHistoryRequest(mux goahttp.Muxer, decoder func(*http.Reque
 		}
 
 		return payload, nil
+	}
+}
+
+// EncodeGetUserWorkHistoryError returns an encoder for errors returned by the
+// getUserWorkHistory hy_userWorkHistory endpoint.
+func EncodeGetUserWorkHistoryError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(ctx context.Context, err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		var en goa.GoaErrorNamer
+		if !errors.As(v, &en) {
+			return encodeError(ctx, w, v)
+		}
+		switch en.GoaErrorName() {
+		case "NotFound":
+			var res *goa.ServiceError
+			errors.As(v, &res)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(ctx, res)
+			} else {
+				body = NewGetUserWorkHistoryNotFoundResponseBody(res)
+			}
+			w.Header().Set("goa-error", res.GoaErrorName())
+			w.WriteHeader(http.StatusNotFound)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
 	}
 }
 

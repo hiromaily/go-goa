@@ -121,76 +121,86 @@ var _ = Service(resourcePrefix+"user", func() {
 // ----------------------------------------------------------------------------
 
 var _ = Service(resourcePrefix+"usertech", func() {
-	Description("The user service returns user data")
+	Description("The usertech service returns user's tech data")
 
 	Security(JWT)
 	HTTP(func() {
 		Path("/user")
 	})
 
+	Error("NotFound")
+	Error("BadRequest")
+
 	Method("getUserLikeTech", func() {
 		Description("get user's favorite techs")
-		Error("BadRequest")
-		Error("NotFound")
-		Error("Unauthorized")
-		//query string
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("userID", Int, "User ID", func() {
+			Attribute("user_id", Int, "User ID", func() {
 				Minimum(1)
 			})
+			Required("user_id")
 		})
 		Result(CollectionOf(types.RTUserTech))
+
 		HTTP(func() {
-			GET("/{userID}/liketech")
+			GET("/{user_id}/liketech")
 			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 
 	Method("getUserDisLikeTech", func() {
 		Description("get user's dislike techs")
-		Error("BadRequest")
-		Error("NotFound")
-		Error("Unauthorized")
-		//query string
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("userID", Int, "User ID", func() {
+			Attribute("user_id", Int, "User ID", func() {
 				Minimum(1)
 			})
+			Required("user_id")
 		})
 		Result(CollectionOf(types.RTUserTech))
+
 		HTTP(func() {
-			GET("/{userID}/disliketech")
+			GET("/{user_id}/disliketech")
 			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 })
 
+// ----------------------------------------------------------------------------
+// User Work History Service
+// ----------------------------------------------------------------------------
+
 var _ = Service(resourcePrefix+"userWorkHistory", func() {
-	Description("The user service returns user data")
+	Description("The user work history service returns user working history data")
 
 	Security(JWT)
 	HTTP(func() {
 		Path("/user")
 	})
 
+	Error("NotFound")
+	Error("BadRequest")
+
 	Method("getUserWorkHistory", func() {
 		Description("get user's work history")
-		Error("BadRequest")
-		Error("NotFound")
-		Error("Unauthorized")
-		//query string
+
 		Payload(func() {
 			Token("token", String, "JWT token used to perform authorization")
-			Attribute("userID", Int, "User ID", func() {
+			Attribute("user_id", Int, "User ID", func() {
 				Minimum(1)
 			})
+			Required("user_id")
 		})
 		Result(CollectionOf(types.RTUserWorkHistory))
+
 		HTTP(func() {
-			GET("/{userID}/workhistory")
+			GET("/{user_id}/workhistory")
 			Response(StatusOK)
+			Response("NotFound", StatusNotFound)
 		})
 	})
 })

@@ -51,10 +51,10 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"GetUserLikeTech", "GET", "/user/{userID}/liketech"},
-			{"GetUserDisLikeTech", "GET", "/user/{userID}/disliketech"},
-			{"CORS", "OPTIONS", "/user/{userID}/liketech"},
-			{"CORS", "OPTIONS", "/user/{userID}/disliketech"},
+			{"GetUserLikeTech", "GET", "/user/{user_id}/liketech"},
+			{"GetUserDisLikeTech", "GET", "/user/{user_id}/disliketech"},
+			{"CORS", "OPTIONS", "/user/{user_id}/liketech"},
+			{"CORS", "OPTIONS", "/user/{user_id}/disliketech"},
 		},
 		GetUserLikeTech:    NewGetUserLikeTechHandler(e.GetUserLikeTech, mux, decoder, encoder, errhandler, formatter),
 		GetUserDisLikeTech: NewGetUserDisLikeTechHandler(e.GetUserDisLikeTech, mux, decoder, encoder, errhandler, formatter),
@@ -96,7 +96,7 @@ func MountGetUserLikeTechHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/user/{userID}/liketech", f)
+	mux.Handle("GET", "/user/{user_id}/liketech", f)
 }
 
 // NewGetUserLikeTechHandler creates a HTTP handler which loads the HTTP
@@ -112,7 +112,7 @@ func NewGetUserLikeTechHandler(
 	var (
 		decodeRequest  = DecodeGetUserLikeTechRequest(mux, decoder)
 		encodeResponse = EncodeGetUserLikeTechResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetUserLikeTechError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -147,7 +147,7 @@ func MountGetUserDisLikeTechHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/user/{userID}/disliketech", f)
+	mux.Handle("GET", "/user/{user_id}/disliketech", f)
 }
 
 // NewGetUserDisLikeTechHandler creates a HTTP handler which loads the HTTP
@@ -163,7 +163,7 @@ func NewGetUserDisLikeTechHandler(
 	var (
 		decodeRequest  = DecodeGetUserDisLikeTechRequest(mux, decoder)
 		encodeResponse = EncodeGetUserDisLikeTechResponse(encoder)
-		encodeError    = goahttp.ErrorEncoder(encoder, formatter)
+		encodeError    = EncodeGetUserDisLikeTechError(encoder, formatter)
 	)
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.WithValue(r.Context(), goahttp.AcceptTypeKey, r.Header.Get("Accept"))
@@ -193,8 +193,8 @@ func NewGetUserDisLikeTechHandler(
 // service hy_usertech.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 	h = HandleHyUsertechOrigin(h)
-	mux.Handle("OPTIONS", "/user/{userID}/liketech", h.ServeHTTP)
-	mux.Handle("OPTIONS", "/user/{userID}/disliketech", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/user/{user_id}/liketech", h.ServeHTTP)
+	mux.Handle("OPTIONS", "/user/{user_id}/disliketech", h.ServeHTTP)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.

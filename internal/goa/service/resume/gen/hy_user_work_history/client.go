@@ -29,9 +29,8 @@ func NewClient(getUserWorkHistory goa.Endpoint) *Client {
 // GetUserWorkHistory calls the "getUserWorkHistory" endpoint of the
 // "hy_userWorkHistory" service.
 // GetUserWorkHistory may return the following errors:
-//   - "BadRequest" (type *goa.ServiceError)
 //   - "NotFound" (type *goa.ServiceError)
-//   - "Unauthorized" (type *goa.ServiceError)
+//   - "BadRequest" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetUserWorkHistory(ctx context.Context, p *GetUserWorkHistoryPayload) (res UserworkhistoryCollection, err error) {
 	var ires interface{}
