@@ -20,12 +20,12 @@ type Service interface {
 	// get user's favorite techs
 	// The "view" return value must have one of the following views
 	//	- "default"
-	//	- "tech": id is the view used for C U D
+	//	- "techName": only tech name
 	GetUserLikeTech(context.Context, *GetUserLikeTechPayload) (res UsertechCollection, view string, err error)
 	// get user's dislike techs
 	// The "view" return value must have one of the following views
 	//	- "default"
-	//	- "tech": id is the view used for C U D
+	//	- "techName": only tech name
 	GetUserDisLikeTech(context.Context, *GetUserDisLikeTechPayload) (res UsertechCollection, view string, err error)
 }
 
@@ -68,7 +68,7 @@ type Usertech struct {
 	// Key ID
 	ID *int
 	// Tech name
-	TechName string
+	TechName *string
 }
 
 // UsertechCollection is the result type of the hy_usertech service
@@ -92,8 +92,8 @@ func NewUsertechCollection(vres hyusertechviews.UsertechCollection) UsertechColl
 	switch vres.View {
 	case "default", "":
 		res = newUsertechCollection(vres.Projected)
-	case "tech":
-		res = newUsertechCollectionTech(vres.Projected)
+	case "techName":
+		res = newUsertechCollectionTechName(vres.Projected)
 	}
 	return res
 }
@@ -106,9 +106,9 @@ func NewViewedUsertechCollection(res UsertechCollection, view string) hyusertech
 	case "default", "":
 		p := newUsertechCollectionView(res)
 		vres = hyusertechviews.UsertechCollection{Projected: p, View: "default"}
-	case "tech":
-		p := newUsertechCollectionViewTech(res)
-		vres = hyusertechviews.UsertechCollection{Projected: p, View: "tech"}
+	case "techName":
+		p := newUsertechCollectionViewTechName(res)
+		vres = hyusertechviews.UsertechCollection{Projected: p, View: "techName"}
 	}
 	return vres
 }
@@ -123,12 +123,12 @@ func newUsertechCollection(vres hyusertechviews.UsertechCollectionView) Usertech
 	return res
 }
 
-// newUsertechCollectionTech converts projected type UsertechCollection to
+// newUsertechCollectionTechName converts projected type UsertechCollection to
 // service type UsertechCollection.
-func newUsertechCollectionTech(vres hyusertechviews.UsertechCollectionView) UsertechCollection {
+func newUsertechCollectionTechName(vres hyusertechviews.UsertechCollectionView) UsertechCollection {
 	res := make(UsertechCollection, len(vres))
 	for i, n := range vres {
-		res[i] = newUsertechTech(n)
+		res[i] = newUsertechTechName(n)
 	}
 	return res
 }
@@ -143,12 +143,12 @@ func newUsertechCollectionView(res UsertechCollection) hyusertechviews.UsertechC
 	return vres
 }
 
-// newUsertechCollectionViewTech projects result type UsertechCollection to
-// projected type UsertechCollectionView using the "tech" view.
-func newUsertechCollectionViewTech(res UsertechCollection) hyusertechviews.UsertechCollectionView {
+// newUsertechCollectionViewTechName projects result type UsertechCollection to
+// projected type UsertechCollectionView using the "techName" view.
+func newUsertechCollectionViewTechName(res UsertechCollection) hyusertechviews.UsertechCollectionView {
 	vres := make(hyusertechviews.UsertechCollectionView, len(res))
 	for i, n := range res {
-		vres[i] = newUsertechViewTech(n)
+		vres[i] = newUsertechViewTechName(n)
 	}
 	return vres
 }
@@ -156,19 +156,17 @@ func newUsertechCollectionViewTech(res UsertechCollection) hyusertechviews.Usert
 // newUsertech converts projected type Usertech to service type Usertech.
 func newUsertech(vres *hyusertechviews.UsertechView) *Usertech {
 	res := &Usertech{
-		ID: vres.ID,
-	}
-	if vres.TechName != nil {
-		res.TechName = *vres.TechName
+		ID:       vres.ID,
+		TechName: vres.TechName,
 	}
 	return res
 }
 
-// newUsertechTech converts projected type Usertech to service type Usertech.
-func newUsertechTech(vres *hyusertechviews.UsertechView) *Usertech {
-	res := &Usertech{}
-	if vres.TechName != nil {
-		res.TechName = *vres.TechName
+// newUsertechTechName converts projected type Usertech to service type
+// Usertech.
+func newUsertechTechName(vres *hyusertechviews.UsertechView) *Usertech {
+	res := &Usertech{
+		TechName: vres.TechName,
 	}
 	return res
 }
@@ -178,16 +176,16 @@ func newUsertechTech(vres *hyusertechviews.UsertechView) *Usertech {
 func newUsertechView(res *Usertech) *hyusertechviews.UsertechView {
 	vres := &hyusertechviews.UsertechView{
 		ID:       res.ID,
-		TechName: &res.TechName,
+		TechName: res.TechName,
 	}
 	return vres
 }
 
-// newUsertechViewTech projects result type Usertech to projected type
-// UsertechView using the "tech" view.
-func newUsertechViewTech(res *Usertech) *hyusertechviews.UsertechView {
+// newUsertechViewTechName projects result type Usertech to projected type
+// UsertechView using the "techName" view.
+func newUsertechViewTechName(res *Usertech) *hyusertechviews.UsertechView {
 	vres := &hyusertechviews.UsertechView{
-		TechName: &res.TechName,
+		TechName: res.TechName,
 	}
 	return vres
 }

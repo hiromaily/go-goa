@@ -73,7 +73,7 @@ func (r *registry) NewHyTech() hytech.Service {
 }
 
 func (r *registry) NewHyUserTech() hyusertech.Service {
-	return resume.NewHyUsertech(r.newUserTechRepo())
+	return resume.NewHyUsertech(r.newJWT(), r.newUserTechRepo())
 }
 
 func (r *registry) NewHyUserWorkHistory() hyuserworkhistory.Service {

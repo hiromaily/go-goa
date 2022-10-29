@@ -30,8 +30,8 @@ func EncodeGetUserLikeTechResponse(encoder func(context.Context, http.ResponseWr
 		switch res.View {
 		case "default", "":
 			body = NewUsertechResponseCollection(res.Projected)
-		case "tech":
-			body = NewUsertechResponseTechCollection(res.Projected)
+		case "techName":
+			body = NewUsertechResponseTechNameCollection(res.Projected)
 		}
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
@@ -120,8 +120,8 @@ func EncodeGetUserDisLikeTechResponse(encoder func(context.Context, http.Respons
 		switch res.View {
 		case "default", "":
 			body = NewUsertechResponseCollection(res.Projected)
-		case "tech":
-			body = NewUsertechResponseTechCollection(res.Projected)
+		case "techName":
+			body = NewUsertechResponseTechNameCollection(res.Projected)
 		}
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
@@ -204,18 +204,18 @@ func EncodeGetUserDisLikeTechError(encoder func(context.Context, http.ResponseWr
 func marshalHyusertechviewsUsertechViewToUsertechResponse(v *hyusertechviews.UsertechView) *UsertechResponse {
 	res := &UsertechResponse{
 		ID:       v.ID,
-		TechName: *v.TechName,
+		TechName: v.TechName,
 	}
 
 	return res
 }
 
-// marshalHyusertechviewsUsertechViewToUsertechResponseTech builds a value of
-// type *UsertechResponseTech from a value of type
+// marshalHyusertechviewsUsertechViewToUsertechResponseTechName builds a value
+// of type *UsertechResponseTechName from a value of type
 // *hyusertechviews.UsertechView.
-func marshalHyusertechviewsUsertechViewToUsertechResponseTech(v *hyusertechviews.UsertechView) *UsertechResponseTech {
-	res := &UsertechResponseTech{
-		TechName: *v.TechName,
+func marshalHyusertechviewsUsertechViewToUsertechResponseTechName(v *hyusertechviews.UsertechView) *UsertechResponseTechName {
+	res := &UsertechResponseTechName{
+		TechName: v.TechName,
 	}
 
 	return res

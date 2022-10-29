@@ -107,9 +107,9 @@ func EncodeGetUserWorkHistoryError(encoder func(context.Context, http.ResponseWr
 // *hyuserworkhistoryviews.UserworkhistoryView.
 func marshalHyuserworkhistoryviewsUserworkhistoryViewToUserworkhistoryResponse(v *hyuserworkhistoryviews.UserworkhistoryView) *UserworkhistoryResponse {
 	res := &UserworkhistoryResponse{
-		Title:       *v.Title,
-		Company:     *v.Company,
-		Country:     *v.Country,
+		Title:       v.Title,
+		CompanyName: v.CompanyName,
+		CountryName: v.CountryName,
 		Term:        v.Term,
 		Description: v.Description,
 		Techs:       v.Techs,

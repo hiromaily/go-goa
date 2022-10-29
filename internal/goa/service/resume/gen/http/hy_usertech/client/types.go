@@ -169,9 +169,6 @@ func ValidateGetUserDisLikeTechNotFoundResponseBody(body *GetUserDisLikeTechNotF
 
 // ValidateUsertechResponse runs the validations defined on UsertechResponse
 func ValidateUsertechResponse(body *UsertechResponse) (err error) {
-	if body.TechName == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("tech_name", "body"))
-	}
 	if body.ID != nil {
 		if *body.ID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("body.id", *body.ID, 1, true))

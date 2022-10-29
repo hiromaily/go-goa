@@ -40,11 +40,11 @@ type GetUserWorkHistoryNotFoundResponseBody struct {
 // UserworkhistoryResponse is used to define fields on response body types.
 type UserworkhistoryResponse struct {
 	// Job Title
-	Title string `form:"title" json:"title" xml:"title"`
+	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 	// Company name
-	Company string `form:"company" json:"company" xml:"company"`
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 	// Country code
-	Country string `form:"country" json:"country" xml:"country"`
+	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// worked period
 	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
 	// job description

@@ -42,9 +42,9 @@ type UserworkhistoryResponse struct {
 	// Job Title
 	Title *string `form:"title,omitempty" json:"title,omitempty" xml:"title,omitempty"`
 	// Company name
-	Company *string `form:"company,omitempty" json:"company,omitempty" xml:"company,omitempty"`
+	CompanyName *string `form:"company_name,omitempty" json:"company_name,omitempty" xml:"company_name,omitempty"`
 	// Country code
-	Country *string `form:"country,omitempty" json:"country,omitempty" xml:"country,omitempty"`
+	CountryName *string `form:"country_name,omitempty" json:"country_name,omitempty" xml:"country_name,omitempty"`
 	// worked period
 	Term *string `form:"term,omitempty" json:"term,omitempty" xml:"term,omitempty"`
 	// job description
@@ -107,15 +107,6 @@ func ValidateGetUserWorkHistoryNotFoundResponseBody(body *GetUserWorkHistoryNotF
 // ValidateUserworkhistoryResponse runs the validations defined on
 // UserworkhistoryResponse
 func ValidateUserworkhistoryResponse(body *UserworkhistoryResponse) (err error) {
-	if body.Title == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("title", "body"))
-	}
-	if body.Company == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("company", "body"))
-	}
-	if body.Country == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("country", "body"))
-	}
 	if body.Title != nil {
 		if utf8.RuneCountInString(*body.Title) < 2 {
 			err = goa.MergeErrors(err, goa.InvalidLengthError("body.title", *body.Title, utf8.RuneCountInString(*body.Title), 2, true))
@@ -126,24 +117,24 @@ func ValidateUserworkhistoryResponse(body *UserworkhistoryResponse) (err error) 
 			err = goa.MergeErrors(err, goa.InvalidLengthError("body.title", *body.Title, utf8.RuneCountInString(*body.Title), 40, false))
 		}
 	}
-	if body.Company != nil {
-		if utf8.RuneCountInString(*body.Company) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.company", *body.Company, utf8.RuneCountInString(*body.Company), 2, true))
+	if body.CompanyName != nil {
+		if utf8.RuneCountInString(*body.CompanyName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.company_name", *body.CompanyName, utf8.RuneCountInString(*body.CompanyName), 2, true))
 		}
 	}
-	if body.Company != nil {
-		if utf8.RuneCountInString(*body.Company) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.company", *body.Company, utf8.RuneCountInString(*body.Company), 40, false))
+	if body.CompanyName != nil {
+		if utf8.RuneCountInString(*body.CompanyName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.company_name", *body.CompanyName, utf8.RuneCountInString(*body.CompanyName), 40, false))
 		}
 	}
-	if body.Country != nil {
-		if utf8.RuneCountInString(*body.Country) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.country", *body.Country, utf8.RuneCountInString(*body.Country), 2, true))
+	if body.CountryName != nil {
+		if utf8.RuneCountInString(*body.CountryName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.country_name", *body.CountryName, utf8.RuneCountInString(*body.CountryName), 2, true))
 		}
 	}
-	if body.Country != nil {
-		if utf8.RuneCountInString(*body.Country) > 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("body.country", *body.Country, utf8.RuneCountInString(*body.Country), 2, false))
+	if body.CountryName != nil {
+		if utf8.RuneCountInString(*body.CountryName) > 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("body.country_name", *body.CountryName, utf8.RuneCountInString(*body.CountryName), 2, false))
 		}
 	}
 	if body.Term != nil {

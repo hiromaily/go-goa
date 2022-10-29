@@ -2004,14 +2004,14 @@ definitions:
             $ref: '#/definitions/UserworkhistoryResponse'
         description: GetUserWorkHistoryResponseBody is the result type for an array of UserworkhistoryResponse (default view)
         example:
-            - company: Company
-              country: nl
+            - company_name: Company
+              country_name: nl
               description: '["Developed resume site for job seeking."]'
               techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
               term: Jul 2017 - Aug 2017
               title: Developer
-            - company: Company
-              country: nl
+            - company_name: Company
+              country_name: nl
               description: '["Developed resume site for job seeking."]'
               techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
               term: Jul 2017 - Aug 2017
@@ -2180,19 +2180,17 @@ definitions:
         example:
             id: 10
             tech_name: Golang
-        required:
-            - tech_name
     UserworkhistoryResponse:
         title: 'Mediatype identifier: application/vnd.userworkhistory+json; view=default'
         type: object
         properties:
-            company:
+            company_name:
                 type: string
                 description: Company name
                 example: Company
                 minLength: 2
                 maxLength: 40
-            country:
+            country_name:
                 type: string
                 description: Country code
                 example: nl
@@ -2222,16 +2220,12 @@ definitions:
                 maxLength: 40
         description: A user information (default view)
         example:
-            company: Company
-            country: nl
+            company_name: Company
+            country_name: nl
             description: '["Developed resume site for job seeking."]'
             techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
             term: Jul 2017 - Aug 2017
             title: Developer
-        required:
-            - title
-            - company
-            - country
 securityDefinitions:
     jwt_header_Authorization:
         type: apiKey

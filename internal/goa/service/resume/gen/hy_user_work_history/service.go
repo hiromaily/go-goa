@@ -49,11 +49,11 @@ type GetUserWorkHistoryPayload struct {
 // A user information
 type Userworkhistory struct {
 	// Job Title
-	Title string
+	Title *string
 	// Company name
-	Company string
+	CompanyName *string
 	// Country code
-	Country string
+	CountryName *string
 	// worked period
 	Term *string
 	// job description
@@ -115,18 +115,12 @@ func newUserworkhistoryCollectionView(res UserworkhistoryCollection) hyuserworkh
 // Userworkhistory.
 func newUserworkhistory(vres *hyuserworkhistoryviews.UserworkhistoryView) *Userworkhistory {
 	res := &Userworkhistory{
+		Title:       vres.Title,
+		CompanyName: vres.CompanyName,
+		CountryName: vres.CountryName,
 		Term:        vres.Term,
 		Description: vres.Description,
 		Techs:       vres.Techs,
-	}
-	if vres.Title != nil {
-		res.Title = *vres.Title
-	}
-	if vres.Company != nil {
-		res.Company = *vres.Company
-	}
-	if vres.Country != nil {
-		res.Country = *vres.Country
 	}
 	return res
 }
@@ -135,9 +129,9 @@ func newUserworkhistory(vres *hyuserworkhistoryviews.UserworkhistoryView) *Userw
 // type UserworkhistoryView using the "default" view.
 func newUserworkhistoryView(res *Userworkhistory) *hyuserworkhistoryviews.UserworkhistoryView {
 	vres := &hyuserworkhistoryviews.UserworkhistoryView{
-		Title:       &res.Title,
-		Company:     &res.Company,
-		Country:     &res.Country,
+		Title:       res.Title,
+		CompanyName: res.CompanyName,
+		CountryName: res.CountryName,
 		Term:        res.Term,
 		Description: res.Description,
 		Techs:       res.Techs,

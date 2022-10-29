@@ -18,9 +18,9 @@ import (
 // "getUserLikeTech" endpoint HTTP response body.
 type UsertechResponseCollection []*UsertechResponse
 
-// UsertechResponseTechCollection is the type of the "hy_usertech" service
+// UsertechResponseTechNameCollection is the type of the "hy_usertech" service
 // "getUserLikeTech" endpoint HTTP response body.
-type UsertechResponseTechCollection []*UsertechResponseTech
+type UsertechResponseTechNameCollection []*UsertechResponseTechName
 
 // GetUserLikeTechNotFoundResponseBody is the type of the "hy_usertech" service
 // "getUserLikeTech" endpoint HTTP response body for the "NotFound" error.
@@ -64,13 +64,13 @@ type UsertechResponse struct {
 	// Key ID
 	ID *int `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
 	// Tech name
-	TechName string `form:"tech_name" json:"tech_name" xml:"tech_name"`
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
 }
 
-// UsertechResponseTech is used to define fields on response body types.
-type UsertechResponseTech struct {
+// UsertechResponseTechName is used to define fields on response body types.
+type UsertechResponseTechName struct {
 	// Tech name
-	TechName string `form:"tech_name" json:"tech_name" xml:"tech_name"`
+	TechName *string `form:"tech_name,omitempty" json:"tech_name,omitempty" xml:"tech_name,omitempty"`
 }
 
 // NewUsertechResponseCollection builds the HTTP response body from the result
@@ -83,12 +83,12 @@ func NewUsertechResponseCollection(res hyusertechviews.UsertechCollectionView) U
 	return body
 }
 
-// NewUsertechResponseTechCollection builds the HTTP response body from the
+// NewUsertechResponseTechNameCollection builds the HTTP response body from the
 // result of the "getUserLikeTech" endpoint of the "hy_usertech" service.
-func NewUsertechResponseTechCollection(res hyusertechviews.UsertechCollectionView) UsertechResponseTechCollection {
-	body := make([]*UsertechResponseTech, len(res))
+func NewUsertechResponseTechNameCollection(res hyusertechviews.UsertechCollectionView) UsertechResponseTechNameCollection {
+	body := make([]*UsertechResponseTechName, len(res))
 	for i, val := range res {
-		body[i] = marshalHyusertechviewsUsertechViewToUsertechResponseTech(val)
+		body[i] = marshalHyusertechviewsUsertechViewToUsertechResponseTechName(val)
 	}
 	return body
 }

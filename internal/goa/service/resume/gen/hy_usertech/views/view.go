@@ -41,7 +41,7 @@ var (
 			"id",
 			"tech_name",
 		},
-		"tech": {
+		"techName": {
 			"tech_name",
 		},
 	}
@@ -51,7 +51,7 @@ var (
 			"id",
 			"tech_name",
 		},
-		"tech": {
+		"techName": {
 			"tech_name",
 		},
 	}
@@ -63,10 +63,10 @@ func ValidateUsertechCollection(result UsertechCollection) (err error) {
 	switch result.View {
 	case "default", "":
 		err = ValidateUsertechCollectionView(result.Projected)
-	case "tech":
-		err = ValidateUsertechCollectionViewTech(result.Projected)
+	case "techName":
+		err = ValidateUsertechCollectionViewTechName(result.Projected)
 	default:
-		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "tech"})
+		err = goa.InvalidEnumValueError("view", result.View, []interface{}{"default", "techName"})
 	}
 	return
 }
@@ -82,11 +82,11 @@ func ValidateUsertechCollectionView(result UsertechCollectionView) (err error) {
 	return
 }
 
-// ValidateUsertechCollectionViewTech runs the validations defined on
-// UsertechCollectionView using the "tech" view.
-func ValidateUsertechCollectionViewTech(result UsertechCollectionView) (err error) {
+// ValidateUsertechCollectionViewTechName runs the validations defined on
+// UsertechCollectionView using the "techName" view.
+func ValidateUsertechCollectionViewTechName(result UsertechCollectionView) (err error) {
 	for _, item := range result {
-		if err2 := ValidateUsertechViewTech(item); err2 != nil {
+		if err2 := ValidateUsertechViewTechName(item); err2 != nil {
 			err = goa.MergeErrors(err, err2)
 		}
 	}
@@ -96,9 +96,6 @@ func ValidateUsertechCollectionViewTech(result UsertechCollectionView) (err erro
 // ValidateUsertechView runs the validations defined on UsertechView using the
 // "default" view.
 func ValidateUsertechView(result *UsertechView) (err error) {
-	if result.TechName == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("tech_name", "result"))
-	}
 	if result.ID != nil {
 		if *result.ID < 1 {
 			err = goa.MergeErrors(err, goa.InvalidRangeError("result.id", *result.ID, 1, true))
@@ -117,12 +114,9 @@ func ValidateUsertechView(result *UsertechView) (err error) {
 	return
 }
 
-// ValidateUsertechViewTech runs the validations defined on UsertechView using
-// the "tech" view.
-func ValidateUsertechViewTech(result *UsertechView) (err error) {
-	if result.TechName == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("tech_name", "result"))
-	}
+// ValidateUsertechViewTechName runs the validations defined on UsertechView
+// using the "techName" view.
+func ValidateUsertechViewTechName(result *UsertechView) (err error) {
 	if result.TechName != nil {
 		if utf8.RuneCountInString(*result.TechName) < 1 {
 			err = goa.MergeErrors(err, goa.InvalidLengthError("result.tech_name", *result.TechName, utf8.RuneCountInString(*result.TechName), 1, true))

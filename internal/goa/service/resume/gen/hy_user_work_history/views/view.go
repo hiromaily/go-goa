@@ -31,9 +31,9 @@ type UserworkhistoryView struct {
 	// Job Title
 	Title *string
 	// Company name
-	Company *string
+	CompanyName *string
 	// Country code
-	Country *string
+	CountryName *string
 	// worked period
 	Term *string
 	// job description
@@ -48,8 +48,8 @@ var (
 	UserworkhistoryCollectionMap = map[string][]string{
 		"default": {
 			"title",
-			"company",
-			"country",
+			"company_name",
+			"country_name",
 			"term",
 			"description",
 			"techs",
@@ -60,8 +60,8 @@ var (
 	UserworkhistoryMap = map[string][]string{
 		"default": {
 			"title",
-			"company",
-			"country",
+			"company_name",
+			"country_name",
 			"term",
 			"description",
 			"techs",
@@ -95,15 +95,6 @@ func ValidateUserworkhistoryCollectionView(result UserworkhistoryCollectionView)
 // ValidateUserworkhistoryView runs the validations defined on
 // UserworkhistoryView using the "default" view.
 func ValidateUserworkhistoryView(result *UserworkhistoryView) (err error) {
-	if result.Title == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("title", "result"))
-	}
-	if result.Company == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("company", "result"))
-	}
-	if result.Country == nil {
-		err = goa.MergeErrors(err, goa.MissingFieldError("country", "result"))
-	}
 	if result.Title != nil {
 		if utf8.RuneCountInString(*result.Title) < 2 {
 			err = goa.MergeErrors(err, goa.InvalidLengthError("result.title", *result.Title, utf8.RuneCountInString(*result.Title), 2, true))
@@ -114,24 +105,24 @@ func ValidateUserworkhistoryView(result *UserworkhistoryView) (err error) {
 			err = goa.MergeErrors(err, goa.InvalidLengthError("result.title", *result.Title, utf8.RuneCountInString(*result.Title), 40, false))
 		}
 	}
-	if result.Company != nil {
-		if utf8.RuneCountInString(*result.Company) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company", *result.Company, utf8.RuneCountInString(*result.Company), 2, true))
+	if result.CompanyName != nil {
+		if utf8.RuneCountInString(*result.CompanyName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 2, true))
 		}
 	}
-	if result.Company != nil {
-		if utf8.RuneCountInString(*result.Company) > 40 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company", *result.Company, utf8.RuneCountInString(*result.Company), 40, false))
+	if result.CompanyName != nil {
+		if utf8.RuneCountInString(*result.CompanyName) > 40 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.company_name", *result.CompanyName, utf8.RuneCountInString(*result.CompanyName), 40, false))
 		}
 	}
-	if result.Country != nil {
-		if utf8.RuneCountInString(*result.Country) < 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.country", *result.Country, utf8.RuneCountInString(*result.Country), 2, true))
+	if result.CountryName != nil {
+		if utf8.RuneCountInString(*result.CountryName) < 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.country_name", *result.CountryName, utf8.RuneCountInString(*result.CountryName), 2, true))
 		}
 	}
-	if result.Country != nil {
-		if utf8.RuneCountInString(*result.Country) > 2 {
-			err = goa.MergeErrors(err, goa.InvalidLengthError("result.country", *result.Country, utf8.RuneCountInString(*result.Country), 2, false))
+	if result.CountryName != nil {
+		if utf8.RuneCountInString(*result.CountryName) > 2 {
+			err = goa.MergeErrors(err, goa.InvalidLengthError("result.country_name", *result.CountryName, utf8.RuneCountInString(*result.CountryName), 2, false))
 		}
 	}
 	if result.Term != nil {

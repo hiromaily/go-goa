@@ -131,8 +131,8 @@ func DecodeGetUserWorkHistoryResponse(decoder func(*http.Response) goahttp.Decod
 func unmarshalUserworkhistoryResponseToHyuserworkhistoryviewsUserworkhistoryView(v *UserworkhistoryResponse) *hyuserworkhistoryviews.UserworkhistoryView {
 	res := &hyuserworkhistoryviews.UserworkhistoryView{
 		Title:       v.Title,
-		Company:     v.Company,
-		Country:     v.Country,
+		CompanyName: v.CompanyName,
+		CountryName: v.CountryName,
 		Term:        v.Term,
 		Description: v.Description,
 		Techs:       v.Techs,

@@ -11,7 +11,7 @@ var fieldJobTitle = func() {
 	Example("Developer")
 }
 
-var fieldContryCode = func() {
+var fieldCountryCode = func() {
 	Description("Country code")
 	MinLength(2)
 	MaxLength(2)
@@ -38,9 +38,9 @@ var fieldTechs = func() {
 // PayloadUserWorkHistory defines the data structure used in the create user-work-history request body
 var PayloadUserWorkHistory = Type("PayloadUserWorkHistory", func() {
 	Attribute("title", String, "Job Title", fieldJobTitle)
-	Attribute("company", String, "Company", fieldCompanyName)
-	Attribute("country", String, "Country", fieldContryCode)
-	Attribute("term", String, "Country", fieldTerm)
+	Attribute("company_name", String, "Company", fieldCompanyName)
+	Attribute("country_name", String, "Country", fieldCountryCode)
+	Attribute("term", String, "Working term", fieldTerm)
 	Attribute("description", Any, "Description Json", fieldDescription)
 	Attribute("techs", Any, "Used Techs as Array", fieldTechs)
 })
@@ -56,19 +56,19 @@ var RTUserWorkHistory = ResultType("application/vnd.userworkhistory+json", func(
 
 	Attributes(func() {
 		Attribute("title")
-		Attribute("company")
-		Attribute("country")
+		Attribute("company_name")
+		Attribute("country_name")
 		Attribute("term")
 		Attribute("description")
 		Attribute("techs")
 
-		Required("title", "company", "country")
+		//Required("title", "company_name", "country_name")
 	})
 
 	View("default", func() {
 		Attribute("title")
-		Attribute("company")
-		Attribute("country")
+		Attribute("company_name")
+		Attribute("country_name")
 		Attribute("term")
 		Attribute("description")
 		Attribute("techs")
