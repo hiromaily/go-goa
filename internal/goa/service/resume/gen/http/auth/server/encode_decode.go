@@ -25,9 +25,6 @@ func EncodeLoginResponse(encoder func(context.Context, http.ResponseWriter) goah
 		res := v.(*authviews.Authorized)
 		enc := encoder(ctx, w)
 		body := NewLoginResponseBody(res.Projected)
-		if res.Projected.Token != nil {
-			w.Header().Set("Authorization", *res.Projected.Token)
-		}
 		w.WriteHeader(http.StatusOK)
 		return enc.Encode(body)
 	}

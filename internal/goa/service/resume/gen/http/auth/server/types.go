@@ -27,6 +27,8 @@ type LoginRequestBody struct {
 // LoginResponseBody is the type of the "auth" service "login" endpoint HTTP
 // response body.
 type LoginResponseBody struct {
+	// JWT token
+	Token string `form:"token" json:"token" xml:"token"`
 	// Key ID
 	ID int `form:"id" json:"id" xml:"id"`
 }
@@ -53,7 +55,8 @@ type LoginUnauthorizedResponseBody struct {
 // "login" endpoint of the "auth" service.
 func NewLoginResponseBody(res *authviews.AuthorizedView) *LoginResponseBody {
 	body := &LoginResponseBody{
-		ID: *res.ID,
+		Token: *res.Token,
+		ID:    *res.ID,
 	}
 	return body
 }

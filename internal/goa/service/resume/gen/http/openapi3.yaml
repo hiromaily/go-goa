@@ -49,22 +49,13 @@ paths:
             responses:
                 "200":
                     description: OK response.
-                    headers:
-                        Authorization:
-                            description: JWT token
-                            required: true
-                            schema:
-                                type: string
-                                description: JWT token
-                                example: token.string
-                                pattern: ^Bearer [^ ]+$
-                            example: token.string
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Authorized'
                             example:
                                 id: 10
+                                token: token.string
                 "401":
                     description: 'Unauthorized: Unauthorized response.'
                     content:
@@ -828,9 +819,15 @@ components:
                     description: Key ID
                     example: 10
                     minimum: 1
+                token:
+                    type: string
+                    description: JWT token
+                    example: token.string
             example:
                 id: 10
+                token: token.string
             required:
+                - token
                 - id
         Company:
             type: object

@@ -17,7 +17,6 @@ import (
 	authviews "resume/gen/auth/views"
 
 	goahttp "goa.design/goa/v3/http"
-	goa "goa.design/goa/v3/pkg"
 )
 
 // BuildLoginRequest instantiates a HTTP request object with method and path
@@ -81,18 +80,7 @@ func DecodeLoginResponse(decoder func(*http.Response) goahttp.Decoder, restoreBo
 			if err != nil {
 				return nil, goahttp.ErrDecodingError("auth", "login", err)
 			}
-			var (
-				token string
-			)
-			tokenRaw := resp.Header.Get("Authorization")
-			if tokenRaw == "" {
-				err = goa.MergeErrors(err, goa.MissingFieldError("Authorization", "header"))
-			}
-			token = tokenRaw
-			if err != nil {
-				return nil, goahttp.ErrValidationError("auth", "login", err)
-			}
-			p := NewLoginAuthorizedOK(&body, token)
+			p := NewLoginAuthorizedOK(&body)
 			view := "default"
 			vres := &authviews.Authorized{Projected: p, View: view}
 			if err = authviews.ValidateAuthorized(vres); err != nil {

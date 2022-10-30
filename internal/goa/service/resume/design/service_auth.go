@@ -38,10 +38,11 @@ var _ = Service("auth", func() {
 			POST("/login")
 			// Response(StatusOK)
 			Response(StatusOK, func() {
+				// Note: if token is set in response header, token is gone from response body
 				// mapping <variable-name:header-name>
-				Header("token:Authorization", String, "JWT token", func() {
-					Pattern("^Bearer [^ ]+$")
-				})
+				//Header("token:Authorization", String, "JWT token", func() {
+				//	Pattern("^Bearer [^ ]+$")
+				//})
 			})
 			Response("Unauthorized", StatusUnauthorized)
 		})

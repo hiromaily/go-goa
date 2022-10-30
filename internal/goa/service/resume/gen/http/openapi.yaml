@@ -63,11 +63,6 @@ paths:
                     description: OK response.
                     schema:
                         $ref: '#/definitions/AuthLoginResponseBody'
-                    headers:
-                        Authorization:
-                            description: JWT token
-                            type: string
-                            pattern: ^Bearer [^ ]+$
                 "401":
                     description: Unauthorized response.
                     schema:
@@ -731,10 +726,16 @@ definitions:
                 description: Key ID
                 example: 10
                 minimum: 1
+            token:
+                type: string
+                description: JWT token
+                example: token.string
         description: LoginResponseBody result type (default view)
         example:
             id: 10
+            token: token.string
         required:
+            - token
             - id
     AuthLoginUnauthorizedResponseBody:
         title: 'Mediatype identifier: application/vnd.goa.error; view=default'

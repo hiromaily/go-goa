@@ -156,9 +156,12 @@ function login() {
         },
         body: JSON.stringify(payload)
     }).then(function(response) {
+        // fetch()だと、`Authorization`は取得できない。。。
+        // https://stackoverflow.com/questions/43344819/reading-response-headers-with-fetch-api
+        console.log(response.headers.get('Authorization'))
         return response.json();
     }).then(function(json) {
-        console.log("res:", json);
+        //console.log("res:", json);
         if ((json.status && json.status != 200) || !json.id) {
             //error
             console.log("login error: ", json);
@@ -168,14 +171,15 @@ function login() {
         }else{
             //success
             console.log("login OK");
+            console.log(json)
             //$('.ui.form .error.message').hide();
 
             //save jwt into sessionStrage
             sessionStorage.setItem('jwt', json.token);
             sessionStorage.setItem('id', json.id);
-            //console.log(sessionStorage.getItem('jwt'));
+            console.log(`jwt: ${sessionStorage.getItem('jwt')}`);
 
-            //redirect
+            // redirect
             location.href = '/admin/';
         }
     });

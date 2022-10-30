@@ -3,6 +3,8 @@
     //public
     rg.debug = 1;
 
+    var host = 'http://localhost:8090';
+
 //------------------------------------------------------------------------------
 //public
 //------------------------------------------------------------------------------
@@ -13,9 +15,9 @@
             id = sessionStorage.getItem('id')
         }
         let data = [
-            {url: `/api/user/${id}/liketech`, element: 'like-tech'},
-            {url: `/api/user/${id}/disliketech`, element: 'dislike-tech'},
-            {url: `/api/user/${id}/workhistory`, element: 'work-history'}
+            {url: `${host}/api/user/${id}/liketech`, element: 'like-tech'},
+            {url: `${host}/api/user/${id}/disliketech`, element: 'dislike-tech'},
+            {url: `${host}/api/user/${id}/workhistory`, element: 'work-history'}
         ];
         if (window.debugMode == 1){
             data[0].url='/json/liketech.json';
