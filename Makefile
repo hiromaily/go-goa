@@ -111,7 +111,8 @@ chk: http-login
 #$(eval TOKEN := $(shell http --headers POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
 .PHONY: http-login
 http-login:
-	$(eval TOKEN := $(shell http --headers POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+	#$(eval TOKEN := $(shell http --headers POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+    $(eval TOKEN := $(shell http --body POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g'))
 
 .PHONY: static
 static:
