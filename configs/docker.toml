@@ -17,7 +17,7 @@ salt = "foo-bar"
 
 [mysql]
 encrypted = false
-host = "localhost"
+host = "mysql-server"
 port = 3306
 dbname = "go-goa"
 user = "guestuser"

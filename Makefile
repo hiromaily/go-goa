@@ -88,8 +88,8 @@ build-ci:
 
 .PHONY: run
 run:
-	#go run -race ./cmd/resume/server/... -conf ./configs/settings.toml
 	goa-server -conf ./configs/settings.toml
+	#go run -race ./cmd/resume/server/... -conf ./configs/settings.toml
 
 .PHONY: run-file
 run-file:
@@ -97,6 +97,15 @@ run-file:
 
 .PHONY: rerun
 rerun: build run
+
+
+###############################################################################
+# Docker
+###############################################################################
+docker-build:
+	#docker compose build --no-cache api-server
+	docker compose build --no-cache file-server
+
 
 ###############################################################################
 # TEST API

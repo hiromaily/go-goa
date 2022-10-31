@@ -1,8 +1,2 @@
-*
-
-!assets/
-!build/
-!configs/
-!docs/
-!web/
-!Makefile
+build/
+web/

@@ -18,11 +18,11 @@ services:
     ports:
       - "3306:3306"
 
-  webserver:
+  api-server:
     build:
       context: .
-      dockerfile: build/Dockerfile
-    image: 'hirokiy/go-goa:${IMAGE_TAG:-1.0}'
+      dockerfile: Dockerfile
+    image: 'goa-api:v1.0'
     links:
       - mysql:mysql-server
     depends_on:
@@ -31,7 +31,19 @@ services:
       CGO_ENABLED: 0
       GOOS: linux
     ports:
-      - "8080"
+      - "8090:8090"
     restart: always
-    #entrypoint: /go/bin/go-goa
-    command: go-goa -f /go/src/github.com/hiromaily/go-goa/configs/docker.toml
+    command: -f /workspace/configs/docker.toml
+
+  file-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.file
+    image: 'goa-file:v1.0'
+    environment:
+      CGO_ENABLED: 0
+      GOOS: linux
+    ports:
+      - "8080:8080"
+    restart: always
+    #command: -f /workspace/configs/docker.toml

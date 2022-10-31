@@ -27,24 +27,23 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
-#      - uses: actions/setup-node@v3
-#        with:
-#          node-version: 12
-#          cache: npm
-#          cache-dependency-path: contracts/quorum/package-lock.json
-#      - name: Install Yarn
-#        run: |
-#          npm install -g yarn
-      - name: Build
+      - name: Install jq tool
         run: |
-          make build-ci
+          sudo apt-get update
+          sudo apt-get install jq
+      - name: Install httpie tool
+        run: |
+          curl -SsL https://packages.httpie.io/deb/KEY.gpg | apt-key add -
+          curl -SsL -o /etc/apt/sources.list.d/httpie.list https://packages.httpie.io/deb/httpie.list
+          apt update
+          apt install httpie
+      - name: Build Docker for go server
+        run: |
+          make docker-build
       - name: Run Docker
         run: |
-          docker compose up mysql -d
+          docker compose up -d
           sleep 5s
-      - name: API Test
-        run: |
-          make test
 #  golangci:
 #    name: lint
 #    runs-on: ubuntu-latest
