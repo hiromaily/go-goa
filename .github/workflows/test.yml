@@ -37,7 +37,7 @@ jobs:
 #          npm install -g yarn
       - name: Build
         run: |
-          make build
+          make build-ci
       - name: Run Docker
         run: |
           docker compose up mysql -d
@@ -45,18 +45,18 @@ jobs:
       - name: API Test
         run: |
           make test
-  golangci:
-    name: lint
-    runs-on: ubuntu-latest
-    env:
-      LINT_VERSION: 'v1.50.1'
-    steps:
-      - name: Set up Go 1.19
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.19
-      - uses: actions/checkout@v3
-      - name: golangci-lint for resume
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: ${{ env.LINT_VERSION }}
+#  golangci:
+#    name: lint
+#    runs-on: ubuntu-latest
+#    env:
+#      LINT_VERSION: 'v1.50.1'
+#    steps:
+#      - name: Set up Go 1.19
+#        uses: actions/setup-go@v3
+#        with:
+#          go-version: 1.19
+#      - uses: actions/checkout@v3
+#      - name: golangci-lint for resume
+#        uses: golangci/golangci-lint-action@v3
+#        with:
+#          version: ${{ env.LINT_VERSION }}

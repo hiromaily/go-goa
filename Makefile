@@ -80,6 +80,12 @@ build:
 	go build -v -o ${GOPATH}/bin/goa-server ./cmd/resume/server/...
 	go build -v -o ${GOPATH}/bin/goa-client ./cmd/resume/cli/...
 
+.PHONY: build-ci
+build-ci:
+	go build -v -o goa-file-server ./cmd/fileserver/server/...
+	go build -v -o goa-server ./cmd/resume/server/...
+	go build -v -o goa-client ./cmd/resume/cli/...
+
 .PHONY: run
 run:
 	#go run -race ./cmd/resume/server/... -conf ./configs/settings.toml
@@ -122,8 +128,8 @@ http-login:
 static:
 	# Static files
 	http localhost:8080/assets/index.html
-	http http://localhost:8080/openapi.json
-	http http://localhost:8080/openapi3.json
+	http localhost:8080/openapi.json
+	http localhost:8080/openapi3.json
 
 .PHONY: http-health
 http-health:
