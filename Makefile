@@ -74,9 +74,6 @@ gen-example:
 # Build on local
 ###############################################################################
 
-.PHONY: build-all
-build-all: build build-client
-
 .PHONY: build
 build:
 	go build -v -o ${GOPATH}/bin/goa-file-server ./cmd/fileserver/server/...

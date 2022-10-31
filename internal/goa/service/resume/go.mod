@@ -3,13 +3,13 @@ module resume
 go 1.19
 
 require (
-	goa.design/goa/v3 v3.10.1
-	goa.design/plugins/v3 v3.10.1
+	goa.design/goa/v3 v3.10.2
+	goa.design/plugins/v3 v3.10.2
 )
 
 require (
 	github.com/dimfeld/httppath v0.0.0-20170720192232-ee938bf73598 // indirect
-	github.com/dimfeld/httptreemux/v5 v5.4.0 // indirect
+	github.com/dimfeld/httptreemux/v5 v5.5.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect

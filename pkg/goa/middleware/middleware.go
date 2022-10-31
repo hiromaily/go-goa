@@ -32,6 +32,7 @@ func NewMiddleware(
 	}
 }
 
+// FIXME: This code is outdated
 func (m *middleware) CheckJWT() func(http.Handler) http.Handler {
 	return func(h http.Handler) http.Handler {
 		// A HTTP handler is a function.
