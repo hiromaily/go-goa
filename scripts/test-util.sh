@@ -1,5 +1,7 @@
 #!/bin/bash
 
+isTestFailed=0
+
 ## Install requirements (curl is required in advance)
 function requirement() {
   echo 'Install requirements'
@@ -62,11 +64,19 @@ function getStatusWithToken() {
   echo $rtn
 }
 
+function getBodyWithToken() {
+  url=$1
+  token=$2
+  json=$(http -A bearer -a ${token} ${url} 2>&1)
+  echo $json
+}
+
 function handleResult() {
   expectedStatus=$1
   actualStatus=$2
   if [[ "$actualStatus" != $expectedStatus ]]; then
-    echo "$expectedStatus is expected but $actualStatus returned"
+    echo " >>> Fail:  $expectedStatus is expected but $actualStatus returned"
+    isTestFailed=1
   else
     echo " >>> OK"
   fi
@@ -76,4 +86,16 @@ function getToken() {
 	#token=$(http --headers POST ${ENDPOINT}/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g")
   token=$(http --body POST ${ENDPOINT}/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g')
   echo $token
+}
+
+function isEqual() {
+  expected=$1
+  actual=$2
+  #if [ $expected == $actual ]; then
+  if [ "$expected" = "$actual" ]; then
+    echo " >>> OK"
+  else
+    echo " >>> Fail   $expected is expected but $actual returned"
+    isTestFailed=1
+  fi
 }

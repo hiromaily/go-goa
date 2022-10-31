@@ -96,7 +96,14 @@ run-file:
 rerun: build run
 
 ###############################################################################
-# httpie [WIP]
+# TEST API
+###############################################################################
+.PHONY: test
+test:
+	./scripts/api-test.sh
+
+###############################################################################
+# check API by httpie
 ###############################################################################
 .PHONY: chk
 chk: http-login
@@ -161,15 +168,6 @@ http-company: http-login
 	http POST $(ENDPOINT)/company company_name=Google country_id:=230 address=California 'Authorization: Bearer $(TOKEN)'
 	http PUT $(ENDPOINT)/company/7 company_name=Google3 address=Tokyo country_id:=10 'Authorization: Bearer $(TOKEN)'
 	http DELETE $(ENDPOINT)/company/7 'Authorization: Bearer $(TOKEN)'
-
-.PHONY: kouho
-kouho:
-	@echo test
-	# Static files
-	#http localhost:8080/
-	#http localhost:8080/swagger/swagger.json
-	#http localhost:8080/swagger-ui/
-	#http localhost:8080/api/_ah/health
 
 
 ###############################################################################

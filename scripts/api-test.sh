@@ -35,9 +35,52 @@ if [ -z "$TOKEN" ]; then
 fi
 
 ### User Test
+#### User Status Test
+# FIXME: somehow 500 returned by Auth Error
+echo '[Scenario] Fail to get User List without Token: 401 must be returned'
+STATUS=`getStatus ${ENDPOINT}/user`
+handleResult 401 $STATUS
+
 echo '[Scenario] Get User List: 200 must be returned'
 STATUS=`getStatusWithToken ${ENDPOINT}/user ${TOKEN}`
 handleResult 200 $STATUS
+
+echo '[Scenario] Get User: 200 must be returned'
+STATUS=`getStatusWithToken ${ENDPOINT}/user/1 ${TOKEN}`
+handleResult 200 $STATUS
+
+echo '[Scenario] Get User: 404 must be returned'
+STATUS=`getStatusWithToken ${ENDPOINT}/user/99999 ${TOKEN}`
+handleResult 404 $STATUS
+
+#### User Body Test for user
+json=`getBodyWithToken ${ENDPOINT}/user/1 ${TOKEN}`
+echo '[Scenario] Get User Body: user_id'
+userID=$(echo $json | jq '.user_id')
+isEqual 1 $userID
+
+echo '[Scenario] Get User Body: user_name'
+userName=$(echo $json | jq -r '.user_name')
+echo $userName
+isEqual "Hiroki Yasui" "$userName"
+
+echo '[Scenario] Get User Body: email'
+email=$(echo $json | jq -r '.email')
+echo $email
+isEqual hiroki@goa.com $email
+
+#### User Body Test for userlist
+json=`getBodyWithToken ${ENDPOINT}/user ${TOKEN}`
+echo '[Scenario] Get User List Body: Length'
+len=$(echo $json | jq '. | length')
+isEqual 3 $len
+
+echo '[Scenario] Get User List Body: index:0 user_id'
+echo $json
+userID=$(echo $json | jq '.[0].user_id')
+isEqual 1 $userID
+
+
 
 #http $(ENDPOINT)/user 'Authorization: Bearer $(TOKEN)'
 #http $(ENDPOINT)/user/1 'Authorization: Bearer $(TOKEN)'
@@ -45,3 +88,6 @@ handleResult 200 $STATUS
 #http PUT $(ENDPOINT)/user/5 email=updateduser01@bar.com password=secret456 'Authorization: Bearer $(TOKEN)'
 #http DELETE $(ENDPOINT)/user/5 'Authorization: Bearer $(TOKEN)'
 #http $(ENDPOINT)/user/5 'Authorization: Bearer $(TOKEN)'
+
+# Result
+echo "Result status: $isTestFailed"

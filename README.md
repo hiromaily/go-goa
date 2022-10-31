@@ -5,20 +5,16 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f207ca57e48e456389341fc41bb06951)](https://www.codacy.com/app/hiromaily2/go-goa?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hiromaily/go-goa&amp;utm_campaign=Badge_Grade)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/hiromaily/go-goa/master/LICENSE)
 
-`go-goa` is example of [goa](https://github.com/goadesign/goa) framework for v3.  
+`go-goa` is example of [goa](https://github.com/goadesign/goa) framework for v3 with JWT implementation.  
 The example site consists of file server and API server.
 
 ![Example Resume Site](resume.png "example resume site")
 
-## Current status
-This project has started since 2017 to study Golang and code is quite messy.
-Now it's under refactoring.
-
 
 ## Refactoring
 - [ ] Clean up everything
-- [ ] Integrate to Firebase
-- [ ] Switch CI from travisci to github action
+- [ ] Integrate to Firebase using NextJS SSG
+- [ ] Switch CI from TravisCI to Github Action
 - [ ] Rebuild front-end by latest Next.js(React) or Svelte
 
 
