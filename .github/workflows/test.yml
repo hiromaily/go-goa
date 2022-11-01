@@ -33,10 +33,7 @@ jobs:
           sudo apt-get install jq
       - name: Install httpie tool
         run: |
-          curl -SsL https://packages.httpie.io/deb/KEY.gpg | apt-key add -
-          curl -SsL -o /etc/apt/sources.list.d/httpie.list https://packages.httpie.io/deb/httpie.list
-          apt update
-          apt install httpie
+          sudo apt-get install httpie
       - name: Build Docker for go server
         run: |
           make docker-build
