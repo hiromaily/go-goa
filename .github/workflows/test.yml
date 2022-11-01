@@ -41,6 +41,9 @@ jobs:
         run: |
           docker compose up -d
           sleep 5s
+      - name: API Test
+        run: |
+          make test
 #  golangci:
 #    name: lint
 #    runs-on: ubuntu-latest
