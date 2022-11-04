@@ -27,6 +27,10 @@ const Header = ({ title }: HeaderProps) => {
   const onClickAdmin = () => {
     Router.push('/admin')
   }
+  const onClickLogin = () => {
+    Router.push('/login')
+  }
+
 
   // switch mode by button
   const onClickMode = async () => {
@@ -61,7 +65,7 @@ const Header = ({ title }: HeaderProps) => {
           <Button color='inherit' onClick={onClickAdmin}>
             Admin
           </Button>
-          <Button sx={{ mr: 1 }} color='inherit' variant='outlined'>
+          <Button sx={{ mr: 1 }} color='inherit' variant='outlined' onClick={onClickLogin}>
             Login
           </Button>
           <DynamicMuteButton isDarkMode={isDarkMode} onClick={onClickMode} />
