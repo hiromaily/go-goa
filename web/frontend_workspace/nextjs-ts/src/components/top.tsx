@@ -12,11 +12,18 @@ const Top = ({ message }: TopProps) => {
   return (
     <Container
       sx={{
-        minHeight: height > 135 ? height - 135 + 'px' : '100px',
+        minHeight: height > 120 ? height - 120 + 'px' : '100px',
         height: 'auto !important',
       }}
     >
-      <p>{message}</p>
+      <Box pt={4}>
+        <ul>
+          <li>Top</li>
+          <li>Admin</li>
+          <li>Resume</li>
+        </ul>
+        <p>{message}</p>
+      </Box>
     </Container>
   )
 }

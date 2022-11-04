@@ -15,16 +15,24 @@ const Footer = () => {
   return (
     <Box>
       <BottomNavigation
-        sx={{ bgcolor: '#808080' }}
+        sx={{ color: 'primary' }}
         showLabels
         value={value}
         onChange={(event, newValue) => {
           setValue(newValue)
         }}
       >
-        <BottomNavigationAction sx={{ color: 'white' }} label='Recents' icon={<RestoreIcon />} />
-        <BottomNavigationAction sx={{ color: 'white' }} label='Favorites' icon={<FavoriteIcon />} />
-        <BottomNavigationAction sx={{ color: 'white' }} label='Nearby' icon={<LocationOnIcon />} />
+        <BottomNavigationAction sx={{ color: 'inherit' }} label='Recents' icon={<RestoreIcon />} />
+        <BottomNavigationAction
+          sx={{ color: 'inherit' }}
+          label='Favorites'
+          icon={<FavoriteIcon />}
+        />
+        <BottomNavigationAction
+          sx={{ color: 'inherit' }}
+          label='Nearby'
+          icon={<LocationOnIcon />}
+        />
       </BottomNavigation>
     </Box>
   )

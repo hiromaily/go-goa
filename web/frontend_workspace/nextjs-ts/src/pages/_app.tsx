@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
-import useMediaQuery from '@mui/material/useMediaQuery'
+import { useDarkMode } from 'usehooks-ts'
 import { monotoneTheme } from '../theme/theme'
 
 if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
@@ -11,8 +11,13 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const isDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-  const theme = monotoneTheme
+  const { isDarkMode } = useDarkMode()
+
+  // switch theme by isDarkMode Flag
+  let theme = monotoneTheme
+  if (isDarkMode) theme.palette.mode = 'dark'
+  else theme.palette.mode = 'light'
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
