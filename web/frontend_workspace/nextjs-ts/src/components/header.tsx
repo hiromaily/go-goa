@@ -8,6 +8,7 @@ import Button from '@mui/material/Button'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { useDarkMode } from 'usehooks-ts'
+import { spacing } from '@mui/system';
 //import ModeButton from './buttons/mode'
 // FIX: Warning: Text content did not match
 const DynamicMuteButton = dynamic(() => import('./buttons/mode'), { ssr: false })
@@ -29,7 +30,7 @@ const Header = ({ title }: HeaderProps) => {
 
   // switch mode by button
   const onClickMode = async () => {
-    console.log(`isDarkMode: ${isDarkMode}`)
+    console.log(`current isDarkMode: ${isDarkMode}`)
     toggle()
   }
 
@@ -60,8 +61,10 @@ const Header = ({ title }: HeaderProps) => {
           <Button color='inherit' onClick={onClickAdmin}>
             Admin
           </Button>
-          <Button variant='outlined'>Login</Button>
-          <DynamicMuteButton isDarkMode={!isDarkMode} onClick={onClickMode} />
+          <Button sx={{ mr: 1 }} color='inherit' variant='outlined'>
+            Login
+          </Button>
+          <DynamicMuteButton isDarkMode={isDarkMode} onClick={onClickMode} />
         </Toolbar>
       </AppBar>
     </>

@@ -14,7 +14,13 @@ const buttonName = new Map<boolean, string>([
 const ModeButton = ({ isDarkMode, onClick }: ModeButtonProps) => {
   return (
     <>
-      <Button variant='outlined' size='medium' sx={{ minWidth: 120 }} onClick={onClick}>
+      <Button
+        color='inherit'
+        variant='outlined'
+        size='medium'
+        sx={{ minWidth: 120 }}
+        onClick={onClick}
+      >
         {buttonName.get(isDarkMode)}
       </Button>
     </>

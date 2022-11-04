@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import { useWindowSize } from 'usehooks-ts'
@@ -18,13 +19,13 @@ const Top = ({ message }: TopProps) => {
     >
       <Box pt={4}>
         <ul>
-          <li>Top</li>
-          <li>Admin</li>
-          <li>Resume</li>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/admin">Admin</Link></li>
+          <li><Link href="/resume">Resume</Link></li>
         </ul>
         <p>{message}</p>
       </Box>
-    </Container>
+    </Container >
   )
 }
 

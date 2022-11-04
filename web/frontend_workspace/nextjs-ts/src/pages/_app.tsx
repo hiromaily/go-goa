@@ -12,11 +12,8 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { isDarkMode } = useDarkMode()
-
   // switch theme by isDarkMode Flag
-  let theme = monotoneTheme
-  if (isDarkMode) theme.palette.mode = 'dark'
-  else theme.palette.mode = 'light'
+  const theme = monotoneTheme(isDarkMode)
 
   return (
     <ThemeProvider theme={theme}>
