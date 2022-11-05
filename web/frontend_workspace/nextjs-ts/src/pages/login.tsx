@@ -3,11 +3,11 @@ import * as React from 'react'
 import Layout from '../components/layout'
 import SignIn from '../components/login'
 
-type IndexProps = {
+type LoginProps = {
   message: string
 }
 
-const Index: NextPage<IndexProps> = ({ message }) => {
+const LoginPage: NextPage<LoginProps> = ({ message }) => {
   return (
     <Layout title='Top Page'>
       <SignIn message={message} />
@@ -15,10 +15,10 @@ const Index: NextPage<IndexProps> = ({ message }) => {
   )
 }
 
-export default Index
+export default LoginPage
 
 // For SSG
-export const getStaticProps: GetStaticProps<IndexProps> = async (context) => {
+export const getStaticProps: GetStaticProps<LoginProps> = async (context) => {
   const timestamp = new Date().toLocaleString()
   const message = `this page was rendered by calling getStaticProps() at ${timestamp}`
   return {

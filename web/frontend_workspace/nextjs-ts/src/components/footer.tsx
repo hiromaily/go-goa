@@ -12,7 +12,6 @@ const Footer = () => {
   const { isDarkMode } = useDarkMode()
   const iconColor = isDarkMode ? 'secondary' : 'inherit'
 
-  console.log(`iconColor: ${iconColor}`)
   return (
     <Box border={1}>
       <BottomNavigation

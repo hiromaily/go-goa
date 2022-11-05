@@ -1,13 +1,13 @@
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import Router from 'next/router'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import { spacing } from '@mui/system'
 import { useDarkMode } from 'usehooks-ts'
 //import ModeButton from './buttons/mode'
 // FIX: Warning: Text content did not match
@@ -18,14 +18,13 @@ type HeaderProps = {
 }
 
 const Header = ({ title }: HeaderProps) => {
-  //const [isDarkMode, setDarkMode] = useState(false);
   const { isDarkMode, toggle } = useDarkMode()
 
   const onClickTop = () => {
     Router.push('/')
   }
-  const onClickAdmin = () => {
-    Router.push('/admin')
+  const onClickResume = () => {
+    Router.push('/resume')
   }
   const onClickLogin = () => {
     Router.push('/login')
@@ -37,12 +36,6 @@ const Header = ({ title }: HeaderProps) => {
     toggle()
   }
 
-  // useEffect(() => {
-  //   //mounted
-  //   const isDark = useMediaQuery('(prefers-color-scheme: dark)')
-  //   setDarkMode(isDark)
-  // }, [])
-
   return (
     <>
       <Head>
@@ -53,7 +46,9 @@ const Header = ({ title }: HeaderProps) => {
       <AppBar sx={{ color: 'primary' }} position='static'>
         <Toolbar>
           <Box sx={{ marginRight: '20px' }}>
-            <Image src='/hy.png' alt='HY Logo' width={40} height={40} />
+            <Link href='/'>
+              <Image src='/hy.png' alt='HY Logo' width={40} height={40} />
+            </Link>
           </Box>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             go-goa example site
@@ -61,8 +56,8 @@ const Header = ({ title }: HeaderProps) => {
           <Button color='inherit' onClick={onClickTop}>
             Top
           </Button>
-          <Button color='inherit' onClick={onClickAdmin}>
-            Admin
+          <Button color='inherit' onClick={onClickResume}>
+            Resume
           </Button>
           <Button sx={{ mr: 1 }} color='inherit' variant='outlined' onClick={onClickLogin}>
             Login
