@@ -5,12 +5,10 @@ import RestoreIcon from '@mui/icons-material/Restore'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
 import Box from '@mui/material/Box'
-import { useDarkMode } from 'usehooks-ts'
 
 const Footer = () => {
   const [value, setValue] = React.useState(0)
-  const { isDarkMode } = useDarkMode()
-  const iconColor = isDarkMode ? 'secondary' : 'inherit'
+  const iconColor = 'secondary'
 
   return (
     <Box border={1}>

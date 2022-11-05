@@ -14,7 +14,7 @@ export const monotoneTheme = (isDarkMode: boolean) => {
       },
       secondary: {
         main: 'rgba(0,0,0,0.5)',
-        light: 'rgba(0,0,0,0.8)',
+        light: 'rgba(0,0,0,0.3)',
         dark: 'rgba(0,0,0,0.3)',
       },
     },
