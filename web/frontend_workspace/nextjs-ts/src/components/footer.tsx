@@ -23,11 +23,7 @@ const Footer = () => {
           setValue(newValue)
         }}
       >
-        <BottomNavigationAction
-          sx={{ color: iconColor }}
-          label='Recents'
-          icon={<RestoreIcon />}
-        />
+        <BottomNavigationAction sx={{ color: iconColor }} label='Recents' icon={<RestoreIcon />} />
         <BottomNavigationAction
           sx={{ color: iconColor }}
           label='Favorites'

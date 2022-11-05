@@ -2,7 +2,6 @@ import type { NextPage, GetStaticProps } from 'next'
 import * as React from 'react'
 import Layout from '../components/layout'
 import Top from '../components/top'
-//import Style from '../styles/index.module.scss'
 
 type IndexProps = {
   message: string

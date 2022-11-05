@@ -7,8 +7,8 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+import { spacing } from '@mui/system'
 import { useDarkMode } from 'usehooks-ts'
-import { spacing } from '@mui/system';
 //import ModeButton from './buttons/mode'
 // FIX: Warning: Text content did not match
 const DynamicMuteButton = dynamic(() => import('./buttons/mode'), { ssr: false })
@@ -30,7 +30,6 @@ const Header = ({ title }: HeaderProps) => {
   const onClickLogin = () => {
     Router.push('/login')
   }
-
 
   // switch mode by button
   const onClickMode = async () => {

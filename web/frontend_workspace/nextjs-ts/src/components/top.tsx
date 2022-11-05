@@ -19,14 +19,22 @@ const Top = ({ message }: TopProps) => {
     >
       <Box pt={4}>
         <ul>
-          <li><Link href="/">Home</Link></li>
-          <li><Link href="/login">Login</Link></li>
-          <li><Link href="/admin">Admin</Link></li>
-          <li><Link href="/resume">Resume</Link></li>
+          <li>
+            <Link href='/'>Home</Link>
+          </li>
+          <li>
+            <Link href='/login'>Login</Link>
+          </li>
+          <li>
+            <Link href='/admin'>Admin</Link>
+          </li>
+          <li>
+            <Link href='/resume'>Resume</Link>
+          </li>
         </ul>
         <p>{message}</p>
       </Box>
-    </Container >
+    </Container>
   )
 }
 
