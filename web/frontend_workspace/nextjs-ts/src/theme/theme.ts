@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles'
 
-export const monotoneTheme = (isDarkMode: boolean) => {
+const monotoneTheme = (isDarkMode: boolean) => {
   console.log(`after changed isDarkMode: ${isDarkMode}`)
   const mode = isDarkMode ? 'dark' : 'light'
 
@@ -20,3 +20,14 @@ export const monotoneTheme = (isDarkMode: boolean) => {
     },
   })
 }
+
+const boxColor = (isDarkMode: boolean): string => {
+  if (isDarkMode) return 'black'
+  else return 'darkgray'
+}
+
+const fontColor = (isDarkMode: boolean): string => {
+  return 'white'
+}
+
+export { monotoneTheme, boxColor, fontColor }

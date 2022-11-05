@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
@@ -10,8 +11,9 @@ import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Unstable_Grid2'
 import { styled } from '@mui/material/styles'
-import Avatar from '@mui/material/Avatar'
-
+import { useDarkMode } from 'usehooks-ts'
+import BaseCard from './resume/card'
+import JobHeader from './resume/jobHeader'
 
 type ResumeProps = {
   message: string
@@ -28,28 +30,20 @@ const Item = styled(Paper)(({ theme }) => ({
 }))
 
 const Resume = ({ message }: ResumeProps) => {
+  const { isDarkMode } = useDarkMode()
+
   return (
     <Container>
       <Box sx={{ flexGrow: 1, minHeight: '100px', marginTop: '50px' }}>
         <CardHeader
-          avatar={
-            <Avatar
-              alt="Hiroki Yasui"
-              src="/hy.png"
-              sx={{ width: 24, height: 24 }}
-            />
-          }
-          title="Resume"
-          titleTypographyProps={{ variant: 'h5' }}
+          avatar={<Avatar alt='Hiroki Yasui' src='/hy.png' sx={{ width: 24, height: 24 }} />}
+          title='Resume'
+          titleTypographyProps={{ variant: 'h4' }}
         />
       </Box>
       <Grid container spacing={2}>
         <Grid xs={3}>
-          <Card
-            sx={{
-              marginBottom: '30px',
-            }}
-          >
+          <BaseCard>
             <CardHeader titleTypographyProps={{ variant: 'subtitle1' }} title='Like' />
             <CardContent>
               <Item>
@@ -61,7 +55,7 @@ const Resume = ({ message }: ResumeProps) => {
                 </List>
               </Item>
             </CardContent>
-          </Card>
+          </BaseCard>
 
           <Card>
             <CardHeader titleTypographyProps={{ variant: 'subtitle1' }} title='Dislike' />
@@ -77,8 +71,29 @@ const Resume = ({ message }: ResumeProps) => {
             </CardContent>
           </Card>
         </Grid>
+
         <Grid xs={9}>
-          <Item>1</Item>
+          <BaseCard>
+            <JobHeader isDarkMode={isDarkMode} title='Blockchain Engineer at Datachain' />
+            <CardContent>
+              <Typography variant='subtitle1'>2021 July - At Present</Typography>
+              <ul>
+                <li>Developing various PoC</li>
+                <li>Researching something</li>
+              </ul>
+            </CardContent>
+          </BaseCard>
+
+          <BaseCard>
+            <JobHeader isDarkMode={isDarkMode} title='Blockchain Engineer at Datachain' />
+            <CardContent>
+              <Typography variant='subtitle1'>2021 July - At Present</Typography>
+              <ul>
+                <li>Developing various PoC</li>
+                <li>Researching something</li>
+              </ul>
+            </CardContent>
+          </BaseCard>
         </Grid>
       </Grid>
     </Container>
