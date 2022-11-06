@@ -7,27 +7,18 @@ import CardHeader from '@mui/material/CardHeader'
 import Container from '@mui/material/Container'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
-import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Unstable_Grid2'
-import { styled } from '@mui/material/styles'
 import { useDarkMode } from 'usehooks-ts'
 import BaseCard from './resume/card'
 import JobHeader from './resume/jobHeader'
+import BasePaper from './resume/paper'
 
 type ResumeProps = {
   message: string
 }
 
 // https://mui.com/material-ui/react-grid2/
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}))
 
 const Resume = ({ message }: ResumeProps) => {
   const { isDarkMode } = useDarkMode()
@@ -46,28 +37,28 @@ const Resume = ({ message }: ResumeProps) => {
           <BaseCard>
             <CardHeader titleTypographyProps={{ variant: 'subtitle1' }} title='Like' />
             <CardContent>
-              <Item>
+              <BasePaper isDarkMode={isDarkMode}>
                 <List>
                   <ListItem divider>Golang</ListItem>
                   <ListItem divider>Golang</ListItem>
                   <ListItem divider>Golang</ListItem>
                   <ListItem divider>Golang</ListItem>
                 </List>
-              </Item>
+              </BasePaper>
             </CardContent>
           </BaseCard>
 
           <Card>
             <CardHeader titleTypographyProps={{ variant: 'subtitle1' }} title='Dislike' />
             <CardContent>
-              <Item>
+              <BasePaper isDarkMode={isDarkMode}>
                 <List>
                   <ListItem divider>Golang</ListItem>
                   <ListItem divider>Golang</ListItem>
                   <ListItem divider>Golang</ListItem>
                   <ListItem divider>Golang</ListItem>
                 </List>
-              </Item>
+              </BasePaper>
             </CardContent>
           </Card>
         </Grid>

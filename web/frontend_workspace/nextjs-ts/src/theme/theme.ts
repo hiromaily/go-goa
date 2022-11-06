@@ -30,4 +30,9 @@ const fontColor = (isDarkMode: boolean): string => {
   return 'white'
 }
 
-export { monotoneTheme, boxColor, fontColor }
+const paperBgColor = (isDarkMode: boolean): string => {
+  if (isDarkMode) return '#1A2027'
+  else return '#fff'
+}
+
+export { monotoneTheme, boxColor, fontColor, paperBgColor }
