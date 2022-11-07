@@ -30,6 +30,10 @@ const MyDocument = (props: MyDocumentProps) => (
         href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'
       />
       <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
+      <link
+        rel='stylesheet'
+        href='https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css'
+      />
       {props.emotionStyleTags}
     </Head>
     <body>

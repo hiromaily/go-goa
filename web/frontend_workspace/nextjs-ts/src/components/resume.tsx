@@ -66,7 +66,7 @@ const Resume = ({ message }: ResumeProps) => {
 
         <Grid xs={9}>
           <BaseCard>
-            <JobHeader isDarkMode={isDarkMode} title='Blockchain Engineer at Datachain' />
+            <JobHeader isDarkMode={isDarkMode} title='Blockchain Engineer at Datachain' flag='nl' />
             <CardContent>
               <Typography variant='subtitle1'>2021 July - At Present</Typography>
               <ul>
@@ -77,7 +77,7 @@ const Resume = ({ message }: ResumeProps) => {
           </BaseCard>
 
           <BaseCard>
-            <JobHeader isDarkMode={isDarkMode} title='Blockchain Engineer at Datachain' />
+            <JobHeader isDarkMode={isDarkMode} title='Blockchain Engineer at Datachain' flag='nl' />
             <CardContent>
               <Typography variant='subtitle1'>2021 July - At Present</Typography>
               <ul>
