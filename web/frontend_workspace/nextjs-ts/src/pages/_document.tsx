@@ -54,7 +54,7 @@ MyDocument.getStaticProps = async (ctx: DocumentContext) => {
   /* eslint-disable */
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: (App) =>
+      enhanceApp: (App: any) =>
         function EnhanceApp(props) {
           // FIXME: error by `tsc --noEmit`
           return <App emotionCache={cache} {...props} />
