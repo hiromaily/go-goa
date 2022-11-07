@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import React from 'react'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import { useWindowSize } from 'usehooks-ts'
@@ -7,7 +8,8 @@ type TopProps = {
   message: string
 }
 
-const Top = ({ message }: TopProps) => {
+// eslint-disable-next-line react/display-name
+const Top = React.forwardRef(({ message }: TopProps, _ref) => {
   const { width, height } = useWindowSize()
 
   return (
@@ -36,6 +38,6 @@ const Top = ({ message }: TopProps) => {
       </Box>
     </Container>
   )
-}
+})
 
 export default Top

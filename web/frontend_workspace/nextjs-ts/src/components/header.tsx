@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import Router from 'next/router'
+import React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -17,7 +18,8 @@ type HeaderProps = {
   title: string
 }
 
-const Header = ({ title }: HeaderProps) => {
+// eslint-disable-next-line react/display-name
+const Header = React.forwardRef(({ title }: HeaderProps, _ref) => {
   const { isDarkMode, toggle } = useDarkMode()
 
   const onClickTop = () => {
@@ -67,6 +69,6 @@ const Header = ({ title }: HeaderProps) => {
       </AppBar>
     </>
   )
-}
+})
 
 export default Header

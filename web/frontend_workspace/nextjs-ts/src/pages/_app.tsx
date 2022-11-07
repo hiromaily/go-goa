@@ -22,17 +22,17 @@ interface MyAppProps extends AppProps {
 
 function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps) {
   const { isDarkMode } = useDarkMode()
-  let daynamicDarkMode = isDarkMode
+  let dynamicDarkMode = isDarkMode
 
-  // set 'dark' as default mode for server side because current my environment is dark mode in client side
-  // this setting can fix `Prop 'className' did not match` Error
-  if (typeof window === "undefined") {
+  // Set 'dark' as default mode for server side because current my environment is dark mode in client side
+  // This setting can fix `Prop 'className' did not match` Error
+  if (typeof window === 'undefined') {
     // server side
-    daynamicDarkMode = true
+    dynamicDarkMode = true
   }
 
   // switch theme by isDarkMode Flag
-  const theme = monotoneTheme(daynamicDarkMode)
+  const theme = monotoneTheme(dynamicDarkMode)
 
   return (
     <CacheProvider value={emotionCache}>
