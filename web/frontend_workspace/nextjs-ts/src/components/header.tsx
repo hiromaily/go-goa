@@ -19,7 +19,7 @@ type HeaderProps = {
 }
 
 // eslint-disable-next-line react/display-name
-const Header = React.forwardRef(({ title }: HeaderProps, _ref) => {
+const Header = ({ title }: HeaderProps) => {
   const { isDarkMode, toggle } = useDarkMode()
 
   const onClickTop = () => {
@@ -47,10 +47,11 @@ const Header = React.forwardRef(({ title }: HeaderProps, _ref) => {
       </Head>
       <AppBar sx={{ color: 'primary' }} position='static'>
         <Toolbar>
-          <Box sx={{ marginRight: '20px' }}>
-            <Link href='/'>
-              <Image src='/hy.png' alt='HY Logo' width={40} height={40} />
-            </Link>
+          <Box sx={{ marginRight: '20px' }} onClick={onClickTop}>
+            {/* FIXME: Warning: Function components cannot be given refs */}
+            {/* <Link href='/'> */}
+            <Image src='/hy.png' alt='HY Logo' width={40} height={40} />
+            {/* </Link> */}
           </Box>
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             go-goa example site
@@ -69,6 +70,6 @@ const Header = React.forwardRef(({ title }: HeaderProps, _ref) => {
       </AppBar>
     </>
   )
-})
+}
 
 export default Header
