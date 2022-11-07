@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
 import Router from 'next/router'
 import React from 'react'
 import AppBar from '@mui/material/AppBar'
@@ -10,6 +9,8 @@ import Button from '@mui/material/Button'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { useDarkMode } from 'usehooks-ts'
+//import ThemeSwitch from './switches/theme'
+const DynamicThemeSwitch = dynamic(() => import('./switches/theme'), { ssr: false })
 //import ModeButton from './buttons/mode'
 // FIX: Warning: Text content did not match
 const DynamicMuteButton = dynamic(() => import('./buttons/mode'), { ssr: false })
@@ -66,6 +67,7 @@ const Header = ({ title }: HeaderProps) => {
             Login
           </Button>
           <DynamicMuteButton isDarkMode={isDarkMode} onClick={onClickMode} />
+          <DynamicThemeSwitch isDarkMode={isDarkMode} onChange={onClickMode} />
         </Toolbar>
       </AppBar>
     </>
