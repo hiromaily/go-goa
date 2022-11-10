@@ -31,18 +31,32 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install jq
+#      - name: Install httpie tool old version
+#        run: |
+#          sudo apt-get install httpie
+#          http --version # 1.0.3
       - name: Install httpie tool
         run: |
-          sudo apt-get install httpie
+          sudo snap install httpie
+          http --version
       - name: Build Docker for go server
         run: |
           make docker-build
-      - name: Run Docker
+      - name: Run Docker MySQL first
         run: |
-          docker compose up -d
-          sleep 5s
+          docker compose up -d mysql
+          sleep 20
+      - name: Run Docker Servers second
+        run: |
+          docker compose up -d api-server file-server
+          sleep 5
+          docker logs go-goa-api-server-1
       - name: API Test
         run: |
+          curl -I http://localhost:8090/api/health
+          curl -I http://127.0.0.1:8090/api/health
+          http GET http://127.0.0.1:8090/api/health
+          http --headers GET http://127.0.0.1:8090/api/health
           make test
 #  golangci:
 #    name: lint
