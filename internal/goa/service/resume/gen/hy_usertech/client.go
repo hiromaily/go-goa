@@ -32,6 +32,7 @@ func NewClient(getUserLikeTech, getUserDisLikeTech goa.Endpoint) *Client {
 // GetUserLikeTech may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetUserLikeTech(ctx context.Context, p *GetUserLikeTechPayload) (res UsertechCollection, err error) {
 	var ires interface{}
@@ -47,6 +48,7 @@ func (c *Client) GetUserLikeTech(ctx context.Context, p *GetUserLikeTechPayload)
 // GetUserDisLikeTech may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetUserDisLikeTech(ctx context.Context, p *GetUserDisLikeTechPayload) (res UsertechCollection, err error) {
 	var ires interface{}

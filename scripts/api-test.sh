@@ -36,7 +36,6 @@ fi
 
 ### User Test
 #### User Status Test
-# FIXME: somehow 500 returned by Auth Error
 echo '[Scenario] Fail to get User List without Token: 401 must be returned'
 STATUS=`getStatus ${ENDPOINT}/user`
 handleResult 401 $STATUS
@@ -73,7 +72,7 @@ isEqual hiroki@goa.com $email
 json=`getBodyWithToken ${ENDPOINT}/user ${TOKEN}`
 echo '[Scenario] Get User List Body: Length'
 len=$(echo $json | jq '. | length')
-isEqual 3 $len
+isEqual 2 $len
 
 echo '[Scenario] Get User List Body: index:0 user_id'
 echo $json

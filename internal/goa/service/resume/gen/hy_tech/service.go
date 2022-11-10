@@ -122,6 +122,11 @@ func MakeBadRequest(err error) *goa.ServiceError {
 	return goa.NewServiceError(err, "BadRequest", false, false, false)
 }
 
+// MakeUnauthorized builds a goa.ServiceError from an error.
+func MakeUnauthorized(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "Unauthorized", false, false, false)
+}
+
 // NewTechCollection initializes result type TechCollection from viewed result
 // type TechCollection.
 func NewTechCollection(vres hytechviews.TechCollection) TechCollection {

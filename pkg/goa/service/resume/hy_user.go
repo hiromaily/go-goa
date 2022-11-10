@@ -35,7 +35,7 @@ func (s *hyUsersrvc) JWTAuth(ctx context.Context, token string, scheme *security
 		Msg("hyUser.JWTAuth")
 
 	if err := s.jwt.ValidateToken(token); err != nil {
-		return ctx, err
+		return ctx, hyuser.MakeUnauthorized(errors.New("unauthorized"))
 	}
 
 	// TBD: add authorization logic.

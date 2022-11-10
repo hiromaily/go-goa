@@ -22,6 +22,7 @@ var _ = Service(resourcePrefix+"company", func() {
 
 	Error("NotFound")
 	Error("BadRequest")
+	Error("Unauthorized")
 
 	Method("companyList", func() {
 		Description("List all companies")
@@ -35,6 +36,7 @@ var _ = Service(resourcePrefix+"company", func() {
 			GET("")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -54,6 +56,7 @@ var _ = Service(resourcePrefix+"company", func() {
 			GET("/{company_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -71,6 +74,7 @@ var _ = Service(resourcePrefix+"company", func() {
 			POST("")
 			Response(StatusCreated)
 			Response("BadRequest", StatusBadRequest)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -91,6 +95,7 @@ var _ = Service(resourcePrefix+"company", func() {
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -109,6 +114,7 @@ var _ = Service(resourcePrefix+"company", func() {
 			DELETE("/{company_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 })

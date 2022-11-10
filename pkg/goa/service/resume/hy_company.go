@@ -35,7 +35,7 @@ func (s *hyCompanysrvc) JWTAuth(ctx context.Context, token string, scheme *secur
 		Msg("hycompany.JWTAuth")
 
 	if err := s.jwt.ValidateToken(token); err != nil {
-		return ctx, err
+		return ctx, hycompany.MakeUnauthorized(errors.New("unauthorized"))
 	}
 
 	return ctx, nil

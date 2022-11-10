@@ -70,6 +70,7 @@ func EncodeGetUserLikeTechRequest(encoder func(*http.Request) goahttp.Encoder) f
 // response body should be restored after having been read.
 // DecodeGetUserLikeTechResponse may return the following errors:
 //   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "Unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
 func DecodeGetUserLikeTechResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
@@ -117,6 +118,20 @@ func DecodeGetUserLikeTechResponse(decoder func(*http.Response) goahttp.Decoder,
 				return nil, goahttp.ErrValidationError("hy_usertech", "getUserLikeTech", err)
 			}
 			return nil, NewGetUserLikeTechNotFound(&body)
+		case http.StatusUnauthorized:
+			var (
+				body GetUserLikeTechUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_usertech", "getUserLikeTech", err)
+			}
+			err = ValidateGetUserLikeTechUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_usertech", "getUserLikeTech", err)
+			}
+			return nil, NewGetUserLikeTechUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_usertech", "getUserLikeTech", resp.StatusCode, string(body))
@@ -175,6 +190,7 @@ func EncodeGetUserDisLikeTechRequest(encoder func(*http.Request) goahttp.Encoder
 // the response body should be restored after having been read.
 // DecodeGetUserDisLikeTechResponse may return the following errors:
 //   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "Unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
 func DecodeGetUserDisLikeTechResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
@@ -222,6 +238,20 @@ func DecodeGetUserDisLikeTechResponse(decoder func(*http.Response) goahttp.Decod
 				return nil, goahttp.ErrValidationError("hy_usertech", "getUserDisLikeTech", err)
 			}
 			return nil, NewGetUserDisLikeTechNotFound(&body)
+		case http.StatusUnauthorized:
+			var (
+				body GetUserDisLikeTechUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_usertech", "getUserDisLikeTech", err)
+			}
+			err = ValidateGetUserDisLikeTechUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_usertech", "getUserDisLikeTech", err)
+			}
+			return nil, NewGetUserDisLikeTechUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_usertech", "getUserDisLikeTech", resp.StatusCode, string(body))

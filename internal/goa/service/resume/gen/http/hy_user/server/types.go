@@ -99,6 +99,24 @@ type UserListNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// UserListUnauthorizedResponseBody is the type of the "hy_user" service
+// "userList" endpoint HTTP response body for the "Unauthorized" error.
+type UserListUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // GetUserNotFoundResponseBody is the type of the "hy_user" service "getUser"
 // endpoint HTTP response body for the "NotFound" error.
 type GetUserNotFoundResponseBody struct {
@@ -117,9 +135,45 @@ type GetUserNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// GetUserUnauthorizedResponseBody is the type of the "hy_user" service
+// "getUser" endpoint HTTP response body for the "Unauthorized" error.
+type GetUserUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // CreateUserBadRequestResponseBody is the type of the "hy_user" service
 // "createUser" endpoint HTTP response body for the "BadRequest" error.
 type CreateUserBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// CreateUserUnauthorizedResponseBody is the type of the "hy_user" service
+// "createUser" endpoint HTTP response body for the "Unauthorized" error.
+type CreateUserUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -171,9 +225,45 @@ type UpdateUserNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// UpdateUserUnauthorizedResponseBody is the type of the "hy_user" service
+// "updateUser" endpoint HTTP response body for the "Unauthorized" error.
+type UpdateUserUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // DeleteUserNotFoundResponseBody is the type of the "hy_user" service
 // "deleteUser" endpoint HTTP response body for the "NotFound" error.
 type DeleteUserNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// DeleteUserUnauthorizedResponseBody is the type of the "hy_user" service
+// "deleteUser" endpoint HTTP response body for the "Unauthorized" error.
+type DeleteUserUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -279,6 +369,20 @@ func NewUserListNotFoundResponseBody(res *goa.ServiceError) *UserListNotFoundRes
 	return body
 }
 
+// NewUserListUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "userList" endpoint of the "hy_user" service.
+func NewUserListUnauthorizedResponseBody(res *goa.ServiceError) *UserListUnauthorizedResponseBody {
+	body := &UserListUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewGetUserNotFoundResponseBody builds the HTTP response body from the result
 // of the "getUser" endpoint of the "hy_user" service.
 func NewGetUserNotFoundResponseBody(res *goa.ServiceError) *GetUserNotFoundResponseBody {
@@ -293,10 +397,38 @@ func NewGetUserNotFoundResponseBody(res *goa.ServiceError) *GetUserNotFoundRespo
 	return body
 }
 
+// NewGetUserUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "getUser" endpoint of the "hy_user" service.
+func NewGetUserUnauthorizedResponseBody(res *goa.ServiceError) *GetUserUnauthorizedResponseBody {
+	body := &GetUserUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreateUserBadRequestResponseBody builds the HTTP response body from the
 // result of the "createUser" endpoint of the "hy_user" service.
 func NewCreateUserBadRequestResponseBody(res *goa.ServiceError) *CreateUserBadRequestResponseBody {
 	body := &CreateUserBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewCreateUserUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "createUser" endpoint of the "hy_user" service.
+func NewCreateUserUnauthorizedResponseBody(res *goa.ServiceError) *CreateUserUnauthorizedResponseBody {
+	body := &CreateUserUnauthorizedResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -335,10 +467,38 @@ func NewUpdateUserNotFoundResponseBody(res *goa.ServiceError) *UpdateUserNotFoun
 	return body
 }
 
+// NewUpdateUserUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "updateUser" endpoint of the "hy_user" service.
+func NewUpdateUserUnauthorizedResponseBody(res *goa.ServiceError) *UpdateUserUnauthorizedResponseBody {
+	body := &UpdateUserUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewDeleteUserNotFoundResponseBody builds the HTTP response body from the
 // result of the "deleteUser" endpoint of the "hy_user" service.
 func NewDeleteUserNotFoundResponseBody(res *goa.ServiceError) *DeleteUserNotFoundResponseBody {
 	body := &DeleteUserNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewDeleteUserUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "deleteUser" endpoint of the "hy_user" service.
+func NewDeleteUserUnauthorizedResponseBody(res *goa.ServiceError) *DeleteUserUnauthorizedResponseBody {
+	body := &DeleteUserUnauthorizedResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,

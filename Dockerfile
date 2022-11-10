@@ -19,7 +19,7 @@ WORKDIR /workspace
 
 COPY --from=builder /go/bin/goa-server /usr/bin/goa-server
 COPY docs ./
-COPY configs/docker.toml ./configs
+COPY configs/docker.toml ./configs/
 
 EXPOSE 8090
 

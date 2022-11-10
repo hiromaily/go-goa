@@ -22,6 +22,7 @@ var _ = Service(resourcePrefix+"tech", func() {
 
 	Error("NotFound")
 	Error("BadRequest")
+	Error("Unauthorized")
 
 	Method("techList", func() {
 		Description("List all techs")
@@ -35,6 +36,7 @@ var _ = Service(resourcePrefix+"tech", func() {
 			GET("")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -54,6 +56,7 @@ var _ = Service(resourcePrefix+"tech", func() {
 			GET("/{tech_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -72,6 +75,7 @@ var _ = Service(resourcePrefix+"tech", func() {
 			Response(StatusOK)
 			Response(StatusCreated)
 			Response("BadRequest", StatusBadRequest)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -92,6 +96,7 @@ var _ = Service(resourcePrefix+"tech", func() {
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -109,6 +114,7 @@ var _ = Service(resourcePrefix+"tech", func() {
 			DELETE("/{tech_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 })

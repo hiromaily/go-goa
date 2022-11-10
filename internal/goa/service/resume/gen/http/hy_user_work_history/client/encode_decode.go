@@ -71,6 +71,7 @@ func EncodeGetUserWorkHistoryRequest(encoder func(*http.Request) goahttp.Encoder
 // whether the response body should be restored after having been read.
 // DecodeGetUserWorkHistoryResponse may return the following errors:
 //   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "Unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
 func DecodeGetUserWorkHistoryResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
@@ -118,6 +119,20 @@ func DecodeGetUserWorkHistoryResponse(decoder func(*http.Response) goahttp.Decod
 				return nil, goahttp.ErrValidationError("hy_userWorkHistory", "getUserWorkHistory", err)
 			}
 			return nil, NewGetUserWorkHistoryNotFound(&body)
+		case http.StatusUnauthorized:
+			var (
+				body GetUserWorkHistoryUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_userWorkHistory", "getUserWorkHistory", err)
+			}
+			err = ValidateGetUserWorkHistoryUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_userWorkHistory", "getUserWorkHistory", err)
+			}
+			return nil, NewGetUserWorkHistoryUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_userWorkHistory", "getUserWorkHistory", resp.StatusCode, string(body))

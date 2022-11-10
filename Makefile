@@ -103,7 +103,7 @@ rerun: build run
 # Docker
 ###############################################################################
 docker-build:
-	#docker compose build --no-cache api-server
+	docker compose build --no-cache api-server
 	docker compose build --no-cache file-server
 
 
@@ -128,6 +128,8 @@ chk: http-login
 # when displaying response headers
 #http --headers POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password
 #$(eval TOKEN := $(shell http --headers POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))
+
+# FXIME: somehow this task run by running other task
 .PHONY: http-login
 http-login:
 	#$(eval TOKEN := $(shell http --headers POST $(ENDPOINT)/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g"))

@@ -22,6 +22,7 @@ var _ = Service(resourcePrefix+"user", func() {
 
 	Error("NotFound")
 	Error("BadRequest")
+	Error("Unauthorized")
 
 	Method("userList", func() {
 		Description("List all users")
@@ -35,6 +36,7 @@ var _ = Service(resourcePrefix+"user", func() {
 			GET("")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -54,6 +56,7 @@ var _ = Service(resourcePrefix+"user", func() {
 			GET("/{user_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -75,6 +78,7 @@ var _ = Service(resourcePrefix+"user", func() {
 			POST("")
 			Response(StatusCreated)
 			Response("BadRequest", StatusBadRequest)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -95,6 +99,7 @@ var _ = Service(resourcePrefix+"user", func() {
 			Response(StatusOK)
 			Response("BadRequest", StatusBadRequest)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -113,6 +118,7 @@ var _ = Service(resourcePrefix+"user", func() {
 			DELETE("/{user_id}")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 })
@@ -131,6 +137,7 @@ var _ = Service(resourcePrefix+"usertech", func() {
 
 	Error("NotFound")
 	Error("BadRequest")
+	Error("Unauthorized")
 
 	Method("getUserLikeTech", func() {
 		Description("get user's favorite techs")
@@ -148,6 +155,7 @@ var _ = Service(resourcePrefix+"usertech", func() {
 			GET("/{user_id}/liketech")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 
@@ -167,6 +175,7 @@ var _ = Service(resourcePrefix+"usertech", func() {
 			GET("/{user_id}/disliketech")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 })
@@ -185,6 +194,7 @@ var _ = Service(resourcePrefix+"userWorkHistory", func() {
 
 	Error("NotFound")
 	Error("BadRequest")
+	Error("Unauthorized")
 
 	Method("getUserWorkHistory", func() {
 		Description("get user's work history")
@@ -202,6 +212,7 @@ var _ = Service(resourcePrefix+"userWorkHistory", func() {
 			GET("/{user_id}/workhistory")
 			Response(StatusOK)
 			Response("NotFound", StatusNotFound)
+			Response("Unauthorized", StatusUnauthorized)
 		})
 	})
 })

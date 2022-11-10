@@ -2,7 +2,6 @@ package resumeapi
 
 import (
 	"context"
-
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"goa.design/goa/v3/security"
@@ -33,7 +32,7 @@ func (s *hyUserWorkHistorysrvc) JWTAuth(ctx context.Context, token string, schem
 		Msg("hyUserWorkHistory.JWTAuth")
 
 	if err := s.jwt.ValidateToken(token); err != nil {
-		return ctx, err
+		return ctx, hyuserworkhistory.MakeUnauthorized(errors.New("unauthorized"))
 	}
 
 	return ctx, nil

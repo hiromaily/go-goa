@@ -91,6 +91,24 @@ type CompanyListNotFoundResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
+// CompanyListUnauthorizedResponseBody is the type of the "hy_company" service
+// "companyList" endpoint HTTP response body for the "Unauthorized" error.
+type CompanyListUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
 // GetCompanyNotFoundResponseBody is the type of the "hy_company" service
 // "getCompany" endpoint HTTP response body for the "NotFound" error.
 type GetCompanyNotFoundResponseBody struct {
@@ -109,9 +127,46 @@ type GetCompanyNotFoundResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
+// GetCompanyUnauthorizedResponseBody is the type of the "hy_company" service
+// "getCompany" endpoint HTTP response body for the "Unauthorized" error.
+type GetCompanyUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
 // CreateCompanyBadRequestResponseBody is the type of the "hy_company" service
 // "createCompany" endpoint HTTP response body for the "BadRequest" error.
 type CreateCompanyBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// CreateCompanyUnauthorizedResponseBody is the type of the "hy_company"
+// service "createCompany" endpoint HTTP response body for the "Unauthorized"
+// error.
+type CreateCompanyUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -163,9 +218,47 @@ type UpdateCompanyNotFoundResponseBody struct {
 	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
 }
 
+// UpdateCompanyUnauthorizedResponseBody is the type of the "hy_company"
+// service "updateCompany" endpoint HTTP response body for the "Unauthorized"
+// error.
+type UpdateCompanyUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
 // DeleteCompanyNotFoundResponseBody is the type of the "hy_company" service
 // "deleteCompany" endpoint HTTP response body for the "NotFound" error.
 type DeleteCompanyNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID *string `form:"id,omitempty" json:"id,omitempty" xml:"id,omitempty"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message *string `form:"message,omitempty" json:"message,omitempty" xml:"message,omitempty"`
+	// Is the error temporary?
+	Temporary *bool `form:"temporary,omitempty" json:"temporary,omitempty" xml:"temporary,omitempty"`
+	// Is the error a timeout?
+	Timeout *bool `form:"timeout,omitempty" json:"timeout,omitempty" xml:"timeout,omitempty"`
+	// Is the error a server-side fault?
+	Fault *bool `form:"fault,omitempty" json:"fault,omitempty" xml:"fault,omitempty"`
+}
+
+// DeleteCompanyUnauthorizedResponseBody is the type of the "hy_company"
+// service "deleteCompany" endpoint HTTP response body for the "Unauthorized"
+// error.
+type DeleteCompanyUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name *string `form:"name,omitempty" json:"name,omitempty" xml:"name,omitempty"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -244,6 +337,21 @@ func NewCompanyListNotFound(body *CompanyListNotFoundResponseBody) *goa.ServiceE
 	return v
 }
 
+// NewCompanyListUnauthorized builds a hy_company service companyList endpoint
+// Unauthorized error.
+func NewCompanyListUnauthorized(body *CompanyListUnauthorizedResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
 // NewGetCompanyCompanyOK builds a "hy_company" service "getCompany" endpoint
 // result from a HTTP "OK" response.
 func NewGetCompanyCompanyOK(body *GetCompanyResponseBody) *hycompanyviews.CompanyView {
@@ -262,6 +370,21 @@ func NewGetCompanyCompanyOK(body *GetCompanyResponseBody) *hycompanyviews.Compan
 // NewGetCompanyNotFound builds a hy_company service getCompany endpoint
 // NotFound error.
 func NewGetCompanyNotFound(body *GetCompanyNotFoundResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
+// NewGetCompanyUnauthorized builds a hy_company service getCompany endpoint
+// Unauthorized error.
+func NewGetCompanyUnauthorized(body *GetCompanyUnauthorizedResponseBody) *goa.ServiceError {
 	v := &goa.ServiceError{
 		Name:      *body.Name,
 		ID:        *body.ID,
@@ -304,6 +427,21 @@ func NewCreateCompanyBadRequest(body *CreateCompanyBadRequestResponseBody) *goa.
 	return v
 }
 
+// NewCreateCompanyUnauthorized builds a hy_company service createCompany
+// endpoint Unauthorized error.
+func NewCreateCompanyUnauthorized(body *CreateCompanyUnauthorizedResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
 // NewUpdateCompanyBadRequest builds a hy_company service updateCompany
 // endpoint BadRequest error.
 func NewUpdateCompanyBadRequest(body *UpdateCompanyBadRequestResponseBody) *goa.ServiceError {
@@ -334,6 +472,21 @@ func NewUpdateCompanyNotFound(body *UpdateCompanyNotFoundResponseBody) *goa.Serv
 	return v
 }
 
+// NewUpdateCompanyUnauthorized builds a hy_company service updateCompany
+// endpoint Unauthorized error.
+func NewUpdateCompanyUnauthorized(body *UpdateCompanyUnauthorizedResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
 // NewDeleteCompanyNotFound builds a hy_company service deleteCompany endpoint
 // NotFound error.
 func NewDeleteCompanyNotFound(body *DeleteCompanyNotFoundResponseBody) *goa.ServiceError {
@@ -349,9 +502,48 @@ func NewDeleteCompanyNotFound(body *DeleteCompanyNotFoundResponseBody) *goa.Serv
 	return v
 }
 
+// NewDeleteCompanyUnauthorized builds a hy_company service deleteCompany
+// endpoint Unauthorized error.
+func NewDeleteCompanyUnauthorized(body *DeleteCompanyUnauthorizedResponseBody) *goa.ServiceError {
+	v := &goa.ServiceError{
+		Name:      *body.Name,
+		ID:        *body.ID,
+		Message:   *body.Message,
+		Temporary: *body.Temporary,
+		Timeout:   *body.Timeout,
+		Fault:     *body.Fault,
+	}
+
+	return v
+}
+
 // ValidateCompanyListNotFoundResponseBody runs the validations defined on
 // companyList_NotFound_response_body
 func ValidateCompanyListNotFoundResponseBody(body *CompanyListNotFoundResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateCompanyListUnauthorizedResponseBody runs the validations defined on
+// companyList_Unauthorized_response_body
+func ValidateCompanyListUnauthorizedResponseBody(body *CompanyListUnauthorizedResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}
@@ -397,9 +589,57 @@ func ValidateGetCompanyNotFoundResponseBody(body *GetCompanyNotFoundResponseBody
 	return
 }
 
+// ValidateGetCompanyUnauthorizedResponseBody runs the validations defined on
+// getCompany_Unauthorized_response_body
+func ValidateGetCompanyUnauthorizedResponseBody(body *GetCompanyUnauthorizedResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
 // ValidateCreateCompanyBadRequestResponseBody runs the validations defined on
 // createCompany_BadRequest_response_body
 func ValidateCreateCompanyBadRequestResponseBody(body *CreateCompanyBadRequestResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateCreateCompanyUnauthorizedResponseBody runs the validations defined
+// on createCompany_Unauthorized_response_body
+func ValidateCreateCompanyUnauthorizedResponseBody(body *CreateCompanyUnauthorizedResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}
@@ -469,9 +709,57 @@ func ValidateUpdateCompanyNotFoundResponseBody(body *UpdateCompanyNotFoundRespon
 	return
 }
 
+// ValidateUpdateCompanyUnauthorizedResponseBody runs the validations defined
+// on updateCompany_Unauthorized_response_body
+func ValidateUpdateCompanyUnauthorizedResponseBody(body *UpdateCompanyUnauthorizedResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
 // ValidateDeleteCompanyNotFoundResponseBody runs the validations defined on
 // deleteCompany_NotFound_response_body
 func ValidateDeleteCompanyNotFoundResponseBody(body *DeleteCompanyNotFoundResponseBody) (err error) {
+	if body.Name == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
+	}
+	if body.ID == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("id", "body"))
+	}
+	if body.Message == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("message", "body"))
+	}
+	if body.Temporary == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("temporary", "body"))
+	}
+	if body.Timeout == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("timeout", "body"))
+	}
+	if body.Fault == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("fault", "body"))
+	}
+	return
+}
+
+// ValidateDeleteCompanyUnauthorizedResponseBody runs the validations defined
+// on deleteCompany_Unauthorized_response_body
+func ValidateDeleteCompanyUnauthorizedResponseBody(body *DeleteCompanyUnauthorizedResponseBody) (err error) {
 	if body.Name == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("name", "body"))
 	}

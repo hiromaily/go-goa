@@ -90,6 +90,12 @@ paths:
                                   country_name: Est qui iure eligendi alias.
                                   created_at: "2017-03-10T15:00:00Z"
                                   updated_at: "2017-03-10T15:00:00Z"
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -136,6 +142,12 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -154,12 +166,18 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 1046919295188121971
+                    example: 2450829123900241451
                     minimum: 1
-                  example: 6988304720051856351
+                  example: 3028389055883497065
             responses:
                 "200":
                     description: OK response.
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -183,9 +201,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 339745344289456661
+                    example: 2542831557689381724
                     minimum: 1
-                  example: 4571527033430832189
+                  example: 6322987545549911868
             responses:
                 "200":
                     description: OK response.
@@ -201,6 +219,12 @@ paths:
                                 country_name: Qui reprehenderit aut.
                                 created_at: "2017-03-10T15:00:00Z"
                                 updated_at: "2017-03-10T15:00:00Z"
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -224,9 +248,9 @@ paths:
                   schema:
                     type: integer
                     description: Company ID
-                    example: 4190895503921200415
+                    example: 7119331174720051915
                     minimum: 1
-                  example: 396881324212913759
+                  example: 9032909640699640931
             requestBody:
                 required: true
                 content:
@@ -242,6 +266,12 @@ paths:
                     description: OK response.
                 "400":
                     description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
                     content:
                         application/vnd.goa.error:
                             schema:
@@ -288,6 +318,12 @@ paths:
                                   tech_id: 10
                                   tech_name: Golang
                                   updated_at: "2017-03-10T15:00:00Z"
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -342,6 +378,12 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -360,12 +402,18 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 5709384348704187234
+                    example: 7001667928654898875
                     minimum: 1
-                  example: 9079370171329166774
+                  example: 7436755976610430116
             responses:
                 "200":
                     description: OK response.
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -389,9 +437,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 2847978431605506772
+                    example: 1302648288950901427
                     minimum: 1
-                  example: 2575621331362584676
+                  example: 2543899863307384430
             responses:
                 "200":
                     description: OK response.
@@ -405,6 +453,12 @@ paths:
                                 tech_id: 10
                                 tech_name: Golang
                                 updated_at: "2017-03-10T15:00:00Z"
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -428,9 +482,9 @@ paths:
                   schema:
                     type: integer
                     description: Tech ID
-                    example: 1834942356353653981
+                    example: 6258571356138319433
                     minimum: 1
-                  example: 6452748538961127061
+                  example: 7296104000633002390
             requestBody:
                 required: true
                 content:
@@ -444,6 +498,12 @@ paths:
                     description: OK response.
                 "400":
                     description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
                     content:
                         application/vnd.goa.error:
                             schema:
@@ -485,6 +545,12 @@ paths:
                                   updated_at: "2017-03-10T15:00:00Z"
                                   user_id: 10
                                   user_name: Hiroki
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -531,6 +597,12 @@ paths:
                         application/vnd.goa.error:
                             schema:
                                 $ref: '#/components/schemas/Error'
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
             security:
                 - jwt_header_Authorization:
                     - api:access
@@ -549,12 +621,18 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 7745277364261132187
+                    example: 6755408238676982526
                     minimum: 1
-                  example: 7909492857951961546
+                  example: 928353900552405200
             responses:
                 "200":
                     description: OK response.
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -578,9 +656,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 1288301141656066467
+                    example: 8832818538614618330
                     minimum: 1
-                  example: 1527676881617102183
+                  example: 3688593088192488874
             responses:
                 "200":
                     description: OK response.
@@ -596,6 +674,12 @@ paths:
                                 updated_at: "2017-03-10T15:00:00Z"
                                 user_id: 10
                                 user_name: Hiroki
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -619,9 +703,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 3416244926440088422
+                    example: 5593992008448808258
                     minimum: 1
-                  example: 5989441150819645180
+                  example: 2939369339074225465
             requestBody:
                 required: true
                 content:
@@ -637,6 +721,12 @@ paths:
                     description: OK response.
                 "400":
                     description: 'BadRequest: Bad Request response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
                     content:
                         application/vnd.goa.error:
                             schema:
@@ -665,9 +755,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 3869040641015927670
+                    example: 2389599537430209477
                     minimum: 1
-                  example: 2429748020324554069
+                  example: 1148707235870461175
             responses:
                 "200":
                     description: OK response.
@@ -685,6 +775,12 @@ paths:
                                   tech_name: Golang
                                 - id: 10
                                   tech_name: Golang
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -709,9 +805,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 6105886882736115680
+                    example: 5607313021983523631
                     minimum: 1
-                  example: 156287551336088560
+                  example: 4516020509322405488
             responses:
                 "200":
                     description: OK response.
@@ -729,6 +825,12 @@ paths:
                                   tech_name: Golang
                                 - id: 10
                                   tech_name: Golang
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -753,9 +855,9 @@ paths:
                   schema:
                     type: integer
                     description: User ID
-                    example: 220270010374292935
+                    example: 1209118562802187822
                     minimum: 1
-                  example: 5823852514308063432
+                  example: 6971397286033645297
             responses:
                 "200":
                     description: OK response.
@@ -782,6 +884,12 @@ paths:
                                   techs: '["Golang with goa", "Riot.js", "Semantic UI", "MySQL", "Docker", "Travis-CI"]'
                                   term: Jul 2017 - Aug 2017
                                   title: Developer
+                "401":
+                    description: 'Unauthorized: Unauthorized response.'
+                    content:
+                        application/vnd.goa.error:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 "404":
                     description: 'NotFound: Not Found response.'
                     content:
@@ -851,7 +959,7 @@ components:
                     maxLength: 40
                 country_name:
                     type: string
-                    example: Esse iusto architecto nesciunt et.
+                    example: Non aut.
                 created_at:
                     type: string
                     description: Datetime
@@ -867,7 +975,7 @@ components:
                 address: Shinagawa Tokyo
                 company_id: 10
                 company_name: Company
-                country_name: Exercitationem animi beatae reprehenderit a quis consequuntur.
+                country_name: Quos ipsam et harum sunt dolores eligendi.
                 created_at: "2017-03-10T15:00:00Z"
                 updated_at: "2017-03-10T15:00:00Z"
         CompanyCollection:
@@ -875,12 +983,6 @@ components:
             items:
                 $ref: '#/components/schemas/Company'
             example:
-                - address: Shinagawa Tokyo
-                  company_id: 10
-                  company_name: Company
-                  country_name: Est qui iure eligendi alias.
-                  created_at: "2017-03-10T15:00:00Z"
-                  updated_at: "2017-03-10T15:00:00Z"
                 - address: Shinagawa Tokyo
                   company_id: 10
                   company_name: Company
@@ -919,6 +1021,7 @@ components:
                 - company_id: 10
                 - company_id: 10
                 - company_id: 10
+                - company_id: 10
         CompanyResponseIdname:
             type: object
             properties:
@@ -943,6 +1046,8 @@ components:
                 $ref: '#/components/schemas/CompanyResponseIdname'
             description: CompanyListResponseBody is the result type for an array of CompanyResponse (idname view)
             example:
+                - company_id: 10
+                  company_name: Company
                 - company_id: 10
                   company_name: Company
                 - company_id: 10
@@ -1023,7 +1128,7 @@ components:
                 fault:
                     type: boolean
                     description: Is the error a server-side fault?
-                    example: true
+                    example: false
                 id:
                     type: string
                     description: ID is a unique identifier for this particular occurrence of the problem.
@@ -1118,10 +1223,6 @@ components:
                   tech_id: 10
                   tech_name: Golang
                   updated_at: "2017-03-10T15:00:00Z"
-                - created_at: "2017-03-10T15:00:00Z"
-                  tech_id: 10
-                  tech_name: Golang
-                  updated_at: "2017-03-10T15:00:00Z"
         TechResponseID:
             type: object
             properties:
@@ -1139,7 +1240,6 @@ components:
                 $ref: '#/components/schemas/TechResponseID'
             description: TechListResponseBody is the result type for an array of TechResponse (id view)
             example:
-                - tech_id: 10
                 - tech_id: 10
                 - tech_id: 10
         UpdateCompanyRequestBody:
@@ -1276,6 +1376,7 @@ components:
             example:
                 - user_id: 10
                 - user_id: 10
+                - user_id: 10
         Usertech:
             type: object
             properties:
@@ -1299,8 +1400,6 @@ components:
             items:
                 $ref: '#/components/schemas/Usertech'
             example:
-                - id: 10
-                  tech_name: Golang
                 - id: 10
                   tech_name: Golang
                 - id: 10

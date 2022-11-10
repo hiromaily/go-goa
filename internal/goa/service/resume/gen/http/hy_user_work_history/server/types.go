@@ -37,6 +37,25 @@ type GetUserWorkHistoryNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// GetUserWorkHistoryUnauthorizedResponseBody is the type of the
+// "hy_userWorkHistory" service "getUserWorkHistory" endpoint HTTP response
+// body for the "Unauthorized" error.
+type GetUserWorkHistoryUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // UserworkhistoryResponse is used to define fields on response body types.
 type UserworkhistoryResponse struct {
 	// Job Title
@@ -69,6 +88,21 @@ func NewUserworkhistoryResponseCollection(res hyuserworkhistoryviews.Userworkhis
 // service.
 func NewGetUserWorkHistoryNotFoundResponseBody(res *goa.ServiceError) *GetUserWorkHistoryNotFoundResponseBody {
 	body := &GetUserWorkHistoryNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewGetUserWorkHistoryUnauthorizedResponseBody builds the HTTP response body
+// from the result of the "getUserWorkHistory" endpoint of the
+// "hy_userWorkHistory" service.
+func NewGetUserWorkHistoryUnauthorizedResponseBody(res *goa.ServiceError) *GetUserWorkHistoryUnauthorizedResponseBody {
+	body := &GetUserWorkHistoryUnauthorizedResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,

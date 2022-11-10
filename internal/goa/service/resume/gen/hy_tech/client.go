@@ -37,6 +37,7 @@ func NewClient(techList, getTech, createTech, updateTech, deleteTech goa.Endpoin
 // TechList may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) TechList(ctx context.Context, p *TechListPayload) (res TechCollection, err error) {
 	var ires interface{}
@@ -51,6 +52,7 @@ func (c *Client) TechList(ctx context.Context, p *TechListPayload) (res TechColl
 // GetTech may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetTech(ctx context.Context, p *GetTechPayload) (res *Tech, err error) {
 	var ires interface{}
@@ -65,6 +67,7 @@ func (c *Client) GetTech(ctx context.Context, p *GetTechPayload) (res *Tech, err
 // CreateTech may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) CreateTech(ctx context.Context, p *CreateTechPayload) (res *Tech, err error) {
 	var ires interface{}
@@ -79,6 +82,7 @@ func (c *Client) CreateTech(ctx context.Context, p *CreateTechPayload) (res *Tec
 // UpdateTech may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) UpdateTech(ctx context.Context, p *UpdateTechPayload) (err error) {
 	_, err = c.UpdateTechEndpoint(ctx, p)
@@ -89,6 +93,7 @@ func (c *Client) UpdateTech(ctx context.Context, p *UpdateTechPayload) (err erro
 // DeleteTech may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) DeleteTech(ctx context.Context, p *DeleteTechPayload) (err error) {
 	_, err = c.DeleteTechEndpoint(ctx, p)

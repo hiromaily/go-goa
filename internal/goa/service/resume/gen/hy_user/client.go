@@ -37,6 +37,7 @@ func NewClient(userList, getUser, createUser, updateUser, deleteUser goa.Endpoin
 // UserList may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) UserList(ctx context.Context, p *UserListPayload) (res UserCollection, err error) {
 	var ires interface{}
@@ -51,6 +52,7 @@ func (c *Client) UserList(ctx context.Context, p *UserListPayload) (res UserColl
 // GetUser may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetUser(ctx context.Context, p *GetUserPayload) (res *User, err error) {
 	var ires interface{}
@@ -65,6 +67,7 @@ func (c *Client) GetUser(ctx context.Context, p *GetUserPayload) (res *User, err
 // CreateUser may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) CreateUser(ctx context.Context, p *CreateUserPayload) (res *User, err error) {
 	var ires interface{}
@@ -79,6 +82,7 @@ func (c *Client) CreateUser(ctx context.Context, p *CreateUserPayload) (res *Use
 // UpdateUser may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) UpdateUser(ctx context.Context, p *UpdateUserPayload) (err error) {
 	_, err = c.UpdateUserEndpoint(ctx, p)
@@ -89,6 +93,7 @@ func (c *Client) UpdateUser(ctx context.Context, p *UpdateUserPayload) (err erro
 // DeleteUser may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) DeleteUser(ctx context.Context, p *DeleteUserPayload) (err error) {
 	_, err = c.DeleteUserEndpoint(ctx, p)

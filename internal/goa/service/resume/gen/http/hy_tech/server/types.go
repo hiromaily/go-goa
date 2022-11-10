@@ -87,6 +87,24 @@ type TechListNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// TechListUnauthorizedResponseBody is the type of the "hy_tech" service
+// "techList" endpoint HTTP response body for the "Unauthorized" error.
+type TechListUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // GetTechNotFoundResponseBody is the type of the "hy_tech" service "getTech"
 // endpoint HTTP response body for the "NotFound" error.
 type GetTechNotFoundResponseBody struct {
@@ -105,9 +123,45 @@ type GetTechNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// GetTechUnauthorizedResponseBody is the type of the "hy_tech" service
+// "getTech" endpoint HTTP response body for the "Unauthorized" error.
+type GetTechUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // CreateTechBadRequestResponseBody is the type of the "hy_tech" service
 // "createTech" endpoint HTTP response body for the "BadRequest" error.
 type CreateTechBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// CreateTechUnauthorizedResponseBody is the type of the "hy_tech" service
+// "createTech" endpoint HTTP response body for the "Unauthorized" error.
+type CreateTechUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -159,9 +213,45 @@ type UpdateTechNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// UpdateTechUnauthorizedResponseBody is the type of the "hy_tech" service
+// "updateTech" endpoint HTTP response body for the "Unauthorized" error.
+type UpdateTechUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // DeleteTechNotFoundResponseBody is the type of the "hy_tech" service
 // "deleteTech" endpoint HTTP response body for the "NotFound" error.
 type DeleteTechNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// DeleteTechUnauthorizedResponseBody is the type of the "hy_tech" service
+// "deleteTech" endpoint HTTP response body for the "Unauthorized" error.
+type DeleteTechUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -263,6 +353,20 @@ func NewTechListNotFoundResponseBody(res *goa.ServiceError) *TechListNotFoundRes
 	return body
 }
 
+// NewTechListUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "techList" endpoint of the "hy_tech" service.
+func NewTechListUnauthorizedResponseBody(res *goa.ServiceError) *TechListUnauthorizedResponseBody {
+	body := &TechListUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewGetTechNotFoundResponseBody builds the HTTP response body from the result
 // of the "getTech" endpoint of the "hy_tech" service.
 func NewGetTechNotFoundResponseBody(res *goa.ServiceError) *GetTechNotFoundResponseBody {
@@ -277,10 +381,38 @@ func NewGetTechNotFoundResponseBody(res *goa.ServiceError) *GetTechNotFoundRespo
 	return body
 }
 
+// NewGetTechUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "getTech" endpoint of the "hy_tech" service.
+func NewGetTechUnauthorizedResponseBody(res *goa.ServiceError) *GetTechUnauthorizedResponseBody {
+	body := &GetTechUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreateTechBadRequestResponseBody builds the HTTP response body from the
 // result of the "createTech" endpoint of the "hy_tech" service.
 func NewCreateTechBadRequestResponseBody(res *goa.ServiceError) *CreateTechBadRequestResponseBody {
 	body := &CreateTechBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewCreateTechUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "createTech" endpoint of the "hy_tech" service.
+func NewCreateTechUnauthorizedResponseBody(res *goa.ServiceError) *CreateTechUnauthorizedResponseBody {
+	body := &CreateTechUnauthorizedResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -319,10 +451,38 @@ func NewUpdateTechNotFoundResponseBody(res *goa.ServiceError) *UpdateTechNotFoun
 	return body
 }
 
+// NewUpdateTechUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "updateTech" endpoint of the "hy_tech" service.
+func NewUpdateTechUnauthorizedResponseBody(res *goa.ServiceError) *UpdateTechUnauthorizedResponseBody {
+	body := &UpdateTechUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewDeleteTechNotFoundResponseBody builds the HTTP response body from the
 // result of the "deleteTech" endpoint of the "hy_tech" service.
 func NewDeleteTechNotFoundResponseBody(res *goa.ServiceError) *DeleteTechNotFoundResponseBody {
 	body := &DeleteTechNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewDeleteTechUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "deleteTech" endpoint of the "hy_tech" service.
+func NewDeleteTechUnauthorizedResponseBody(res *goa.ServiceError) *DeleteTechUnauthorizedResponseBody {
+	body := &DeleteTechUnauthorizedResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,

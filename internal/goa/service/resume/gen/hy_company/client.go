@@ -37,6 +37,7 @@ func NewClient(companyList, getCompany, createCompany, updateCompany, deleteComp
 // CompanyList may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) CompanyList(ctx context.Context, p *CompanyListPayload) (res CompanyCollection, err error) {
 	var ires interface{}
@@ -51,6 +52,7 @@ func (c *Client) CompanyList(ctx context.Context, p *CompanyListPayload) (res Co
 // GetCompany may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetCompany(ctx context.Context, p *GetCompanyPayload) (res *Company, err error) {
 	var ires interface{}
@@ -65,6 +67,7 @@ func (c *Client) GetCompany(ctx context.Context, p *GetCompanyPayload) (res *Com
 // CreateCompany may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) CreateCompany(ctx context.Context, p *CreateCompanyPayload) (res *Company, err error) {
 	var ires interface{}
@@ -79,6 +82,7 @@ func (c *Client) CreateCompany(ctx context.Context, p *CreateCompanyPayload) (re
 // UpdateCompany may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) UpdateCompany(ctx context.Context, p *UpdateCompanyPayload) (err error) {
 	_, err = c.UpdateCompanyEndpoint(ctx, p)
@@ -89,6 +93,7 @@ func (c *Client) UpdateCompany(ctx context.Context, p *UpdateCompanyPayload) (er
 // DeleteCompany may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) DeleteCompany(ctx context.Context, p *DeleteCompanyPayload) (err error) {
 	_, err = c.DeleteCompanyEndpoint(ctx, p)

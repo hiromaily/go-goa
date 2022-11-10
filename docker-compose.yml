@@ -33,7 +33,7 @@ services:
     ports:
       - "8090:8090"
     restart: always
-    command: -f /workspace/configs/docker.toml
+    command: -conf /workspace/configs/docker.toml
 
   file-server:
     build:
@@ -46,4 +46,4 @@ services:
     ports:
       - "8080:8080"
     restart: always
-    #command: -f /workspace/configs/docker.toml
+    #command: -conf /workspace/configs/docker.toml

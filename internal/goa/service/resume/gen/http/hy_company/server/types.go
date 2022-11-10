@@ -123,6 +123,24 @@ type CompanyListNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// CompanyListUnauthorizedResponseBody is the type of the "hy_company" service
+// "companyList" endpoint HTTP response body for the "Unauthorized" error.
+type CompanyListUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // GetCompanyNotFoundResponseBody is the type of the "hy_company" service
 // "getCompany" endpoint HTTP response body for the "NotFound" error.
 type GetCompanyNotFoundResponseBody struct {
@@ -141,9 +159,46 @@ type GetCompanyNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// GetCompanyUnauthorizedResponseBody is the type of the "hy_company" service
+// "getCompany" endpoint HTTP response body for the "Unauthorized" error.
+type GetCompanyUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // CreateCompanyBadRequestResponseBody is the type of the "hy_company" service
 // "createCompany" endpoint HTTP response body for the "BadRequest" error.
 type CreateCompanyBadRequestResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// CreateCompanyUnauthorizedResponseBody is the type of the "hy_company"
+// service "createCompany" endpoint HTTP response body for the "Unauthorized"
+// error.
+type CreateCompanyUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -195,9 +250,47 @@ type UpdateCompanyNotFoundResponseBody struct {
 	Fault bool `form:"fault" json:"fault" xml:"fault"`
 }
 
+// UpdateCompanyUnauthorizedResponseBody is the type of the "hy_company"
+// service "updateCompany" endpoint HTTP response body for the "Unauthorized"
+// error.
+type UpdateCompanyUnauthorizedResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
 // DeleteCompanyNotFoundResponseBody is the type of the "hy_company" service
 // "deleteCompany" endpoint HTTP response body for the "NotFound" error.
 type DeleteCompanyNotFoundResponseBody struct {
+	// Name is the name of this class of errors.
+	Name string `form:"name" json:"name" xml:"name"`
+	// ID is a unique identifier for this particular occurrence of the problem.
+	ID string `form:"id" json:"id" xml:"id"`
+	// Message is a human-readable explanation specific to this occurrence of the
+	// problem.
+	Message string `form:"message" json:"message" xml:"message"`
+	// Is the error temporary?
+	Temporary bool `form:"temporary" json:"temporary" xml:"temporary"`
+	// Is the error a timeout?
+	Timeout bool `form:"timeout" json:"timeout" xml:"timeout"`
+	// Is the error a server-side fault?
+	Fault bool `form:"fault" json:"fault" xml:"fault"`
+}
+
+// DeleteCompanyUnauthorizedResponseBody is the type of the "hy_company"
+// service "deleteCompany" endpoint HTTP response body for the "Unauthorized"
+// error.
+type DeleteCompanyUnauthorizedResponseBody struct {
 	// Name is the name of this class of errors.
 	Name string `form:"name" json:"name" xml:"name"`
 	// ID is a unique identifier for this particular occurrence of the problem.
@@ -344,6 +437,20 @@ func NewCompanyListNotFoundResponseBody(res *goa.ServiceError) *CompanyListNotFo
 	return body
 }
 
+// NewCompanyListUnauthorizedResponseBody builds the HTTP response body from
+// the result of the "companyList" endpoint of the "hy_company" service.
+func NewCompanyListUnauthorizedResponseBody(res *goa.ServiceError) *CompanyListUnauthorizedResponseBody {
+	body := &CompanyListUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewGetCompanyNotFoundResponseBody builds the HTTP response body from the
 // result of the "getCompany" endpoint of the "hy_company" service.
 func NewGetCompanyNotFoundResponseBody(res *goa.ServiceError) *GetCompanyNotFoundResponseBody {
@@ -358,10 +465,38 @@ func NewGetCompanyNotFoundResponseBody(res *goa.ServiceError) *GetCompanyNotFoun
 	return body
 }
 
+// NewGetCompanyUnauthorizedResponseBody builds the HTTP response body from the
+// result of the "getCompany" endpoint of the "hy_company" service.
+func NewGetCompanyUnauthorizedResponseBody(res *goa.ServiceError) *GetCompanyUnauthorizedResponseBody {
+	body := &GetCompanyUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewCreateCompanyBadRequestResponseBody builds the HTTP response body from
 // the result of the "createCompany" endpoint of the "hy_company" service.
 func NewCreateCompanyBadRequestResponseBody(res *goa.ServiceError) *CreateCompanyBadRequestResponseBody {
 	body := &CreateCompanyBadRequestResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewCreateCompanyUnauthorizedResponseBody builds the HTTP response body from
+// the result of the "createCompany" endpoint of the "hy_company" service.
+func NewCreateCompanyUnauthorizedResponseBody(res *goa.ServiceError) *CreateCompanyUnauthorizedResponseBody {
+	body := &CreateCompanyUnauthorizedResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,
@@ -400,10 +535,38 @@ func NewUpdateCompanyNotFoundResponseBody(res *goa.ServiceError) *UpdateCompanyN
 	return body
 }
 
+// NewUpdateCompanyUnauthorizedResponseBody builds the HTTP response body from
+// the result of the "updateCompany" endpoint of the "hy_company" service.
+func NewUpdateCompanyUnauthorizedResponseBody(res *goa.ServiceError) *UpdateCompanyUnauthorizedResponseBody {
+	body := &UpdateCompanyUnauthorizedResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
 // NewDeleteCompanyNotFoundResponseBody builds the HTTP response body from the
 // result of the "deleteCompany" endpoint of the "hy_company" service.
 func NewDeleteCompanyNotFoundResponseBody(res *goa.ServiceError) *DeleteCompanyNotFoundResponseBody {
 	body := &DeleteCompanyNotFoundResponseBody{
+		Name:      res.Name,
+		ID:        res.ID,
+		Message:   res.Message,
+		Temporary: res.Temporary,
+		Timeout:   res.Timeout,
+		Fault:     res.Fault,
+	}
+	return body
+}
+
+// NewDeleteCompanyUnauthorizedResponseBody builds the HTTP response body from
+// the result of the "deleteCompany" endpoint of the "hy_company" service.
+func NewDeleteCompanyUnauthorizedResponseBody(res *goa.ServiceError) *DeleteCompanyUnauthorizedResponseBody {
+	body := &DeleteCompanyUnauthorizedResponseBody{
 		Name:      res.Name,
 		ID:        res.ID,
 		Message:   res.Message,

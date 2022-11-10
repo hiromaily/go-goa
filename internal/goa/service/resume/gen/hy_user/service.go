@@ -134,6 +134,11 @@ func MakeBadRequest(err error) *goa.ServiceError {
 	return goa.NewServiceError(err, "BadRequest", false, false, false)
 }
 
+// MakeUnauthorized builds a goa.ServiceError from an error.
+func MakeUnauthorized(err error) *goa.ServiceError {
+	return goa.NewServiceError(err, "Unauthorized", false, false, false)
+}
+
 // NewUserCollection initializes result type UserCollection from viewed result
 // type UserCollection.
 func NewUserCollection(vres hyuserviews.UserCollection) UserCollection {

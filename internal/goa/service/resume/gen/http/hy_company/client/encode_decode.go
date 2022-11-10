@@ -60,6 +60,7 @@ func EncodeCompanyListRequest(encoder func(*http.Request) goahttp.Encoder) func(
 // body should be restored after having been read.
 // DecodeCompanyListResponse may return the following errors:
 //   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "Unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
 func DecodeCompanyListResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
@@ -107,6 +108,20 @@ func DecodeCompanyListResponse(decoder func(*http.Response) goahttp.Decoder, res
 				return nil, goahttp.ErrValidationError("hy_company", "companyList", err)
 			}
 			return nil, NewCompanyListNotFound(&body)
+		case http.StatusUnauthorized:
+			var (
+				body CompanyListUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "companyList", err)
+			}
+			err = ValidateCompanyListUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "companyList", err)
+			}
+			return nil, NewCompanyListUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "companyList", resp.StatusCode, string(body))
@@ -164,6 +179,7 @@ func EncodeGetCompanyRequest(encoder func(*http.Request) goahttp.Encoder) func(*
 // body should be restored after having been read.
 // DecodeGetCompanyResponse may return the following errors:
 //   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "Unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
 func DecodeGetCompanyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
@@ -211,6 +227,20 @@ func DecodeGetCompanyResponse(decoder func(*http.Response) goahttp.Decoder, rest
 				return nil, goahttp.ErrValidationError("hy_company", "getCompany", err)
 			}
 			return nil, NewGetCompanyNotFound(&body)
+		case http.StatusUnauthorized:
+			var (
+				body GetCompanyUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "getCompany", err)
+			}
+			err = ValidateGetCompanyUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "getCompany", err)
+			}
+			return nil, NewGetCompanyUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "getCompany", resp.StatusCode, string(body))
@@ -262,6 +292,7 @@ func EncodeCreateCompanyRequest(encoder func(*http.Request) goahttp.Encoder) fun
 // body should be restored after having been read.
 // DecodeCreateCompanyResponse may return the following errors:
 //   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
+//   - "Unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
 func DecodeCreateCompanyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
@@ -309,6 +340,20 @@ func DecodeCreateCompanyResponse(decoder func(*http.Response) goahttp.Decoder, r
 				return nil, goahttp.ErrValidationError("hy_company", "createCompany", err)
 			}
 			return nil, NewCreateCompanyBadRequest(&body)
+		case http.StatusUnauthorized:
+			var (
+				body CreateCompanyUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "createCompany", err)
+			}
+			err = ValidateCreateCompanyUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "createCompany", err)
+			}
+			return nil, NewCreateCompanyUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "createCompany", resp.StatusCode, string(body))
@@ -371,6 +416,7 @@ func EncodeUpdateCompanyRequest(encoder func(*http.Request) goahttp.Encoder) fun
 // DecodeUpdateCompanyResponse may return the following errors:
 //   - "BadRequest" (type *goa.ServiceError): http.StatusBadRequest
 //   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "Unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
 func DecodeUpdateCompanyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
@@ -417,6 +463,20 @@ func DecodeUpdateCompanyResponse(decoder func(*http.Response) goahttp.Decoder, r
 				return nil, goahttp.ErrValidationError("hy_company", "updateCompany", err)
 			}
 			return nil, NewUpdateCompanyNotFound(&body)
+		case http.StatusUnauthorized:
+			var (
+				body UpdateCompanyUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "updateCompany", err)
+			}
+			err = ValidateUpdateCompanyUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "updateCompany", err)
+			}
+			return nil, NewUpdateCompanyUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "updateCompany", resp.StatusCode, string(body))
@@ -474,6 +534,7 @@ func EncodeDeleteCompanyRequest(encoder func(*http.Request) goahttp.Encoder) fun
 // body should be restored after having been read.
 // DecodeDeleteCompanyResponse may return the following errors:
 //   - "NotFound" (type *goa.ServiceError): http.StatusNotFound
+//   - "Unauthorized" (type *goa.ServiceError): http.StatusUnauthorized
 //   - error: internal error
 func DecodeDeleteCompanyResponse(decoder func(*http.Response) goahttp.Decoder, restoreBody bool) func(*http.Response) (interface{}, error) {
 	return func(resp *http.Response) (interface{}, error) {
@@ -506,6 +567,20 @@ func DecodeDeleteCompanyResponse(decoder func(*http.Response) goahttp.Decoder, r
 				return nil, goahttp.ErrValidationError("hy_company", "deleteCompany", err)
 			}
 			return nil, NewDeleteCompanyNotFound(&body)
+		case http.StatusUnauthorized:
+			var (
+				body DeleteCompanyUnauthorizedResponseBody
+				err  error
+			)
+			err = decoder(resp).Decode(&body)
+			if err != nil {
+				return nil, goahttp.ErrDecodingError("hy_company", "deleteCompany", err)
+			}
+			err = ValidateDeleteCompanyUnauthorizedResponseBody(&body)
+			if err != nil {
+				return nil, goahttp.ErrValidationError("hy_company", "deleteCompany", err)
+			}
+			return nil, NewDeleteCompanyUnauthorized(&body)
 		default:
 			body, _ := io.ReadAll(resp.Body)
 			return nil, goahttp.ErrInvalidResponse("hy_company", "deleteCompany", resp.StatusCode, string(body))

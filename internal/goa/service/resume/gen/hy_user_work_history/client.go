@@ -31,6 +31,7 @@ func NewClient(getUserWorkHistory goa.Endpoint) *Client {
 // GetUserWorkHistory may return the following errors:
 //   - "NotFound" (type *goa.ServiceError)
 //   - "BadRequest" (type *goa.ServiceError)
+//   - "Unauthorized" (type *goa.ServiceError)
 //   - error: internal error
 func (c *Client) GetUserWorkHistory(ctx context.Context, p *GetUserWorkHistoryPayload) (res UserworkhistoryCollection, err error) {
 	var ires interface{}
