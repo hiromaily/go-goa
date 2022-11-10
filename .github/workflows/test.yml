@@ -41,6 +41,7 @@ jobs:
         run: |
           docker compose up -d
           sleep 5s
+          docker ps -a
       - name: API Test
         run: |
           make test

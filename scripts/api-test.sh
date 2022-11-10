@@ -7,7 +7,7 @@ ENDPOINT=127.0.0.1:8090/api
 source ./scripts/test-util.sh
 
 # Check Requirements
-requirement
+#requirement
 
 # Check Healthcheck
 healthcheck
