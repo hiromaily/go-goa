@@ -16,15 +16,15 @@ healthcheck
 ## API TEST
 ### Login Error
 echo '[Scenario] Login Error due to no password: 400 must be returned'
-STATUS=`getStatus "${ENDPOINT}/auth/login email=hiroki@goa.com"`
+STATUS=`getStatus POST "${ENDPOINT}/auth/login email=hiroki@goa.com"`
 handleResult 400 $STATUS
 
 echo '[Scenario] Login Error due to wrong password: 400 must be returned'
-STATUS=`getStatus "${ENDPOINT}/auth/login email=hiroki@goa.com password=foobar"`
+STATUS=`getStatus POST "${ENDPOINT}/auth/login email=hiroki@goa.com password=foobar"`
 handleResult 400 $STATUS
 
 echo '[Scenario] Success Login: 200 must be returned'
-STATUS=`getStatus "${ENDPOINT}/auth/login email=hiroki@goa.com password=password"`
+STATUS=`getStatus POST "${ENDPOINT}/auth/login email=hiroki@goa.com password=password"`
 handleResult 200 $STATUS
 
 ### Check Token
@@ -37,23 +37,23 @@ fi
 ### User Test
 #### User Status Test
 echo '[Scenario] Fail to get User List without Token: 401 must be returned'
-STATUS=`getStatus ${ENDPOINT}/user`
+STATUS=`getStatus GET ${ENDPOINT}/user`
 handleResult 401 $STATUS
 
 echo '[Scenario] Get User List: 200 must be returned'
-STATUS=`getStatusWithToken ${ENDPOINT}/user ${TOKEN}`
+STATUS=`getStatusWithToken GET ${ENDPOINT}/user ${TOKEN}`
 handleResult 200 $STATUS
 
 echo '[Scenario] Get User: 200 must be returned'
-STATUS=`getStatusWithToken ${ENDPOINT}/user/1 ${TOKEN}`
+STATUS=`getStatusWithToken GET ${ENDPOINT}/user/1 ${TOKEN}`
 handleResult 200 $STATUS
 
 echo '[Scenario] Get User: 404 must be returned'
-STATUS=`getStatusWithToken ${ENDPOINT}/user/99999 ${TOKEN}`
+STATUS=`getStatusWithToken GET ${ENDPOINT}/user/99999 ${TOKEN}`
 handleResult 404 $STATUS
 
 #### User Body Test for user
-json=`getBodyWithToken ${ENDPOINT}/user/1 ${TOKEN}`
+json=`getBodyWithToken GET ${ENDPOINT}/user/1 ${TOKEN}`
 echo '[Scenario] Get User Body: user_id'
 userID=$(echo $json | jq '.user_id')
 isEqual 1 $userID
@@ -69,7 +69,7 @@ echo $email
 isEqual hiroki@goa.com $email
 
 #### User Body Test for userlist
-json=`getBodyWithToken ${ENDPOINT}/user ${TOKEN}`
+json=`getBodyWithToken GET ${ENDPOINT}/user ${TOKEN}`
 echo '[Scenario] Get User List Body: Length'
 len=$(echo $json | jq '. | length')
 isEqual 2 $len

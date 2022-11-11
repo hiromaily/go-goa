@@ -17,7 +17,8 @@ salt = "foo-bar"
 
 [mysql]
 encrypted = false
-host = "mysql-server"
+#host = "mysql-server"  # defined in link section of docker-container
+host = "go-goa-mysql-1" # container name
 port = 3306
 dbname = "go-goa"
 user = "guestuser"

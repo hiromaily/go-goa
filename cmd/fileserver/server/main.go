@@ -5,33 +5,30 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"net"
 	"net/url"
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
+
+	"github.com/pkg/errors"
 )
 
 func main() {
 	// Define command line flags, add any other flag required to configure the
 	// service.
 	var (
-		hostF     = flag.String("host", "localhost", "Server host (valid values: localhost)")
-		domainF   = flag.String("domain", "", "Host domain name (overrides host domain specified in service design)")
-		httpPortF = flag.String("http-port", "", "HTTP port (overrides host HTTP port specified in service design)")
-		secureF   = flag.Bool("secure", false, "Use secure scheme (https or grpcs)")
-		dbgF      = flag.Bool("debug", false, "Log request and response bodies")
+		hostF = flag.String("host", "localhost", "Server host (valid values: localhost)")
+		//domainF   = flag.String("domain", "", "Host domain name (overrides host domain specified in service design)")
+		portF   = flag.String("port", "8080", "HTTP port (overrides host HTTP port specified in service design)")
+		secureF = flag.Bool("secure", false, "Use secure scheme (https or grpcs)")
+		dbgF    = flag.Bool("debug", false, "Log request and response bodies")
 	)
 	flag.Parse()
 
 	// Setup logger. Replace logger with your own log package of choice.
-	var (
-		logger *log.Logger
-	)
-	{
-		logger = log.New(os.Stderr, "[resume] ", log.Ltime)
-	}
+	var logger *log.Logger
+	logger = log.New(os.Stderr, "[resume] ", log.Ltime)
 
 	// Create channel used by both the signal handler and server goroutines
 	// to notify the main goroutine when to stop the server.
@@ -49,35 +46,11 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 
 	// Start the servers and send errors (if any) to the error channel.
-	switch *hostF {
-	case "localhost":
-		{
-			addr := "http://localhost:8080"
-			u, err := url.Parse(addr)
-			if err != nil {
-				logger.Fatalf("invalid URL %#v: %s\n", addr, err)
-			}
-			if *secureF {
-				u.Scheme = "https"
-			}
-			if *domainF != "" {
-				u.Host = *domainF
-			}
-			if *httpPortF != "" {
-				h, _, err := net.SplitHostPort(u.Host)
-				if err != nil {
-					logger.Fatalf("invalid URL %#v: %s\n", u.Host, err)
-				}
-				u.Host = net.JoinHostPort(h, *httpPortF)
-			} else if u.Port() == "" {
-				u.Host = net.JoinHostPort(u.Host, "80")
-			}
-			handleHTTPServer(ctx, u, &wg, errc, logger, *dbgF)
-		}
-
-	default:
-		logger.Fatalf("invalid host argument: %q (valid hosts: localhost)\n", *hostF)
+	u, err := getURL(*hostF, *portF, *secureF)
+	if err != nil {
+		logger.Fatal(err.Error())
 	}
+	handleHTTPServer(ctx, u, &wg, errc, logger, *dbgF)
 
 	// Wait for signal.
 	logger.Printf("exiting (%v)", <-errc)
@@ -87,4 +60,16 @@ func main() {
 
 	wg.Wait()
 	logger.Println("exited")
+}
+
+func getURL(host, port string, isSecure bool) (*url.URL, error) {
+	addr := fmt.Sprintf("http://%s:%s", host, port)
+	u, err := url.Parse(addr)
+	if err != nil {
+		return nil, errors.Wrapf(err, "invalid URL %s: %#v", addr)
+	}
+	if isSecure {
+		u.Scheme = "https"
+	}
+	return u, nil
 }
