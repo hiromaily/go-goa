@@ -53,11 +53,7 @@ jobs:
           docker logs go-goa-api-server-1
       - name: API Test
         run: |
-          http GET http://127.0.0.1:8090/api/health
-          curl -I http://localhost:8090/api/health
-          curl -I http://127.0.0.1:8090/api/health
-          http --headers GET http://127.0.0.1:8090/api/health
-          make test
+          ./scripts/api-test.sh
 #  golangci:
 #    name: lint
 #    runs-on: ubuntu-latest

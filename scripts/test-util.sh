@@ -35,7 +35,7 @@ function healthcheck() {
   result=1
   for i in {1..5}
   do
-    STATUS=`getStatus ${ENDPOINT}/health`
+    STATUS=`getStatus GET ${ENDPOINT}/health`
     #echo "after function call: $STATUS"
     if [[ "$STATUS" == 200 ]]; then
       result=0
@@ -52,22 +52,25 @@ function healthcheck() {
 }
 
 function getStatus() {
-  url=$1
-  rtn=$(http --headers ${url} 2>&1 | grep HTTP/ | cut -d ' ' -f 2)
+  method=$1
+  url=$2
+  rtn=$(http --headers --ignore-stdin ${method} ${url} 2>&1 | grep HTTP/ | cut -d ' ' -f 2)
   echo $rtn
 }
 
 function getStatusWithToken() {
-  url=$1
-  token=$2
-  rtn=$(http --headers -A bearer -a ${token} ${url} 2>&1 | grep HTTP/ | cut -d ' ' -f 2)
+  method=$1
+  url=$2
+  token=$3
+  rtn=$(http --headers --ignore-stdin -A bearer -a ${token} ${method} ${url} 2>&1 | grep HTTP/ | cut -d ' ' -f 2)
   echo $rtn
 }
 
 function getBodyWithToken() {
-  url=$1
-  token=$2
-  json=$(http -A bearer -a ${token} ${url} 2>&1)
+  method=$1
+  url=$2
+  token=$3
+  json=$(http --ignore-stdin -A bearer -a ${token} ${method} ${url} 2>&1)
   echo $json
 }
 
@@ -84,7 +87,7 @@ function handleResult() {
 
 function getToken() {
 	#token=$(http --headers POST ${ENDPOINT}/auth/login email=hiroki@goa.com password=password | head -n 2 | tail -n 1 | sed -e "s/Authorization: //g")
-  token=$(http --body POST ${ENDPOINT}/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g')
+  token=$(http --ignore-stdin --body POST ${ENDPOINT}/auth/login email=hiroki@goa.com password=password | jq '.token' | sed 's/"//g')
   echo $token
 }
 
