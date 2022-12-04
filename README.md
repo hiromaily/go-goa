@@ -16,7 +16,7 @@ The example site consists of file server and API server.
 - [ ] Integrate to Firebase using NextJS SSG
 - [ ] Switch CI from TravisCI to Github Action
 - [ ] Rebuild front-end by latest Next.js(React) or Svelte
-
+- [ ] Replace E2E test by [Hurl](https://hurl.dev/)
 
 ## Directory Structure
 | Directory Name | Description                                           |
